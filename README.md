@@ -1,5 +1,7 @@
 # ivann
 
+[![Build Status](https://travis-ci.com/icivann/ivann.svg?branch=master)](https://travis-ci.com/icivann/ivann)
+
 ## Project setup
 ```
 npm install
