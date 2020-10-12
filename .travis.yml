@@ -6,7 +6,3 @@ cache: npm
 
 script: npm run test:unit
 
-deploy:
-  on:
-    branch: master
-
