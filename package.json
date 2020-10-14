@@ -11,12 +11,14 @@
   "dependencies": {
     "@baklavajs/core": "^1.7.2",
     "@baklavajs/plugin-renderer-vue": "^1.7.4",
+    "@types/vuelidate": "^0.7.13",
     "baklavajs": "^1.7.4",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
+    "vuelidate": "^0.7.5",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
