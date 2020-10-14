@@ -19,10 +19,10 @@ class TrainingNode {
 
 export type InOutNode = InNode & OutNode
 
-interface InNode {
+export interface InNode {
   out: UUID;
 }
 
-interface OutNode {
+export interface OutNode {
   input: UUID;
 }

@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+import {randomUuid} from "@/app/util";
+
 class CarExample {
   constructor(
     public readonly wheels: number,
