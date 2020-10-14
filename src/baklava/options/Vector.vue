@@ -1,36 +1,33 @@
 <template>
   <div class="d-sm-flex">
     <div class="ml-1">{{ name }}</div>
-    <div class="sadfg" v-for="val in value" :key="val">{{val}}</div>
+    <IntegerInc :index=index
+                :key="index"
+                :value=val
+                @increment="increment"
+                v-for="(val, index) in value"></IntegerInc>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import IntegerInc from '@/baklava/input/IntegerInc.vue';
 
-@Component
-export default class HelloWorld extends Vue {
-  @Prop({ type: [Number] }) value!: [number];
+@Component({
+  components: { IntegerInc },
+})
+export default class Vector extends Vue {
+  @Prop() value!: [number];
 
   @Prop({ type: String }) name!: string;
+
+  increment(x: number) {
+  // increment(x: number, index: number) {
+    const copy = [...this.value];
+    copy[0] = x;
+
+    this.$emit('input', copy);
+    console.log(x);
+  }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-
-  .sadfg {
-    margin: 0 10px;
-    padding: 0 1em 0 0.3em;
-    background: #42b983;
-  }
-</style>
