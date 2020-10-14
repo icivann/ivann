@@ -1,9 +1,9 @@
 import { Node } from '@baklavajs/core';
 
-export default class MaxPoolingNode extends Node {
+export default class MaxPooling2D extends Node {
   type = 'Layer';
 
-  name = 'MaxPooling';
+  name = 'MaxPooling2D';
 
   constructor() {
     super();

@@ -15,9 +15,9 @@ import { OptionPlugin } from '@baklavajs/plugin-options-vue';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 
 // Importing the nodes
-import Conv2DNode from '@/nodes/model/conv/Conv2DNode';
-import MaxPoolingNode from '@/nodes/model/pool/MaxPoolingNode';
-import MathNode from '@/nodes/model/Dense';
+import Conv2D from '@/nodes/model/conv/Conv2D';
+import MaxPooling2D from '@/nodes/model/pool/MaxPooling2D';
+import Dense from '@/nodes/model/linear/Dense';
 
 @Component
 export default class NodeEditor extends Vue {
@@ -30,10 +30,11 @@ export default class NodeEditor extends Vue {
   created() {
     this.editor.use(this.optionPlugin);
     this.editor.use(this.viewPlugin);
-    this.editor.registerNodeType('Dense', MathNode);
+
     // Model Layer Nodes
-    this.editor.registerNodeType('Conv2D', Conv2DNode, 'Convolution Layers');
-    this.editor.registerNodeType('MaxPooling', MaxPoolingNode, 'Pooling Layers');
+    this.editor.registerNodeType('Dense', Dense);
+    this.editor.registerNodeType('Conv2D', Conv2D, 'Convolution Layers');
+    this.editor.registerNodeType('MaxPooling2D', MaxPooling2D, 'Pooling Layers');
   }
 }
 </script>
@@ -42,7 +43,7 @@ export default class NodeEditor extends Vue {
 <style scoped>
 
 .node-editor{
-  width: 500px;
+  width: 100%;
   height: 500px;
 }
 </style>

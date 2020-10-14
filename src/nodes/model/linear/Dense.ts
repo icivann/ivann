@@ -1,15 +1,17 @@
 import { Node } from '@baklavajs/core';
 
-export default class Conv2DNode extends Node {
-  type = 'Layer';
+export default class Dense extends Node {
+  type = 'Linear';
 
-  name = 'Conv2D';
+  name = 'Dense';
 
   constructor() {
     super();
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
-    this.addOption('Filters', 'IntegerOption', 32);
+    this.addOption('Size', 'IntegerOption', 32);
+    // this.addOption('Use bias', "ButtonOption", false);
+
     this.addOption('Kernel Size x', 'IntegerOption', 3);
     this.addOption('Kernel Size y', 'IntegerOption', 3);
     this.addOption('Activation', 'SelectOption', 'ReLU', undefined, {
