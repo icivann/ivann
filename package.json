@@ -9,6 +9,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@baklavajs/core": "^1.7.2",
+    "@baklavajs/plugin-renderer-vue": "^1.7.4",
+    "baklavajs": "^1.7.4",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
