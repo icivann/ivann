@@ -21,13 +21,11 @@ export default class Vector extends Vue {
 
   @Prop({ type: String }) name!: string;
 
-  increment(x: number) {
-  // increment(x: number, index: number) {
+  increment(value: number, index: number) {
     const copy = [...this.value];
-    copy[0] = x;
+    copy[index] = value;
 
     this.$emit('input', copy);
-    console.log(x);
   }
 }
 </script>
