@@ -3,7 +3,7 @@ import { UUID } from '@/app/util';
 
 class InModel implements InNode {
   constructor(
-    public readonly out: UUID,
+    public readonly outputs: Set<UUID>,
     public readonly dimension: bigint[],
   ) {}
 }
@@ -17,6 +17,6 @@ class OutModel implements OutNode {
 class SoftMax implements InOutNode {
   constructor(
   public readonly input: UUID,
-  public readonly out: UUID,
+  public readonly outputs: Set<UUID>,
   ) {}
 }

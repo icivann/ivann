@@ -5,7 +5,7 @@ import {
 } from '@/app/ir/irCommon';
 
 abstract class Conv implements ModelNode, InOutNode {
-  abstract readonly out: UUID;
+  abstract readonly outputs: Set<UUID>;
 
   abstract readonly input: UUID;
 
@@ -22,13 +22,13 @@ abstract class Conv implements ModelNode, InOutNode {
 
 class Conv1D extends Conv {
   constructor(
-    public readonly out: UUID,
+    public readonly outputs: Set<UUID>,
     public readonly filters: bigint,
     public padding: Padding,
     public weights: [Initializer, Regularizer],
     public readonly biases: Option<[Initializer, Regularizer]>,
     public readonly input: UUID,
-    public readonly dilation: [1, 1],
+    public readonly dilation: [bigint],
     public readonly activation: ActivationF,
 
     public readonly kernel: [bigint],
@@ -40,7 +40,7 @@ class Conv1D extends Conv {
 
 class Conv2D extends Conv {
   constructor(
-    public readonly out: UUID,
+    public readonly outputs: Set<UUID>,
     public readonly filters: bigint,
     public padding: Padding,
     public weights: [Initializer, Regularizer],
@@ -57,7 +57,7 @@ class Conv2D extends Conv {
 
 class Conv3D extends Conv {
   constructor(
-    public readonly out: UUID,
+    public readonly outputs: Set<UUID>,
     public readonly filters: bigint,
     public padding: Padding,
     public weights: [Initializer, Regularizer],

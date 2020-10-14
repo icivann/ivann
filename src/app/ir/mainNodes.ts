@@ -1,6 +1,6 @@
 import { randomUuid, UUID } from '@/app/util';
 
-type MLNode = ModelNode | TrainingNode
+type MLNode = ModelNode
 
 class GraphNode {
   constructor(
@@ -11,18 +11,19 @@ class GraphNode {
   public readonly uniqueId = randomUuid()
 }
 
-export class ModelNode {
-}
-
-class TrainingNode {
+export abstract class ModelNode {
 }
 
 export type InOutNode = InNode & OutNode
 
 export interface InNode {
-  out: UUID;
+  outputs: Set<UUID>;
 }
 
 export interface OutNode {
   input: UUID;
+}
+
+export interface Out2Node {
+  input: [UUID, UUID]
 }
