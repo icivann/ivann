@@ -1,4 +1,4 @@
-/* eslint-disable */ // --> OFF
+/* eslint-disable */
 
 class CarExample {
   constructor(
@@ -18,9 +18,18 @@ const c = new CarExample(3, 3, 'asd', false);
 
 const c2 = c.copyWith({ wheels: 4, topSpeed: 100 });
 
-class GraphNode {
+type MLNode = ModelNode | TrainingNode
+
+class GraphNode implements IvannNode {
   constructor(
     public readonly wheels: number,
   ) {
   }
+  public readonly uniqueId = randomUuid()
+}
+
+class ModelNode {}
+class TrainingNode {}
+interface IvannNode {
+  uniqueId: string
 }
