@@ -1,15 +1,11 @@
 <template>
-  <div>
-    This is the Node editor
-    <div class="node-editor">
-      <baklava-editor :plugin="viewPlugin"></baklava-editor>
-    </div>
-    after baklava
+  <div class="node-editor h-100">
+    <baklava-editor :plugin="viewPlugin"></baklava-editor>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { Editor } from '@baklavajs/core';
 import { OptionPlugin } from '@baklavajs/plugin-options-vue';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
@@ -41,9 +37,4 @@ export default class NodeEditor extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-.node-editor{
-  width: 100%;
-  height: 500px;
-}
 </style>

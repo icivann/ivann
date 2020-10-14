@@ -9,6 +9,10 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
+// Import fontawesome
+import '@fortawesome/fontawesome-free/css/all.css'; // Fontawesome
+import '@fortawesome/fontawesome-free/js/all';
+
 Vue.use(BaklavaVuePlugin);
 Vue.config.productionTip = false;
 
