@@ -29,8 +29,8 @@ export default {
 
 <style>
 #app {
-  width: 2000px;
-  height: 1000px;
+  width: 100%;
+  height: auto;
 }
 
 #nav {

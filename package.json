@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@baklavajs/core": "^1.7.2",
+    "@baklavajs/plugin-options-vue": "^1.7.2",
     "@baklavajs/plugin-renderer-vue": "^1.7.4",
     "baklavajs": "^1.7.4",
     "core-js": "^3.6.5",
