@@ -28,14 +28,6 @@ export default {
 </script>
 
 <style>
-#app {
-  width: 100%;
-  height: auto;
-}
-
-#nav {
-  padding: 30px;
-}
 #nav a {
   font-weight: bold;
   color: #2c3e50;
