@@ -25,5 +25,5 @@ export interface OutNode {
 }
 
 export interface Out2Node {
-  input: [UUID, UUID]
+  input: [UUID, UUID];
 }
