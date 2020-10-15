@@ -3,7 +3,7 @@ export enum Padding {Valid, Same}
 export type Initializer = CustomInitializer | BuiltinInitializer
 
 export enum BuiltinInitializer {
-  Zeroes
+  Zeros, Glorot_Uniform
 }
 
 export class CustomInitializer {

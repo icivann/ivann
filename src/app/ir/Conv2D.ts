@@ -1,7 +1,8 @@
 import Conv from '@/app/ir/Conv';
 import { Option, UUID } from '@/app/util';
 import {
-  ActivationF, BuiltinActivationF, Initializer, Padding, Regularizer,
+  ActivationF, BuiltinActivationF, BuiltinInitializer, BuiltinRegularizer, Initializer,
+  Padding, Regularizer,
 } from '@/app/ir/irCommon';
 
 export default class Conv2D extends Conv {
@@ -21,23 +22,30 @@ export default class Conv2D extends Conv {
   }
 
   public code(): string {
+    const weightsInitializer = this.weights[0] as BuiltinInitializer;
+    const weightsRegularizer = this.weights[1] as BuiltinRegularizer;
+
     const params = [
       `${this.filters}`,
       `(${this.kernel[0]}, ${this.kernel[1]}) `,
       `strides = (${this.stride[0]}, ${this.stride[1]}) `,
       `padding = ${Padding[this.padding]}`,
       `activation = ${BuiltinActivationF[this.activation]}`,
-      `use_bias = ${this}`,
-      kernel_initializer='glorot_uniform', bias_initializer='zeros',
-      kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None,
-      kernel_constraint=None, bias_constraint=None
+      // TODO: fix assumption that all initializers and regularizers are built in types
+      `kernel_initializer = ${BuiltinInitializer[weightsInitializer].toLowerCase()}`,
+      `kernel_regularizer = ${BuiltinRegularizer[weightsRegularizer]}`,
     ];
+    params.push(`use_bias = ${this.biases !== null}`);
 
     if (this.biases !== null) {
-      const initializer = this.biases[0];
-      const regularizer = this.biases[1];
+      // TODO: fix assumption that all initializers and regularizers are built in types
+      const initializer = this.biases[0] as BuiltinInitializer;
+      const regularizer = this.biases[1] as BuiltinRegularizer;
+
+      params.push(`bias_initializer = ${BuiltinInitializer[initializer].toLowerCase()}`);
+      params.push(`bias_regularizer = ${BuiltinRegularizer[regularizer]}`);
     }
 
-    return 'model.add(layers.Conv2D())';
+    return `model.add(layers.Conv2D(${params.join(',')}))`;
   }
 }

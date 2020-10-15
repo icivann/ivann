@@ -6,7 +6,7 @@ const prefix = 'import tensorflow as tf\n'
 
 const suffix = 'model.compile(\'adam\', \'mean_squared_error\')\n';
 
-function generateKeras(nodes: GraphNode[]): string {
+export function generateKeras(nodes: GraphNode[]): string {
   return prefix + nodes.map((it) => it.mlNode.code()).join('\n') + suffix;
 }
 
