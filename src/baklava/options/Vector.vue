@@ -1,11 +1,14 @@
 <template>
   <div class="d-sm-flex">
     <div class="ml-1">{{ name }}</div>
-    <IntegerInc :index=index
-                :key="index"
-                :value=val
-                @value-change="updateValue"
-                v-for="(val, index) in value"></IntegerInc>
+    <div class="d-sm-flex" v-for="(val, index) in value" :key="index">
+      <span v-if="index > 0">,</span>
+      <IntegerInc
+        :index=index
+        :value=val
+        @value-change="updateValue"
+      ></IntegerInc>
+    </div>
   </div>
 </template>
 
