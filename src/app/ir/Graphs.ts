@@ -11,7 +11,7 @@ import {
 } from '@/app/ir/irCommon';
 import MaxPool2D from '@/app/ir/maxPool2D';
 
-export default function mnist(): GraphNode[] {
+export default function mnist(): string {
   const zs = BuiltinInitializer.Zeroes;
   const none = BuiltinRegularizer.None;
   const defaultWeights: [Initializer, Regularizer] = [zs, none];
@@ -34,5 +34,8 @@ export default function mnist(): GraphNode[] {
   const maxPoolGraph = new GraphNode(maxPool);
   conv.outputs.add(maxPoolGraph.uniqueId);
 
-  return [convGraph, maxPoolGraph];
+  const model = [convGraph, maxPoolGraph];
+  const code = model.map((it) => it.mlNode.code()).join('\n');
+
+  return code;
 }

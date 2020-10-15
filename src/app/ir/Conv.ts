@@ -18,4 +18,6 @@ export default abstract class Conv implements ModelNode, InOutNode {
   abstract readonly biases: Option<[Initializer, Regularizer]>
 
   abstract readonly activation: ActivationF
+
+  public abstract code(): string;
 }

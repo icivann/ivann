@@ -3,6 +3,7 @@ import { UUID } from '@/app/util';
 export type MlNode = ModelNode
 
 export abstract class ModelNode {
+  public abstract code(): string
 }
 
 export type InOutNode = InNode & OutNode

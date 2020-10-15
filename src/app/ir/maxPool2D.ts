@@ -12,4 +12,10 @@ export default class MaxPool2D extends MaxPool {
   ) {
     super();
   }
+
+  public code(): string {
+    const code = "model.add(layers.MaxPooling2D(pool_size=))";
+
+    return code;
+  }
 }
