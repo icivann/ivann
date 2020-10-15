@@ -7,7 +7,9 @@
         {{tab.name}}
       </div>
     </div>
-    <slot/>
+    <div class="tab-content">
+      <slot/>
+    </div>
   </div>
 </template>
 
@@ -65,5 +67,9 @@ export default class Tabs extends Vue {
 
   .tab-head.selected:hover {
     border-bottom-width: 4px;
+  }
+
+  .tab-content {
+    margin: 1em;
   }
 </style>
