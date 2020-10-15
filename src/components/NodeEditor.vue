@@ -20,6 +20,7 @@ import MaxPooling2D from '@/nodes/model/pool/MaxPooling2D';
 import Dense from '@/nodes/model/linear/Dense';
 import OptionTestNode from '@/nodes/OptionTestNode';
 import Vector from '@/baklava/options/Vector.vue';
+import Integer from '@/baklava/options/Integer.vue';
 
 @Component
 export default class NodeEditor extends Vue {
@@ -40,6 +41,7 @@ export default class NodeEditor extends Vue {
 
     this.editor.registerNodeType('OptionTestNode', OptionTestNode);
     this.viewPlugin.registerOption('VectorOption', Vector);
+    this.viewPlugin.registerOption('Integer', Integer);
   }
 }
 </script>

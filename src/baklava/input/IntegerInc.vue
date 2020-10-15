@@ -1,7 +1,10 @@
 <template>
-  <div class="box"
-       @click="increment"
-       @contextmenu="decrement">{{value}}
+  <div class="box d-sm-flex">
+    {{value}}
+    <div>
+      <div @click="increment">up</div>
+      <div @click="decrement">down</div>
+    </div>
   </div>
 </template>
 
@@ -10,18 +13,16 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class IntegerInc extends Vue {
-  @Prop() value!: any;
+  @Prop() value!: number;
 
   @Prop() index!: number;
 
-  @Prop({ type: String }) name!: string;
-
   increment() {
-    this.$emit('increment', this.value + 1, this.index);
+    this.$emit('value-change', this.value + 1, this.index);
   }
 
   decrement() {
-    this.$emit('increment', this.value - 1, this.index);
+    this.$emit('value-change', this.value - 1, this.index);
   }
 }
 </script>
@@ -29,7 +30,7 @@ export default class IntegerInc extends Vue {
 <style scoped>
   .box {
     margin: 0 0 0 5px;
-    padding: 0 1em 0 0.3em;
+    padding: 0 0em 0 0.3em;
     background: #ececec;
     border-radius: 2px;
     color: #303030;

@@ -4,7 +4,7 @@
     <IntegerInc :index=index
                 :key="index"
                 :value=val
-                @increment="increment"
+                @value-change="updateValue"
                 v-for="(val, index) in value"></IntegerInc>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default class Vector extends Vue {
 
   @Prop({ type: String }) name!: string;
 
-  increment(value: number, index: number) {
+  updateValue(value: number, index: number) {
     const copy = [...this.value];
     copy[index] = value;
 

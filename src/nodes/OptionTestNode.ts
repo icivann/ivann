@@ -13,6 +13,7 @@ export default class OptionTestNode extends Node {
     this.addOption('Checkbox', 'CheckboxOption', true);
 
     this.addOption('VectorOption', 'VectorOption', [3, 4, 7]);
+    this.addOption('IntegerOption', 'Integer', 32);
   }
 
   public calculate() {
