@@ -15,6 +15,9 @@ import { Layers, Nodes } from '@/nodes/model/Types';
 import Conv2D from '@/nodes/model/conv/Conv2D';
 import MaxPool2D from '@/nodes/model/pool/MaxPool2D';
 import Dense from '@/nodes/model/linear/Dense';
+import Vector from '@/baklava/options/Vector.vue';
+import Integer from '@/baklava/options/Integer.vue';
+import Dropdown from '@/baklava/options/Dropdown.vue';
 import Flatten from '@/nodes/model/reshape/Flatten';
 import Dropout from '@/nodes/model/regularization/Dropout';
 
@@ -31,6 +34,9 @@ export default class NodeEditor extends Vue {
     this.editor.use(this.viewPlugin);
 
     // Model Layer Nodes
+    this.viewPlugin.registerOption('VectorOption', Vector);
+    this.viewPlugin.registerOption('IntegerOption', Integer);
+    this.viewPlugin.registerOption('DropdownOption', Dropdown);
     this.editor.registerNodeType(Nodes.Dense, Dense, Layers.Linear);
     this.editor.registerNodeType(Nodes.Conv2D, Conv2D, Layers.Conv);
     this.editor.registerNodeType(Nodes.MaxPool2D, MaxPool2D, Layers.Pool);
