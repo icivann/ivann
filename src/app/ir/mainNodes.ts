@@ -2,7 +2,7 @@ import { randomUuid, UUID } from '@/app/util';
 
 type MlNode = ModelNode
 
-class GraphNode {
+export class GraphNode {
   constructor(
     public readonly mlNode: MlNode,
   ) {

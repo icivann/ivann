@@ -8,7 +8,7 @@ abstract class MaxPool implements ModelNode, InOutNode {
   abstract readonly input: UUID;
 }
 
-class MaxPool1D extends MaxPool {
+export class MaxPool1D extends MaxPool {
   constructor(
     public readonly outputs: Set<UUID>,
     public readonly input: UUID,
@@ -20,7 +20,7 @@ class MaxPool1D extends MaxPool {
   }
 }
 
-class MaxPool2D extends MaxPool {
+export class MaxPool2D extends MaxPool {
   constructor(
     public readonly outputs: Set<UUID>,
     public readonly input: UUID,
@@ -32,7 +32,7 @@ class MaxPool2D extends MaxPool {
   }
 }
 
-class MaxPool3D extends MaxPool {
+export class MaxPool3D extends MaxPool {
   constructor(
     public readonly outputs: Set<UUID>,
     public readonly input: UUID,

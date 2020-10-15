@@ -20,7 +20,7 @@ abstract class Conv implements ModelNode, InOutNode {
   abstract readonly activation: ActivationF
 }
 
-class Conv1D extends Conv {
+export class Conv1D extends Conv {
   constructor(
     public readonly outputs: Set<UUID>,
     public readonly filters: bigint,
@@ -38,7 +38,7 @@ class Conv1D extends Conv {
   }
 }
 
-class Conv2D extends Conv {
+export class Conv2D extends Conv {
   constructor(
     public readonly outputs: Set<UUID>,
     public readonly filters: bigint,
@@ -55,7 +55,7 @@ class Conv2D extends Conv {
   }
 }
 
-class Conv3D extends Conv {
+export class Conv3D extends Conv {
   constructor(
     public readonly outputs: Set<UUID>,
     public readonly filters: bigint,
