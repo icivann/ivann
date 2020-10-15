@@ -1,15 +1,6 @@
-import { randomUuid, UUID } from '@/app/util';
+import { UUID } from '@/app/util';
 
-type MlNode = ModelNode
-
-export class GraphNode {
-  constructor(
-    public readonly mlNode: MlNode,
-  ) {
-  }
-
-  public readonly uniqueId = randomUuid()
-}
+export type MlNode = ModelNode
 
 export abstract class ModelNode {
 }
@@ -25,5 +16,5 @@ export interface OutNode {
 }
 
 export interface Out2Node {
-  input: [UUID, UUID]
+  input: [UUID, UUID];
 }

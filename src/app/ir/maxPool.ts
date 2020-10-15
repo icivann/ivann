@@ -43,3 +43,4 @@ export class MaxPool3D extends MaxPool {
     super();
   }
 }
+export default MaxPool;
