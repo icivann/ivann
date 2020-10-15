@@ -2,14 +2,18 @@
   <div class="home container-fluid d-flex flex-column">
     <Navbar />
     <div class="row flex-grow-1">
-      <div class="col-1 px-0">
-        <LeftSidebar/>
+      <div class="left-sidebar-col">
+        <LeftSidebar />
       </div>
-      <div class="col-9 px-0">
-        <NodeEditor/>
-      </div>
-      <div class="col-2 px-0">
-        <RightSidebar/>
+      <div class="col d-flex flex-column">
+        <div class="row flex-grow-1">
+          <div class="col-9 px-0">
+            <NodeEditor />
+          </div>
+          <div class="col-3 px-0">
+            <RightSidebar />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -38,5 +42,9 @@ export default class Home extends Vue {
 .home {
   height: 100vh;
   overflow: auto;
+}
+
+.left-sidebar-col {
+  width: 3rem;
 }
 </style>
