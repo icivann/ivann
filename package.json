@@ -17,6 +17,7 @@
     "baklavajs": "^1.7.4",
     "bootstrap": "^4.5.3",
     "core-js": "^3.6.5",
+    "file-saver-typescript": "^1.0.1",
     "sass": "^1.27.0",
     "sass-loader": "^10.0.3",
     "vue": "^2.6.11",
