@@ -12,6 +12,8 @@ export default class OptionTestNode extends Node {
     this.addOption('VectorOption', 'VectorOption', [3, 4, 7]);
     this.addOption('2ectorOption', 'IntegerOption', 4);
     this.addOption('3ectorOption', 'VectorOption', [3, 4, 7]);
+    this.addOption('3ectorOption', 'DropdownOption', 'option1', undefined,
+      { items: ['optionA', 'optionB', 'THE LAST'] });
   }
 
   public calculate() {
