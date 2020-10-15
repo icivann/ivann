@@ -1,15 +1,6 @@
-import { randomUuid, UUID } from '@/app/util';
+import { UUID } from '@/app/util';
 
-type MlNode = ModelNode
-
-class GraphNode {
-  constructor(
-    public readonly mlNode: MlNode,
-  ) {
-  }
-
-  public readonly uniqueId = randomUuid()
-}
+export type MlNode = ModelNode
 
 export abstract class ModelNode {
 }
