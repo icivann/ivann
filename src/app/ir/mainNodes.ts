@@ -1,10 +1,10 @@
 import { randomUuid, UUID } from '@/app/util';
 
-type MLNode = ModelNode
+type MlNode = ModelNode
 
 class GraphNode {
   constructor(
-    public readonly mlNode: MLNode,
+    public readonly mlNode: MlNode,
   ) {
   }
 
