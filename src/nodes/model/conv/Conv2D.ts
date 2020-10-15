@@ -1,5 +1,12 @@
 import { Node } from '@baklavajs/core';
 import { Layers, Nodes } from '@/nodes/model/Types';
+import {
+  BuiltinActivationF,
+  BuiltinInitializer,
+  BuiltinRegularizer,
+  Padding,
+} from '@/app/ir/irCommon';
+import { valuesOf } from '@/app/util';
 
 export default class Conv2D extends Node {
   type = Layers.Conv;
@@ -19,25 +26,25 @@ export default class Conv2D extends Node {
     this.addOption('Stride Width', 'IntegerOption');
 
     this.addOption('Padding', 'SelectOption', 'Valid', undefined, {
-      items: ['Valid', 'Same'],
+      items: valuesOf(Padding),
     });
     this.addOption('Activation', 'SelectOption', 'None', undefined, {
-      items: ['None', 'ReLU', 'Tanh', 'Sigmoid', 'Linear'],
+      items: valuesOf(BuiltinActivationF),
     });
     this.addOption('Use Bias', 'CheckboxOption', 'True');
 
     // TODO: Decide default value and options for these
     this.addOption('Weights Initializer', 'SelectOption', 'Xavier', undefined, {
-      items: ['Xavier'],
+      items: valuesOf(BuiltinInitializer),
     });
-    this.addOption('Bias Initializer', 'SelectOption', 'Zeros', undefined, {
-      items: ['Zeros', 'Ones'],
+    this.addOption('Bias Initializer', 'SelectOption', 'Zeroes', undefined, {
+      items: valuesOf(BuiltinInitializer),
     });
     this.addOption('Bias Regularizer', 'SelectOption', 'None', undefined, {
-      items: ['None'],
+      items: valuesOf(BuiltinRegularizer),
     });
     this.addOption('Weights Regularizer', 'SelectOption', 'None', undefined, {
-      items: ['None'],
+      items: valuesOf(BuiltinRegularizer),
     });
   }
 }
