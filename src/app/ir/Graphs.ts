@@ -10,11 +10,16 @@ import {
   Regularizer,
 } from '@/app/ir/irCommon';
 import MaxPool2D from '@/app/ir/maxPool2D';
+import InModel from './InModel';
 
 export function mnist(): GraphNode[] {
   const zs = BuiltinInitializer.Zeros;
   const none = BuiltinRegularizer.None;
   const defaultWeights: [Initializer, Regularizer] = [zs, none];
+
+  const input = new InModel(new Set(), [64n, 64n, 3n]);
+  const inGraph = new GraphNode(input);
+
   const conv = new Conv2D(
     new Set(),
     32n,
@@ -34,5 +39,5 @@ export function mnist(): GraphNode[] {
   const maxPoolGraph = new GraphNode(maxPool);
   conv.outputs.add(maxPoolGraph.uniqueId);
 
-  return [convGraph, maxPoolGraph];
+  return [inGraph, convGraph];
 }
