@@ -1,7 +1,7 @@
 <template>
   <div class="Navbar row py-2">
     <div class="col text-left">
-      <img class="navbar-logo mr-2" src="@/assets/images/nn_logo.png" alt="IVANN" />
+      <img class="img-fluid navbar-logo mr-2" src="@/assets/images/nn_logo.png" alt="IVANN" />
       <span class="text">IVANN</span>
     </div>
     <div class="col text-center">
@@ -10,9 +10,9 @@
       </span>
     </div>
     <div class="col text-right">
-      <i class="navbar-icon fas fa-share-alt fa-lg"></i>
-      <i class="navbar-icon fas fa-folder-open fa-lg"></i>
-      <i class="navbar-icon fas fa-save fa-lg"></i>
+      <i class="navbar-icon fas fa-share-alt fa-lg mx-2"></i>
+      <i class="navbar-icon fas fa-folder-open fa-lg mx-2"></i>
+      <i class="navbar-icon fas fa-save fa-lg mx-2"></i>
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@ export default class Navbar extends Vue {
   height: 2.5rem;
   background-color: var(--background-alt);
 
-  border-bottom: 1px solid var(--foreground);
+  border-bottom: 0.08rem solid var(--grey);
 }
 
 .navbar-logo {

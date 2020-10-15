@@ -6,6 +6,11 @@ import '@baklavajs/plugin-renderer-vue/dist/styles.css';
 import '@fortawesome/fontawesome-free/css/all.css'; // Fontawesome
 import '@fortawesome/fontawesome-free/js/all';
 
+// Import Bootstrap-Vue
+import { BootstrapVue } from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+
 import '@/assets/scss/style.scss'; // Our style
 
 import Vue from 'vue';
@@ -14,6 +19,7 @@ import router from './router';
 import store from './store';
 
 Vue.use(BaklavaVuePlugin);
+Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
 new Vue({

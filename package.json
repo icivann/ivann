@@ -16,6 +16,7 @@
     "@types/vuelidate": "^0.7.13",
     "baklavajs": "^1.7.4",
     "bootstrap": "^4.5.3",
+    "bootstrap-vue": "^2.17.3",
     "core-js": "^3.6.5",
     "sass": "^1.27.0",
     "sass-loader": "^10.0.3",
