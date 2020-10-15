@@ -9,3 +9,5 @@ class Dropout implements ModelNode, InOutNode {
     public readonly probability: number,
   ) {}
 }
+
+export default Dropout;

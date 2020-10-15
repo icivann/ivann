@@ -1,22 +1,17 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
 
-<style>
-#app {
-  width: 100%;
-  height: auto;
-}
+<script>
+import { Vue } from 'vue-property-decorator';
 
-#nav {
-  padding: 30px;
+export default class App extends Vue {
 }
+</script>
+
+<style>
 #nav a {
   font-weight: bold;
   color: #2c3e50;

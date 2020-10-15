@@ -15,6 +15,9 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'lines-between-class-members': 'off',
+    'no-bitwise': 'off',
+    'no-mixed-operators': 'off',
+    'no-useless-constructor': 'off',
   },
   overrides: [
     {
