@@ -2,13 +2,13 @@ import { randomUuid, UUID } from '@/app/util';
 
 type MlNode = ModelNode
 
-class GraphNode {
+export class GraphNode {
   constructor(
     public readonly mlNode: MlNode,
+    // public readonly coordinates: [number, number],
+    public readonly uniqueId = randomUuid(),
   ) {
   }
-
-  public readonly uniqueId = randomUuid()
 }
 
 export abstract class ModelNode {
@@ -25,5 +25,5 @@ export interface OutNode {
 }
 
 export interface Out2Node {
-  input: [UUID, UUID]
+  input: [UUID, UUID];
 }
