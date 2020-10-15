@@ -1,6 +1,9 @@
 <template>
   <div class="box d-sm-flex">
-    {{value}}
+    <div v-if="!edit" @click="editOn">
+      {{value}}
+    </div>
+    <input v-model="editValue" v-if="edit" v-on:keyup.enter="update(editValue)">
     <div class="buttons">
       <div class="inc-button" @click="increment">
         <svg xmlns="http://www.w3.org/2000/svg" width="6" height="4"
@@ -29,12 +32,29 @@ export default class IntegerInc extends Vue {
 
   @Prop() index!: number;
 
+  private edit = false;
+  private editValue = '';
+
   increment() {
     this.$emit('value-change', this.value + 1, this.index);
   }
 
   decrement() {
     this.$emit('value-change', this.value - 1, this.index);
+  }
+
+  update(newValue: string) {
+    this.$emit('value-change', parseInt(newValue, 10), this.index);
+    this.toggle();
+  }
+
+  editOn() {
+    this.editValue = this.value.toString();
+    this.toggle();
+  }
+
+  toggle() {
+    this.edit = !this.edit;
   }
 }
 </script>
@@ -62,5 +82,12 @@ export default class IntegerInc extends Vue {
 
   .inc-button:hover {
     background: #e0e0e0e0;
+  }
+
+  input {
+    width: 30px;
+    padding: 0;
+    margin: 0;
+    border-style: none;
   }
 </style>
