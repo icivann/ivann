@@ -1,29 +1,22 @@
 import { Node } from '@baklavajs/core';
+import { Layers, Nodes } from '@/nodes/model/Types';
 
 export default class Dense extends Node {
-  type = 'Linear';
-
-  name = 'Dense';
+  type = Layers.Linear;
+  name = Nodes.Dense;
 
   constructor() {
     super();
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
-    this.addOption('Size', 'IntegerOption', 32);
-    // this.addOption('Use bias', "ButtonOption", false);
 
-    this.addOption('Kernel Size x', 'IntegerOption', 3);
-    this.addOption('Kernel Size y', 'IntegerOption', 3);
-    this.addOption('Activation', 'SelectOption', 'ReLU', undefined, {
-      selected: 'ReLU',
-      items: ['ReLU', 'Tanh', 'Sigmoid', 'Linear'],
+    this.addOption('Size', 'IntegerOption');
+    this.addOption('Activation', 'SelectOption', 'None', undefined, {
+      items: ['None', 'ReLU', 'Tanh', 'Sigmoid', 'Linear'],
     });
-    this.addOption('Input Shape x', 'IntegerOption', 28);
-    this.addOption('Input Shape y', 'IntegerOption', 28);
-    this.addOption('Input Shape z', 'IntegerOption', 3);
-  }
-
-  public calculate() {
-    this.getInterface('Output').value = 1423;
+    this.addOption('Use Bias', 'CheckboxOption', 'True');
+    this.addOption('Weights initializer', 'InputOption'); // TODO check
+    this.addOption('Bias regularizer', 'InputOption'); // TODO check
+    this.addOption('Weights regularizer', 'InputOption'); // TODO check
   }
 }
