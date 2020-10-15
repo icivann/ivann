@@ -2,6 +2,10 @@
 import { BaklavaVuePlugin } from '@baklavajs/plugin-renderer-vue';
 import '@baklavajs/plugin-renderer-vue/dist/styles.css';
 
+// Import fontawesome
+import '@fortawesome/fontawesome-free/css/all.css'; // Fontawesome
+import '@fortawesome/fontawesome-free/js/all';
+
 import '@/assets/scss/style.scss'; // Our style
 
 import Vue from 'vue';
