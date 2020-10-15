@@ -41,7 +41,7 @@ export default class IntegerInc extends Vue {
 
 <style scoped>
   .box {
-    margin: 0 5px;
+    margin: 0 3px 0 5px;
     padding: 0 0 0 0.3em;
     background: #ececec;
     border-radius: 2px;
