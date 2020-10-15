@@ -24,7 +24,7 @@ export default class Conv2D extends Node {
     this.addOption('Activation', 'SelectOption', 'None', undefined, {
       items: ['None', 'ReLU', 'Tanh', 'Sigmoid', 'Linear'],
     });
-    this.addOption('Use Bias', 'CheckboxOption', 'True');
+    this.addOption('Use Bias', 'CheckboxOption', true);
 
     // TODO: Decide default value and options for these
     this.addOption('Weights Initializer', 'SelectOption', 'Xavier', undefined, {
