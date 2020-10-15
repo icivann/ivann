@@ -3,7 +3,7 @@ export enum Padding {Valid, Same}
 export type Initializer = CustomInitializer | BuiltinInitializer
 
 export enum BuiltinInitializer {
-  Zeroes
+  Zeroes, Ones, Xavier
 }
 
 export class CustomInitializer {
@@ -17,4 +17,4 @@ export enum BuiltinRegularizer {
 
 export type ActivationF = BuiltinActivationF
 
-export enum BuiltinActivationF { Relu }
+export enum BuiltinActivationF { None, Relu, Tanh, Sigmoid, Linear }
