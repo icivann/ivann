@@ -16,7 +16,7 @@ export default class MaxPool2D extends Node {
     this.addOption('Stride Height', 'IntegerOption');
     this.addOption('Stride Width', 'IntegerOption');
 
-    this.addOption('Padding', 'SelectOption', 'Valid', undefined, {
+    this.addOption('Padding', 'DropdownOption', 'Valid', undefined, {
       items: ['Valid', 'Same'],
     });
   }

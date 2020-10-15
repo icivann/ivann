@@ -11,22 +11,22 @@ export default class Dense extends Node {
     this.addOutputInterface('Output');
 
     this.addOption('Size', 'IntegerOption');
-    this.addOption('Activation', 'SelectOption', 'None', undefined, {
+    this.addOption('Activation', 'DropdownOption', 'None', undefined, {
       items: ['None', 'ReLU', 'Tanh', 'Sigmoid', 'Linear'],
     });
     this.addOption('Use Bias', 'CheckboxOption', true);
 
     // TODO: Decide default value and options for these
-    this.addOption('Weights Initializer', 'SelectOption', 'Xavier', undefined, {
+    this.addOption('Weights Initializer', 'DropdownOption', 'Xavier', undefined, {
       items: ['Xavier'],
     });
-    this.addOption('Bias Initializer', 'SelectOption', 'Zeros', undefined, {
+    this.addOption('Bias Initializer', 'DropdownOption', 'Zeros', undefined, {
       items: ['Zeros', 'Ones'],
     });
-    this.addOption('Bias Regularizer', 'SelectOption', 'None', undefined, {
+    this.addOption('Bias Regularizer', 'DropdownOption', 'None', undefined, {
       items: ['None'],
     });
-    this.addOption('Weights Regularizer', 'SelectOption', 'None', undefined, {
+    this.addOption('Weights Regularizer', 'DropdownOption', 'None', undefined, {
       items: ['None'],
     });
   }

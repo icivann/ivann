@@ -18,25 +18,25 @@ export default class Conv2D extends Node {
     this.addOption('Stride Height', 'IntegerOption');
     this.addOption('Stride Width', 'IntegerOption');
 
-    this.addOption('Padding', 'SelectOption', 'Valid', undefined, {
+    this.addOption('Padding', 'DropdownOption', 'Valid', undefined, {
       items: ['Valid', 'Same'],
     });
-    this.addOption('Activation', 'SelectOption', 'None', undefined, {
+    this.addOption('Activation', 'DropdownOption', 'None', undefined, {
       items: ['None', 'ReLU', 'Tanh', 'Sigmoid', 'Linear'],
     });
     this.addOption('Use Bias', 'CheckboxOption', true);
 
     // TODO: Decide default value and options for these
-    this.addOption('Weights Initializer', 'SelectOption', 'Xavier', undefined, {
+    this.addOption('Weights Initializer', 'DropdownOption', 'Xavier', undefined, {
       items: ['Xavier'],
     });
-    this.addOption('Bias Initializer', 'SelectOption', 'Zeros', undefined, {
+    this.addOption('Bias Initializer', 'DropdownOption', 'Zeros', undefined, {
       items: ['Zeros', 'Ones'],
     });
-    this.addOption('Bias Regularizer', 'SelectOption', 'None', undefined, {
+    this.addOption('Bias Regularizer', 'DropdownOption', 'None', undefined, {
       items: ['None'],
     });
-    this.addOption('Weights Regularizer', 'SelectOption', 'None', undefined, {
+    this.addOption('Weights Regularizer', 'DropdownOption', 'None', undefined, {
       items: ['None'],
     });
   }
