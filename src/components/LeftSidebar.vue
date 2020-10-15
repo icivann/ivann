@@ -22,8 +22,8 @@
 
 <style scoped>
 .left-sidebar {
-  background: var(--background-dark);
-  color: var(--bright);
-  border-right: 0.125vw solid var(--bright);
+  background: var(--background);
+  color: var(--foreground);
+  border-right: 0.125vw solid var(--foreground);
 }
 </style>

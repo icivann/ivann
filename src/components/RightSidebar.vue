@@ -10,8 +10,8 @@
 
 <style scoped>
 .right-sidebar {
-  background: var(--background-bright);
-  color: var(--bright);
-  border-left: 0.125vw solid var(--bright);
+  background: var(--background-alt);
+  color: var(--foreground);
+  border-left: 0.125vw solid var(--foreground);
 }
 </style>
