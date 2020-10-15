@@ -41,7 +41,7 @@ export default class NodeEditor extends Vue {
 
     this.editor.registerNodeType('OptionTestNode', OptionTestNode);
     this.viewPlugin.registerOption('VectorOption', Vector);
-    this.viewPlugin.registerOption('Integer', Integer);
+    this.viewPlugin.registerOption('IntegerOption', Integer);
   }
 }
 </script>

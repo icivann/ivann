@@ -10,7 +10,7 @@ export default class OptionTestNode extends Node {
     this.addOutputInterface('Output');
 
     this.addOption('VectorOption', 'VectorOption', [3, 4, 7]);
-    this.addOption('2ectorOption', 'VectorOption', [3, 4, 7]);
+    this.addOption('2ectorOption', 'IntegerOption', 4);
     this.addOption('3ectorOption', 'VectorOption', [3, 4, 7]);
   }
 
