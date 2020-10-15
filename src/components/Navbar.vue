@@ -28,9 +28,9 @@ export default class Navbar extends Vue {
 <style lang="scss" scoped>
 .Navbar {
   height: 2.5rem;
-  background-color: #303030;
+  background-color: var(--background-alt);
 
-  border-bottom: 1px solid #ececec;
+  border-bottom: 1px solid var(--foreground);
 }
 
 .navbar-logo {
@@ -38,16 +38,16 @@ export default class Navbar extends Vue {
 }
 
 .text {
-  color: #ececec;
+  color: var(--foreground);
 }
 
 .navbar-icon {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
-  color: #ececec;
+  color: var(--foreground);
 
   &:hover {
-    color: darkblue;
+    color: var(--blue);
   }
 }
 </style>
