@@ -11,10 +11,8 @@ export default class MaxPool2D extends Node {
     this.addOutputInterface('Output');
 
     // TODO: Keras+Pytorch allow shortcut for specifying single int for all dimensions
-    this.addOption('Kernel Size Height', 'IntegerOption');
-    this.addOption('Kernel Size Width', 'IntegerOption');
-    this.addOption('Stride Height', 'IntegerOption');
-    this.addOption('Stride Width', 'IntegerOption');
+    this.addOption('Kernel Size', 'VectorOption', [1, 1]);
+    this.addOption('Stride', 'VectorOption', [1, 1]);
 
     this.addOption('Padding', 'DropdownOption', 'Valid', undefined, {
       items: ['Valid', 'Same'],
