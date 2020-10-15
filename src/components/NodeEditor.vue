@@ -18,7 +18,6 @@ import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import Conv2D from '@/nodes/model/conv/Conv2D';
 import MaxPooling2D from '@/nodes/model/pool/MaxPooling2D';
 import Dense from '@/nodes/model/linear/Dense';
-import OptionTestNode from '@/nodes/OptionTestNode';
 import Vector from '@/baklava/options/Vector.vue';
 import Integer from '@/baklava/options/Integer.vue';
 import Dropdown from '@/baklava/options/Dropdown.vue';
@@ -40,7 +39,6 @@ export default class NodeEditor extends Vue {
     this.editor.registerNodeType('Conv2D', Conv2D, 'Convolution Layers');
     this.editor.registerNodeType('MaxPooling2D', MaxPooling2D, 'Pooling Layers');
 
-    this.editor.registerNodeType('OptionTestNode', OptionTestNode);
     this.viewPlugin.registerOption('VectorOption', Vector);
     this.viewPlugin.registerOption('IntegerOption', Integer);
     this.viewPlugin.registerOption('DropdownOption', Dropdown);
