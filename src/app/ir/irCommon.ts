@@ -1,12 +1,20 @@
 export enum Padding {Valid, Same}
 
 export type Initializer = CustomInitializer | BuiltinInitializer
-enum BuiltinInitializer {}
+
+export enum BuiltinInitializer {
+  Zeroes
+}
+
 export class CustomInitializer {
 }
 
 export type Regularizer = BuiltinRegularizer
-enum BuiltinRegularizer {}
+
+export enum BuiltinRegularizer {
+  None
+}
 
 export type ActivationF = BuiltinActivationF
-enum BuiltinActivationF { Relu }
+
+export enum BuiltinActivationF { Relu }
