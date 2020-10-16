@@ -1,17 +1,36 @@
 <template>
   <div class="left-sidebar d-flex flex-column h-100 text-center">
-    <div class="model pt-4 pb-3">
-      <img class="navbar-logo icon" src="@/assets/images/nn_logo.png" alt="IVANN" />
+    <!-- Build -->
+    <div class="build pt-4 pb-2">
+      <i class="fas fa-hammer tab-icon"></i>
     </div>
-    <div class="data pt-3 pb-3">
-      <i class="fas fa-database icon"></i>
+
+    <div class="py-1 px-2"><hr /></div>
+
+    <!-- Model -->
+    <div class="model py-2">
+      <img class="navbar-logo tab-icon" src="@/assets/images/nn_logo.png" alt="IVANN" />
     </div>
-    <div class="train pt-3">
-      <i class="fas fa-cogs icon"></i>
+    <div>
+      <i class="fas fa-plus add-icon mt-3"></i>
     </div>
-    <div class="flex-grow-1" />
-    <div class="build pb-4">
-      <i class="fas fa-hammer icon"></i>
+    <div class="py-1 px-2"><hr /></div>
+
+    <!-- Data -->
+    <div class="data py-2">
+      <i class="fas fa-database tab-icon"></i>
+    </div>
+    <div>
+      <i class="fas fa-plus add-icon mt-3"></i>
+    </div>
+    <div class="py-1 px-2"><hr /></div>
+
+    <!-- Train -->
+    <div class="train py-2">
+      <i class="fas fa-cogs tab-icon"></i>
+    </div>
+    <div>
+      <i class="fas fa-plus add-icon mt-3"></i>
     </div>
   </div>
 </template>
@@ -24,11 +43,23 @@
 .left-sidebar {
   background: var(--background);
   color: var(--foreground);
-  border-right: 0.125vw solid var(--foreground);
+  border-right: 0.08rem solid var(--grey);
 }
 
-.icon {
+.tab-icon {
   font-size: 1.5rem;
   height: 1.5rem;
+}
+
+.add-icon {
+  font-size: 1rem;
+}
+
+.tab-icon:hover, .add-icon:hover {
+  color: var(--blue);
+}
+
+hr {
+  border-top: 0.1rem solid var(--dark-grey) !important;
 }
 </style>
