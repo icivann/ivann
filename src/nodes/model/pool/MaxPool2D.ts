@@ -6,7 +6,7 @@ import {
   BuiltinRegularizer,
   Padding,
 } from '@/app/ir/irCommon';
-import ModelNode from '@/app/ir/maxPool2D';
+import ModelNode from '@/app/ir/MaxPool2D';
 import GraphNode from '@/app/ir/GraphNode';
 import { randomUuid } from '@/app/util';
 
@@ -32,26 +32,26 @@ export default class MaxPool2D extends Node {
   }
 
   public calculate() {
-    const kernel_h = this.getOptionValue('Kernel Size Height');
-    const kernel_w = this.getOptionValue('Kernel Size Width');
-    const stride_h = this.getOptionValue('Stride Height');
-    const stride_w = this.getOptionValue('Stride Width');
+    const kernelH = this.getOptionValue('Kernel Size Height');
+    const kernelW = this.getOptionValue('Kernel Size Width');
+    const strideH = this.getOptionValue('Stride Height');
+    const strideW = this.getOptionValue('Stride Width');
 
     const padding: Padding = Padding[this.getOptionValue('Padding') as keyof typeof Padding];
 
     const layer = new ModelNode(
       new Set(), randomUuid(), padding,
-      [kernel_h, kernel_w],
-      [stride_h, stride_w],
+      [kernelH, kernelW],
+      [strideH, strideW],
     );
 
     const data = this.getInterface('Input').value as GraphNode[];
-    const graph_node = new GraphNode(layer);
+    const graphNode = new GraphNode(layer);
     console.log(data, typeof data);
     if (data == null) {
-      this.getInterface('Output').value = [graph_node];
+      this.getInterface('Output').value = [graphNode];
     } else {
-      this.getInterface('Output').value = data.concat([graph_node]);
+      this.getInterface('Output').value = data.concat([graphNode]);
     }
   }
 }

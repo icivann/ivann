@@ -19,4 +19,8 @@ export default class Conv3D extends Conv {
   ) {
     super();
   }
+
+  public code(): string {
+    return 'TODO';
+  }
 }

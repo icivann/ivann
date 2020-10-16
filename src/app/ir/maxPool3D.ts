@@ -1,6 +1,6 @@
 import { UUID } from '@/app/util';
 import { Padding } from '@/app/ir/irCommon';
-import MaxPool from '@/app/ir/maxPool';
+import MaxPool from '@/app/ir/MaxPool';
 
 export default class MaxPool3D extends MaxPool {
   constructor(
@@ -11,5 +11,9 @@ export default class MaxPool3D extends MaxPool {
         public readonly stride: [bigint, bigint, bigint],
   ) {
     super();
+  }
+
+  public code(): string {
+    return 'TODO';
   }
 }

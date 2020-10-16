@@ -1,6 +1,6 @@
 import { Node } from '@baklavajs/core';
 import { Layers, Nodes } from '@/nodes/model/Types';
-import ModelNode from '@/app/ir/dropout';
+import ModelNode from '@/app/ir/Dropout';
 import GraphNode from '@/app/ir/GraphNode';
 import { randomUuid } from '@/app/util';
 
@@ -22,16 +22,15 @@ export default class Dropout extends Node {
   public calculate() {
     const p = this.getOptionValue('Probability');
 
-
     const layer = new ModelNode(randomUuid(), new Set(), p);
 
     const data = this.getInterface('Input').value as GraphNode[];
-    const graph_node = new GraphNode(layer);
+    const graphNode = new GraphNode(layer);
     console.log(data, typeof data);
     if (data == null) {
-      this.getInterface('Output').value = [graph_node];
+      this.getInterface('Output').value = [graphNode];
     } else {
-      this.getInterface('Output').value = data.concat([graph_node]);
+      this.getInterface('Output').value = data.concat([graphNode]);
     }
   }
 }

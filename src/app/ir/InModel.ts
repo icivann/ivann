@@ -6,9 +6,10 @@ export class InModel implements InNode {
     public readonly outputs: Set<UUID>,
     public readonly dimension: bigint[],
   ) {}
+
   public code(): string {
-    const input_shape = `(${this.dimension.join(', ')})`;
-    return `model.add(keras.Input(shape=${input_shape}))\n`;
+    const inputShape = `(${this.dimension.join(', ')})`;
+    return `model.add(keras.Input(shape=${inputShape}))\n`;
   }
 }
 

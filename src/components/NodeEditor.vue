@@ -1,6 +1,6 @@
 <template>
   <div class="node-editor h-100">
-    <button @click="save"> Export Model </button>
+    <button @click="save2"> Export Model </button>
     <baklava-editor :plugin="viewPlugin"></baklava-editor>
   </div>
 </template>
@@ -24,7 +24,7 @@ import Integer from '@/baklava/options/Integer.vue';
 import Dropdown from '@/baklava/options/Dropdown.vue';
 import Flatten from '@/nodes/model/reshape/Flatten';
 import Dropout from '@/nodes/model/regularization/Dropout';
-import { FileSaver } from 'file-saver-typescript';
+import FileSaver from 'file-saver';
 import { generateKeras } from '@/app/generators/keras/kerasGenerator';
 import GraphNode from '@/app/ir/GraphNode';
 
@@ -63,11 +63,10 @@ export default class NodeEditor extends Vue {
     model = model.filter((e) => e instanceof GraphNode);
     const code = generateKeras(model);
 
-    const fileSaver: FileSaver = new FileSaver();
-    fileSaver.responseData = code;
-    fileSaver.strFileName = 'model.py';
-    fileSaver.strMimeType = 'text/plain';
-    fileSaver.initSaveFile();
+    FileSaver.saveAs(
+      code,
+      'model.py',
+    );
     console.log('saved..');
   }
 }

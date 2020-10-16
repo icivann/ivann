@@ -19,9 +19,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { mnist } from '@/app/ir/Graphs';
-import { generateKeras } from '@/app/generators/keras/kerasGenerator';
-import { FileSaver } from 'file-saver-typescript';
 
 @Component
 export default class Navbar extends Vue {

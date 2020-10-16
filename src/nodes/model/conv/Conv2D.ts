@@ -53,10 +53,10 @@ export default class Conv2D extends Node {
   public calculate() {
     const filters = this.getOptionValue('Filters') as bigint;
 
-    const kernel_h = this.getOptionValue('Kernel Size Height');
-    const kernel_w = this.getOptionValue('Kernel Size Width');
-    const stride_h = this.getOptionValue('Stride Height');
-    const stride_w = this.getOptionValue('Stride Width');
+    const kernelH = this.getOptionValue('Kernel Size Height');
+    const kernelW = this.getOptionValue('Kernel Size Width');
+    const strideH = this.getOptionValue('Stride Height');
+    const strideW = this.getOptionValue('Stride Width');
 
     const padding: Padding = Padding[this.getOptionValue('Padding') as keyof typeof Padding];
 
@@ -65,30 +65,30 @@ export default class Conv2D extends Node {
     // const use_bias = this.getOptionValue('Use Bias');
 
     // TODO: Decide default value and options for these
-    const weights_initializer = BuiltinInitializer[this.getOptionValue('Weights Initializer') as keyof typeof BuiltinInitializer];
-    const weights_regularizer = BuiltinRegularizer[this.getOptionValue('Weights Regularizer') as keyof typeof BuiltinRegularizer];
-    const bias_initializer = BuiltinInitializer[this.getOptionValue('Bias Initializer') as keyof typeof BuiltinInitializer];
-    const bias_regularizer = BuiltinRegularizer[this.getOptionValue('Bias Regularizer') as keyof typeof BuiltinRegularizer];
+    const weightsInitializer = BuiltinInitializer[this.getOptionValue('Weights Initializer') as keyof typeof BuiltinInitializer];
+    const weightsRegularizer = BuiltinRegularizer[this.getOptionValue('Weights Regularizer') as keyof typeof BuiltinRegularizer];
+    const biasInitializer = BuiltinInitializer[this.getOptionValue('Bias Initializer') as keyof typeof BuiltinInitializer];
+    const biasRegularizer = BuiltinRegularizer[this.getOptionValue('Bias Regularizer') as keyof typeof BuiltinRegularizer];
 
     const layer = new ModelNode(
       new Set(),
       filters,
       padding,
-      [weights_initializer, weights_regularizer],
-      [bias_initializer, weights_regularizer],
+      [weightsInitializer, weightsRegularizer],
+      [biasInitializer, weightsRegularizer],
       randomUuid(),
       activation,
-      [kernel_h, kernel_w],
-      [stride_h, stride_w],
+      [kernelH, kernelW],
+      [strideH, strideW],
     );
 
     const data = this.getInterface('Input').value as GraphNode[];
-    const graph_node = new GraphNode(layer);
+    const graphNode = new GraphNode(layer);
     console.log(data, typeof data);
     if (data == null) {
-      this.getInterface('Output').value = [graph_node];
+      this.getInterface('Output').value = [graphNode];
     } else {
-      this.getInterface('Output').value = data.concat([graph_node]);
+      this.getInterface('Output').value = data.concat([graphNode]);
     }
   }
 }

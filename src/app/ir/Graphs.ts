@@ -9,10 +9,10 @@ import {
   Padding,
   Regularizer,
 } from '@/app/ir/irCommon';
-import MaxPool2D from '@/app/ir/maxPool2D';
-import InModel from './InModel';
+import MaxPool2D from '@/app/ir/MaxPool2D';
+import { InModel } from './InModel';
 
-export function mnist(): GraphNode[] {
+export default function mnist(): GraphNode[] {
   const zs = BuiltinInitializer.Zeros;
   const none = BuiltinRegularizer.None;
   const defaultWeights: [Initializer, Regularizer] = [zs, none];

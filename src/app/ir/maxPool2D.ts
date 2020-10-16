@@ -1,6 +1,6 @@
 import { UUID } from '@/app/util';
 import { Padding } from '@/app/ir/irCommon';
-import MaxPool from '@/app/ir/maxPool';
+import MaxPool from '@/app/ir/MaxPool';
 
 export default class MaxPool2D extends MaxPool {
   constructor(

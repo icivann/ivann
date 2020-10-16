@@ -20,4 +20,9 @@ export default class Conv1D extends Conv {
   ) {
     super();
   }
+
+  public code(): string {
+    // TODO
+    return '';
+  }
 }

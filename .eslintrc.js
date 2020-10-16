@@ -18,10 +18,7 @@ module.exports = {
     'no-bitwise': 'off',
     'no-mixed-operators': 'off',
     'no-useless-constructor': 'off',
-    // TODO: temporarily turned off as I don't know how to use typescript imports
-    'import/prefer-default-export': 'off',
-    '@typescript-eslint/camelcase': 'off',
-    "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
+    'class-methods-use-this': 'off',
   },
   overrides: [
     {
