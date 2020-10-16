@@ -6,7 +6,7 @@ import { randomUuid } from '@/app/util';
 
 export default class OutModel extends Node {
   type = Layers.IO;
-  name = Nodes.InModel;
+  name = Nodes.OutModel;
 
   constructor() {
     super();
@@ -18,7 +18,7 @@ export default class OutModel extends Node {
     const data = this.getInterface('Input').value;
 
     const layer = new ModelNode(randomUuid());
-    const graph_node = new GraphNode(layer);
+    const graphNode = new GraphNode(layer);
     if (data == null) {
       return [];
     }
