@@ -12,6 +12,7 @@ import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import { Layers, Nodes } from '@/nodes/model/Types';
 
 // Importing the nodes
+import CustomNode from '@/baklava/CustomNode.vue';
 import Conv2D from '@/nodes/model/conv/Conv2D';
 import MaxPool2D from '@/nodes/model/pool/MaxPool2D';
 import Dense from '@/nodes/model/linear/Dense';
@@ -32,6 +33,9 @@ export default class NodeEditor extends Vue {
   created() {
     this.editor.use(this.optionPlugin);
     this.editor.use(this.viewPlugin);
+
+    // Use own node definition
+    this.viewPlugin.components.node = CustomNode as any;
 
     // Model Layer Nodes
     this.viewPlugin.registerOption('VectorOption', Vector);
