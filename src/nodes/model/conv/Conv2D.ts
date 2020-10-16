@@ -19,24 +19,24 @@ export default class Conv2D extends Node {
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
 
-    this.addOption('Filters', 'IntegerOption');
+    this.addOption('Filters', 'IntegerOption', 64);
 
     // TODO: Keras+Pytorch allow shortcut for specifying single int for all dimensions
-    this.addOption('Kernel Size Height', 'IntegerOption');
-    this.addOption('Kernel Size Width', 'IntegerOption');
-    this.addOption('Stride Height', 'IntegerOption');
-    this.addOption('Stride Width', 'IntegerOption');
+    this.addOption('Kernel Size Height', 'IntegerOption', 3);
+    this.addOption('Kernel Size Width', 'IntegerOption', 3);
+    this.addOption('Stride Height', 'IntegerOption', 1);
+    this.addOption('Stride Width', 'IntegerOption', 1);
 
     this.addOption('Padding', 'SelectOption', 'Valid', undefined, {
       items: ['Valid', 'Same'],
     });
-    this.addOption('Activation', 'SelectOption', 'None', undefined, {
+    this.addOption('Activation', 'SelectOption', 'Relu', undefined, {
       items: ['Relu'],
     });
     this.addOption('Use Bias', 'CheckboxOption', true);
 
     // TODO: Decide default value and options for these
-    this.addOption('Weights Initializer', 'SelectOption', 'Xavier', undefined, {
+    this.addOption('Weights Initializer', 'SelectOption', 'Glorot_Uniform', undefined, {
       items: ['Zeros', 'Glorot_Uniform'],
     });
     this.addOption('Bias Initializer', 'SelectOption', 'Zeros', undefined, {

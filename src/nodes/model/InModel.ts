@@ -11,9 +11,9 @@ export default class InModel extends Node {
     super();
     this.addOutputInterface('Output');
 
-    this.addOption('dim 0', 'IntegerOption');
-    this.addOption('dim 1', 'IntegerOption');
-    this.addOption('dim 2', 'IntegerOption');
+    this.addOption('dim 0', 'IntegerOption', 128);
+    this.addOption('dim 1', 'IntegerOption', 128);
+    this.addOption('dim 2', 'IntegerOption', 3);
   }
 
   public calculate() {
