@@ -12,12 +12,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class ArrowButton extends Vue {
   @Prop({ default: true }) initialUp!: boolean;
 
-  private up: boolean;
-
-  constructor() {
-    super();
-    this.up = this.initialUp;
-  }
+  private up = this.initialUp;
 
   onClick() {
     this.up = !this.up;
