@@ -7,12 +7,12 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-@Component({})
+@Component
 export default class Tab extends Vue {
-  @Prop() name!: string;
-  visible = false;
+  @Prop() readonly name!: string;
+  private visible = false;
 
-  setVisible(value: boolean) {
+  public setVisible(value: boolean) {
     this.visible = value;
   }
 }

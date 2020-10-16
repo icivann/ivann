@@ -8,15 +8,18 @@
 </template>
 
 <script>
+import { Component, Vue } from 'vue-property-decorator';
 import Tabs from '@/components/Tabs.vue';
 import Tab from '@/components/Tab.vue';
 
-export default {
+@Component({
   components: {
     Tab,
     Tabs,
   },
-};
+})
+export default class RightSidebar extends Vue {
+}
 </script>
 
 <style scoped>

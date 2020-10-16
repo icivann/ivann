@@ -15,17 +15,14 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import Tab from '@/components/Tab.vue';
 
-export interface TabInterface extends Vue {
-  setVisible(value: boolean): void;
-}
-
-@Component({})
+@Component
 export default class Tabs extends Vue {
-  private tabs = this.$children as [TabInterface];
+  private tabs = this.$children as [Tab];
   private selected = 0;
 
-  selectTab(given: number) {
+  private selectTab(given: number) {
     this.selected = given;
     this.tabs.forEach((tab, index) => {
       console.log('hello');
