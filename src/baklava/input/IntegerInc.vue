@@ -95,7 +95,7 @@ export default class IntegerInc extends Vue {
     padding: 0 0.3em 0 0.1em;
   }
 
-  .inc-button:hover {
+  .inc-button:hover, .text-display:hover, input:hover {
     background: #e0e0e0e0;
   }
 
