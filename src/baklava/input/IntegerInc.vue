@@ -1,10 +1,11 @@
 <template>
   <div class="box" ref="box" tabindex="1">
-    <div class="text-display" @click="editOn" v-if="!edit">
+    <div class="text-display" @click="editOn" v-if="!edit" ref="text">
       {{value}}
     </div>
     <input @focus="$event.target.select()" v-model="editValue" v-show="edit" tabindex="0"
-           v-on:keyup.enter="enter" @focusout="focusOut" ref="input">
+           v-on:keyup.enter="enter" @focusout="focusOut" ref="input"
+           :style="'width: ' + inputBoxWidth + 'px'">
     <div class="buttons">
       <div class="inc-button" @click="increment">
         <svg xmlns="http://www.w3.org/2000/svg" width="6" height="4"
@@ -36,6 +37,7 @@ export default class IntegerInc extends Vue {
 
   private edit = false;
   private editValue = '';
+  private inputBoxWidth = 0;
 
   increment() {
     this.$emit('value-change', this.value + 1, this.index);
@@ -61,6 +63,7 @@ export default class IntegerInc extends Vue {
 
   editOn() {
     this.editValue = this.value.toString();
+    this.inputBoxWidth = (this.$refs.text as Vue & { clientWidth: number }).clientWidth;
     this.toggle();
     this.$nextTick(() => {
       (this.$refs.input as Focusable).focus();
@@ -100,7 +103,7 @@ export default class IntegerInc extends Vue {
   }
 
   input {
-    width: 20px;
+    width: fit-content;
     padding: 0;
     margin: 0;
     border-style: none;
@@ -112,7 +115,7 @@ export default class IntegerInc extends Vue {
   }
 
   .text-display {
-    width: 20px;
+    padding-right: 0.5em;
   }
 
   input::selection {
