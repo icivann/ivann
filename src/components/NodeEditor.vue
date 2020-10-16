@@ -59,12 +59,16 @@ export default class NodeEditor extends Vue {
     const r = await this.engine.calculate() as Map<any, any>;
     const data = r.entries().next().value;
 
+    console.log(r);
+
     let model = data[1] as any[];
     model = model.filter((e) => e instanceof GraphNode);
     const code = generateKeras(model);
 
+    console.log(code);
+
     FileSaver.saveAs(
-      code,
+      new Blob([code], { type: 'text/plain;charset=utf-8' }),
       'model.py',
     );
     console.log('saved..');
