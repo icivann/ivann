@@ -1,5 +1,5 @@
-import { InNode } from '@/app/ir/mainNodes';
 import { UUID } from '@/app/util';
+import { InNode } from '@/app/ir/mainNodes';
 
 class InModel implements InNode {
   constructor(
