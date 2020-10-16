@@ -1,19 +1,23 @@
 <template>
   <div class="right-sidebar h-100">
     <Tabs>
-      <Tab name="Layers">On this tab, you can create Layer Nodes.</Tab>
-      <Tab name="Search">This tab is for searching.</Tab>
+      <Tab name="Layers"><LayersTab/></Tab>
+      <Tab name="Search"><SearchTab/></Tab>
     </Tabs>
   </div>
 </template>
 
 <script>
 import { Component, Vue } from 'vue-property-decorator';
-import Tabs from '@/components/Tabs.vue';
-import Tab from '@/components/Tab.vue';
+import Tabs from '@/components/tabs/Tabs.vue';
+import Tab from '@/components/tabs/Tab.vue';
+import LayersTab from '@/components/tabs/LayersTab.vue';
+import SearchTab from '@/components/tabs/SearchTab.vue';
 
 @Component({
   components: {
+    SearchTab,
+    LayersTab,
     Tab,
     Tabs,
   },

@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Tab from '@/components/Tab.vue';
+import Tab from '@/components/tabs/Tab.vue';
 
 @Component
 export default class Tabs extends Vue {
