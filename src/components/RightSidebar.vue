@@ -23,6 +23,6 @@ export default {
   .right-sidebar {
     background: var(--background-alt);
     color: var(--foreground);
-    border-left: 0.125vw solid var(--foreground);
+    border-left: 0.125vw solid var(--grey);
   }
 </style>
