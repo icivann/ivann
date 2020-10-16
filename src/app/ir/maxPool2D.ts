@@ -14,8 +14,12 @@ export default class MaxPool2D extends MaxPool {
   }
 
   public code(): string {
-    const code = "model.add(layers.MaxPooling2D(pool_size=))";
+    const params = [
+      `pool_size=(${this.kernel[0]}, ${this.kernel[1]})`,
+      `strides=(${this.stride[0]}, ${this.stride[1]})`,
+      `padding='${Padding[this.padding].toLowerCase()}'`,
+    ];
 
-    return code;
+    return `model.add(layers.MaxPool2D(${params.join(', ')}))`;
   }
 }
