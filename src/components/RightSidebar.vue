@@ -18,8 +18,8 @@ import SearchTab from '@/components/SearchTab.vue';
 
 @Component({
   components: {
-    LayersTab,
     SearchTab,
+    LayersTab,
   },
 })
 export default class RightSidebar extends Vue {
