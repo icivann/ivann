@@ -1,6 +1,6 @@
 <template>
   <div class="node-editor h-100">
-    <button @click="save2"> Export Model </button>
+    <button @click="save"> Export Model </button>
     <baklava-editor :plugin="viewPlugin"></baklava-editor>
   </div>
 </template>
