@@ -1,10 +1,10 @@
 <template>
-  <div class="box d-sm-flex">
+  <div class="box" ref="box" tabindex="1">
     <div class="text-display" @click="editOn" v-if="!edit">
       {{value}}
     </div>
-    <input @focus="$event.target.select()" v-model="editValue" v-show="edit"
-           v-on:keyup.enter="update(editValue)" ref="input">
+    <input @focus="$event.target.select()" v-model="editValue" v-show="edit" tabindex="0"
+           v-on:keyup.enter="enter" @focusout="focusOut" ref="input">
     <div class="buttons">
       <div class="inc-button" @click="increment">
         <svg xmlns="http://www.w3.org/2000/svg" width="6" height="4"
@@ -26,6 +26,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import Focusable from '@/baklava/Focusable';
 
 @Component
 export default class IntegerInc extends Vue {
@@ -44,16 +45,25 @@ export default class IntegerInc extends Vue {
     this.$emit('value-change', this.value - 1, this.index);
   }
 
-  update(newValue: string) {
-    this.$emit('value-change', parseInt(newValue, 10), this.index);
+  updateValue() {
+    this.$emit('value-change', parseInt(this.editValue, 10), this.index);
+  }
+
+  focusOut() {
+    this.updateValue();
     this.toggle();
+  }
+
+  enter() {
+    (this.$refs.box as Focusable).focus();
+    this.updateValue();
   }
 
   editOn() {
     this.editValue = this.value.toString();
     this.toggle();
     this.$nextTick(() => {
-      (this.$refs.input as any).focus();
+      (this.$refs.input as Focusable).focus();
     });
   }
 
@@ -70,6 +80,7 @@ export default class IntegerInc extends Vue {
     background: #ececec;
     border-radius: 2px;
     color: #303030;
+    display: flex;
   }
 
   .buttons {
@@ -96,7 +107,7 @@ export default class IntegerInc extends Vue {
     background: #ececec;
   }
 
-  textarea:focus, input:focus {
+  textarea:focus, input:focus, .box:focus {
     outline: none;
   }
 
