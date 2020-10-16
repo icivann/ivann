@@ -1,9 +1,10 @@
 <template>
   <div class="box d-sm-flex">
-    <div v-if="!edit" @click="editOn">
+    <div class="text-display" @click="editOn" v-if="!edit">
       {{value}}
     </div>
-    <input v-model="editValue" v-if="edit" v-on:keyup.enter="update(editValue)">
+    <input @focus="$event.target.select()" v-model="editValue" v-show="edit"
+           v-on:keyup.enter="update(editValue)" ref="input">
     <div class="buttons">
       <div class="inc-button" @click="increment">
         <svg xmlns="http://www.w3.org/2000/svg" width="6" height="4"
@@ -51,6 +52,9 @@ export default class IntegerInc extends Vue {
   editOn() {
     this.editValue = this.value.toString();
     this.toggle();
+    this.$nextTick(() => {
+      (this.$refs.input as any).focus();
+    });
   }
 
   toggle() {
@@ -85,9 +89,23 @@ export default class IntegerInc extends Vue {
   }
 
   input {
-    width: 30px;
+    width: 20px;
     padding: 0;
     margin: 0;
     border-style: none;
+    background: #ececec;
+  }
+
+  textarea:focus, input:focus {
+    outline: none;
+  }
+
+  .text-display {
+    width: 20px;
+  }
+
+  input::selection {
+    background: #303030;
+    color: #e0e0e0;
   }
 </style>
