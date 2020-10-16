@@ -21,6 +21,7 @@ module.exports = {
     // TODO: temporarily turned off as I don't know how to use typescript imports
     'import/prefer-default-export': 'off',
     '@typescript-eslint/camelcase': 'off',
+    "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
   },
   overrides: [
     {

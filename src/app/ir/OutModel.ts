@@ -5,6 +5,10 @@ class OutModel implements OutNode {
   constructor(
     public readonly input: UUID,
   ) {}
+  public code(): string {
+    const a = this.input;
+    return `${a}`;
+  }
 }
 
 export default OutModel;

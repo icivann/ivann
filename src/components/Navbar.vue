@@ -9,7 +9,6 @@
         MNIST-Demo
       </span>
     </div>
-    <button @click="save"> Export Model </button>
     <div class="col text-right">
       <i class="navbar-icon fas fa-share-alt fa-lg"></i>
       <i class="navbar-icon fas fa-folder-open fa-lg"></i>
@@ -26,22 +25,6 @@ import { FileSaver } from 'file-saver-typescript';
 
 @Component
 export default class Navbar extends Vue {
-  save_msg = 'Saving...';
-
-  private save() {
-    const temp = this.save_msg; // TODO: to stop eslint from crying
-
-    const model = mnist();
-    const code = generateKeras(model);
-    console.log(code);
-
-    const fileSaver: any = new FileSaver();
-    fileSaver.responseData = code;
-    fileSaver.strFileName = 'model.py';
-    fileSaver.strMimeType = 'text/plain';
-    fileSaver.initSaveFile();
-    console.log('saved..');
-  }
 }
 </script>
 

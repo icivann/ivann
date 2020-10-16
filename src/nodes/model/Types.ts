@@ -1,4 +1,5 @@
 export const enum Layers {
+  IO = 'IO',
   Linear = 'Linear',
   Conv = 'Convolution',
   Pool = 'Pooling',
@@ -7,6 +8,8 @@ export const enum Layers {
 }
 
 export const enum Nodes {
+  InModel = 'InModel',
+  OutModel = 'OutModel',
   Dense = 'Dense',
   Conv2D = 'Convolution2D',
   MaxPool2D = 'MaxPooling2D',
