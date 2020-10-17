@@ -1,5 +1,7 @@
 import { Node } from '@baklavajs/core';
 import { Layers, Nodes } from '@/nodes/model/Types';
+import { valuesOf } from '@/app/util';
+import { Padding } from '@/app/ir/irCommon';
 
 export default class MaxPool2D extends Node {
   type = Layers.Pool;
@@ -15,7 +17,7 @@ export default class MaxPool2D extends Node {
     this.addOption('Stride', 'VectorOption', [1, 1]);
 
     this.addOption('Padding', 'DropdownOption', 'Valid', undefined, {
-      items: ['Valid', 'Same'],
+      items: valuesOf(Padding),
     });
   }
 }
