@@ -6,6 +6,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Engine } from '@baklavajs/plugin-engine';
 import { Editor } from '@baklavajs/core';
 import { OptionPlugin } from '@baklavajs/plugin-options-vue';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
@@ -21,6 +22,7 @@ import Integer from '@/baklava/options/Integer.vue';
 import Dropdown from '@/baklava/options/Dropdown.vue';
 import Flatten from '@/nodes/model/reshape/Flatten';
 import Dropout from '@/nodes/model/regularization/Dropout';
+import { traverseUiToIr } from '@/app/ir/traversals';
 
 @Component
 export default class NodeEditor extends Vue {
@@ -30,9 +32,12 @@ export default class NodeEditor extends Vue {
 
   viewPlugin = new ViewPlugin();
 
+  engine = new Engine(true);
+
   created() {
     this.editor.use(this.optionPlugin);
     this.editor.use(this.viewPlugin);
+    this.editor.use(this.engine);
 
     // Use own node definition
     this.viewPlugin.components.node = CustomNode as any;
@@ -46,6 +51,12 @@ export default class NodeEditor extends Vue {
     this.editor.registerNodeType(Nodes.MaxPool2D, MaxPool2D, Layers.Pool);
     this.editor.registerNodeType(Nodes.Dropout, Dropout, Layers.Regularization);
     this.editor.registerNodeType(Nodes.Flatten, Flatten, Layers.Reshape);
+
+    this.engine.events.calculated.addListener(this, (r) => {
+      console.log('Something changed!');
+      const state = this.editor.save();
+      traverseUiToIr(state);
+    });
   }
 }
 </script>
