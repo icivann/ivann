@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="h-100">
     <div class="tabs">
       <div class="tab-head" :class="index === selected && 'selected'"
            v-for="(tab, index) in tabs" :key="index"
@@ -76,9 +76,5 @@ export default class Tabs extends Vue {
   ::-webkit-scrollbar {
     width: 0;
     background: none;
-  }
-
-  .main {
-    height: 100%;
   }
 </style>
