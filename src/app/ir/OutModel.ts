@@ -1,10 +1,4 @@
-import { OutNode } from '@/app/ir/mainNodes';
-import { UUID } from '@/app/util';
-
-class OutModel implements OutNode {
-  constructor(
-    public readonly input: UUID,
-  ) {}
+class OutModel {
 }
 
 export default OutModel;

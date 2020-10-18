@@ -1,11 +1,5 @@
-import { InOutNode, ModelNode } from '@/app/ir/mainNodes';
-import { UUID } from '@/app/util';
-
-class Dropout implements ModelNode, InOutNode {
+class Dropout {
   constructor(
-    public readonly input: UUID,
-    public readonly outputs: Set<UUID>,
-
     public readonly probability: number,
   ) {}
 }
