@@ -1,5 +1,5 @@
 <template>
-  <div class="right-sidebar h-100">
+  <div class="right-sidebar">
     <Tabs>
       <Tab name="Layers"><LayersTab/></Tab>
       <Tab name="Search"><SearchTab/></Tab>
@@ -31,5 +31,7 @@ export default class RightSidebar extends Vue {
     background: var(--background-alt);
     color: var(--foreground);
     border-left: 0.125vw solid var(--grey);
+    height: calc(100vh - 2.5rem);
+    width: 100%;
   }
 </style>
