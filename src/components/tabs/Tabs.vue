@@ -16,7 +16,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Tab from '@/components/tabs/Tab.vue';
-import TabInterface from '@/components/tabs/TabInterface';
 
 @Component
 export default class Tabs extends Vue {
@@ -26,12 +25,12 @@ export default class Tabs extends Vue {
   private selectTab(given: number) {
     this.selected = given;
     this.tabs.forEach((tab, index) => {
-      (tab as TabInterface).setVisible(index === given);
+      tab.setVisible(index === given);
     });
   }
 
   mounted() {
-    (this.tabs[0] as TabInterface).setVisible(true);
+    this.tabs[0].setVisible(true);
   }
 }
 </script>

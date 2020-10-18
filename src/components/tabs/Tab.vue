@@ -6,10 +6,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import TabInterface from '@/components/tabs/TabInterface';
 
 @Component
-export default class Tab extends Vue implements TabInterface {
+export default class Tab extends Vue {
   @Prop() readonly name!: string;
   private visible = false;
 

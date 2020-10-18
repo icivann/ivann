@@ -12,11 +12,11 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class ExpandablePanel extends Vue {
-  @Prop() name!: string;
+  @Prop({ required: true }) readonly name!: string
 
   private open = false;
 
-  toggleOpen() {
+  private toggleOpen() {
     this.open = !this.open;
   }
 }
