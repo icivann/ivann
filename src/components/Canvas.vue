@@ -1,5 +1,5 @@
 <template>
-  <div class="node-editor h-100">
+  <div class="canvas h-100">
     <baklava-editor :plugin="viewPlugin"></baklava-editor>
   </div>
 </template>
@@ -23,7 +23,7 @@ import Flatten from '@/nodes/model/reshape/Flatten';
 import Dropout from '@/nodes/model/regularization/Dropout';
 
 @Component
-export default class NodeEditor extends Vue {
+export default class Canvas extends Vue {
   editor = new Editor();
 
   optionPlugin = new OptionPlugin();
