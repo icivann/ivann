@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-100">
     <div class="tabs">
       <div class="tab-head" :class="index === selected && 'selected'"
            v-for="(tab, index) in tabs" :key="index"
@@ -25,7 +25,6 @@ export default class Tabs extends Vue {
   private selectTab(given: number) {
     this.selected = given;
     this.tabs.forEach((tab, index) => {
-      console.log('hello');
       tab.setVisible(index === given);
     });
   }
@@ -68,5 +67,13 @@ export default class Tabs extends Vue {
 
   .tab-content {
     margin: 1em;
+    max-height: calc(100% - 60px - 2em);
+    overflow: auto;
+    scrollbar-width: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0;
+    background: none;
   }
 </style>
