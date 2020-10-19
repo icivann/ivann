@@ -31,6 +31,8 @@ export default class NodeEditor extends Vue {
   viewPlugin = new ViewPlugin();
 
   created() {
+    this.$store.state.editor = this.editor;
+
     this.editor.use(this.optionPlugin);
     this.editor.use(this.viewPlugin);
 
