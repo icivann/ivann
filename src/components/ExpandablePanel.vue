@@ -3,7 +3,7 @@
     <div class="header" @click="toggleOpen">
       {{name}}
     </div>
-    <slot v-if="open"/>
+    <slot class="panel-content" v-if="open"/>
   </div>
 </template>
 
@@ -37,5 +37,9 @@ export default class ExpandablePanel extends Vue {
 
   .panel {
     margin-bottom: 10px;
+  }
+
+  .panel-content {
+    padding: 4px;
   }
 </style>

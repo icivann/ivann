@@ -3,6 +3,12 @@
     <ExpandablePanel name="Linear">
       <ButtonGrid>
         <AddNodeButton node="Convolution2D" name="Conv2D"/>
+        <AddNodeButton node="MaxPooling2D" name="MaxPool2D"/>
+        <AddNodeButton node="Dropout" name="Dropout"/>
+        <AddNodeButton node="Convolution2D" name="Conv2D"/>
+        <AddNodeButton node="MaxPooling2D" name="MaxPool2D"/>
+        <AddNodeButton node="Dropout" name="Dropout"/>
+        <AddNodeButton node="Flatten" name="Flatten"/>
       </ButtonGrid>
     </ExpandablePanel>
     <ExpandablePanel name="Convolutional">
