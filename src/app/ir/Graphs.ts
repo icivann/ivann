@@ -1,5 +1,5 @@
 import GraphNode from '@/app/ir/GraphNode';
-import Conv2D from '@/app/ir/Conv2D';
+import Conv2D from '@/app/ir/conv/Conv2D';
 import { UUID } from '@/app/util';
 import {
   BuiltinActivationF,
@@ -9,30 +9,26 @@ import {
   Padding,
   Regularizer,
 } from '@/app/ir/irCommon';
-import MaxPool2D from '@/app/ir/maxPool2D';
+import MaxPool2D from '@/app/ir/maxPool/maxPool2D';
+import Graph from '@/app/ir/Graph';
 
-export default function mnist(): GraphNode[] {
+export default function mnist(): Graph {
   const zs = BuiltinInitializer.Zeroes;
   const none = BuiltinRegularizer.None;
   const defaultWeights: [Initializer, Regularizer] = [zs, none];
   const conv = new Conv2D(
-    new Set(),
     32n,
     Padding.Same,
     defaultWeights,
     null,
-    new UUID('theInNode'),
     BuiltinActivationF.Relu,
     [28n, 28n],
     [2n, 2n],
   );
-  const convGraph = new GraphNode(conv);
+  const maxPool = new MaxPool2D(Padding.Same, [28n, 28n], [2n, 2n]);
 
-  const maxPool = new MaxPool2D(
-    new Set(), convGraph.uniqueId, Padding.Same, [28n, 28n], [2n, 2n],
-  );
-  const maxPoolGraph = new GraphNode(maxPool);
-  conv.outputs.add(maxPoolGraph.uniqueId);
+  const list = [conv, maxPool].map((t) => new GraphNode(t));
 
-  return [convGraph, maxPoolGraph];
+  const map = new Map(list.map((t) => [t.uniqueId, t] as [UUID, GraphNode]));
+  return new Graph(map, [[list[0].uniqueId, list[1].uniqueId]]);
 }
