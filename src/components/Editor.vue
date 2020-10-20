@@ -5,7 +5,7 @@
         <Canvas />
       </div>
       <div class="col-3 px-0">
-        <RightSidebar />
+        <Sidebar />
       </div>
     </div>
   </div>
@@ -13,12 +13,12 @@
 
 <script>
 import { Component, Vue } from 'vue-property-decorator';
-import RightSidebar from '@/components/RightSidebar.vue';
+import Sidebar from '@/components/Sidebar.vue';
 import Canvas from '@/components/Canvas.vue';
 
 @Component({
   components: {
-    RightSidebar,
+    Sidebar,
     Canvas,
   },
 })
