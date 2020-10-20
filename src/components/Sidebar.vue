@@ -1,5 +1,5 @@
 <template>
-  <div class="right-sidebar">
+  <div class="right">
     <Tabs>
       <Tab name="Layers"><LayersTab/></Tab>
       <Tab name="Search"><SearchTab/></Tab>
@@ -22,12 +22,12 @@ import SearchTab from '@/components/tabs/SearchTab.vue';
     Tabs,
   },
 })
-export default class RightSidebar extends Vue {
+export default class Sidebar extends Vue {
 }
 </script>
 
 <style scoped>
-  .right-sidebar {
+  .right {
     background: var(--background-alt);
     color: var(--foreground);
     border-left: 0.125vw solid var(--grey);

@@ -1,53 +1,58 @@
 <template>
-  <div class="Navbar row py-2">
-    <div class="col text-left">
-      <img class="img-fluid navbar-logo mr-2" src="@/assets/images/nn_logo.png" alt="IVANN" />
-      <span class="text">IVANN</span>
+  <div class="left d-flex flex-column h-100 text-center">
+    <!-- Build -->
+    <div class="build pt-4 pb-2">
+      <i class="fas fa-hammer tab-icon"></i>
     </div>
-    <div class="col text-center">
-      <span class="text">
-        MNIST-Demo
-      </span>
+
+    <div class="py-1 px-2"><hr /></div>
+
+    <!-- Model -->
+    <div class="model py-2">
+      <img class="navbar-logo tab-icon" src="@/assets/images/nn_logo.png" alt="IVANN" />
     </div>
-    <div class="col text-right">
-      <i class="navbar-icon fas fa-share-alt fa-lg mx-2"></i>
-      <i class="navbar-icon fas fa-folder-open fa-lg mx-2"></i>
-      <i class="navbar-icon fas fa-save fa-lg mx-2"></i>
+    <div class="py-1 px-2"><hr /></div>
+
+    <!-- Data -->
+    <div class="data py-2">
+      <i class="fas fa-database tab-icon"></i>
+    </div>
+    <div class="py-1 px-2"><hr /></div>
+
+    <!-- Train -->
+    <div class="train py-2">
+      <i class="fas fa-cogs tab-icon"></i>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 
-@Component
+import { Vue, Component } from 'vue-property-decorator';
+
+@Component({})
 export default class Navbar extends Vue {
 }
+
 </script>
 
-<style lang="scss" scoped>
-.Navbar {
-  height: 2.5rem;
-  background-color: var(--background-alt);
-
-  border-bottom: 0.08rem solid var(--grey);
-}
-
-.navbar-logo {
-  height: 1.2rem;
-}
-
-.text {
+<style scoped>
+.left {
+  background: var(--background);
   color: var(--foreground);
+  border-right: 0.08rem solid var(--grey);
 }
 
-.navbar-icon {
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
-  color: var(--foreground);
+.tab-icon {
+  font-size: 1.5rem;
+  height: 1.5rem;
+}
 
-  &:hover {
-    color: var(--blue);
-  }
+.tab-icon:hover, .add-icon:hover {
+  color: var(--blue);
+}
+
+hr {
+  border-top: 0.1rem solid var(--dark-grey) !important;
 }
 </style>

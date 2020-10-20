@@ -1,11 +1,11 @@
 <template>
-  <div class="node-editor h-100">
+  <div class="canvas h-100">
     <baklava-editor :plugin="viewPlugin"></baklava-editor>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Editor } from '@baklavajs/core';
 import { OptionPlugin } from '@baklavajs/plugin-options-vue';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
@@ -23,8 +23,8 @@ import Flatten from '@/nodes/model/reshape/Flatten';
 import Dropout from '@/nodes/model/regularization/Dropout';
 
 @Component
-export default class NodeEditor extends Vue {
-  editor = new Editor();
+export default class Canvas extends Vue {
+  @Prop({ required: true }) readonly editor!: Editor;
 
   optionPlugin = new OptionPlugin();
 
