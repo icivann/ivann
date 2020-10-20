@@ -1,3 +1,6 @@
+import { MlNode } from '@/app/ir/mainNodes';
+import Conv2D from '@/app/ir/conv/Conv2D';
+
 export const enum Layers {
   Linear = 'Linear',
   Conv = 'Convolution',
@@ -13,3 +16,8 @@ export const enum Nodes {
   Dropout = 'Dropout',
   Flatten = 'Flatten'
 }
+
+type Options = Map<string, any>
+export const nodeBuilder: Map<String, (r:Options) => MlNode> = new Map([
+  ["Convolution2D", Conv2D.build]
+]);
