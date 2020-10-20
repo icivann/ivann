@@ -1,6 +1,10 @@
 import { Option } from '@/app/util';
 import {
-  ActivationF, BuiltinActivationF, Initializer, Padding, Regularizer,
+  ActivationF,
+  BuiltinActivationF,
+  Initializer,
+  Padding,
+  Regularizer,
 } from '@/app/ir/irCommon';
 
 export default class Conv2D {
@@ -16,8 +20,7 @@ export default class Conv2D {
   }
 
   static build(options: Map<string, any>): Conv2D {
-    console.log(options);
-    const node = new Conv2D(
+    return new Conv2D(
       options.get('Filters'),
       options.get('Padding'),
       [options.get('Weights Initializer'), options.get('Weights Regularizer')],
@@ -26,6 +29,5 @@ export default class Conv2D {
       [options.get('Kernel Size')[0], options.get('Kernel Size')[1]],
       [options.get('Stride')[0], options.get('Stride')[1]],
     );
-    return node;
   }
 }
