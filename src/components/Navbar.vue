@@ -1,5 +1,5 @@
 <template>
-  <div class="left-sidebar d-flex flex-column h-100 text-center">
+  <div class="left d-flex flex-column h-100 text-center">
     <!-- Build -->
     <div class="build pt-4 pb-2">
       <i class="fas fa-hammer tab-icon"></i>
@@ -26,12 +26,18 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+
+import { Vue, Component } from 'vue-property-decorator';
+
+@Component({})
+export default class Navbar extends Vue {
+}
 
 </script>
 
 <style scoped>
-.left-sidebar {
+.left {
   background: var(--background);
   color: var(--foreground);
   border-right: 0.08rem solid var(--grey);
@@ -40,10 +46,6 @@
 .tab-icon {
   font-size: 1.5rem;
   height: 1.5rem;
-}
-
-.add-icon {
-  font-size: 1rem;
 }
 
 .tab-icon:hover, .add-icon:hover {

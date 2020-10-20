@@ -3,7 +3,7 @@
     <Titlebar />
     <div class="row flex-grow-1">
       <div class="left-sidebar-col">
-        <LeftSidebar />
+        <Navbar />
       </div>
       <div class="col d-flex flex-column p-0">
         <Editor />
@@ -14,14 +14,14 @@
 
 <script>
 import { Component, Vue } from 'vue-property-decorator';
-import LeftSidebar from '@/components/LeftSidebar.vue';
+import Navbar from '@/components/Navbar.vue';
 import Editor from '@/components/Editor.vue';
 import Titlebar from '@/components/Titlebar.vue';
 
 @Component({
   components: {
     Titlebar,
-    LeftSidebar,
+    Navbar,
     Editor,
   },
 })
