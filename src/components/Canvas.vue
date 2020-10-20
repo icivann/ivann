@@ -35,7 +35,7 @@ export default class Canvas extends Vue {
     this.editor.use(this.viewPlugin);
 
     // Use own node definition
-    this.viewPlugin.components.node = CustomNode as any;
+    this.viewPlugin.components.node = CustomNode;
 
     // Model Layer Nodes
     this.viewPlugin.registerOption('VectorOption', Vector);
