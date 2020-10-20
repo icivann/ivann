@@ -11,26 +11,17 @@
     <div class="model py-2">
       <img class="navbar-logo tab-icon" src="@/assets/images/nn_logo.png" alt="IVANN" />
     </div>
-    <div>
-      <i class="fas fa-plus add-icon mt-3"></i>
-    </div>
     <div class="py-1 px-2"><hr /></div>
 
     <!-- Data -->
     <div class="data py-2">
       <i class="fas fa-database tab-icon"></i>
     </div>
-    <div>
-      <i class="fas fa-plus add-icon mt-3"></i>
-    </div>
     <div class="py-1 px-2"><hr /></div>
 
     <!-- Train -->
     <div class="train py-2">
       <i class="fas fa-cogs tab-icon"></i>
-    </div>
-    <div>
-      <i class="fas fa-plus add-icon mt-3"></i>
     </div>
   </div>
 </template>

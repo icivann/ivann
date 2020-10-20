@@ -5,15 +5,8 @@
       <div class="left-sidebar-col">
         <LeftSidebar />
       </div>
-      <div class="col d-flex flex-column">
-        <div class="row flex-grow-1">
-          <div class="col-9 px-0">
-            <NodeEditor />
-          </div>
-          <div class="col-3 px-0">
-            <RightSidebar />
-          </div>
-        </div>
+      <div class="col d-flex flex-column p-0">
+        <Editor />
       </div>
     </div>
   </div>
@@ -22,16 +15,14 @@
 <script>
 import { Component, Vue } from 'vue-property-decorator';
 import LeftSidebar from '@/components/LeftSidebar.vue';
-import NodeEditor from '@/components/NodeEditor.vue';
+import Editor from '@/components/Editor.vue';
 import Navbar from '@/components/Navbar.vue';
-import RightSidebar from '@/components/RightSidebar.vue';
 
 @Component({
   components: {
     Navbar,
     LeftSidebar,
-    NodeEditor,
-    RightSidebar,
+    Editor,
   },
 })
 export default class Home extends Vue {
