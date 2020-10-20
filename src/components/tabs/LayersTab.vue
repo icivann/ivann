@@ -1,29 +1,29 @@
 <template>
   <div class="layers-tab">
     <ExpandablePanel name="Linear">
-      This contains core layers. <br/>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-      laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-      voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-      non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      <ButtonGrid>
+        <AddNodeButton node="Dense" name="Dense"/>
+      </ButtonGrid>
     </ExpandablePanel>
     <ExpandablePanel name="Convolutional">
       <ButtonGrid>
-        <AddNodeButton node="Convolution2D" name="Conv1D"/>
-        <AddNodeButton node="MaxPooling2D" name="Conv2D"/>
-        <AddNodeButton node="Dropout" name="Conv3D"/>
-        <AddNodeButton node="MaxPooling2D" name="Conv2DTranspose"/>
-        <AddNodeButton node="Dropout" name="Conv3DTranspose"/>
+        <AddNodeButton node="Convolution2D" name="Conv2D"/>
       </ButtonGrid>
     </ExpandablePanel>
     <ExpandablePanel name="Pooling">
-      This contains pooling layer nodes (obvs). <br/>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-      laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-      voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-      non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      <ButtonGrid>
+        <AddNodeButton node="MaxPooling2D" name="MaxPool2D"/>
+      </ButtonGrid>
+    </ExpandablePanel>
+    <ExpandablePanel name="Regularization">
+      <ButtonGrid>
+        <AddNodeButton node="Dropout" name="Dropout"/>
+      </ButtonGrid>
+    </ExpandablePanel>
+    <ExpandablePanel name="Reshaping">
+      <ButtonGrid>
+        <AddNodeButton node="Flatten" name="Flatten"/>
+      </ButtonGrid>
     </ExpandablePanel>
   </div>
 </template>

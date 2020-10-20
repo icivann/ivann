@@ -27,7 +27,7 @@ export default class AddNodeButton extends Vue {
   }
 
   private addNode() {
-    EditorManager.getInstance().addNode('Convolution2D', this.$store.state.editor);
+    EditorManager.getInstance().addNode(this.node, this.$store.state.editor);
   }
 }
 </script>
