@@ -2,7 +2,7 @@
   <div class="home container-fluid d-flex flex-column">
     <Titlebar />
     <div class="row flex-grow-1">
-      <div class="left-sidebar-col">
+      <div class="navbar-col">
         <Navbar />
       </div>
       <div class="col d-flex flex-column p-0">
@@ -35,7 +35,7 @@ export default class Home extends Vue {
   overflow: auto;
 }
 
-.left-sidebar-col {
+.navbar-col {
   width: 3rem;
 }
 </style>

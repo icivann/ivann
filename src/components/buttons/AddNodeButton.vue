@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import EditorManager from '@/EditorManager';
 
 @Component({})
 export default class AddNodeButton extends Vue {
@@ -23,17 +24,10 @@ export default class AddNodeButton extends Vue {
       if (factor > 3) factor = 3;
       this.fontSize -= 0.15 * factor;
     }
-    console.log(`Size of ${this.name} is ${this.fontSize}em`);
   }
 
   private addNode() {
-    const { editor } = this.$store.state;
-    const NodeType = editor.nodeTypes.get(this.node);
-    if (NodeType === undefined) {
-      console.error(`Undefined Node Type: ${this.node}`);
-    } else {
-      editor.addNode(new NodeType());
-    }
+    EditorManager.getInstance().addNode('Convolution2D', this.$store.state.editor);
   }
 }
 </script>

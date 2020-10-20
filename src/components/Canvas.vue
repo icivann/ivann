@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Editor } from '@baklavajs/core';
 import { OptionPlugin } from '@baklavajs/plugin-options-vue';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
@@ -24,15 +24,13 @@ import Dropout from '@/nodes/model/regularization/Dropout';
 
 @Component
 export default class Canvas extends Vue {
-  editor = new Editor();
+  @Prop({ required: true }) readonly editor!: Editor;
 
   optionPlugin = new OptionPlugin();
 
   viewPlugin = new ViewPlugin();
 
   created() {
-    this.$store.state.editor = this.editor;
-
     this.editor.use(this.optionPlugin);
     this.editor.use(this.viewPlugin);
 
