@@ -22,10 +22,10 @@ export default class Conv1D {
       options.get('Padding'),
       [options.get('Weights Initializer'), options.get('Weights Regularizer')],
       [options.get('Bias Initializer'), options.get('Bias Regularizer')],
-      options.get("Dilatation"),
+      options.get('Dilatation'),
       BuiltinActivationF[options.get('Activation') as keyof typeof BuiltinActivationF],
       [options.get('Kernel Size')[0]],
-      [options.get('Stride')[0]]
+      [options.get('Stride')[0]],
     );
     return node;
   }

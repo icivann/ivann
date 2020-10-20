@@ -18,6 +18,6 @@ export const enum Nodes {
 }
 
 type Options = Map<string, any>
-export const nodeBuilder: Map<String, (r:Options) => MlNode> = new Map([
-  ["Convolution2D", Conv2D.build]
+export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
+  ['Convolution2D', Conv2D.build],
 ]);
