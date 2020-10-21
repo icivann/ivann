@@ -1,8 +1,12 @@
 <template>
   <div class="right">
     <Tabs>
-      <Tab name="Layers"><LayersTab/></Tab>
-      <Tab name="Search"><SearchTab/></Tab>
+      <Tab name="Layers">
+        <LayersTab/>
+      </Tab>
+      <Tab name="Search">
+        <SearchTab/>
+      </Tab>
     </Tabs>
   </div>
 </template>
