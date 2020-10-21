@@ -19,6 +19,7 @@ module.exports = {
     'no-mixed-operators': 'off',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-empty-function': ['error', { allow: ['constructors'] }],
+    'class-methods-use-this': ['error', { exceptMethods: ['registerNodes'] }],
   },
   overrides: [
     {
