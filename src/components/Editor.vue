@@ -1,20 +1,21 @@
 <template>
   <div class="container-fluid d-flex flex-column">
-    <div class="row flex-grow-1">
-      <div class="col-9 px-0">
-        <Canvas v-if="$store.state.editor === model"
+    <Resizable class="row">
+      <div class="px-0 canvas-frame">
+        <Canvas v-if="$store.state.editor === 0"
                 :editor="manager.modelBaklavaEditor"/>
-        <Canvas v-else-if="$store.state.editor === data"
+        <Canvas v-else-if="$store.state.editor === 1"
                 :editor="manager.dataBaklavaEditor"/>
-        <Canvas v-else-if="$store.state.editor === training"
+        <Canvas v-else-if="$store.state.editor === 2"
                 :editor="manager.trainBaklavaEditor"/>
-        <Canvas v-else-if="$store.state.editor === overview"
+        <Canvas v-else-if="$store.state.editor === 3"
                 :editor="manager.overviewBaklavaEditor"/>
       </div>
-      <div class="col-3 px-0">
+      <Resizer/>
+      <div class="px-0 flex-grow-1">
         <Sidebar/>
       </div>
-    </div>
+    </Resizable>
   </div>
 </template>
 
@@ -23,18 +24,15 @@ import { Component, Vue } from 'vue-property-decorator';
 import Sidebar from '@/components/Sidebar.vue';
 import Canvas from '@/components/Canvas.vue';
 import EditorManager from '@/EditorManager';
-import EditorType from '@/EditorType';
+import Resizer from '@/components/Resize/Resizer.vue';
+import Resizable from '@/components/Resize/Resizable.vue';
 
 @Component({
   components: {
+    Resizer,
+    Resizable,
     Sidebar,
     Canvas,
-  },
-  data: {
-    model: EditorType.MODEL,
-    data: EditorType.DATA,
-    training: EditorType.TRAIN,
-    overview: EditorType.OVERVIEW,
   },
 })
 export default class Editor extends Vue {
@@ -43,4 +41,9 @@ export default class Editor extends Vue {
 </script>
 
 <style scoped>
+  .canvas-frame {
+    width: 75%;
+    max-width: 80%;
+    min-width: 10%;
+  }
 </style>
