@@ -1,7 +1,9 @@
 import { Option } from '@/app/util';
 import {
   ActivationF,
-  BuiltinActivationF,
+  getBuiltinActivationFunction,
+  getInitializer,
+  getRegularizer,
   Initializer,
   Padding,
   Regularizer,
@@ -23,9 +25,9 @@ export default class Conv2D {
     return new Conv2D(
       options.get('Filters'),
       options.get('Padding'),
-      [options.get('Weights Initializer'), options.get('Weights Regularizer')],
-      [options.get('Bias Initializer'), options.get('Bias Regularizer')],
-      BuiltinActivationF[options.get('Activation') as keyof typeof BuiltinActivationF],
+      [getInitializer(options.get('Weights Initializer')), getRegularizer(options.get('Weights Regularizer'))],
+      [getInitializer(options.get('Bias Initializer')), getRegularizer(options.get('Bias Regularizer'))],
+      getBuiltinActivationFunction(options.get('Activation')),
       [options.get('Kernel Size')[0], options.get('Kernel Size')[1]],
       [options.get('Stride')[0], options.get('Stride')[1]],
     );

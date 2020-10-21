@@ -17,4 +17,16 @@ export enum BuiltinRegularizer {
 
 export type ActivationF = BuiltinActivationF
 
-export enum BuiltinActivationF { None, Relu, Tanh, Sigmoid, Linear }
+export enum BuiltinActivationF { None, Relu, Tanh, Sigmoid, Linear}
+
+export function getRegularizer(str: string): Regularizer {
+  return BuiltinRegularizer[str as keyof typeof BuiltinRegularizer];
+}
+
+export function getInitializer(str: string): Initializer {
+  return BuiltinInitializer[str as keyof typeof BuiltinInitializer];
+}
+
+export function getBuiltinActivationFunction(str: string): BuiltinActivationF {
+  return BuiltinActivationF[str as keyof typeof BuiltinActivationF];
+}
