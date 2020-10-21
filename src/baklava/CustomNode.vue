@@ -5,7 +5,8 @@
     :style="styles"
   >
     <div
-      class="__title"
+      id="header"
+      :style="titleBackground"
       @mousedown.self.stop="startDrag"
       @contextmenu.self.prevent="openContextMenu"
     >
@@ -37,7 +38,10 @@
       ></component>
     </div>
 
-    <div class="__content">
+    <div
+      class="__content"
+      id="content"
+    >
 
       <!-- Outputs -->
       <div class="__outputs">
@@ -102,6 +106,7 @@
 import { Component } from 'vue-property-decorator';
 import { Components } from '@baklavajs/plugin-renderer-vue';
 import ArrowButton from '@/inputs/ArrowButton.vue';
+import { Layers } from '@/nodes/model/Types';
 
 @Component({
   components: { ArrowButton },
@@ -109,17 +114,45 @@ import ArrowButton from '@/inputs/ArrowButton.vue';
 export default class CustomNode extends Components.Node {
   private shouldShowOptions = false;
 
-  toggleShouldShowOptions() {
+  private toggleShouldShowOptions(): void {
     this.shouldShowOptions = !this.shouldShowOptions;
+  }
+
+  get titleBackground() {
+    switch (this.data.type) {
+      case Layers.Linear:
+        return { background: 'var(--black)' };
+      case Layers.Conv:
+        return { background: 'var(--blue)' };
+      case Layers.Pool:
+        return { background: 'var(--red)' };
+      case Layers.Regularization:
+        return { background: 'var(--pink)' };
+      case Layers.Reshape:
+        return { background: 'var(--green)' };
+      default:
+        return { background: 'var(--black)' };
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
   #arrow-button {
     position: absolute;
     top: 5px;
     right: 0;
     padding-right: 10px;
+  }
+  #header {
+    color: white;
+    padding: 0.4em 0.75em;
+    border-radius: 4px 4px 0 0;
+    font-size: 16px;
+    font-weight: 800;
+    text-align: center;
+  }
+  #content {
+    background: var(--dark-grey);
   }
 </style>
