@@ -8,6 +8,9 @@ export default new Vuex.Store({
     editor: 0,
   },
   mutations: {
+    switchEditor(state, newEditor) {
+      state.editor = newEditor;
+    },
   },
   actions: {
   },
