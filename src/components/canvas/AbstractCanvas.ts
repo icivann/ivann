@@ -3,11 +3,19 @@ import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import Vector from '@/baklava/options/Vector.vue';
 import Integer from '@/baklava/options/Integer.vue';
 import Dropdown from '@/baklava/options/Dropdown.vue';
-import { Editor } from '@baklavajs/core';
+import CustomNode from '@/baklava/CustomNode.vue';
 
 export default abstract class AbstractCanvas {
-  protected option = new OptionPlugin();
-  protected view = new ViewPlugin();
+  protected option: OptionPlugin = new OptionPlugin();
+  protected view: ViewPlugin = new ViewPlugin();
+
+  constructor() {
+    this.view.registerOption('VectorOption', Vector);
+    this.view.registerOption('IntegerOption', Integer);
+    this.view.registerOption('DropdownOption', Dropdown);
+
+    this.view.components.node = CustomNode;
+  }
 
   public get optionPlugin(): OptionPlugin {
     return this.option;
@@ -16,12 +24,4 @@ export default abstract class AbstractCanvas {
   public get viewPlugin(): ViewPlugin {
     return this.view;
   }
-
-  public registerOptions(): void {
-    this.view.registerOption('VectorOption', Vector);
-    this.view.registerOption('IntegerOption', Integer);
-    this.view.registerOption('DropdownOption', Dropdown);
-  }
-
-  public abstract registerNodes(editor: Editor): void;
 }

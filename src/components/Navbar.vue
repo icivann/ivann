@@ -1,8 +1,8 @@
 <template>
   <div class="left d-flex flex-column h-100 text-center">
     <!-- Build -->
-    <div class="build tab-button" :class="isSelected(3)"
-         @click="$store.commit('switchEditor', 3)">
+    <div class="build tab-button" :class="isSelected(editorType.OVERVIEW)"
+         @click="switchEditor({editorType: editorType.OVERVIEW, index: 0})"> <!-- TODO onClick -->
       <i class="fas fa-hammer tab-icon"></i>
     </div>
 
@@ -11,8 +11,8 @@
     </div>
 
     <!-- Model -->
-    <div class="model tab-button" :class="isSelected(0)"
-         @click="$store.commit('switchEditor', 0)">
+    <div class="model tab-button" :class="isSelected(editorType.MODEL)"
+         @click="switchEditor({editorType: editorType.MODEL, index: 0})"> <!-- TODO onClick -->
       <img class="navbar-logo tab-icon" src="@/assets/images/nn_logo.png" alt="IVANN"/>
     </div>
     <div class="py-1 px-2">
@@ -20,8 +20,8 @@
     </div>
 
     <!-- Data -->
-    <div class="data tab-button" :class="isSelected(1)"
-         @click="$store.commit('switchEditor', 1)">
+    <div class="data tab-button" :class="isSelected(editorType.DATA)"
+         @click="switchEditor({editorType: editorType.DATA, index: 0})"> <!-- TODO onClick -->
       <i class="fas fa-database tab-icon"></i>
     </div>
     <div class="py-1 px-2">
@@ -29,8 +29,8 @@
     </div>
 
     <!-- Train -->
-    <div class="train tab-button" :class="isSelected(2)"
-         @click="$store.commit('switchEditor', 2)">
+    <div class="train tab-button" :class="isSelected(editorType.TRAIN)"
+         @click="switchEditor({editorType: editorType.TRAIN, index: 0})"> <!-- TODO onClick -->
       <i class="fas fa-cogs tab-icon"></i>
     </div>
   </div>
@@ -39,11 +39,20 @@
 <script lang="ts">
 
 import { Vue, Component } from 'vue-property-decorator';
+import EditorType from '@/EditorType';
+import { mapActions, mapMutations } from 'vuex';
 
-@Component({})
+@Component({
+  methods: mapMutations([
+    'switchEditor',
+    'newEditor',
+  ]),
+})
 export default class Navbar extends Vue {
-  private isSelected(editor: number) {
-    return (this.$store.state.editor === editor) ? 'selected' : '';
+  private editorType = EditorType;
+
+  private isSelected(editorType: EditorType) {
+    return (this.$store.state.currEditorType === editorType) ? 'selected' : '';
   }
 }
 

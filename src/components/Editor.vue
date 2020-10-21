@@ -2,18 +2,26 @@
   <div class="container-fluid d-flex flex-column">
     <Resizable class="row">
       <div class="px-0 canvas-frame">
-        <Canvas v-show="$store.state.editor === 0"
-                :editor="manager.modelBaklavaEditor"
-                :abstract-canvas="manager.modelCanvas"/>
-        <Canvas v-show="$store.state.editor === 1"
-                :editor="manager.dataBaklavaEditor"
-                :abstract-canvas="manager.dataCanvas"/>
-        <Canvas v-show="$store.state.editor === 2"
-                :editor="manager.trainBaklavaEditor"
-                :abstract-canvas="manager.trainCanvas"/>
-        <Canvas v-show="$store.state.editor === 3"
-                :editor="manager.overviewBaklavaEditor"
-                :abstract-canvas="manager.overviewCanvas"/>
+        <Canvas
+          v-if="currEditorType === editorType.OVERVIEW"
+          :viewPlugin="manager.overviewCanvas.viewPlugin"
+          :key="editorType.OVERVIEW"
+        />
+        <Canvas
+          v-else-if="currEditorType === editorType.MODEL"
+          :viewPlugin="manager.modelCanvas.viewPlugin"
+          :key="editorType.MODEL"
+        />
+        <Canvas
+          v-else-if="currEditorType === editorType.DATA"
+          :viewPlugin="manager.dataCanvas.viewPlugin"
+          :key="editorType.DATA"
+        />
+        <Canvas
+          v-else-if="currEditorType === editorType.TRAIN"
+          :viewPlugin="manager.trainCanvas.viewPlugin"
+          :key="editorType.TRAIN"
+        />
       </div>
       <Resizer/>
       <div class="px-0 flex-grow-1">
@@ -30,6 +38,8 @@ import Canvas from '@/components/canvas/Canvas.vue';
 import EditorManager from '@/EditorManager';
 import Resizer from '@/components/Resize/Resizer.vue';
 import Resizable from '@/components/Resize/Resizable.vue';
+import { mapGetters } from 'vuex';
+import EditorType from '@/EditorType';
 
 @Component({
   components: {
@@ -38,9 +48,22 @@ import Resizable from '@/components/Resize/Resizable.vue';
     Sidebar,
     Canvas,
   },
+  computed: mapGetters([
+    'currEditorType',
+    'overviewEditor',
+    'modelEditor',
+    'dataEditor',
+    'trainEditor',
+  ]),
 })
 export default class Editor extends Vue {
+  private editorType = EditorType;
+
   private manager: EditorManager = EditorManager.getInstance();
+
+  // created() {
+  //   this.manager.modelCanvas;
+  // }
 }
 </script>
 

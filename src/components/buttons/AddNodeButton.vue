@@ -27,7 +27,7 @@ export default class AddNodeButton extends Vue {
   }
 
   private addNode() {
-    EditorManager.getInstance().addNode(this.node, this.$store.state.editor);
+    EditorManager.addNode(this.node, this.$store.state.modelEditors(1)); // TODO:
   }
 }
 </script>
