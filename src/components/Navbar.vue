@@ -1,53 +1,91 @@
 <template>
-  <div class="Navbar row py-2">
-    <div class="col text-left">
-      <img class="img-fluid navbar-logo mr-2" src="@/assets/images/nn_logo.png" alt="IVANN" />
-      <span class="text">IVANN</span>
+  <div class="left d-flex flex-column h-100 text-center">
+    <!-- Build -->
+    <div class="build tab-button" :class="isSelected(3)"
+         @click="$store.commit('switchEditor', 3)">
+      <i class="fas fa-hammer tab-icon"></i>
     </div>
-    <div class="col text-center">
-      <span class="text">
-        MNIST-Demo
-      </span>
+
+    <div class="py-1 px-2">
+      <hr/>
     </div>
-    <div class="col text-right">
-      <i class="navbar-icon fas fa-share-alt fa-lg mx-2"></i>
-      <i class="navbar-icon fas fa-folder-open fa-lg mx-2"></i>
-      <i class="navbar-icon fas fa-save fa-lg mx-2"></i>
+
+    <!-- Model -->
+    <div class="model tab-button" :class="isSelected(0)"
+         @click="$store.commit('switchEditor', 0)">
+      <img class="navbar-logo tab-icon" src="@/assets/images/nn_logo.png" alt="IVANN"/>
+    </div>
+    <div class="py-1 px-2">
+      <hr/>
+    </div>
+
+    <!-- Data -->
+    <div class="data tab-button" :class="isSelected(1)"
+         @click="$store.commit('switchEditor', 1)">
+      <i class="fas fa-database tab-icon"></i>
+    </div>
+    <div class="py-1 px-2">
+      <hr/>
+    </div>
+
+    <!-- Train -->
+    <div class="train tab-button" :class="isSelected(2)"
+         @click="$store.commit('switchEditor', 2)">
+      <i class="fas fa-cogs tab-icon"></i>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 
-@Component
+import { Vue, Component } from 'vue-property-decorator';
+
+@Component({})
 export default class Navbar extends Vue {
-}
-</script>
-
-<style lang="scss" scoped>
-.Navbar {
-  height: 2.5rem;
-  background-color: var(--background-alt);
-
-  border-bottom: 0.08rem solid var(--grey);
-}
-
-.navbar-logo {
-  height: 1.2rem;
-}
-
-.text {
-  color: var(--foreground);
-}
-
-.navbar-icon {
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
-  color: var(--foreground);
-
-  &:hover {
-    color: var(--blue);
+  private isSelected(editor: number) {
+    return (this.$store.state.editor === editor) ? 'selected' : '';
   }
 }
+
+</script>
+
+<style scoped>
+  .left {
+    background: var(--background);
+    color: var(--foreground);
+    border-right: 0.08rem solid var(--grey);
+  }
+
+  .tab-button {
+    padding: 0.75rem 0;
+    transition-duration: 0.1s;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-left-color: var(--background);
+  }
+
+  .tab-button:hover {
+    background: #1c1c1c;
+    transition-duration: 0.1s;
+    border-left-color: var(--blue);
+    cursor: pointer;
+  }
+
+  .tab-button.selected {
+    border-left-width: 4px;
+    border-left-color: var(--blue);
+  }
+
+  .tab-icon {
+    font-size: 1.5rem;
+    height: 1.5rem;
+  }
+
+  hr {
+    border-top: 0.1rem solid var(--dark-grey) !important;
+  }
+
+  .build {
+    margin-top: 1rem;
+  }
 </style>

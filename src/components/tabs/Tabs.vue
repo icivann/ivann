@@ -48,11 +48,13 @@ export default class Tabs extends Vue {
     border-bottom-style: none;
     border-bottom: var(--blue);
     user-select: none;
+    transition-duration: 0.1s;
   }
 
   .tab-head.selected {
     border-bottom-width: 4px;
     border-bottom-style: solid;
+    transition-duration: 0.1s;
   }
 
   .tab-head:hover {
