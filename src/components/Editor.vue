@@ -1,7 +1,8 @@
 <template>
   <div class="container-fluid d-flex flex-column">
-    <Resizable class="row">
-      <div class="px-0 canvas-frame">
+    <Resizable class="row" @width-change="changeWidth">
+      <div class="px-0 canvas-frame"
+           :style="`width: min(calc(100vw - 3rem - ${sidebarWidth}px), ${editorWidth}%)`">
         <Canvas v-show="$store.state.editor === 0"
                 :editor="manager.modelBaklavaEditor"
                 :abstract-canvas="manager.modelCanvas"/>
@@ -16,7 +17,8 @@
                 :abstract-canvas="manager.overviewCanvas"/>
       </div>
       <Resizer/>
-      <div class="px-0 flex-grow-1">
+      <div class="px-0 flex-grow-1"
+           :style="`max-width: max(${sidebarWidth}px, calc(100% - ${editorWidth}%))`">
         <Sidebar/>
       </div>
     </Resizable>
@@ -41,13 +43,17 @@ import Resizable from '@/components/Resize/Resizable.vue';
 })
 export default class Editor extends Vue {
   private manager: EditorManager = EditorManager.getInstance();
+  private editorWidth = 75; /* percentage */
+  private sidebarWidth = 280; /* pixels */
+
+  private changeWidth(percentage: number) {
+    this.editorWidth = percentage;
+  }
 }
 </script>
 
 <style scoped>
   .canvas-frame {
-    width: 75%;
-    max-width: 80%;
-    min-width: 10%;
+    min-width: 20%;
   }
 </style>
