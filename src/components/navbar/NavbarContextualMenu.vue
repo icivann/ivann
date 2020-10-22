@@ -2,14 +2,14 @@
     <div>
       <div v-for="(editor, index) in editors" :key="index">
         <VerticalMenuButton
-          :label="'Editor ' + index"
+          :label="editor.name"
           :onClick="() => switchEditor({ editorType, index})"
           :isSelected="editorType === currEditorType && index === currEditorIndex"
         />
       </div>
       <VerticalMenuButton
         :label="'New Editor'"
-        :onClick="() => newEditor(editorType)"
+        :onClick="() => newEditor({ name: 'untitled', editorType})"
         :isSelected="false"
       />
     </div>

@@ -4,7 +4,7 @@
       <div class="px-0 canvas-frame">
         <Canvas
           :viewPlugin="this.currViewPlugin()"
-          :editor="currEditor"
+          :editorModel="currEditorModel"
         />
       </div>
       <Resizer/>
@@ -35,7 +35,7 @@ import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
   },
   computed: mapGetters([
     'currEditorType',
-    'currEditor',
+    'currEditorModel',
     'overviewEditor',
     'modelEditor',
     'dataEditor',

@@ -1,24 +1,33 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { StoreOptions } from 'vuex';
 import EditorType from '@/EditorType';
 import { Editor } from '@baklavajs/core';
 import newEditor from '@/baklava/Utils';
+import { RootState } from '@/store/Types';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store: StoreOptions<RootState> = {
   state: {
     currEditorType: EditorType.MODEL,
     currEditorIndex: 0,
-    overviewEditor: newEditor(EditorType.OVERVIEW), // TODO: Lazy create?
-    modelEditors: [newEditor(EditorType.MODEL)],
+    overviewEditor: {
+      name: 'Overview',
+      editor: newEditor(EditorType.OVERVIEW), // TODO: Lazy create?
+    },
+    modelEditors: [
+      {
+        name: 'untitled',
+        editor: newEditor(EditorType.MODEL),
+      },
+    ],
     dataEditors: [],
     trainEditors: [],
   },
   getters: {
     currEditorType: (state) => state.currEditorType,
     currEditorIndex: (state) => state.currEditorIndex,
-    currEditor: (state, getters) => {
+    currEditorModel: (state, getters) => {
       const index = getters.currEditorIndex;
       switch (getters.currEditorType) {
         case EditorType.OVERVIEW:
@@ -30,7 +39,7 @@ export default new Vuex.Store({
         case EditorType.TRAIN:
           return state.trainEditors[index];
         default:
-          return undefined;
+          return {};
       }
     },
     modelEditors: (state) => state.modelEditors,
@@ -48,21 +57,21 @@ export default new Vuex.Store({
       state.currEditorType = editorType;
       state.currEditorIndex = index;
     },
-    newEditor(state, editorType) {
+    newEditor(state, { editorType, name }) {
       const editor: Editor = newEditor(editorType);
 
       switch (editorType) {
         case EditorType.MODEL:
           state.currEditorType = editorType;
-          state.currEditorIndex = state.modelEditors.push(editor) - 1;
+          state.currEditorIndex = state.modelEditors.push({ name, editor }) - 1;
           break;
         case EditorType.DATA:
           state.currEditorType = editorType;
-          state.currEditorIndex = state.dataEditors.push(editor) - 1;
+          state.currEditorIndex = state.dataEditors.push({ name, editor }) - 1;
           break;
         case EditorType.TRAIN:
           state.currEditorType = editorType;
-          state.currEditorIndex = state.trainEditors.push(editor) - 1;
+          state.currEditorIndex = state.trainEditors.push({ name, editor }) - 1;
           break;
         default:
           break;
@@ -71,4 +80,6 @@ export default new Vuex.Store({
   },
   modules: {
   },
-});
+};
+
+export default new Vuex.Store<RootState>(store);
