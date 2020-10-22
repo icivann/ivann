@@ -7,6 +7,7 @@ import MaxPool2D from '@/nodes/model/pool/MaxPool2D';
 import Dropout from '@/nodes/model/regularization/Dropout';
 import Flatten from '@/nodes/model/reshape/Flatten';
 import EditorManager from '@/EditorManager';
+import Custom from '@/nodes/model/custom/Custom';
 
 export default function newEditor(editorType: EditorType) {
   const editor = new Editor();
@@ -26,6 +27,7 @@ export default function newEditor(editorType: EditorType) {
       editor.registerNodeType(Nodes.MaxPool2D, MaxPool2D, Layers.Pool);
       editor.registerNodeType(Nodes.Dropout, Dropout, Layers.Regularization);
       editor.registerNodeType(Nodes.Flatten, Flatten, Layers.Reshape);
+      editor.registerNodeType(Nodes.Custom, Custom, Layers.Custom);
       break;
     }
     case EditorType.DATA: {
