@@ -5,14 +5,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import {
+  Component,
+  Prop,
+  Vue,
+  Watch,
+} from 'vue-property-decorator';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 
 @Component
 export default class Canvas extends Vue {
   @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
 
-  created() {
+  @Watch('viewPlugin')
+  onViewPluginChange(viewPlugin: ViewPlugin) {
+    console.log('fired');
+    this.$store.getters.currEditor.use(viewPlugin);
+  }
+
+  created(): void {
     this.$store.getters.currEditor.use(this.viewPlugin);
   }
 }

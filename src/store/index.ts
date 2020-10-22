@@ -53,12 +53,15 @@ export default new Vuex.Store({
 
       switch (editorType) {
         case EditorType.MODEL:
+          state.currEditorType = editorType;
           state.currEditorIndex = state.modelEditors.push(editor) - 1;
           break;
         case EditorType.DATA:
+          state.currEditorType = editorType;
           state.currEditorIndex = state.dataEditors.push(editor) - 1;
           break;
         case EditorType.TRAIN:
+          state.currEditorType = editorType;
           state.currEditorIndex = state.trainEditors.push(editor) - 1;
           break;
         default:
