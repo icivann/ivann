@@ -12,8 +12,8 @@ export default new Vuex.Store({
     currEditorIndex: 0,
     overviewEditor: newEditor(EditorType.OVERVIEW), // TODO: Lazy create?
     modelEditors: [newEditor(EditorType.MODEL)],
-    dataEditors: [newEditor(EditorType.DATA)], // TODO: Lazy create?
-    trainEditors: [newEditor(EditorType.TRAIN)], // TODO: Lazy create?
+    dataEditors: [],
+    trainEditors: [],
   },
   getters: {
     currEditorType: (state) => state.currEditorType,

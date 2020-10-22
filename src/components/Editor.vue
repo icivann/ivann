@@ -2,7 +2,10 @@
   <div class="container-fluid d-flex flex-column">
     <Resizable class="row">
       <div class="px-0 canvas-frame">
-        <Canvas :viewPlugin="this.viewPlugin()"/>
+        <Canvas
+          :viewPlugin="this.currViewPlugin()"
+          :editor="currEditor"
+        />
       </div>
       <Resizer/>
       <div class="px-0 flex-grow-1">
@@ -32,6 +35,7 @@ import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
   },
   computed: mapGetters([
     'currEditorType',
+    'currEditor',
     'overviewEditor',
     'modelEditor',
     'dataEditor',
@@ -39,11 +43,9 @@ import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
   ]),
 })
 export default class Editor extends Vue {
-  private editorType = EditorType;
-
   private manager: EditorManager = EditorManager.getInstance();
 
-  private viewPlugin(): ViewPlugin | undefined {
+  private currViewPlugin(): ViewPlugin | undefined {
     switch (this.$store.getters.currEditorType) {
       case EditorType.OVERVIEW:
         return this.manager.overviewCanvas.viewPlugin;

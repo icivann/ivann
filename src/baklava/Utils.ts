@@ -15,13 +15,11 @@ export default function newEditor(editorType: EditorType) {
     case EditorType.OVERVIEW: {
       const { overviewCanvas } = EditorManager.getInstance();
       editor.use(overviewCanvas.optionPlugin);
-      // editor.use(overviewCanvas.viewPlugin);
       break;
     }
     case EditorType.MODEL: {
       const { modelCanvas } = EditorManager.getInstance();
       editor.use(modelCanvas.optionPlugin);
-      // editor.use(modelCanvas.viewPlugin);
 
       editor.registerNodeType(Nodes.Dense, Dense, Layers.Linear);
       editor.registerNodeType(Nodes.Conv2D, Conv2D, Layers.Conv);
@@ -33,13 +31,11 @@ export default function newEditor(editorType: EditorType) {
     case EditorType.DATA: {
       const { dataCanvas } = EditorManager.getInstance();
       editor.use(dataCanvas.optionPlugin);
-      // editor.use(dataCanvas.viewPlugin);
       break;
     }
     case EditorType.TRAIN: {
       const { trainCanvas } = EditorManager.getInstance();
       editor.use(trainCanvas.optionPlugin);
-      // editor.use(trainCanvas.viewPlugin);
       break;
     }
     default:
