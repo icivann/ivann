@@ -11,7 +11,7 @@ export default abstract class AbstractCanvas {
 
   constructor() {
     this.view.registerOption('VectorOption', Vector);
-    this.view.registerOption('IntegerOption', Integer);
+    this.view.registerOption('IntOption', Integer);
     this.view.registerOption('DropdownOption', Dropdown);
 
     this.view.components.node = CustomNode;
