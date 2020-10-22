@@ -1,4 +1,5 @@
-import { Padding } from '@/app/ir/irCommon';
+import { getPadding, Padding } from '@/app/ir/irCommon';
+import { MaxPool2DOptions } from '@/nodes/model/pool/MaxPool2D';
 
 export default class MaxPool2D {
   constructor(
@@ -10,9 +11,9 @@ export default class MaxPool2D {
 
   static build(options: Map<string, any>): MaxPool2D {
     return new MaxPool2D(
-      options.get('Padding'),
-      [options.get('Kernel Size')[0], options.get('Kernel Size')[1]],
-      [options.get('Stride')[0], options.get('Stride')[1]],
+      getPadding(options.get(MaxPool2DOptions.Padding)),
+      [options.get(MaxPool2DOptions.KernelSize)[0], options.get(MaxPool2DOptions.KernelSize)[1]],
+      [options.get(MaxPool2DOptions.Stride)[0], options.get(MaxPool2DOptions.Stride)[1]],
     );
   }
 }
