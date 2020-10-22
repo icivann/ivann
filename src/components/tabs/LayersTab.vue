@@ -25,6 +25,11 @@
         <AddNodeButton node="Flatten" name="Flatten"/>
       </ButtonGrid>
     </ExpandablePanel>
+    <ExpandablePanel name="Custom">
+      <ButtonGrid>
+        <AddNodeButton node="Custom" name="Custom"/>
+      </ButtonGrid>
+    </ExpandablePanel>
   </div>
 </template>
 
