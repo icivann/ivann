@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="contextual-menu">
       <div v-for="(editor, index) in editors" :key="index">
         <VerticalMenuButton
           :label="editor.name"
@@ -8,7 +8,7 @@
         />
       </div>
       <VerticalMenuButton
-        :label="'New Editor'"
+        :label="'+'"
         :onClick="() => newEditor({ name: 'untitled', editorType})"
         :isSelected="false"
       />
@@ -41,5 +41,7 @@ export default class NavbarContextualMenu extends Vue {
 </script>
 
 <style scoped>
-
+  #contextual-menu {
+    border: 1px solid var(--grey);
+  }
 </style>

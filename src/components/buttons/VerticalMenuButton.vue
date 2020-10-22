@@ -1,5 +1,8 @@
 <template>
-  <div :id="'button ' + (isSelected ? 'selected' : '')" @click="onClick">
+  <div
+    class="button"
+    :class="isSelected ? 'selected' : ''"
+    @click="onClick">
     {{label}}
   </div>
 </template>
@@ -16,19 +19,15 @@ export default class VerticalMenuButton extends Vue {
 </script>
 
 <style scoped>
-  #button {
+  .button {
     background: #202020;
-    border-radius: 8px;
     text-align: center;
     color: #e0e0e0;
     font-size: 14px;
-    margin: 5px;
-    border: 1px solid var(--grey);
-    transition-duration: 0.1s;
-    position: relative;
+    padding: 10px;
   }
 
-  #button.selected {
-    background: purple;
+  .selected {
+    background: var(--blue);
   }
 </style>

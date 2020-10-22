@@ -163,7 +163,8 @@ export default class Navbar extends Vue {
 
   .navbar-contextual-menu {
     position: absolute;
-    left: 50px;
+    margin-top: -35px;
+    left: 59px;
     background: var(--background);
     color: var(--foreground);
     z-index: 1;
