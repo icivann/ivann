@@ -1,4 +1,3 @@
-import { Editor } from '@baklavajs/core';
 import ModelCanvas from '@/components/canvas/ModelCanvas';
 import DataCanvas from '@/components/canvas/DataCanvas';
 import TrainCanvas from '@/components/canvas/TrainCanvas';
@@ -33,14 +32,5 @@ export default class EditorManager {
       EditorManager.instance = new EditorManager();
     }
     return EditorManager.instance;
-  }
-
-  public static addNode(type: string, editor: Editor): void {
-    const NodeType = editor.nodeTypes.get(type);
-    if (NodeType === undefined) {
-      console.error(`Undefined Node Type: ${type}`);
-    } else {
-      editor.addNode(new NodeType() as any);
-    }
   }
 }
