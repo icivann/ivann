@@ -27,7 +27,14 @@ export default class VerticalMenuButton extends Vue {
     padding: 10px;
   }
 
+  .button:hover {
+    background: #1c1c1c;
+    transition-duration: 0.1s;
+    border-left-color: var(--blue);
+    cursor: pointer;
+  }
+
   .selected {
-    background: var(--blue);
+    color: var(--blue);
   }
 </style>

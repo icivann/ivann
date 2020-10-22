@@ -9,7 +9,7 @@
       </div>
       <VerticalMenuButton
         :label="'+'"
-        :onClick="() => newEditor({ name: 'untitled', editorType})"
+        :onClick="() => newEditor({ name: 'untitled ' + editors.length, editorType})"
         :isSelected="false"
       />
     </div>

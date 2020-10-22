@@ -17,7 +17,7 @@ const store: StoreOptions<RootState> = {
     },
     modelEditors: [
       {
-        name: 'untitled',
+        name: 'untitled 0',
         editor: newEditor(EditorType.MODEL),
       },
     ],
