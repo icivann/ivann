@@ -12,7 +12,7 @@ export default class Dense extends Node {
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
 
-    this.addOption('Size', 'IntegerOption', 1);
+    this.addOption('Size', 'IntOption', 1);
     this.addOption('Activation', 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinActivationF),
     });

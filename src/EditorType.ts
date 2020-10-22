@@ -1,8 +1,8 @@
-const enum EditorType {
+enum EditorType {
+  OVERVIEW,
   MODEL,
   DATA,
   TRAIN,
-  OVERVIEW,
 }
 
 export default EditorType;
