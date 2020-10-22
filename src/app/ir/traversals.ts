@@ -2,7 +2,7 @@ import { IInterfaceState, IState } from '@baklavajs/core/dist/baklavajs-core/typ
 import { ModelNode } from '@/app/ir/mainNodes';
 import { UUID } from '@/app/util';
 import GraphNode from '@/app/ir/GraphNode';
-import { nodeBuilder } from '@/nodes/model/Types';
+import { nodeBuilder } from '@/nodes/model/nodeBuilderMap';
 
 function mappingsForNodes(
   type: string,

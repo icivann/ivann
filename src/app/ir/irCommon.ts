@@ -30,3 +30,7 @@ export function getInitializer(str: string): Initializer {
 export function getBuiltinActivationFunction(str: string): BuiltinActivationF {
   return BuiltinActivationF[str as keyof typeof BuiltinActivationF];
 }
+
+export function getPadding(str: string): Padding {
+  return Padding[str as keyof typeof Padding];
+}

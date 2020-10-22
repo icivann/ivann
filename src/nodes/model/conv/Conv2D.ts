@@ -8,6 +8,12 @@ import {
 } from '@/app/ir/irCommon';
 import { valuesOf } from '@/app/util';
 
+export enum Conv2DOptions{ Filters= 'Filters', KernelSize='Kernel Size', Stride='Stride',
+Padding ='Padding', Activation = 'Activation',
+UseBias= 'Use Bias', WeightsInitializer = 'Weights Initializer',
+BiasInitializer='Bias Initializer', WeightsRegularizer = 'Weights Regularizer',
+BiasRegularizer='Bias Regularizer'
+}
 export default class Conv2D extends Node {
   type = Layers.Conv;
   name = Nodes.Conv2D;
@@ -17,31 +23,31 @@ export default class Conv2D extends Node {
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
 
-    this.addOption('Filters', 'IntegerOption', 1);
+    this.addOption(Conv2DOptions.Filters, 'IntegerOption', 1);
 
     // TODO: Keras+Pytorch allow shortcut for specifying single int for all dimensions
-    this.addOption('Kernel Size', 'VectorOption', [1, 1]);
-    this.addOption('Stride', 'VectorOption', [1, 1]);
+    this.addOption(Conv2DOptions.KernelSize, 'VectorOption', [1, 1]);
+    this.addOption(Conv2DOptions.Stride, 'VectorOption', [1, 1]);
 
-    this.addOption('Padding', 'DropdownOption', 'Valid', undefined, {
+    this.addOption(Conv2DOptions.Padding, 'DropdownOption', 'Valid', undefined, {
       items: valuesOf(Padding),
     });
-    this.addOption('Activation', 'DropdownOption', 'None', undefined, {
+    this.addOption(Conv2DOptions.Activation, 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinActivationF),
     });
-    this.addOption('Use Bias', 'CheckboxOption', true);
+    this.addOption(Conv2DOptions.UseBias, 'CheckboxOption', true);
 
     // TODO: Decide default value and options for these
-    this.addOption('Weights Initializer', 'DropdownOption', 'Xavier', undefined, {
+    this.addOption(Conv2DOptions.WeightsInitializer, 'DropdownOption', 'Xavier', undefined, {
       items: valuesOf(BuiltinInitializer),
     });
-    this.addOption('Bias Initializer', 'DropdownOption', 'Zeros', undefined, {
+    this.addOption(Conv2DOptions.BiasInitializer, 'DropdownOption', 'Zeroes', undefined, {
       items: valuesOf(BuiltinInitializer),
     });
-    this.addOption('Bias Regularizer', 'DropdownOption', 'None', undefined, {
+    this.addOption(Conv2DOptions.BiasRegularizer, 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinRegularizer),
     });
-    this.addOption('Weights Regularizer', 'DropdownOption', 'None', undefined, {
+    this.addOption(Conv2DOptions.WeightsRegularizer, 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinRegularizer),
     });
   }
