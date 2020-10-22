@@ -1,47 +1,40 @@
 import EditorType from '@/EditorType';
 import { Editor } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
-import Dense from '@/nodes/model/linear/Dense';
-import Conv2D from '@/nodes/model/conv/Conv2D';
-import MaxPool2D from '@/nodes/model/pool/MaxPool2D';
-import Dropout from '@/nodes/model/regularization/Dropout';
-import Flatten from '@/nodes/model/reshape/Flatten';
 import EditorManager from '@/EditorManager';
-import Custom from '@/nodes/model/custom/Custom';
+import AbstractCanvas from '@/components/canvas/AbstractCanvas';
 
 export default function newEditor(editorType: EditorType) {
+  let canvas: AbstractCanvas | undefined;
   const editor = new Editor();
 
   switch (editorType) {
     case EditorType.OVERVIEW: {
       const { overviewCanvas } = EditorManager.getInstance();
-      editor.use(overviewCanvas.optionPlugin);
+      canvas = overviewCanvas;
       break;
     }
     case EditorType.MODEL: {
       const { modelCanvas } = EditorManager.getInstance();
-      editor.use(modelCanvas.optionPlugin);
-
-      editor.registerNodeType(Nodes.Dense, Dense, Layers.Linear);
-      editor.registerNodeType(Nodes.Conv2D, Conv2D, Layers.Conv);
-      editor.registerNodeType(Nodes.MaxPool2D, MaxPool2D, Layers.Pool);
-      editor.registerNodeType(Nodes.Dropout, Dropout, Layers.Regularization);
-      editor.registerNodeType(Nodes.Flatten, Flatten, Layers.Reshape);
-      editor.registerNodeType(Nodes.Custom, Custom, Layers.Custom);
+      canvas = modelCanvas;
       break;
     }
     case EditorType.DATA: {
       const { dataCanvas } = EditorManager.getInstance();
-      editor.use(dataCanvas.optionPlugin);
+      canvas = dataCanvas;
       break;
     }
     case EditorType.TRAIN: {
       const { trainCanvas } = EditorManager.getInstance();
-      editor.use(trainCanvas.optionPlugin);
+      canvas = trainCanvas;
       break;
     }
     default:
       break;
+  }
+
+  if (canvas) {
+    editor.use(canvas.optionPlugin);
+    canvas.registerNodes(editor);
   }
 
   return editor;

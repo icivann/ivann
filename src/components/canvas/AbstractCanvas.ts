@@ -4,6 +4,7 @@ import Vector from '@/baklava/options/Vector.vue';
 import Integer from '@/baklava/options/Integer.vue';
 import Dropdown from '@/baklava/options/Dropdown.vue';
 import CustomNode from '@/baklava/CustomNode.vue';
+import { Editor } from '@baklavajs/core';
 
 export default abstract class AbstractCanvas {
   protected option: OptionPlugin = new OptionPlugin();
@@ -24,4 +25,6 @@ export default abstract class AbstractCanvas {
   public get viewPlugin(): ViewPlugin {
     return this.view;
   }
+
+  public abstract registerNodes(editor: Editor): void;
 }
