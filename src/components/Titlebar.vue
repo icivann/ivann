@@ -24,6 +24,7 @@
 </template>
 
 <script lang="ts">
+import generateCode from '@/app/codegen/codeGenerator';
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
@@ -36,8 +37,10 @@ export default class Titlebar extends Vue {
     console.log(`Open button pressed. ${this.$data}`);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   save() {
-    console.log(`Save button pressed. ${this.$data}`);
+    console.log(generateCode());
+    // console.log(`Save button pressed. ${this.$data}`);
   }
 }
 </script>
