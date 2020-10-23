@@ -10,7 +10,7 @@ export default class Custom extends Node {
   constructor() {
     super();
     // TODO FE-38 Add minimum value of 0 to this option.
-    this.addOption('Number of Inputs', 'IntegerOption', 0);
+    this.addOption('Number of Inputs', 'IntOption', 0);
     this.addOutputInterface('Output');
     this.events.update.addListener(this, (event: any) => {
       this.nodeUpdated(event);

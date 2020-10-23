@@ -2,18 +2,10 @@
   <div class="container-fluid d-flex flex-column">
     <Resizable class="row">
       <div class="px-0 canvas-frame">
-        <Canvas v-show="$store.state.editor === 0"
-                :editor="manager.modelBaklavaEditor"
-                :abstract-canvas="manager.modelCanvas"/>
-        <Canvas v-show="$store.state.editor === 1"
-                :editor="manager.dataBaklavaEditor"
-                :abstract-canvas="manager.dataCanvas"/>
-        <Canvas v-show="$store.state.editor === 2"
-                :editor="manager.trainBaklavaEditor"
-                :abstract-canvas="manager.trainCanvas"/>
-        <Canvas v-show="$store.state.editor === 3"
-                :editor="manager.overviewBaklavaEditor"
-                :abstract-canvas="manager.overviewCanvas"/>
+        <Canvas
+          :viewPlugin="this.currViewPlugin()"
+          :editorModel="currEditorModel"
+        />
       </div>
       <Resizer/>
       <div class="px-0 flex-grow-1">
@@ -30,6 +22,9 @@ import Canvas from '@/components/canvas/Canvas.vue';
 import EditorManager from '@/EditorManager';
 import Resizer from '@/components/Resize/Resizer.vue';
 import Resizable from '@/components/Resize/Resizable.vue';
+import { mapGetters } from 'vuex';
+import EditorType from '@/EditorType';
+import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 
 @Component({
   components: {
@@ -38,9 +33,32 @@ import Resizable from '@/components/Resize/Resizable.vue';
     Sidebar,
     Canvas,
   },
+  computed: mapGetters([
+    'currEditorType',
+    'currEditorModel',
+    'overviewEditor',
+    'modelEditor',
+    'dataEditor',
+    'trainEditor',
+  ]),
 })
 export default class Editor extends Vue {
   private manager: EditorManager = EditorManager.getInstance();
+
+  private currViewPlugin(): ViewPlugin | undefined {
+    switch (this.$store.getters.currEditorType) {
+      case EditorType.OVERVIEW:
+        return this.manager.overviewCanvas.viewPlugin;
+      case EditorType.MODEL:
+        return this.manager.modelCanvas.viewPlugin;
+      case EditorType.DATA:
+        return this.manager.dataCanvas.viewPlugin;
+      case EditorType.TRAIN:
+        return this.manager.trainCanvas.viewPlugin;
+      default:
+        return undefined;
+    }
+  }
 }
 </script>
 
