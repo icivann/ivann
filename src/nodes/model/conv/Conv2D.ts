@@ -17,7 +17,7 @@ export default class Conv2D extends Node {
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
 
-    this.addOption('Filters', 'IntegerOption', 1);
+    this.addOption('Filters', 'IntOption', 1);
 
     // TODO: Keras+Pytorch allow shortcut for specifying single int for all dimensions
     this.addOption('Kernel Size', 'VectorOption', [1, 1]);
