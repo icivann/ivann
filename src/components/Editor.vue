@@ -51,6 +51,7 @@ export default class Editor extends Vue {
 
   private changeWidth(percentage: number) {
     this.editorWidth = percentage;
+  }
 
   private currViewPlugin(): ViewPlugin | undefined {
     switch (this.$store.getters.currEditorType) {
