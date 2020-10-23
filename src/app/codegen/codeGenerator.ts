@@ -22,8 +22,8 @@ const imports = [
   'import torch.nn as nn',
   'import torch.nn.functional as F'].join('\n');
 
-const nodeNames = new Map<GraphNode, string>();
-const nodeTypeCounters = new Map<string, bigint>();
+let nodeNames = new Map<GraphNode, string>();
+let nodeTypeCounters = new Map<string, number>();
 
 function getNodeType(node: GraphNode): string {
   return node.mlNode.constructor.name.toLowerCase();
@@ -36,18 +36,26 @@ function getNodeName(node: GraphNode): string {
     return nodeNames.get(node) ?? '';
   }
   const nodeType = getNodeType(node);
-  const counter = (nodeTypeCounters.get(nodeType) ?? 0n) + 1n;
+  const counter = (nodeTypeCounters.get(nodeType) ?? 0) + 1;
   nodeTypeCounters.set(nodeType, counter);
   const name = `${nodeType}_${counter}`;
   nodeNames.set(node, name);
   return name;
 }
 
+function getBrachVar(branchCounter: number): string {
+  return (branchCounter === 0) ? 'x' : `x_${branchCounter}`;
+}
+
 function generateModel(nodes: Set<GraphNode>, connections: Map<GraphNode, [GraphNode]>): string {
+  // resetting the naming counters for each new graph
+  nodeNames = new Map<GraphNode, string>();
+  nodeTypeCounters = new Map<string, number>();
+
   const result: string[] = [];
-  const init: string[] = [];
 
   const inputs = [...nodes.values()].filter((item: GraphNode) => item.mlNode instanceof InModel);
+  const outputs: string[] = [];
   const inputNames = inputs.map((node) => getNodeName(node));
   const forward: string[] = [`\tdef forward(${inputNames.join(', ')})`];
 
@@ -60,19 +68,42 @@ function generateModel(nodes: Set<GraphNode>, connections: Map<GraphNode, [Graph
     const nodeName = getNodeName(node);
     // TODO: check here for other branching nodes
     if (node.mlNode instanceof InModel) {
-      branchCounter += 1;
-      forward.push(`x_${branchCounter} = ${nodeName}`);
+      if (branchCounter !== 0) { branchCounter += 1; }
+      forward.push(`${getBrachVar(branchCounter)} = ${nodeName}`);
+    } else if (node.mlNode instanceof OutModel) {
+      outputs.push(getBrachVar(branchCounter));
     } else {
-      forward.push(`x_${branchCounter} = self.${nodeName}(x_${branchCounter})`);
-      const nodeConnections = connections.get(node);
+      forward.push(`${getBrachVar(branchCounter)} = self.${nodeName}(${getBrachVar(branchCounter)})`);
+    }
+
+    const nodeConnections = connections.get(node);
+    console.log(node, nodeConnections);
+
+    if (nodeConnections !== undefined) {
+      console.log('in', nodeConnections);
+      const makeNewBranches = (nodeConnections.length > 1);
+      // eslint-disable-next-line no-restricted-syntax
+      for (const outNode of nodeConnections) {
+        stack.push(outNode);
+      }
+
       // TODO: add outgoing connections onto stack etc
     }
   }
 
+  const modelNodes = [...nodes.values()].filter(
+    (item) => !(item.mlNode instanceof InModel || item.mlNode instanceof OutModel),
+  );
   const header = 'class Mode(nn.Module):';
+  const nodeDefinitions = [...modelNodes.values()].map(
+    (n) => `self.${getNodeName(n)} = ${n.mlNode.initCode()}`,
+  );
+  const init = ['\tdef __init__(self)'].concat(nodeDefinitions);
+  forward.push(`return ${outputs.join(', ')}`);
   const forwardMethod = forward.join('\n\t\t');
+  const initMethod = init.join('\n\t\t');
 
-  return [header, forwardMethod].join('\n');
+  return [header, initMethod, forwardMethod].join('\n');
 }
 
 export default function generateCode(): string {
@@ -102,7 +133,6 @@ export default function generateCode(): string {
     [list[0], [list[1]]],
     [list[1], [list[2]]],
     [list[2], [list[3]]],
-    [list[3], [list[4]]],
   ]);
 
   const model = generateModel(nodes, connections);

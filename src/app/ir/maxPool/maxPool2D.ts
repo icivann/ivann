@@ -16,4 +16,8 @@ export default class MaxPool2D {
       [options.get(MaxPool2DOptions.Stride)[0], options.get(MaxPool2DOptions.Stride)[1]],
     );
   }
+
+  public initCode(): string {
+    return `MaxPool2d(${this.kernel})`;
+  }
 }

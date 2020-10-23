@@ -36,4 +36,8 @@ export default class Conv2D {
       [options.get(Conv2DOptions.Stride)[0], options.get(Conv2DOptions.Stride)[1]],
     );
   }
+
+  public initCode(): string {
+    return `Conv2D(16, ${this.filters}, ${this.stride})`;
+  }
 }
