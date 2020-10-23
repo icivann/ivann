@@ -10,7 +10,7 @@ import { Editor } from '@baklavajs/core';
 import CustomNode from '@/baklava/CustomNode.vue';
 import AbstractCanvas from '@/components/canvas/AbstractCanvas';
 import { Engine } from '@baklavajs/plugin-engine';
-import { traverseUiToIr } from '@/app/ir/traversals';
+// import { traverseUiToIr } from '@/app/ir/traversals';
 
 @Component
 export default class Canvas extends Vue {
@@ -33,7 +33,7 @@ export default class Canvas extends Vue {
     this.engine.events.calculated.addListener(this, (r) => {
       console.log('Something changed!');
       const state = this.editor.save();
-      traverseUiToIr(state);
+      // traverseUiToIr(state);
     });
   }
 }
