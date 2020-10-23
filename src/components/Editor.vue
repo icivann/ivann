@@ -1,14 +1,16 @@
 <template>
   <div class="container-fluid d-flex flex-column">
-    <Resizable class="row">
-      <div class="px-0 canvas-frame">
+    <Resizable class="row" @width-change="changeWidth">
+      <div class="px-0 canvas-frame"
+           :style="`width: min(calc(100vw - 3rem - ${sidebarWidth}px), ${editorWidth}%)`">
         <Canvas
           :viewPlugin="this.currViewPlugin()"
           :editorModel="currEditorModel"
         />
       </div>
       <Resizer/>
-      <div class="px-0 flex-grow-1">
+      <div class="px-0 flex-grow-1"
+           :style="`max-width: max(${sidebarWidth}px, calc(100% - ${editorWidth}%))`">
         <Sidebar/>
       </div>
     </Resizable>
@@ -44,6 +46,12 @@ import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 })
 export default class Editor extends Vue {
   private manager: EditorManager = EditorManager.getInstance();
+  private editorWidth = 75; /* percentage */
+  private sidebarWidth = 280; /* pixels */
+
+  private changeWidth(percentage: number) {
+    this.editorWidth = percentage;
+  }
 
   private currViewPlugin(): ViewPlugin | undefined {
     switch (this.$store.getters.currEditorType) {
@@ -64,8 +72,6 @@ export default class Editor extends Vue {
 
 <style scoped>
   .canvas-frame {
-    width: 75%;
-    max-width: 80%;
-    min-width: 10%;
+    min-width: 20%;
   }
 </style>
