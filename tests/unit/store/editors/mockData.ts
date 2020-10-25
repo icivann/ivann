@@ -25,6 +25,7 @@ export const mockModelEditors: EditorModel[] = [
 export const mockEditorState: EditorsState = {
   currEditorType: EditorType.MODEL,
   currEditorIndex: 2,
+  editorNames: new Set<string>(['name0', 'name1', 'name2']),
   overviewEditor: mockOverviewEditor,
   modelEditors: mockModelEditors,
   dataEditors: [],

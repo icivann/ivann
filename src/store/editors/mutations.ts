@@ -15,14 +15,17 @@ const editorMutations: MutationTree<EditorsState> = {
     switch (editorType) {
       case EditorType.MODEL:
         state.currEditorType = editorType;
+        state.editorNames.add(name);
         state.currEditorIndex = state.modelEditors.push({ name, editor }) - 1;
         break;
       case EditorType.DATA:
         state.currEditorType = editorType;
+        state.editorNames.add(name);
         state.currEditorIndex = state.dataEditors.push({ name, editor }) - 1;
         break;
       case EditorType.TRAIN:
         state.currEditorType = editorType;
+        state.editorNames.add(name);
         state.currEditorIndex = state.trainEditors.push({ name, editor }) - 1;
         break;
       default:
