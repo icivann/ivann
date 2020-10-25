@@ -24,10 +24,23 @@ export default class Vector extends Vue {
 
   @Prop({ type: String }) name!: string;
 
+  @Prop({ type: Object })
+  option!: {
+    min?: [number]; /* Dimensions of min/max must be same as value */
+    max?: [number];
+  };
+
   updateValue(value: number, index: number) {
     const copy = [...this.value];
-    copy[index] = value;
 
+    let updated: number = value;
+    if (this.option.min !== undefined && updated < this.option.min[index]) {
+      updated = this.option.min[index];
+    } else if (this.option.max !== undefined && updated > this.option.max[index]) {
+      updated = this.option.max[index];
+    }
+
+    copy[index] = updated;
     this.$emit('input', copy);
   }
 }
