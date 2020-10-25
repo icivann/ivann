@@ -12,7 +12,7 @@ import {
   Watch,
 } from 'vue-property-decorator';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
-import { EditorModel } from '@/store/Types';
+import { EditorModel } from '@/store/editors/types';
 
 @Component
 export default class Canvas extends Vue {
