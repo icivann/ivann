@@ -11,21 +11,33 @@ import {
   Vue,
   Watch,
 } from 'vue-property-decorator';
+import { Engine } from '@baklavajs/plugin-engine';
+import { traverseUiToIr } from '@/app/ir/traversals';
+
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import { EditorModel } from '@/store/editors/types';
 
 @Component
 export default class Canvas extends Vue {
-  @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
-  @Prop({ required: true }) readonly editorModel!: EditorModel;
+    @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
+    @Prop({ required: true }) readonly editorModel!: EditorModel;
+
+    engine = new Engine(true);
 
   @Watch('editorModel')
-  onEditorChange(editorModel: EditorModel) {
-    editorModel.editor.use(this.viewPlugin);
-  }
+    onEditorChange(editorModel: EditorModel) {
+      editorModel.editor.use(this.viewPlugin);
+    }
 
   created(): void {
     this.editorModel.editor.use(this.viewPlugin);
+    this.editorModel.editor.use(this.engine);
+
+    this.engine.events.calculated.addListener(this, (r) => {
+      console.log('Something changed!');
+      const state = this.editorModel.editor.save();
+      traverseUiToIr(state);
+    });
   }
 }
 </script>
