@@ -34,7 +34,7 @@ export default class Sidebar extends Vue {
   .right {
     background: var(--background-alt);
     color: var(--foreground);
-    border-left: 0.125vw solid var(--grey);
+    border-left: 1px solid var(--grey);
     height: calc(100vh - 2.5rem);
     width: 100%;
   }
