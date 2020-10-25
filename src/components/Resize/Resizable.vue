@@ -20,7 +20,7 @@ export default class Resizable extends Vue {
 
       const resize = (before: number, offset = 0) => {
         const firstWidth = before + offset;
-        first.style.width = `${firstWidth * 100 / this.$el.clientWidth}%`;
+        this.$emit('width-change', firstWidth * 100 / this.$el.clientWidth);
       };
 
       const onMouseMove = (event: MouseEvent) => {
