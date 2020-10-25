@@ -39,29 +39,29 @@ export default class IntegerInc extends Vue {
   private editValue = '';
   private inputBoxWidth = 0;
 
-  increment() {
+  private increment() {
     this.$emit('value-change', this.value + 1, this.index);
   }
 
-  decrement() {
+  private decrement() {
     this.$emit('value-change', this.value - 1, this.index);
   }
 
-  updateValue() {
+  private updateValue() {
     this.$emit('value-change', parseInt(this.editValue, 10), this.index);
   }
 
-  focusOut() {
+  private focusOut() {
     this.updateValue();
     this.toggle();
   }
 
-  enter() {
+  private enter() {
     (this.$refs.box as Focusable).focus();
     this.updateValue();
   }
 
-  editOn() {
+  private editOn() {
     this.editValue = this.value.toString();
     this.inputBoxWidth = (this.$refs.text as Vue & { clientWidth: number }).clientWidth;
     this.toggle();
@@ -70,7 +70,7 @@ export default class IntegerInc extends Vue {
     });
   }
 
-  toggle() {
+  private toggle() {
     this.edit = !this.edit;
   }
 }
