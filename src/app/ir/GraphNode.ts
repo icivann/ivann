@@ -1,9 +1,9 @@
 import { randomUuid } from '@/app/util';
-import { MlNode } from '@/app/ir/mainNodes';
+import { ModelNode } from '@/app/ir/mainNodes';
 
 export default class GraphNode {
   constructor(
-    public readonly mlNode: MlNode,
+    public readonly modelNode: ModelNode,
     public readonly uniqueId = randomUuid(),
   ) {
   }

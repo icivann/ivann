@@ -1,4 +1,3 @@
-import Graph from '@/app/ir/Graph';
 import GraphNode from '@/app/ir/GraphNode';
 import Conv2D from '@/app/ir/conv/Conv2D';
 import { UUID } from '@/app/util';
@@ -12,7 +11,7 @@ import {
 } from '@/app/ir/irCommon';
 import MaxPool2D from '@/app/ir/maxPool/maxPool2D';
 import { Stack } from 'stack-typescript';
-import { MlNode, ModelNode } from '@/app/ir/mainNodes';
+import { ModelLayerNode } from '@/app/ir/mainNodes';
 import InModel from '../ir/InModel';
 
 import OutModel from '../ir/OutModel';
@@ -26,7 +25,7 @@ let nodeNames = new Map<GraphNode, string>();
 let nodeTypeCounters = new Map<string, number>();
 
 function getNodeType(node: GraphNode): string {
-  return node.mlNode.constructor.name.toLowerCase();
+  return node.modelNode.constructor.name.toLowerCase();
 }
 
 function getNodeName(node: GraphNode): string {
@@ -48,13 +47,14 @@ function getBrachVar(branchCounter: number): string {
 }
 
 function generateModel(nodes: Set<GraphNode>, connections: Map<GraphNode, [GraphNode]>): string {
+  const header = 'class Model(nn.Module):';
+
   // resetting the naming counters for each new graph
   nodeNames = new Map<GraphNode, string>();
   nodeTypeCounters = new Map<string, number>();
+  const nodeArr: Array<GraphNode> = [...nodes];
 
-  const result: string[] = [];
-
-  const inputs = [...nodes.values()].filter((item: GraphNode) => item.mlNode instanceof InModel);
+  const inputs = nodeArr.filter((item: GraphNode) => item.modelNode instanceof InModel);
   const outputs: string[] = [];
   const inputNames = inputs.map((node) => getNodeName(node));
   const forward: string[] = [`\tdef forward(${inputNames.join(', ')})`];
@@ -67,10 +67,10 @@ function generateModel(nodes: Set<GraphNode>, connections: Map<GraphNode, [Graph
     const node = stack.pop();
     const nodeName = getNodeName(node);
     // TODO: check here for other branching nodes
-    if (node.mlNode instanceof InModel) {
+    if (node.modelNode instanceof InModel) {
       if (branchCounter !== 0) { branchCounter += 1; }
       forward.push(`${getBrachVar(branchCounter)} = ${nodeName}`);
-    } else if (node.mlNode instanceof OutModel) {
+    } else if (node.modelNode instanceof OutModel) {
       outputs.push(getBrachVar(branchCounter));
     } else {
       forward.push(`${getBrachVar(branchCounter)} = self.${nodeName}(${getBrachVar(branchCounter)})`);
@@ -91,13 +91,13 @@ function generateModel(nodes: Set<GraphNode>, connections: Map<GraphNode, [Graph
     }
   }
 
-  const modelNodes = [...nodes.values()].filter(
-    (item) => !(item.mlNode instanceof InModel || item.mlNode instanceof OutModel),
-  );
-  const header = 'class Mode(nn.Module):';
-  const nodeDefinitions = [...modelNodes.values()].map(
-    (n) => `self.${getNodeName(n)} = ${n.mlNode.initCode()}`,
-  );
+  const nodeDefinitions: string[] = [];
+
+  nodeArr.forEach((n) => {
+    if ((n.modelNode as ModelLayerNode).initCode !== undefined) {
+      nodeDefinitions.push(`self.${getNodeName(n)} = ${(n.modelNode as ModelLayerNode).initCode()}`);
+    }
+  });
   const init = ['\tdef __init__(self)'].concat(nodeDefinitions);
   forward.push(`return ${outputs.join(', ')}`);
   const forwardMethod = forward.join('\n\t\t');
@@ -126,8 +126,6 @@ export default function generateCode(): string {
 
   const list = [input, conv, maxPool, output].map((t) => new GraphNode(t));
 
-  const map = new Map(list.map((t) => [t.uniqueId, t] as [UUID, GraphNode]));
-
   const nodes = new Set<GraphNode>(list);
   const connections = new Map<GraphNode, [GraphNode]>([
     [list[0], [list[1]]],
@@ -136,7 +134,7 @@ export default function generateCode(): string {
   ]);
 
   const model = generateModel(nodes, connections);
-  const result = [imports, model].join('\n');
+  const result = [imports, model].join('\n\n');
   return result;
 }
 
