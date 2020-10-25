@@ -30,10 +30,10 @@ function traverseOptions(options: Array<[string, any]>): Map<string, any> {
 }
 
 export function traverseUiToIr(state: IState):
-  [Set<GraphNode>, Array<[ModelNode | undefined, ModelNode | undefined]>] {
+  [Set<GraphNode>, Array<[ModelNode, ModelNode]>] {
   const set: Set<GraphNode> = new Set();
   const interfacesMap: Map<string, ModelNode> = new Map<string, ModelNode>();
-  const connections: Array<[ModelNode | undefined, ModelNode | undefined]> = new Array<[ModelNode, ModelNode]>();
+  const connections: Array<[ModelNode, ModelNode]> = new Array<[ModelNode, ModelNode]>();
 
   for (const node of state.nodes) {
     const constrMap: Map<string, any> = traverseOptions(node.options);
@@ -48,7 +48,9 @@ export function traverseUiToIr(state: IState):
 
     const toNodeid = connection.to;
     const toNode = interfacesMap.get(toNodeid);
-    connections.push([fromNode, toNode]);
+    if (fromNode && toNode) {
+      connections.push([fromNode, toNode]);
+    }
   }
 
   console.log(set);
