@@ -14,7 +14,7 @@
 
 <script>
 import { Component, Vue } from 'vue-property-decorator';
-import Navbar from '@/components/Navbar.vue';
+import Navbar from '@/components/navbar/Navbar.vue';
 import Editor from '@/components/Editor.vue';
 import Titlebar from '@/components/Titlebar.vue';
 
