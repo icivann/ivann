@@ -22,7 +22,7 @@ export default class MaxPool2D extends Node {
     this.addOption(MaxPool2DOptions.KernelSize, 'VectorOption', [1, 1], undefined, {
       min: [1, 1],
     });
-    this.addOption(MaxPool2DOptions.Stride, 'VectorOption', [1, 1],  undefined, {
+    this.addOption(MaxPool2DOptions.Stride, 'VectorOption', [1, 1], undefined, {
       min: [1, 1],
     });
     this.addOption(Conv2DOptions.Padding, 'DropdownOption', 'Valid', undefined, {

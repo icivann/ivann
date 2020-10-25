@@ -23,8 +23,7 @@ export default class Conv2D extends Node {
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
 
-
-    this.addOption(Conv2DOptions.Filters, 'IntOption', 1,  undefined, {
+    this.addOption(Conv2DOptions.Filters, 'IntOption', 1, undefined, {
       min: 1,
     });
 
