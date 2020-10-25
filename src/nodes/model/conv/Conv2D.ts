@@ -7,6 +7,7 @@ import {
   Padding,
 } from '@/app/ir/irCommon';
 import { valuesOf } from '@/app/util';
+import CheckboxValue from '@/baklava/CheckboxValue';
 
 export enum Conv2DOptions{ Filters= 'Filters', KernelSize='Kernel Size', Stride='Stride',
 Padding ='Padding', Activation = 'Activation',
@@ -41,7 +42,7 @@ export default class Conv2D extends Node {
     this.addOption(Conv2DOptions.Activation, 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinActivationF),
     });
-    this.addOption(Conv2DOptions.UseBias, 'CheckboxOption', true);
+    this.addOption(Conv2DOptions.UseBias, 'TickBoxOption', CheckboxValue.CHECKED);
 
     // TODO: Decide default value and options for these
     this.addOption(Conv2DOptions.WeightsInitializer, 'DropdownOption', 'Xavier', undefined, {
