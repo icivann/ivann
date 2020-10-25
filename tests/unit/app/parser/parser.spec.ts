@@ -1,4 +1,5 @@
-import parse, { ParsedFunction } from '@/app/parser/parser';
+import parse from '@/app/parser/parser';
+import ParsedFunction from '@/app/parser/ParsedFunction';
 
 describe('parser', () => {
   it('parses a single function with args correctly', () => {

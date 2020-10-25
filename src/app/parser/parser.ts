@@ -1,21 +1,5 @@
-/* eslint-disable max-classes-per-file */
-
-export class ParsedFunction {
-  constructor(
-    public readonly name: string,
-    public readonly body: string,
-    public readonly args: string[],
-  ) {
-  }
-}
-
-class FunctionSignature {
-  constructor(
-    public readonly name: string,
-    public readonly args: string[],
-  ) {
-  }
-}
+import FunctionSignature from '@/app/parser/FunctionSignature';
+import ParsedFunction from '@/app/parser/ParsedFunction';
 
 /**
  * Given a Python file, returns the indentation character sequence
