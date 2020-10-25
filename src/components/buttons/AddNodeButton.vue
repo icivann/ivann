@@ -9,7 +9,6 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import EditorManager from '@/EditorManager';
 
 @Component({})
 export default class AddNodeButton extends Vue {

@@ -7,6 +7,7 @@ import {
   Padding,
 } from '@/app/ir/irCommon';
 import { valuesOf } from '@/app/util';
+import CheckboxValue from '@/baklava/CheckboxValue';
 
 export default class Conv2D extends Node {
   type = Layers.Conv;
@@ -29,7 +30,7 @@ export default class Conv2D extends Node {
     this.addOption('Activation', 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinActivationF),
     });
-    this.addOption('Use Bias', 'CheckboxOption', true);
+    this.addOption('Use Bias', 'TickBoxOption', CheckboxValue.CHECKED);
 
     // TODO: Decide default value and options for these
     this.addOption('Weights Initializer', 'DropdownOption', 'Xavier', undefined, {
