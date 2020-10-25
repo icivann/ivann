@@ -21,11 +21,11 @@ const editorGetters: GetterTree<EditorsState, RootState> = {
         return {};
     }
   },
-  modelEditors: (state) => state.modelEditors,
-  dataEditors: (state) => state.dataEditors,
+  modelEditors: (state: EditorsState) => state.modelEditors,
+  dataEditors: (state: EditorsState) => state.dataEditors,
   trainEditors: (state) => state.trainEditors,
   overviewEditor: (state) => state.overviewEditor,
-  modelEditor: (state) => (index: number) => state.modelEditors[index],
+  modelEditor: (state: EditorsState) => (index: number) => state.modelEditors[index],
   dataEditor: (state) => (index: number) => state.dataEditors[index],
   trainEditor: (state) => (index: number) => state.trainEditors[index],
 };

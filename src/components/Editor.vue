@@ -27,6 +27,7 @@ import Resizable from '@/components/Resize/Resizable.vue';
 import { mapGetters } from 'vuex';
 import EditorType from '@/EditorType';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
+import { Getter } from 'vuex-class';
 
 @Component({
   components: {
@@ -35,26 +36,20 @@ import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
     Sidebar,
     Canvas,
   },
-  computed: mapGetters([
-    'currEditorType',
-    'currEditorModel',
-    'overviewEditor',
-    'modelEditor',
-    'dataEditor',
-    'trainEditor',
-  ]),
+  computed: mapGetters(['currEditorModel']),
 })
 export default class Editor extends Vue {
   private manager: EditorManager = EditorManager.getInstance();
   private editorWidth = 75; /* percentage */
   private sidebarWidth = 280; /* pixels */
+  @Getter('currEditorType') currEditorType!: EditorType;
 
   private changeWidth(percentage: number) {
     this.editorWidth = percentage;
   }
 
   private currViewPlugin(): ViewPlugin | undefined {
-    switch (this.$store.getters.currEditorType) {
+    switch (this.currEditorType) {
       case EditorType.OVERVIEW:
         return this.manager.overviewCanvas.viewPlugin;
       case EditorType.MODEL:
