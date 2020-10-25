@@ -15,7 +15,7 @@ import { Engine } from '@baklavajs/plugin-engine';
 import { traverseUiToIr } from '@/app/ir/traversals';
 
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
-import { EditorModel } from '@/store/Types';
+import { EditorModel } from '@/store/editors/types';
 
 @Component
 export default class Canvas extends Vue {
