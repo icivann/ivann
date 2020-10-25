@@ -6,7 +6,7 @@ export interface EditorModel {
   editor: Editor;
 }
 
-export interface RootState {
+export interface EditorsState {
   currEditorType: EditorType;
   currEditorIndex: number;
   overviewEditor: EditorModel;
