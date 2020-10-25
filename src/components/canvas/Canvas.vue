@@ -33,7 +33,7 @@ export default class Canvas extends Vue {
     this.editorModel.editor.use(this.viewPlugin);
     this.editorModel.editor.use(this.engine);
 
-    this.engine.events.calculated.addListener(this, (r) => {
+    this.engine.events.calculated.addListener(this, () => {
       console.log('Something changed!');
       const state = this.editorModel.editor.save();
       traverseUiToIr(state);

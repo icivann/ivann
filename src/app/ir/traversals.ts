@@ -1,4 +1,4 @@
-import { IInterfaceState, IState } from '@baklavajs/core/dist/baklavajs-core/types';
+import { IInterfaceState, IState } from '@baklavajs/core/dist/baklavajs-core/types/state.d';
 import { ModelNode } from '@/app/ir/mainNodes';
 import { UUID } from '@/app/util';
 import GraphNode from '@/app/ir/GraphNode';
