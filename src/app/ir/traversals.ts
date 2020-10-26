@@ -37,6 +37,7 @@ export function traverseUiToIr(state: IState):
   const connections: Array<[ModelNode, ModelNode]> = new Array<[ModelNode, ModelNode]>();
 
   for (const node of state.nodes) {
+    // TODO handle `CUSTOM` node case
     const constrMap: Map<string, any> = traverseOptions(node.options);
     const mlNode = mappingsForNodes(node.name, constrMap, interfacesMap, node.interfaces);
     const gNode = new GraphNode(mlNode, new UUID(node.id));
