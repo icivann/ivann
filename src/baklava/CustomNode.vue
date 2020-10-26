@@ -137,22 +137,38 @@ export default class CustomNode extends Components.Node {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   #arrow-button {
     position: absolute;
     top: 5px;
     right: 0;
     padding-right: 10px;
   }
-  #header {
-    color: white;
-    padding: 0.4em 0.75em;
-    border-radius: 4px 4px 0 0;
-    font-size: 16px;
-    font-weight: 800;
-    text-align: center;
-  }
+
   #content {
     background: var(--dark-grey);
+  }
+
+  .node {
+    /*font-family: Roboto, serif;*/
+    font-size: 14px;
+    &:hover {
+      box-shadow: 0 0 0 0.35px var(--blue);
+    }
+    &.--selected {
+      z-index: 5;
+      box-shadow: 0 0 0 1px var(--blue);
+    }
+    & > #header {
+      color: var(--foreground);
+      padding: 0.2em 0.75em;
+      border-radius: 4px 4px 0 0;
+      font-size: 17px;
+      text-align: center;
+
+      & > span {
+        pointer-events: none;
+      }
+    }
   }
 </style>
