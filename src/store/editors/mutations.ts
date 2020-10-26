@@ -4,6 +4,7 @@ import { Editor } from '@baklavajs/core';
 import newEditor from '@/baklava/Utils';
 import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
+import { loadEditor, loadEditors } from '@/file/EditorAsJson';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
@@ -33,6 +34,22 @@ const editorMutations: MutationTree<EditorsState> = {
       default:
         break;
     }
+  },
+  loadEditors(state, file) {
+    const editorNames: Set<string> = new Set<string>();
+
+    state.overviewEditor = loadEditor(EditorType.OVERVIEW, file.overviewEditor, editorNames);
+    state.modelEditors = loadEditors(EditorType.MODEL, file.modelEditors, editorNames);
+    state.dataEditors = loadEditors(EditorType.DATA, file.dataEditors, editorNames);
+    state.trainEditors = loadEditors(EditorType.TRAIN, file.trainEditors, editorNames);
+
+    state.editorNames = editorNames;
+
+    state.currEditorType = EditorType.MODEL;
+    state.currEditorIndex = 0;
+
+    // TODO: Remove this hack - causes <baklava-editor> to re-render
+    state.modelEditors[0].name += ' ';
   },
 };
 

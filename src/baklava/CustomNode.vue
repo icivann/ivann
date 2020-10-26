@@ -106,7 +106,7 @@
 import { Component } from 'vue-property-decorator';
 import { Components } from '@baklavajs/plugin-renderer-vue';
 import ArrowButton from '@/inputs/ArrowButton.vue';
-import { Layers } from '@/nodes/model/Types';
+import { Nodes } from '@/nodes/model/Types';
 
 @Component({
   components: { ArrowButton },
@@ -120,16 +120,20 @@ export default class CustomNode extends Components.Node {
 
   get titleBackground() {
     switch (this.data.type) {
-      case Layers.Linear:
+      case Nodes.Dense:
         return { background: 'var(--black)' };
-      case Layers.Conv:
+      case Nodes.Conv1D:
+      case Nodes.Conv2D:
+      case Nodes.Conv3D:
         return { background: 'var(--blue)' };
-      case Layers.Pool:
+      case Nodes.MaxPool2D:
         return { background: 'var(--red)' };
-      case Layers.Regularization:
+      case Nodes.Dropout:
         return { background: 'var(--pink)' };
-      case Layers.Reshape:
+      case Nodes.Flatten:
         return { background: 'var(--green)' };
+      case Nodes.Custom:
+        return { background: 'var(--purple)' };
       default:
         return { background: 'var(--black)' };
     }
