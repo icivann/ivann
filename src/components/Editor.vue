@@ -4,7 +4,7 @@
       <div class="px-0 canvas-frame"
            :style="`width: min(calc(100vw - 3rem - ${sidebarWidth}px), ${editorWidth}%)`">
         <Canvas
-          :viewPlugin="this.currViewPlugin()"
+          :viewPlugin="this.manager.viewPlugin"
           :editorModel="currEditorModel"
         />
       </div>
@@ -26,7 +26,6 @@ import Resizer from '@/components/Resize/Resizer.vue';
 import Resizable from '@/components/Resize/Resizable.vue';
 import { mapGetters } from 'vuex';
 import EditorType from '@/EditorType';
-import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import { Getter } from 'vuex-class';
 
 @Component({
@@ -46,21 +45,6 @@ export default class Editor extends Vue {
 
   private changeWidth(percentage: number) {
     this.editorWidth = percentage;
-  }
-
-  private currViewPlugin(): ViewPlugin | undefined {
-    switch (this.currEditorType) {
-      case EditorType.OVERVIEW:
-        return this.manager.overviewCanvas.viewPlugin;
-      case EditorType.MODEL:
-        return this.manager.modelCanvas.viewPlugin;
-      case EditorType.DATA:
-        return this.manager.dataCanvas.viewPlugin;
-      case EditorType.TRAIN:
-        return this.manager.trainCanvas.viewPlugin;
-      default:
-        return undefined;
-    }
   }
 }
 </script>
