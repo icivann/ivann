@@ -20,6 +20,24 @@ describe('parser', () => {
     });
   });
 
+  it('parses a function with no final line', () => {
+    const text = 'def func(arg1, arg2):\n'
+      + '  line1\n'
+      + '  line2';
+
+    const expected = [
+      new ParsedFunction(
+        'func',
+        '  line1\n  line2\n',
+        ['arg1', 'arg2'],
+      ),
+    ];
+
+    return parse(text).then((res) => {
+      expect(res).toEqual(expected);
+    });
+  });
+
   it('parses a single function without args correctly', () => {
     const text = 'def func():\n'
       + '  line1\n'

@@ -13,6 +13,7 @@ function mappingsForNodes(
   const fromMap = nodeBuilder.get(type);
   if (fromMap === undefined) {
     // TODO: throw exception?
+    throw new Error(`${type} is not mapped.`);
   }
   const node = fromMap!(options);
 

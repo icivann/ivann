@@ -58,7 +58,9 @@ function parse(str: string): Promise<ParsedFunction[]> {
       return;
     }
 
+    // Split lines and add an empty line at the end
     const lines = str.split('\n');
+    lines.push('');
 
     let isParsingFunction = false;
     let currentSignature: FunctionSignature | null = null;
