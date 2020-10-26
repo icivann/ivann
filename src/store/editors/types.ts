@@ -6,9 +6,10 @@ export interface EditorModel {
   editor: Editor;
 }
 
-export interface RootState {
+export interface EditorsState {
   currEditorType: EditorType;
   currEditorIndex: number;
+  editorNames: Set<string>;
   overviewEditor: EditorModel;
   modelEditors: EditorModel[];
   dataEditors: EditorModel[];

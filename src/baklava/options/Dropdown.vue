@@ -9,11 +9,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import IntegerInc from '@/baklava/input/IntegerInc.vue';
 import DropdownInput from '@/baklava/input/DropdownInput.vue';
 
 @Component({
-  components: { DropdownInput, IntegerInc },
+  components: { DropdownInput },
 })
 export default class Dropdown extends Vue {
   @Prop() value!: string;

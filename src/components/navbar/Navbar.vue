@@ -75,6 +75,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import EditorType from '@/EditorType';
 import { mapGetters, mapMutations } from 'vuex';
+import { Getter } from 'vuex-class';
 import NavbarContextualMenu from '@/components/navbar/NavbarContextualMenu.vue';
 
 @Component({
@@ -91,9 +92,10 @@ export default class Navbar extends Vue {
   private isModelContextualMenuOpen = false;
   private isDataContextualMenuOpen = false;
   private isTrainContextualMenuOpen = false;
+  @Getter('currEditorType') currEditorType!: EditorType;
 
   private isSelected(editorType: EditorType) {
-    return (this.$store.state.currEditorType === editorType) ? 'selected' : '';
+    return (this.currEditorType === editorType) ? 'selected' : '';
   }
 
   private displayNavbarContextualMenu(editorType: EditorType) {

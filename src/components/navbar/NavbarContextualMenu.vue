@@ -9,7 +9,7 @@
       </div>
       <VerticalMenuButton
         :label="'+'"
-        :onClick="() => newEditor({ name: 'untitled ' + editors.length, editorType})"
+        :onClick="this.createNewEditor"
         :isSelected="false"
       />
     </div>
@@ -21,6 +21,7 @@ import VerticalMenuButton from '@/components/buttons/VerticalMenuButton.vue';
 import { mapGetters, mapMutations } from 'vuex';
 import { Editor } from '@baklavajs/core';
 import EditorType from '@/EditorType';
+import { Getter, Mutation } from 'vuex-class';
 
 @Component({
   components: { VerticalMenuButton },
@@ -28,14 +29,24 @@ import EditorType from '@/EditorType';
     'currEditorType',
     'currEditorIndex',
   ]),
-  methods: mapMutations([
-    'switchEditor',
-    'newEditor',
-  ]),
+  methods: mapMutations(['switchEditor']),
 })
 export default class NavbarContextualMenu extends Vue {
   @Prop({ required: true }) readonly editors!: Editor[];
   @Prop({ required: true }) readonly editorType!: EditorType
+  @Getter('editorNames') editorNames!: Set<string>;
+  @Mutation('newEditor') newEditor!: (arg0: { editorType: EditorType; name: string}) => void;
+
+  private createNewEditor(): void {
+    let isNameUnique = false;
+    while (!isNameUnique) {
+      const name = prompt('Please enter a unique name for the editor');
+      if (name !== null && !this.editorNames.has(name)) {
+        isNameUnique = true;
+        this.newEditor({ editorType: this.editorType, name });
+      }
+    }
+  }
 }
 
 </script>

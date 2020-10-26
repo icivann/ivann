@@ -11,13 +11,17 @@ import {
   Vue,
   Watch,
 } from 'vue-property-decorator';
+import { Engine } from '@baklavajs/plugin-engine';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
-import { EditorModel } from '@/store/Types';
+import { traverseUiToIr } from '@/app/ir/traversals';
+import { EditorModel } from '@/store/editors/types';
 
 @Component
 export default class Canvas extends Vue {
   @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
+
+  private engine = new Engine(true);
 
   @Watch('editorModel')
   onEditorChange(editorModel: EditorModel) {
@@ -26,6 +30,13 @@ export default class Canvas extends Vue {
 
   created(): void {
     this.editorModel.editor.use(this.viewPlugin);
+    this.editorModel.editor.use(this.engine);
+
+    this.engine.events.calculated.addListener(this, () => {
+      console.log('Something changed!');
+      const state = this.editorModel.editor.save();
+      traverseUiToIr(state);
+    });
   }
 }
 </script>

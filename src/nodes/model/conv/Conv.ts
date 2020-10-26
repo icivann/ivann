@@ -6,6 +6,15 @@ import {
   Padding,
 } from '@/app/ir/irCommon';
 import { valuesOf } from '@/app/util';
+import CheckboxValue from '@/baklava/CheckboxValue';
+
+export enum ConvOptions {
+  Filters = 'Filters', KernelSize = 'Kernel Size', Stride = 'Stride',
+  Padding = 'Padding', Activation = 'Activation',
+  UseBias = 'Use Bias', WeightsInitializer = 'Weights Initializer',
+  BiasInitializer = 'Bias Initializer', WeightsRegularizer = 'Weights Regularizer',
+  BiasRegularizer = 'Bias Regularizer'
+}
 
 export default abstract class Conv extends Node {
   constructor() {
@@ -13,31 +22,31 @@ export default abstract class Conv extends Node {
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
 
-    this.addOption('Filters', 'IntOption', 1, undefined, {
+    this.addOption(ConvOptions.Filters, 'IntOption', 1, undefined, {
       min: 1,
     });
 
     this.addKernelStride();
 
-    this.addOption('Padding', 'DropdownOption', 'Valid', undefined, {
+    this.addOption(ConvOptions.Padding, 'DropdownOption', 'Valid', undefined, {
       items: valuesOf(Padding),
     });
-    this.addOption('Activation', 'DropdownOption', 'None', undefined, {
+    this.addOption(ConvOptions.Activation, 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinActivationF),
     });
-    this.addOption('Use Bias', 'CheckboxOption', true);
+    this.addOption(ConvOptions.UseBias, 'TickBoxOption', CheckboxValue.CHECKED);
 
     // TODO: Decide default value and options for these
-    this.addOption('Weights Initializer', 'DropdownOption', 'Xavier', undefined, {
+    this.addOption(ConvOptions.WeightsInitializer, 'DropdownOption', 'Xavier', undefined, {
       items: valuesOf(BuiltinInitializer),
     });
-    this.addOption('Bias Initializer', 'DropdownOption', 'Zeros', undefined, {
+    this.addOption(ConvOptions.BiasInitializer, 'DropdownOption', 'Zeros', undefined, {
       items: valuesOf(BuiltinInitializer),
     });
-    this.addOption('Bias Regularizer', 'DropdownOption', 'None', undefined, {
+    this.addOption(ConvOptions.BiasRegularizer, 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinRegularizer),
     });
-    this.addOption('Weights Regularizer', 'DropdownOption', 'None', undefined, {
+    this.addOption(ConvOptions.WeightsRegularizer, 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinRegularizer),
     });
   }
