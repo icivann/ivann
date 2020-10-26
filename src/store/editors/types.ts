@@ -9,6 +9,7 @@ export interface EditorModel {
 export interface EditorsState {
   currEditorType: EditorType;
   currEditorIndex: number;
+  editorNames: Set<string>;
   overviewEditor: EditorModel;
   modelEditors: EditorModel[];
   dataEditors: EditorModel[];
