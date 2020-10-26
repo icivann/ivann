@@ -4,6 +4,7 @@ import Vector from '@/baklava/options/Vector.vue';
 import Integer from '@/baklava/options/Integer.vue';
 import Dropdown from '@/baklava/options/Dropdown.vue';
 import Checkbox from '@/baklava/options/Checkbox.vue';
+import TextArea from '@/baklava/options/TextArea.vue';
 import CustomNode from '@/baklava/CustomNode.vue';
 import { Editor } from '@baklavajs/core';
 
@@ -16,6 +17,7 @@ export default abstract class AbstractCanvas {
     this.view.registerOption('IntOption', Integer);
     this.view.registerOption('DropdownOption', Dropdown);
     this.view.registerOption('TickBoxOption', Checkbox);
+    this.view.registerOption('TextAreaOption', TextArea);
 
     this.view.components.node = CustomNode;
   }
