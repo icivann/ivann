@@ -1,25 +1,27 @@
 <template>
   <div class="d-sm-flex">
     <div class="ml-1">{{ name }}</div>
-    <textarea class="form-control" v-bind:class="{ 'is-invalid': option.params.hasError }"
-      :value="value" @input="changeValue($event.target.value)" />
+    <textarea class="form-control" v-bind:class="{ 'is-invalid': value.hasError }"
+      :value="value.text" @input="changeValue($event.target.value)" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import OptionParams from '@/baklava/OptionParams';
 
 @Component
 export default class TextArea extends Vue {
-  @Prop() value!: string;
-  @Prop() name!: string;
-  @Prop() option!: {
-    params?: OptionParams;
+  /** Value is a tuple of the shape (text, hasError).
+   * If `hasError` is set, the TextArea is highlighted.
+   */
+  @Prop() value!: {
+    text: string;
+    hasError: boolean;
   };
+  @Prop() name!: string;
 
   private changeValue(value: string) {
-    this.$emit('input', value);
+    this.$emit('input', { text: value, hasError: this.value.hasError });
   }
 }
 </script>

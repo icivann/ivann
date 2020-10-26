@@ -1,7 +1,6 @@
 import { Node } from '@baklavajs/core';
 import { Layers, Nodes } from '@/nodes/model/Types';
 import parse from '@/app/parser/parser';
-import OptionParams from '@/baklava/OptionParams';
 
 export enum CustomOptions{
   InlineCode = 'Inline Code',
@@ -12,11 +11,12 @@ export default class Custom extends Node {
 
   private inputNames: string[] = [];
 
-  private inlineCodeParams = new OptionParams(false);
+  private code = '';
 
   constructor() {
     super();
-    this.addOption(CustomOptions.InlineCode, 'TextAreaOption', '', undefined, { params: this.inlineCodeParams });
+    this.addOption(CustomOptions.InlineCode, 'TextAreaOption',
+      { text: this.code, hasError: false });
     this.addOutputInterface('Output');
     this.events.update.addListener(this, (event: any) => {
       this.nodeUpdated(event);
@@ -25,14 +25,21 @@ export default class Custom extends Node {
 
   private nodeUpdated(event: any) {
     if (event.name === CustomOptions.InlineCode) {
-      const code = event.option.value;
+      const code = event.option.value.text;
+
+      /* If the code did not change (probably the hasError did), do not parse it */
+      if (code === this.code) {
+        return;
+      }
+
+      this.code = code;
 
       if (code === '') {
         this.removeAllInputs();
       } else {
         parse(code)
           .then((functions) => {
-            this.inlineCodeParams.hasError = false;
+            this.setError(false);
             console.log(functions);
             if (functions.length > 0) {
               const func = functions[0];
@@ -40,7 +47,7 @@ export default class Custom extends Node {
             }
           })
           .catch((err: Error) => {
-            this.inlineCodeParams.hasError = true;
+            this.setError(true);
             // TODO Do feedback
             throw err;
           });
@@ -61,5 +68,12 @@ export default class Custom extends Node {
       this.removeInterface(inputName);
     });
     this.inputNames = [];
+  }
+
+  private setError(error: boolean) {
+    this.setOptionValue(
+      CustomOptions.InlineCode,
+      { text: this.getOptionValue(CustomOptions.InlineCode).text, hasError: error },
+    );
   }
 }
