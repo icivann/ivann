@@ -41,7 +41,12 @@ export default class NavbarContextualMenu extends Vue {
     let isNameUnique = false;
     while (!isNameUnique) {
       const name = prompt('Please enter a unique name for the editor');
-      if (name !== null && !this.editorNames.has(name)) {
+
+      // Name is null if cancelled
+      if (name === null) break;
+
+      // Loop until unique non-empty name has been entered
+      if (name !== '' && !this.editorNames.has(name)) {
         isNameUnique = true;
         this.newEditor({ editorType: this.editorType, name });
       }
