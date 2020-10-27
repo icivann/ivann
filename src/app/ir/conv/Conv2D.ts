@@ -10,6 +10,7 @@ import {
   Regularizer,
 } from '@/app/ir/irCommon';
 import { Conv2DOptions } from '@/nodes/model/conv/Conv2D';
+import { ModelNode } from '@/app/ir/mainNodes';
 
 export default class Conv2D {
   constructor(
@@ -23,7 +24,7 @@ export default class Conv2D {
   ) {
   }
 
-  static build(options: Map<string, any>): Conv2D {
+  static build(options: Map<string, any>): ModelNode {
     return new Conv2D(
       options.get(Conv2DOptions.Filters),
       getPadding(options.get(Conv2DOptions.Padding)),

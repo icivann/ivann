@@ -1,8 +1,8 @@
-import { IInterfaceState, IState } from '@baklavajs/core/dist/baklavajs-core/types';
 import { ModelNode } from '@/app/ir/mainNodes';
 import { UUID } from '@/app/util';
 import GraphNode from '@/app/ir/GraphNode';
 import { nodeBuilder } from '@/nodes/model/nodeBuilderMap';
+import { IInterfaceState, IState } from '@baklavajs/plugin-engine/dist/baklavajs-core/types';
 
 function mappingsForNodes(
   type: string,
@@ -13,6 +13,7 @@ function mappingsForNodes(
   const fromMap = nodeBuilder.get(type);
   if (fromMap === undefined) {
     // TODO: throw exception?
+    console.log('not implemented yet');
   }
   const node = fromMap!(options);
 

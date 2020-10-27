@@ -4,6 +4,11 @@ import { valuesOf } from '@/app/util';
 import { BuiltinActivationF, BuiltinInitializer, BuiltinRegularizer } from '@/app/ir/irCommon';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
+export enum DenseOptions {
+  Size = 'Size', Activation = 'Activation', UseBias= 'Use Bias',
+  WeightsInitializer = 'Weights Initializer', BiasInitializer = 'Bias Initializer',
+  BiasRegularizer = 'Bias Regularizer', WeightsRegularizer = 'Weights Regularizer'
+}
 export default class Dense extends Node {
   type = Layers.Linear;
   name = Nodes.Dense;
@@ -13,25 +18,25 @@ export default class Dense extends Node {
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
 
-    this.addOption('Size', 'IntOption', 1, undefined, {
+    this.addOption(DenseOptions.Size, 'IntOption', 1, undefined, {
       min: 1,
     });
-    this.addOption('Activation', 'DropdownOption', 'None', undefined, {
+    this.addOption(DenseOptions.Activation, 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinActivationF),
     });
-    this.addOption('Use Bias', 'TickBoxOption', CheckboxValue.CHECKED);
+    this.addOption(DenseOptions.UseBias, 'TickBoxOption', CheckboxValue.CHECKED);
 
     // TODO: Decide default value and options for these
-    this.addOption('Weights Initializer', 'DropdownOption', 'Xavier', undefined, {
+    this.addOption(DenseOptions.WeightsInitializer, 'DropdownOption', 'Xavier', undefined, {
       items: valuesOf(BuiltinInitializer),
     });
-    this.addOption('Bias Initializer', 'DropdownOption', 'Zeros', undefined, {
+    this.addOption(DenseOptions.BiasInitializer, 'DropdownOption', 'Zeroes', undefined, {
       items: valuesOf(BuiltinInitializer),
     });
-    this.addOption('Bias Regularizer', 'DropdownOption', 'None', undefined, {
+    this.addOption(DenseOptions.BiasRegularizer, 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinRegularizer),
     });
-    this.addOption('Weights Regularizer', 'DropdownOption', 'None', undefined, {
+    this.addOption(DenseOptions.WeightsRegularizer, 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinRegularizer),
     });
   }

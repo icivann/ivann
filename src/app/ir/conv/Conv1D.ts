@@ -2,6 +2,7 @@ import { Option } from '@/app/util';
 import {
   ActivationF, BuiltinActivationF, Initializer, Padding, Regularizer,
 } from '@/app/ir/irCommon';
+import { ModelNode } from '@/app/ir/mainNodes';
 
 export default class Conv1D {
   constructor(
@@ -15,7 +16,7 @@ export default class Conv1D {
     public readonly stride: [bigint],
   ) {}
 
-  static build(options: Map<string, any>): Conv1D {
+  static build(options: Map<string, any>): ModelNode {
     console.log(options);
     const node = new Conv1D(
       options.get('Filters'),
