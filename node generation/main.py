@@ -1,6 +1,13 @@
 import re
 import os
 
+type_map = {
+  "int" : "IntOption",
+  "Union[T,Tuple[T]]":"VectorOption",
+  "str":"DropdownOption",
+  "bool":"TickBoxOption"
+}
+
 def parse_options(string):
   ret = {}
   split = string.split(":")
@@ -39,67 +46,96 @@ def parse(x):
   split = x.split('(', 1)
   class_name = split[0]
   parameter_name_and_types = split[1][:-1]
-  parameter_name_and_types.replace('[T, Tuple[T]]', 'Union')
   
-  f''
+  parameter_map = parse_options(parameter_name_and_types)
 
-
-  for x in parameter_name_and_types:
-    print(x)
-  print()
-  quit()
-  
-  options = {}
-
-  print(class_name)
-  print(parameter_name_and_types)
-
-  print("options \n")
-
-  for option in parameter_name_and_types:
-    option = option.replace(" ", "")
-    split_option = option.split(":")
-    option_name = split_option[0]
-    print(split_option)
-    rest = split_option[1].split('=')
-    default_value = rest[1] if len(rest) > 1 else None
-    option_type = rest[0]
-    
-    print(option_name, option_type, default_value)
-    
-    options[option_name] = option_type
-
+  return class_name, parameter_map
 
 def create_baklava(class_name, option_map: dict):
-  f_path = os.path.join("Conv1D.ts")
-  f = open(f_path, "w")
-  ts = "import { Node } from '@baklavajs/core'; \nimport { Layers, Nodes } from '@/nodes/model/Types';"
+  f_path = os.path.join(f"{class_name.capitalize()}.ts")
+  baklava_file = open(f_path, "w")
   
-  option_enums = [f"export enum {class_name.capitalize()}{{"]
+  option_enums_header = f"export enum {class_name.capitalize()}Options {{"
+  option_enums_values = []
+  options_add = []
   for k,v in option_map.items():
-    x = f"{enumValue}= ' {k.capitalize()}"
-    enumValue = k.capitalize().replace(" ","")
-    option_enums.append(f"{enumValue.capitalize()} = ' {k.capitalize()}'") 
+    option_name = k.capitalize()
+    enumValue = k.replace("_"," ").capitalize()
+    option_enums_values.append(f"{option_name} = '{enumValue}'") 
 
-    options_add.append(f'this.addOption('{})
+    option_type, default_value = v
+    option_type = type_map[option_type]
+    default_value = default_value if default_value else '//TODO: Add default value'
 
-  option_enums.append("}")
+    option_add = f"""this.addOption({class_name}Options.{option_name}, '{option_type}', {default_value});"""
+    options_add.append(option_add)
 
-
+  options_add = "\n  ".join(options_add)
+  option_enums_values = ",\n  ".join(option_enums_values)
+  option_enums = f"{option_enums_header}\n  {option_enums_values}\n}}"
+  # option_enums = "\n".join(option_enums)
   
 
-  [ts,  
-  option_enums,
-  option_enums,
-  'export default class MaxPool2D extends Node {',
-  'constructor() {',
-  'super();',
-  '  this.addInputInterface(\'Input\');',
-  '  this.addOutputInterface(\'Output\');',
-  option_add
-  ].join('\n')
+  print("options enums\n\n", option_enums)
+
+  contents =  f"""import {{ Node }} from '@baklavajs/core';
+import {{ Layers, Nodes }} from '@/nodes/model/Types';
+{option_enums}
+export default class {class_name} extends Node {{
+constructor() {{
+super();
+  this.addInputInterface('Input');
+  this.addOutputInterface('Output');
+  {options_add}
+  }}
+}}
+  """
+
+  baklava_file.write(contents)
+
+def create_ir_node(class_name, option_map: dict):
+  f_path = os.path.join(f"{class_name.lower()}.ts")
+  ir_file = open(f_path, "w")
   
+  option_enums_header = f"export enum {class_name.capitalize()}Options {{"
+  option_enums_values = []
+  options_add = []
+  fields = []
+  for k,v in option_map.items():
+    option_name = k.capitalize()
+    enumValue = k.replace("_"," ").capitalize()
+    option_enums_values.append(f"{option_name} = '{enumValue}'") 
+
+    option_type, default_value = v
+    option_type = type_map[option_type]
+    default_value = default_value if default_value else '//TODO: Add default value'
+
+    option_add = f"""this.addOption({class_name}Options.{option_name}, '{option_type}', {default_value});"""
+    options_add.append(option_add)
+
+  options_add = "\n  ".join(options_add)
+  option_enums_values = ",\n  ".join(option_enums_values)
+  option_enums = f"{option_enums_header}\n  {option_enums_values}\n}}"
+  # option_enums = "\n".join(option_enums)
+  
+
+  print("options enums\n\n", option_enums)
+
+  contents =  f"""import {{ {class_name}Options }} from 'TODO';
+import {{ ModelNode }} from 'TODO';
+
+export default class {class_name} {{
+constructor(
+  {fields}
+  
+}}
+  """
+
+  ir_file.write(contents)
 
 if __name__ == "__main__":
   string = "torch.nn.Conv1d(in_channels: int, out_channels: int, kernel_size: Union[T, Tuple[T]], stride: Union[T, Tuple[T]] = 1, padding: Union[T, Tuple[T]] = 0, dilation: Union[T, Tuple[T]] = 1, groups: int = 1, bias: bool = True, padding_mode: str = 'zeros')"
-  parse(string)
+  class_name, options_map = parse(string)
+
+  create_baklava(class_name, options_map)
+  create_ir_node(class_name, options_map)
