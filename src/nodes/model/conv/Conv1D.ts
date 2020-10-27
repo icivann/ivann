@@ -1,8 +1,8 @@
 import Conv, { ConvOptions } from '@/nodes/model/conv/Conv';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { Nodes } from '@/nodes/model/Types';
 
 export default class Conv1D extends Conv {
-  type = Layers.Conv;
+  type = Nodes.Conv1D;
   name = Nodes.Conv1D;
 
   protected addKernelStride(): void {

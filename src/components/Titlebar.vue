@@ -13,7 +13,13 @@
       <span class="icon-button" @click="share">
         <i class="titlebar-icon fas fa-share-alt fa-lg mx-2"/>
       </span>
-      <span class="icon-button" @click="open">
+      <input
+        type="file"
+        id="upload-file"
+        style="display: none"
+        @change="load"
+      >
+      <span class="icon-button" @click="uploadFile">
         <i class="titlebar-icon fas fa-folder-open fa-lg mx-2"/>
       </span>
       <span class="icon-button" @click="save">
@@ -25,19 +31,58 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Getter, Mutation } from 'vuex-class';
+import { EditorModels } from '@/store/editors/types';
+import { download } from '@/file/Utils';
+import { FILENAME, saveEditor, saveEditors } from '@/file/EditorAsJson';
 
 @Component
 export default class Titlebar extends Vue {
-  share() {
+  @Getter('allEditorModels') editorModels!: EditorModels;
+  @Mutation('loadEditors') loadEditors!: (editorModels: EditorModels) => void;
+
+  private share() {
     console.log(`Share button pressed. ${this.$data}`);
   }
 
-  open() {
-    console.log(`Open button pressed. ${this.$data}`);
+  private uploadFile = () => {
+    const element = document.getElementById('upload-file');
+    if (!element) return;
+    element.click();
   }
 
-  save() {
-    console.log(`Save button pressed. ${this.$data}`);
+  private load() {
+    const { files } = document.getElementById('upload-file') as HTMLInputElement;
+    if (!files) return;
+
+    const fr: FileReader = new FileReader();
+    fr.onload = (event) => {
+      if (!event.target) return;
+
+      // Load all editors using parsed file
+      this.loadEditors(JSON.parse(event.target.result as string));
+    };
+
+    // Trigger the file to be read
+    fr.readAsText(files[0]);
+  }
+
+  private save() {
+    const {
+      overviewEditor,
+      modelEditors,
+      dataEditors,
+      trainEditors,
+    } = this.editorModels;
+
+    const editorsSaved = {
+      overviewEditor: saveEditor(overviewEditor),
+      modelEditors: saveEditors(modelEditors),
+      dataEditors: saveEditors(dataEditors),
+      trainEditors: saveEditors(trainEditors),
+    };
+
+    download(FILENAME, JSON.stringify(editorsSaved));
   }
 }
 </script>
