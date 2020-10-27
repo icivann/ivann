@@ -1,5 +1,11 @@
 <template>
   <div class="layers-tab">
+    <ExpandablePanel name="Input/Output">
+      <ButtonGrid>
+        <AddNodeButton node="Input" name="Input"/>
+        <AddNodeButton node="Output" name="Output"/>
+      </ButtonGrid>
+    </ExpandablePanel>
     <ExpandablePanel name="Linear">
       <ButtonGrid>
         <AddNodeButton node="Dense" name="Dense"/>

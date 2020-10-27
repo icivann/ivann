@@ -8,6 +8,10 @@ export const enum Layers {
   Custom = 'Custom',
 }
 
+export const enum Overview {
+  ModelNode = 'ModelEncapsulation',
+}
+
 export const enum Nodes {
   Dense = 'Dense',
   Conv1D = 'Convolution1D',
