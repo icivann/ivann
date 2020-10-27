@@ -1,33 +1,11 @@
 import { OptionPlugin } from '@baklavajs/plugin-options-vue';
-import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
-import Vector from '@/baklava/options/Vector.vue';
-import Integer from '@/baklava/options/Integer.vue';
-import Dropdown from '@/baklava/options/Dropdown.vue';
-import Checkbox from '@/baklava/options/Checkbox.vue';
-import TextArea from '@/baklava/options/TextArea.vue';
-import CustomNode from '@/baklava/CustomNode.vue';
 import { Editor } from '@baklavajs/core';
 
 export default abstract class AbstractCanvas {
   protected option: OptionPlugin = new OptionPlugin();
-  protected view: ViewPlugin = new ViewPlugin();
-
-  constructor() {
-    this.view.registerOption('VectorOption', Vector);
-    this.view.registerOption('IntOption', Integer);
-    this.view.registerOption('DropdownOption', Dropdown);
-    this.view.registerOption('TickBoxOption', Checkbox);
-    this.view.registerOption('TextAreaOption', TextArea);
-
-    this.view.components.node = CustomNode;
-  }
 
   public get optionPlugin(): OptionPlugin {
     return this.option;
-  }
-
-  public get viewPlugin(): ViewPlugin {
-    return this.view;
   }
 
   public abstract registerNodes(editor: Editor): void;
