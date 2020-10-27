@@ -3,11 +3,13 @@ import { EditorsState } from '@/store/editors/types';
 import { Editor } from '@baklavajs/core';
 import newEditor from '@/baklava/Utils';
 import EditorType from '@/EditorType';
+import EditorManager from '@/EditorManager';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
     state.currEditorType = editorType;
     state.currEditorIndex = index;
+    EditorManager.getInstance().resetView();
   },
   newEditor(state, { editorType, name }) {
     const editor: Editor = newEditor(editorType);
