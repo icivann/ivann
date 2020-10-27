@@ -1,8 +1,8 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { Nodes } from '@/nodes/model/Types';
 
 export default class Flatten extends Node {
-  type = Layers.Reshape;
+  type = Nodes.Flatten;
   name = Nodes.Flatten;
 
   constructor() {
