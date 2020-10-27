@@ -16,7 +16,12 @@ const editorMutations: MutationTree<EditorsState> = {
       case EditorType.MODEL:
         state.currEditorType = editorType;
         state.editorNames.add(name);
-        state.currEditorIndex = state.modelEditors.push({ name, editor }) - 1;
+        state.currEditorIndex = state.modelEditors.push({
+          name,
+          editor,
+          inputs: [],
+          outputs: [],
+        }) - 1;
         break;
       case EditorType.DATA:
         state.currEditorType = editorType;

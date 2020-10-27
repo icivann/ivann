@@ -18,6 +18,8 @@ export const editorState: EditorsState = {
     {
       name: 'untitled',
       editor: newEditor(EditorType.MODEL),
+      inputs: [],
+      outputs: [],
     },
   ],
   dataEditors: [],
