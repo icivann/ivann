@@ -21,7 +21,7 @@ export default class Canvas extends Vue {
   @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
 
-  private engine = new Engine(true);
+  public engine = new Engine(true);
 
   @Watch('editorModel')
   onEditorChange(editorModel: EditorModel) {

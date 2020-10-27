@@ -1,4 +1,5 @@
 export const enum Layers {
+  Core = 'Core',
   Linear = 'Linear',
   Conv = 'Convolution',
   Pool = 'Pooling',
@@ -15,5 +16,7 @@ export const enum Nodes {
   MaxPool2D = 'MaxPooling2D',
   Dropout = 'Dropout',
   Flatten = 'Flatten',
-  Custom = 'Custom'
+  Custom = 'Custom',
+  Output = 'Output',
+  Input = 'Input'
 }
