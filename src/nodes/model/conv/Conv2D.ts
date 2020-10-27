@@ -9,6 +9,7 @@ import {
 import { valuesOf } from '@/app/util';
 
 export enum Conv2DOptions{ Filters= 'Filters', KernelSize='Kernel Size', Stride='Stride',
+// eslint-disable-next-line no-shadow
 Padding ='Padding', Activation = 'Activation',
 UseBias= 'Use Bias', WeightsInitializer = 'Weights Initializer',
 BiasInitializer='Bias Initializer', WeightsRegularizer = 'Weights Regularizer',

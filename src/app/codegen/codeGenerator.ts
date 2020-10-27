@@ -24,6 +24,8 @@ const imports = [
 let nodeNames = new Map<GraphNode, string>();
 let nodeTypeCounters = new Map<string, number>();
 
+const indent = '  ';
+
 function getNodeType(node: GraphNode): string {
   return node.modelNode.constructor.name.toLowerCase();
 }
@@ -57,9 +59,8 @@ function generateModel(nodes: Set<GraphNode>, connections: Map<GraphNode, [Graph
   const inputs = nodeArr.filter((item: GraphNode) => item.modelNode instanceof InModel);
   const outputs: string[] = [];
   const inputNames = inputs.map((node) => getNodeName(node));
-  const forward: string[] = [`\tdef forward(${inputNames.join(', ')})`];
+  const forward: string[] = [`${indent}def forward(self, ${inputNames.join(', ')})`];
 
-  console.log(nodes);
   const stack = new Stack<GraphNode>(...inputs);
 
   let branchCounter = 0;
@@ -77,17 +78,12 @@ function generateModel(nodes: Set<GraphNode>, connections: Map<GraphNode, [Graph
     }
 
     const nodeConnections = connections.get(node);
-    console.log(node, nodeConnections);
 
     if (nodeConnections !== undefined) {
-      console.log('in', nodeConnections);
       const makeNewBranches = (nodeConnections.length > 1);
-      // eslint-disable-next-line no-restricted-syntax
-      for (const outNode of nodeConnections) {
+      nodeConnections.forEach((outNode) => {
         stack.push(outNode);
-      }
-
-      // TODO: add outgoing connections onto stack etc
+      });
     }
   }
 
@@ -98,10 +94,10 @@ function generateModel(nodes: Set<GraphNode>, connections: Map<GraphNode, [Graph
       nodeDefinitions.push(`self.${getNodeName(n)} = ${(n.modelNode as ModelLayerNode).initCode()}`);
     }
   });
-  const init = ['\tdef __init__(self)'].concat(nodeDefinitions);
+  const init = [`${indent}def __init__(self):`].concat(nodeDefinitions);
   forward.push(`return ${outputs.join(', ')}`);
-  const forwardMethod = forward.join('\n\t\t');
-  const initMethod = init.join('\n\t\t');
+  const forwardMethod = forward.join(`\n${indent}${indent}`);
+  const initMethod = init.join(`\n${indent}${indent}`);
 
   return [header, initMethod, forwardMethod].join('\n');
 }
@@ -137,6 +133,3 @@ export default function generateCode(): string {
   const result = [imports, model].join('\n\n');
   return result;
 }
-
-// function modelInit(nodes: Set<ModelNode>) {
-// }

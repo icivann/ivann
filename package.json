@@ -18,6 +18,7 @@
     "baklavajs": "^1.7.4",
     "bootstrap": "^4.5.3",
     "core-js": "^3.6.5",
+    "jest-diff": "^26.6.1",
     "sass": "^1.27.0",
     "sass-loader": "^10.0.3",
     "stack-typescript": "^1.0.4",

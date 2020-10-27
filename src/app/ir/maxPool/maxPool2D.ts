@@ -18,6 +18,6 @@ export default class MaxPool2D {
   }
 
   public initCode(): string {
-    return `MaxPool2d(${this.kernel})`;
+    return `MaxPool2d((${this.kernel}))`;
   }
 }
