@@ -20,7 +20,6 @@ function mappingsForNodes(
     throw new Error(`${type} is not mapped.`);
   }
   const node = fromMap!(options);
-
   interfacesMap.set(interfaces[0][1].id, node);
   interfacesMap.set(interfaces[1][1].id, node);
   return node;

@@ -1,4 +1,4 @@
-import { randomUuid } from '@/app/util';
+import { randomUuid, UUID } from '@/app/util';
 import { MlNode } from '@/app/ir/mainNodes';
 
 export default class GraphNode {
@@ -6,9 +6,9 @@ export default class GraphNode {
     public readonly mlNode: MlNode,
     public readonly uniqueId = randomUuid(),
     public readonly inputInterfaces =
-    new Map([['input', randomUuid()]]),
+    new Map<string, UUID>(),
     public readonly outputInterfaces =
-    new Map([['output', randomUuid()]]),
+    new Map<string, UUID>(),
   ) {
   }
 }
