@@ -35,8 +35,7 @@ export default class Canvas extends Vue {
     this.engine.events.calculated.addListener(this, () => {
       console.log('Something changed!');
       const state = this.editorModel.editor.save();
-      const ir = istateToGraph(state);
-      console.log(ir);
+      istateToGraph(state);
     });
   }
 }
