@@ -31,7 +31,7 @@ export default class ModelEncapsulation extends Node {
       for (const input of this.inputs) {
         this.removeInterface(input.name);
       }
-      this.inputs = inputs;
+      this.inputs = inputs.slice();
       for (const input of this.inputs) {
         this.addInputInterface(input.name);
       }
@@ -41,7 +41,7 @@ export default class ModelEncapsulation extends Node {
       for (const output of this.outputs) {
         this.removeInterface(output.name);
       }
-      this.outputs = outputs;
+      this.outputs = outputs.slice();
       for (const output of this.outputs) {
         this.addOutputInterface(output.name);
       }
