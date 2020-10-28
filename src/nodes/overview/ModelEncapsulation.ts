@@ -1,7 +1,7 @@
 import { Node } from '@baklavajs/core';
 import { Overview } from '@/nodes/model/Types';
 import { EditorIO } from '@/store/editors/types';
-import editorIOEquals from '@/nodes/overview/EditorIOUtils';
+import editorIOPartition from '@/nodes/overview/EditorIOUtils';
 
 export interface ModelOption {
   name: string;
@@ -27,24 +27,40 @@ export default class ModelEncapsulation extends Node {
     const { inputs, outputs, name } = model;
     this.name = name;
 
-    if (inputs && !editorIOEquals(inputs, this.inputs)) {
-      for (const input of this.inputs) {
-        this.removeInterface(input.name);
+    if (inputs) {
+      const { added, removed } = editorIOPartition(inputs, this.inputs);
+      let modified = false;
+      if (added.length > 0) {
+        for (const input of added) {
+          this.addInputInterface(input.name);
+        }
+        modified = true;
       }
-      this.inputs = inputs.slice();
-      for (const input of this.inputs) {
-        this.addInputInterface(input.name);
+      if (removed.length > 0) {
+        for (const input of removed) {
+          this.removeInterface(input.name);
+        }
+        modified = true;
       }
+      if (modified) this.inputs = inputs.slice();
     }
 
-    if (outputs && !editorIOEquals(outputs, this.outputs)) {
-      for (const output of this.outputs) {
-        this.removeInterface(output.name);
+    if (outputs) {
+      const { added, removed } = editorIOPartition(outputs, this.outputs);
+      let modified = false;
+      if (added.length > 0) {
+        for (const output of added) {
+          this.addOutputInterface(output.name);
+        }
+        modified = true;
       }
-      this.outputs = outputs.slice();
-      for (const output of this.outputs) {
-        this.addOutputInterface(output.name);
+      if (removed.length > 0) {
+        for (const output of removed) {
+          this.removeInterface(output.name);
+        }
+        modified = true;
       }
+      if (modified) this.outputs = outputs.slice();
     }
   }
 }

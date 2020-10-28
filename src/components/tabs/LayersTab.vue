@@ -61,7 +61,6 @@ export default class LayersTab extends Vue {
       const count = currEditorModel.inputs.length;
       const inputName = `Input${count}`;
       currEditorModel.inputs.push({ name: inputName });
-      console.log(`${inputName} created!`);
     }
   }
 
@@ -71,7 +70,6 @@ export default class LayersTab extends Vue {
       const count = currEditorModel.outputs.length;
       const outputName = `Output${count}`;
       currEditorModel.outputs.push({ name: outputName });
-      console.log(`${outputName} created!`);
     }
   }
 }

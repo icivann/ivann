@@ -1,14 +1,23 @@
-export default function editorIOEquals(o1: any, o2: any): boolean {
-  if (!Array.isArray(o1) || !Array.isArray(o2) || o1.length !== o2.length) {
-    return false;
-  }
+import { EditorIO } from '@/store/editors/types';
 
-  for (let i = 0; i < o1.length; i += 1) {
-    const { name: name1 } = o1[i];
-    const { name: name2 } = o2[i];
-    if (name1 === undefined || name1 !== name2) {
-      return false;
+export default function editorIOPartition(updated: EditorIO[], old: EditorIO[]): {
+  added: EditorIO[];
+  removed: EditorIO[];
+} {
+  const added: EditorIO[] = [];
+  const removed: EditorIO[] = [];
+
+  for (const io of updated) {
+    if (!old.some((obj) => obj.name === io.name)) {
+      added.push(io);
     }
   }
-  return true;
+
+  for (const io of old) {
+    if (!updated.some((obj) => obj.name === io.name)) {
+      removed.push(io);
+    }
+  }
+
+  return { added, removed };
 }
