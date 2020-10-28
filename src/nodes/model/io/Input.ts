@@ -8,5 +8,6 @@ export default class Input extends Node {
   constructor() {
     super();
     this.addOutputInterface('Output');
+    console.log(`this.state[0] = ${this.state[0]}`);
   }
 }

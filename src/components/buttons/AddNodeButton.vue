@@ -3,7 +3,7 @@
     <div class="icon">
       <slot/>
     </div>
-    <div class="name" :style="'font-size: ' + fontSize + 'em'">{{name}}</div>
+    <div class="name" :style="'font-size: ' + fontSize + 'em'">{{ name }}</div>
   </div>
 </template>
 
@@ -39,6 +39,7 @@ export default class AddNodeButton extends Vue {
       const { x: xPanning, y: yPanning } = panning;
       node.position.x = (window.innerWidth / (3 * scaling)) - xPanning;
       node.position.y = (window.innerHeight / (3 * scaling)) - yPanning;
+      this.$emit('node-created', node);
     }
   }
 }

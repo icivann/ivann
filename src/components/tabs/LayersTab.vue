@@ -2,8 +2,8 @@
   <div class="layers-tab">
     <ExpandablePanel name="Input/Output">
       <ButtonGrid>
-        <AddNodeButton node="Input" name="Input"/>
-        <AddNodeButton node="Output" name="Output"/>
+        <AddNodeButton node="Input" name="Input" @node-created="inputAdded"/>
+        <AddNodeButton node="Output" name="Output" @node-created="outputAdded"/>
       </ButtonGrid>
     </ExpandablePanel>
     <ExpandablePanel name="Linear">
@@ -41,7 +41,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
@@ -55,5 +55,24 @@ import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
   },
 })
 export default class LayersTab extends Vue {
+  private inputAdded() {
+    const { currEditorModel } = this.$store.getters;
+    if (currEditorModel !== undefined) {
+      const count = currEditorModel.inputs.length;
+      const inputName = `Input${count}`;
+      currEditorModel.inputs.push({ name: inputName });
+      console.log(`${inputName} created!`);
+    }
+  }
+
+  private outputAdded() {
+    const { currEditorModel } = this.$store.getters;
+    if (currEditorModel !== undefined) {
+      const count = currEditorModel.outputs.length;
+      const outputName = `Output${count}`;
+      currEditorModel.outputs.push({ name: outputName });
+      console.log(`${outputName} created!`);
+    }
+  }
 }
 </script>
