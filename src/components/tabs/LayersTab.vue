@@ -7,7 +7,9 @@
     </ExpandablePanel>
     <ExpandablePanel name="Convolutional">
       <ButtonGrid>
+        <AddNodeButton node="Convolution1D" name="Conv1D"/>
         <AddNodeButton node="Convolution2D" name="Conv2D"/>
+        <AddNodeButton node="Convolution3D" name="Conv3D"/>
       </ButtonGrid>
     </ExpandablePanel>
     <ExpandablePanel name="Pooling">

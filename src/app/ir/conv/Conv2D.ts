@@ -9,7 +9,7 @@ import {
   Padding,
   Regularizer,
 } from '@/app/ir/irCommon';
-import { Conv2DOptions } from '@/nodes/model/conv/Conv2D';
+import { ConvOptions } from '@/nodes/model/conv/Conv';
 
 export default class Conv2D {
   constructor(
@@ -25,15 +25,15 @@ export default class Conv2D {
 
   static build(options: Map<string, any>): Conv2D {
     return new Conv2D(
-      options.get(Conv2DOptions.Filters),
-      getPadding(options.get(Conv2DOptions.Padding)),
-      [getInitializer(options.get(Conv2DOptions.WeightsInitializer)),
-        getRegularizer(options.get(Conv2DOptions.WeightsRegularizer))],
-      [getInitializer(options.get(Conv2DOptions.BiasInitializer)),
-        getRegularizer(options.get(Conv2DOptions.BiasRegularizer))],
-      getBuiltinActivationFunction(options.get(Conv2DOptions.Activation)),
-      [options.get(Conv2DOptions.KernelSize)[0], options.get(Conv2DOptions.KernelSize)[1]],
-      [options.get(Conv2DOptions.Stride)[0], options.get(Conv2DOptions.Stride)[1]],
+      options.get(ConvOptions.Filters),
+      getPadding(options.get(ConvOptions.Padding)),
+      [getInitializer(options.get(ConvOptions.WeightsInitializer)),
+        getRegularizer(options.get(ConvOptions.WeightsRegularizer))],
+      [getInitializer(options.get(ConvOptions.BiasInitializer)),
+        getRegularizer(options.get(ConvOptions.BiasRegularizer))],
+      getBuiltinActivationFunction(options.get(ConvOptions.Activation)),
+      [options.get(ConvOptions.KernelSize)[0], options.get(ConvOptions.KernelSize)[1]],
+      [options.get(ConvOptions.Stride)[0], options.get(ConvOptions.Stride)[1]],
     );
   }
 

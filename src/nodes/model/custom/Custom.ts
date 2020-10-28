@@ -1,16 +1,22 @@
 import { Node } from '@baklavajs/core';
 import { Layers, Nodes } from '@/nodes/model/Types';
+import parse from '@/app/parser/parser';
 
+export enum CustomOptions{
+  InlineCode = 'Inline Code',
+}
 export default class Custom extends Node {
   type = Layers.Custom;
   name = Nodes.Custom;
 
-  private numberOfInputs = 0;
+  private inputNames: string[] = [];
+
+  private code = '';
 
   constructor() {
     super();
-    // TODO FE-38 Add minimum value of 0 to this option.
-    this.addOption('Number of Inputs', 'IntegerOption', 0);
+    this.addOption(CustomOptions.InlineCode, 'TextAreaOption',
+      { text: this.code, hasError: false });
     this.addOutputInterface('Output');
     this.events.update.addListener(this, (event: any) => {
       this.nodeUpdated(event);
@@ -18,28 +24,56 @@ export default class Custom extends Node {
   }
 
   private nodeUpdated(event: any) {
-    if (event.name === 'Number of Inputs') {
-      if (event.option) {
-        if (event.option.value > this.numberOfInputs) {
-          this.addInputs(event.option.value - this.numberOfInputs);
-        } else if (event.option.value < this.numberOfInputs) {
-          this.removeInputs(this.numberOfInputs - event.option.value);
-        }
+    if (event.name === CustomOptions.InlineCode) {
+      const code = event.option.value.text;
+
+      /* If the code did not change (probably the hasError did), do not parse it */
+      if (code === this.code) {
+        return;
+      }
+
+      this.code = code;
+
+      if (code === '') {
+        this.removeAllInputs();
+      } else {
+        parse(code)
+          .then((functions) => {
+            this.setError(false);
+            console.log(functions);
+            if (functions.length > 0) {
+              const func = functions[0];
+              this.setInputs(func.args);
+            }
+          })
+          .catch((err: Error) => {
+            this.setError(true);
+            // TODO Do feedback
+            throw err;
+          });
       }
     }
   }
 
-  private addInputs(n: number) {
-    Array.from(Array(n).keys()).forEach((i: number) => {
-      this.addInputInterface(`Input ${this.numberOfInputs + i + 1}`);
+  private setInputs(inputNames: string[]) {
+    this.removeAllInputs();
+    inputNames.forEach((inputName: string) => {
+      this.addInputInterface(inputName);
     });
-    this.numberOfInputs += n;
+    this.inputNames = inputNames;
   }
 
-  private removeInputs(n: number) {
-    Array.from(Array(n).keys()).forEach((i: number) => {
-      this.removeInterface(`Input ${this.numberOfInputs - i}`);
+  private removeAllInputs() {
+    this.inputNames.forEach((inputName: string) => {
+      this.removeInterface(inputName);
     });
-    this.numberOfInputs -= n;
+    this.inputNames = [];
+  }
+
+  private setError(error: boolean) {
+    this.setOptionValue(
+      CustomOptions.InlineCode,
+      { text: this.getOptionValue(CustomOptions.InlineCode).text, hasError: error },
+    );
   }
 }

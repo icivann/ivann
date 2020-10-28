@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100">
+  <div class="h-100 all">
     <div class="tabs">
       <div class="tab-head" :class="index === selected && 'selected'"
            v-for="(tab, index) in tabs" :key="index"

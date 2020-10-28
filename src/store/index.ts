@@ -1,19 +1,23 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { StoreOptions } from 'vuex';
+import { RootState } from '@/store/types';
+import { editors } from '@/store/editors';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store: StoreOptions<RootState> = {
   state: {
-    editor: 0,
+    showTutorial: false,
   },
-  mutations: {
-    switchEditor(state, newEditor) {
-      state.editor = newEditor;
-    },
+  getters: {
   },
   actions: {
   },
-  modules: {
+  mutations: {
   },
-});
+  modules: {
+    editors,
+  },
+};
+
+export default new Vuex.Store<RootState>(store);

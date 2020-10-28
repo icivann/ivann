@@ -2,6 +2,7 @@ import { Node } from '@baklavajs/core';
 import { Layers, Nodes } from '@/nodes/model/Types';
 import { valuesOf } from '@/app/util';
 import { BuiltinActivationF, BuiltinInitializer, BuiltinRegularizer } from '@/app/ir/irCommon';
+import CheckboxValue from '@/baklava/CheckboxValue';
 
 export default class Dense extends Node {
   type = Layers.Linear;
@@ -12,11 +13,13 @@ export default class Dense extends Node {
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
 
-    this.addOption('Size', 'IntegerOption', 1);
+    this.addOption('Size', 'IntOption', 1, undefined, {
+      min: 1,
+    });
     this.addOption('Activation', 'DropdownOption', 'None', undefined, {
       items: valuesOf(BuiltinActivationF),
     });
-    this.addOption('Use Bias', 'CheckboxOption', true);
+    this.addOption('Use Bias', 'TickBoxOption', CheckboxValue.CHECKED);
 
     // TODO: Decide default value and options for these
     this.addOption('Weights Initializer', 'DropdownOption', 'Xavier', undefined, {

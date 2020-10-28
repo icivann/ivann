@@ -9,7 +9,6 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import EditorManager from '@/EditorManager';
 
 @Component({})
 export default class AddNodeButton extends Vue {
@@ -27,7 +26,14 @@ export default class AddNodeButton extends Vue {
   }
 
   private addNode() {
-    EditorManager.getInstance().addNode(this.node, this.$store.state.editor);
+    const { editor } = this.$store.getters.currEditorModel;
+    const NodeType = editor.nodeTypes.get(this.node);
+
+    if (NodeType === undefined) {
+      console.error(`Undefined Node Type: ${this.node}`);
+    } else {
+      editor.addNode(new NodeType());
+    }
   }
 }
 </script>
