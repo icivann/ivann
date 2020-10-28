@@ -24,11 +24,11 @@ function toGraphNode(inode: INodeState): ModelNode {
 }
 
 export default function istateToGraph(istate: IState): Graph {
-  const interfacesIndexedFrom = new Map(istate.connections.map(
-    (c) => [c.from, c],
+  const interfacesForward = new Map(istate.connections.map(
+    (c) => [c.from, c.to],
   ));
-  const interfacesIndexedTo = new Map(istate.connections.map(
-    (c) => [c.to, c],
+  const interfacesBackward = new Map(istate.connections.map(
+    (c) => [c.to, c.from],
   ));
   const graphNodes = new Map(
     istate.nodes.map(
@@ -36,19 +36,14 @@ export default function istateToGraph(istate: IState): Graph {
     ),
   );
   const nodesToOutInterfaces = new Map(
-    istate.nodes.map(
-      (n) => [n.id, n.interfaces.filter(
-        (i) => interfacesIndexedFrom.get(i[1].id) === undefined,
-      )],
-    ),
+    istate.nodes.map((n) => [n.id, n.interfaces.filter(
+      ([_, i]) => interfacesForward.has(i.id),
+    )]),
   );
   const nodesToInInterfaces = new Map(
-    istate.nodes.map((n) => [
-      n.id,
-      n.interfaces.filter(
-        (i) => interfacesIndexedTo.get(i[1].id) === undefined,
-      ),
-    ]),
+    istate.nodes.map((n) => [n.id, n.interfaces.filter(
+      ([_, i]) => interfacesBackward.has(i.id),
+    )]),
   );
 
   // add interfaces to individual nodes

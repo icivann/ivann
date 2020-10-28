@@ -13,7 +13,6 @@ import {
 } from 'vue-property-decorator';
 import { Engine } from '@baklavajs/plugin-engine';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
-import { traverseUiToIr } from '@/app/ir/traversals';
 import { EditorModel } from '@/store/editors/types';
 import istateToGraph from '@/app/ir/istateToGraph';
 
@@ -36,7 +35,6 @@ export default class Canvas extends Vue {
     this.engine.events.calculated.addListener(this, () => {
       console.log('Something changed!');
       const state = this.editorModel.editor.save();
-      traverseUiToIr(state);
       const ir = istateToGraph(state);
       console.log(ir);
     });
