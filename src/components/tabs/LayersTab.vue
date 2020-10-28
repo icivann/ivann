@@ -46,6 +46,9 @@ import { Component, Vue } from 'vue-property-decorator';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
+import Input from '@/nodes/model/io/Input';
+import Output from '@/nodes/model/io/Output';
+import { inputAdded, outputAdded } from '@/nodes/model/io/InputOutputUtils';
 
 @Component({
   components: {
@@ -55,22 +58,12 @@ import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
   },
 })
 export default class LayersTab extends Vue {
-  private inputAdded() {
-    const { currEditorModel } = this.$store.getters;
-    if (currEditorModel !== undefined) {
-      const count = currEditorModel.inputs.length;
-      const inputName = `Input${count}`;
-      currEditorModel.inputs.push({ name: inputName });
-    }
+  private inputAdded(node: Input) {
+    inputAdded(node, this.$store.getters.currEditorModel);
   }
 
-  private outputAdded() {
-    const { currEditorModel } = this.$store.getters;
-    if (currEditorModel !== undefined) {
-      const count = currEditorModel.outputs.length;
-      const outputName = `Output${count}`;
-      currEditorModel.outputs.push({ name: outputName });
-    }
+  private outputAdded(node: Output) {
+    outputAdded(node, this.$store.getters.currEditorModel);
   }
 }
 </script>

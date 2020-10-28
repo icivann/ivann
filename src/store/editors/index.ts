@@ -12,7 +12,7 @@ export const editorState: EditorsState = {
   editorNames: new Set<string>(['untitled']),
   overviewEditor: {
     name: 'Overview',
-    editor: newEditor(EditorType.OVERVIEW), // TODO: Lazy create?
+    editor: newEditor(EditorType.OVERVIEW),
   },
   modelEditors: [
     {

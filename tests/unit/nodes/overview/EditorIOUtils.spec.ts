@@ -1,7 +1,7 @@
 import editorIOPartition from '@/nodes/overview/EditorIOUtils';
 import { EditorIO } from '@/store/editors/types';
 
-describe('equality on EditorIO[]', () => {
+describe('partitioning on EditorIO[]', () => {
   it('returns empties for empty array', () => {
     const empty1: EditorIO[] = [];
     const empty2: EditorIO[] = [];

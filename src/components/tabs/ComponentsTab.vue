@@ -34,8 +34,11 @@ export default class ComponentsTab extends Vue {
     const { currEditorModel, modelEditors } = this.$store.getters;
     const { editor } = (currEditorModel as EditorModel);
     for (const node of editor.nodes) {
-      if (node.name === 'untitled') {
-        (node as ModelEncapsulation).update(modelEditors[0]);
+      // TODO replace the following with UUIDs once implemented
+      for (const modelEditor of modelEditors as EditorModel[]) {
+        if (modelEditor.name === node.name) {
+          (node as ModelEncapsulation).update(modelEditor);
+        }
       }
     }
     this.makeOptions(this.$store.getters.modelEditors);
