@@ -22,7 +22,17 @@ export default class ModelCanvas extends AbstractCanvas {
     editor.registerNodeType(Nodes.Dropout, Dropout, Layers.Regularization);
     editor.registerNodeType(Nodes.Flatten, Flatten, Layers.Reshape);
     editor.registerNodeType(Nodes.Custom, Custom, Layers.Custom);
-    editor.registerNodeType(Nodes.Output, Output, Layers.Core);
-    editor.registerNodeType(Nodes.Input, Input, Layers.Core);
+    editor.registerNodeType(Nodes.Output, Output as any, Layers.Core);
+    editor.registerNodeType(Nodes.Input, Input as any, Layers.Core);
+
+    editor.events.removeNode.addListener(this, (node) => this.onRemove(node));
+  }
+
+  private onRemove = (node: any) => {
+    if (node.type === Nodes.Input) {
+      (node as Input).onRemove();
+    } else if (node.type === Nodes.Output) {
+      (node as Output).onRemove();
+    }
   }
 }

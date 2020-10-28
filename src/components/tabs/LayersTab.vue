@@ -2,8 +2,8 @@
   <div class="layers-tab">
     <ExpandablePanel name="Input/Output">
       <ButtonGrid>
-        <AddNodeButton node="Input" name="Input" @node-created="inputAdded"/>
-        <AddNodeButton node="Output" name="Output" @node-created="outputAdded"/>
+        <AddNodeButton node="Input" name="Input" :options="$store.getters.currEditorModel"/>
+        <AddNodeButton node="Output" name="Output" :options="$store.getters.currEditorModel"/>
       </ButtonGrid>
     </ExpandablePanel>
     <ExpandablePanel name="Linear">
@@ -46,9 +46,6 @@ import { Component, Vue } from 'vue-property-decorator';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
-import Input from '@/nodes/model/io/Input';
-import Output from '@/nodes/model/io/Output';
-import { inputAdded, outputAdded } from '@/nodes/model/io/InputOutputUtils';
 
 @Component({
   components: {
@@ -58,12 +55,5 @@ import { inputAdded, outputAdded } from '@/nodes/model/io/InputOutputUtils';
   },
 })
 export default class LayersTab extends Vue {
-  private inputAdded(node: Input) {
-    inputAdded(node, this.$store.getters.currEditorModel);
-  }
-
-  private outputAdded(node: Output) {
-    outputAdded(node, this.$store.getters.currEditorModel);
-  }
 }
 </script>
