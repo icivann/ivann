@@ -1,22 +1,27 @@
 import { EditorModel, EditorsState } from '@/store/editors/types';
 import newEditor from '@/baklava/Utils';
 import EditorType from '@/EditorType';
+import { randomUuid } from '@/app/util';
 
 export const mockOverviewEditor: EditorModel = {
+  id: randomUuid(),
   name: 'Overview',
   editor: newEditor(EditorType.OVERVIEW),
 };
 
 export const mockModelEditors: EditorModel[] = [
   {
+    id: randomUuid(),
     name: 'name0',
     editor: newEditor(EditorType.MODEL),
   },
   {
+    id: randomUuid(),
     name: 'name1',
     editor: newEditor(EditorType.MODEL),
   },
   {
+    id: randomUuid(),
     name: 'name2',
     editor: newEditor(EditorType.MODEL),
   },
