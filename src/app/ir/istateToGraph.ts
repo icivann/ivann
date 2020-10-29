@@ -24,6 +24,8 @@ function toGraphNode(inode: INodeState): ModelNode {
 }
 
 export default function istateToGraph(istate: IState): Graph {
+  console.log(JSON.stringify(istate));
+
   const interfacesForward = new Map(istate.connections.map(
     (c) => [c.from, c.to],
   ));

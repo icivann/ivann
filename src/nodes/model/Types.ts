@@ -5,6 +5,7 @@ export const enum Layers {
   Regularization = 'Regularization',
   Reshape = 'Reshaping',
   Custom = 'Custom',
+  Operations = 'Operations',
   IO = 'I/O',
 }
 
@@ -17,6 +18,7 @@ export const enum Nodes {
   Dropout = 'Dropout',
   Flatten = 'Flatten',
   Custom = 'Custom',
+  Concat = 'Concat',
   InModel = 'InModel',
   OutModel = 'OutModel',
 }

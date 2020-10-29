@@ -77,8 +77,9 @@ function generateModelGraphCode(node: GraphNode, incomingBranch: number, branche
       }
       return [code, currentBranch];
     }
+    currentBranch += 1;
     const params = readyConnections.map((branch) => getBrachVar(branch)).join(',');
-    code.push(`${getBrachVar(currentBranch)} = self.${nodeName}(${params})`);
+    code.push(`${getBrachVar(currentBranch)} = torch.cat(${params})`);
   } else {
     code.push(`${getBrachVar(currentBranch)} = self.${nodeName}(${getBrachVar(currentBranch)})`);
   }
