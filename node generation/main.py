@@ -4,6 +4,7 @@ import os
 type_map = {
   "int": "IntOption",
   "Union": "VectorOption",
+  "Optional[Union]": "VectorOption",
   "str": "DropdownOption",
   "bool": "TickBoxOption"
 }
@@ -11,6 +12,7 @@ type_map = {
 IR_map = {
   "int": "bigint",
   "Union": "[T]",
+  "Optional[Union]": "[T]",
   "str": "enum",
   "bool": "boolean"
 }
@@ -79,7 +81,7 @@ def create_baklava(class_name, option_map: dict, dimensions):
     default_value = default_value if default_value else '//TODO: Add default value'
     default_value = 'CheckboxValue.CHECKED' if default_value == 'True' else default_value
 
-    option_add = f"""this.addOption({class_name}Options.{option_name}, '{option_type}', {default_value});"""
+    option_add = f"""this.addOption({class_name}Options.{option_name}, TypeOptions.{option_type}, {default_value});"""
     options_add.append(option_add)
 
   options_add = "\n  ".join(options_add)
@@ -91,6 +93,8 @@ def create_baklava(class_name, option_map: dict, dimensions):
 
   contents = f"""import {{ Node }} from '@baklavajs/core';
 import {{ Layers, Nodes }} from '@/nodes/model/Types';
+import {{ TypeOptions }} from '@/nodes/model/BaklavaDisplayTypeOptions';
+
 {option_enums}
 export default class {class_name} extends Node {{
   type = Layers.;//TODO add layer type
@@ -175,11 +179,13 @@ if __name__ == "__main__":
   string = "torch.nn.Conv1d(in_channels: int, out_channels: int, kernel_size: Union[T, Tuple[T]], stride: Union[T, Tuple[T]] = 1, padding: Union[T, Tuple[T]] = 0, dilation: Union[T, Tuple[T]] = 1, groups: int = 1, bias: bool = True, padding_mode: str = 'zeros')"
   string2 = "torch.nn.MaxPool2d(kernel_size: Union[T, Tuple[T, ...]], stride: Optional[Union[T, Tuple[T, ...]]] = None, padding: Union[T, Tuple[T, ...]] = 0, dilation: Union[T, Tuple[T, ...]] = 1, return_indices: bool = False, ceil_mode: bool = False)"
   string3 ="torch.nn.Conv2d(in_channels: int, out_channels: int, kernel_size: Union[T, Tuple[T, T]], stride: Union[T, Tuple[T, T]] = 1, padding: Union[T, Tuple[T, T]] = 0, dilation: Union[T, Tuple[T, T]] = 1, groups: int = 1, bias: bool = True, padding_mode: str = 'zeros')"
-  class_name, options_map = parse(string3)
+  string4 = "torch.nn.MaxPool2d(kernel_size: Union[T, Tuple[T, ...]], stride: Optional[Union[T, Tuple[T, ...]]] = None, padding: Union[T, Tuple[T, ...]] = 0, dilation: Union[T, Tuple[T, ...]] = 1, return_indices: bool = False, ceil_mode: bool = False)"
+
+  class_name, options_map = parse(string4)
 
   dimensions = re.findall(r'\d+', class_name)
   dimensions = list(map(int, dimensions))
-  print(dimensions)
+  print(options_map)
 
   create_baklava(class_name, options_map, dimensions)
   create_ir_node(class_name, options_map, dimensions)
