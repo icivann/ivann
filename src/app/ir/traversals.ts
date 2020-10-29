@@ -1,4 +1,8 @@
-import { IInterfaceState, IState } from '@baklavajs/core/dist/baklavajs-core/types/state.d';
+import {
+  IConnectionState,
+  IInterfaceState,
+  IState,
+} from '@baklavajs/core/dist/baklavajs-core/types/state.d';
 import { ModelNode } from '@/app/ir/mainNodes';
 import { UUID } from '@/app/util';
 import GraphNode from '@/app/ir/GraphNode';
@@ -16,7 +20,6 @@ function mappingsForNodes(
     throw new Error(`${type} is not mapped.`);
   }
   const node = fromMap!(options);
-
   interfacesMap.set(interfaces[0][1].id, node);
   interfacesMap.set(interfaces[1][1].id, node);
   return node;
@@ -37,6 +40,7 @@ export function traverseUiToIr(state: IState):
   const connections: Array<[ModelNode, ModelNode]> = new Array<[ModelNode, ModelNode]>();
 
   for (const node of state.nodes) {
+    // TODO handle `CUSTOM` node case
     const constrMap: Map<string, any> = traverseOptions(node.options);
     const mlNode = mappingsForNodes(node.name, constrMap, interfacesMap, node.interfaces);
     const gNode = new GraphNode(mlNode, new UUID(node.id));

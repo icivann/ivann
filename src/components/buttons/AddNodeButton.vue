@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import EditorManager from '@/EditorManager';
 
 @Component({})
 export default class AddNodeButton extends Vue {
@@ -32,7 +33,11 @@ export default class AddNodeButton extends Vue {
     if (NodeType === undefined) {
       console.error(`Undefined Node Type: ${this.node}`);
     } else {
-      editor.addNode(new NodeType());
+      const node = editor.addNode(new NodeType());
+      const { scaling, panning } = EditorManager.getInstance().viewPlugin;
+      const { x: xPanning, y: yPanning } = panning;
+      node.position.x = (window.innerWidth / (3 * scaling)) - xPanning;
+      node.position.y = (window.innerHeight / (3 * scaling)) - yPanning;
     }
   }
 }

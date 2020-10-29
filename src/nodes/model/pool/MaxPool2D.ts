@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { Nodes } from '@/nodes/model/Types';
 import { valuesOf } from '@/app/util';
 import { Padding } from '@/app/ir/irCommon';
 import { ConvOptions } from '@/nodes/model/conv/Conv';
@@ -10,7 +10,7 @@ export enum MaxPool2DOptions{
   Padding = 'Padding'
 }
 export default class MaxPool2D extends Node {
-  type = Layers.Pool;
+  type = Nodes.MaxPool2D;
   name = Nodes.MaxPool2D;
 
   constructor() {
