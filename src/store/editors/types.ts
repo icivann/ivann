@@ -1,7 +1,9 @@
 import EditorType from '@/EditorType';
 import { Editor } from '@baklavajs/core';
+import { UUID } from '@/app/util';
 
 export interface EditorModel {
+  id: UUID;
   name: string;
   editor: Editor;
 }
