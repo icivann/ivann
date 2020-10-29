@@ -12,7 +12,7 @@ import MaxPool2D from '@/app/ir/maxPool/maxPool2D';
 import InModel from '@/app/ir/InModel';
 import OutModel from '@/app/ir/OutModel';
 import generateCode from '@/app/codegen/codeGenerator';
-import diffDefault, { diffStringsUnified } from 'jest-diff';
+import Graph from '@/app/ir/Graph';
 
 function removeBlankLines(x: string): string {
   return x.trim();
@@ -27,26 +27,23 @@ describe('codegen', () => {
     const none = BuiltinRegularizer.None;
     const defaultWeights: [Initializer, Regularizer] = [zs, none];
     const conv = new Conv2D(
-    32n,
-    Padding.Same,
-    defaultWeights,
-    null,
-    BuiltinActivationF.Relu,
-    [28n, 28n],
-    [2n, 2n],
+      32n,
+      Padding.Same,
+      defaultWeights,
+      null,
+      BuiltinActivationF.Relu,
+      [28n, 28n],
+      [2n, 2n],
     );
     const maxPool = new MaxPool2D(Padding.Same, [3n, 3n], [2n, 2n]);
 
+    const nodeConnections = [[input, conv], [conv, maxPool], [maxPool, output]];
     const list = [input, conv, maxPool, output].map((t) => new GraphNode(t));
 
     const nodes = new Set<GraphNode>(list);
-    const connections = new Map<GraphNode, [GraphNode]>([
-      [list[0], [list[1]]],
-      [list[1], [list[2]]],
-      [list[2], [list[3]]],
-    ]);
 
-    let actual = generateCode();
+    // TODO: create the graph to test code generation
+    let actual = generateCode(new Graph(nodes, []));
     actual = removeBlankLines(actual);
 
     let expected = `
