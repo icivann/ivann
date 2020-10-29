@@ -16,4 +16,9 @@ export default class MaxPool2D {
       [options.get(MaxPool2DOptions.Stride)[0], options.get(MaxPool2DOptions.Stride)[1]],
     );
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  public initCode(): string {
+    return 'MaxPool2d((28,28))';
+  }
 }

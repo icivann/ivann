@@ -8,20 +8,31 @@ export default class Graph {
   ) {
   }
 
-  public readonly inToOutConnections = new Map(this.connections)
-  public readonly nodesAsArray = Array.from(this.nodes)
+  public readonly inToOutConnections = new Map((() => {
+    const inConnections = new Set(this.connections.map(([i, _]) => i));
+    return Array.from(inConnections).map(
+      (i) => {
+        const outputs = this.connections
+          .filter(([input, o]) => i.id === input.id)
+          .map((c) => c[1]);
+        return [i.id, outputs] as [string, UUID[]];
+      },
+    );
+  })())
+  public readonly nodesAsArray = [...this.nodes]
 
-  public readonly nodesByInputInterface: Map<UUID, GraphNode> = new Map(
+  public readonly nodesByInputInterface: Map<string, GraphNode> = new Map(
     this.nodesAsArray
       .flatMap((n) => Array.from(n.inputInterfaces.values())
-        .map((i) => [i, n] as [UUID, GraphNode])),
+        .map((i) => [i.id, n] as [string, GraphNode])),
   )
 
   public readonly nodesFromNode: Map<GraphNode, GraphNode[]> = new Map(
     this.nodesAsArray
       .map((sourceNode) => {
         const nodes = Array.from(sourceNode.outputInterfaces.values())
-          .map((i) => this.nodesByInputInterface.get(this.inToOutConnections.get(i)!)!);
+          .flatMap((i) => this.inToOutConnections.get(i.id)!
+            .map((c) => this.nodesByInputInterface.get(c.id)!));
         return [sourceNode, nodes];
       }),
   )
@@ -30,11 +41,11 @@ export default class Graph {
     return this.nodesFromNode.get(source)!;
   }
 
-  nextNodeFrom(source: GraphNode, iName: string): GraphNode | undefined {
+  nextNodeFrom(source: GraphNode, iName: string): GraphNode[] | undefined {
     const next = source.outputInterfaces.get(iName);
     return next === undefined
       ? undefined
-      : this.nodesByInputInterface.get(this.inToOutConnections.get(next)!);
+      : this.inToOutConnections.get(next.id)!.map((c) => this.nodesByInputInterface.get(c.id)!);
   }
 }
 

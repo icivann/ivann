@@ -36,4 +36,9 @@ export default class Conv2D {
       [options.get(ConvOptions.Stride)[0], options.get(ConvOptions.Stride)[1]],
     );
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  public initCode(): string {
+    return 'Conv2D(16, 32, 2,2)';
+  }
 }
