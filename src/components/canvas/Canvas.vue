@@ -13,13 +13,15 @@ import {
 } from 'vue-property-decorator';
 import { Engine } from '@baklavajs/plugin-engine';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
-import { EditorModel } from '@/store/editors/types';
+import { EditorModel, EditorModels } from '@/store/editors/types';
 import istateToGraph from '@/app/ir/istateToGraph';
+import { Mutation } from 'vuex-class';
 
 @Component
 export default class Canvas extends Vue {
   @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
+  @Mutation('setUnsaved') setUnsaved!: (model: EditorModel) => void;
 
   public engine = new Engine(true);
 
@@ -34,6 +36,7 @@ export default class Canvas extends Vue {
 
     this.engine.events.calculated.addListener(this, () => {
       console.log('Something changed!');
+      this.setUnsaved(this.editorModel);
       const state = this.editorModel.editor.save();
       istateToGraph(state);
     });

@@ -8,7 +8,7 @@ export interface ModelOption {
   outputs?: EditorIO[];
 }
 
-export default class ModelEncapsulation extends Node {
+export default class Model extends Node {
   name = '';
   type = Overview.ModelNode;
 

@@ -14,8 +14,8 @@ export const editorState: EditorsState = {
   overviewEditor: {
     id: randomUuid(),
     name: 'Overview',
-    saved: true,
     editor: newEditor(EditorType.OVERVIEW), // TODO: Lazy create?
+    saved: true,
   },
   modelEditors: [
     {

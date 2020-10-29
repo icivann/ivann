@@ -9,7 +9,7 @@ export const enum Layers {
 }
 
 export const enum Overview {
-  ModelNode = 'ModelEncapsulation',
+  ModelNode = 'ModelNode',
 }
 
 export const enum Nodes {

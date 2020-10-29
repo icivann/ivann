@@ -1,11 +1,12 @@
 import { MutationTree } from 'vuex';
-import { EditorsState } from '@/store/editors/types';
+import { EditorIO, EditorsState } from '@/store/editors/types';
 import { Editor } from '@baklavajs/core';
 import newEditor from '@/baklava/Utils';
 import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
 import { loadEditor, loadEditors } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
+import { Nodes } from '@/nodes/model/Types';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
@@ -68,13 +69,15 @@ const editorMutations: MutationTree<EditorsState> = {
     state.currEditorIndex = 0;
   },
   saveModel(state, index) {
-    const { editor, name } = state.modelEditors[index];
-    console.log(`Saving editor ${name}`);
-    // TODO: Iterate through editor nodes for Input/Outputs
-    // TODO: Set Inputs
-    /* state.modelEditors[index].inputs = inputs; */
-    // TODO: Set Outputs
-    /* state.modelEditors[index].outputs = outputs; */
+    const { editor } = state.modelEditors[index];
+    const inputs: EditorIO[] = [];
+    const outputs: EditorIO[] = [];
+    for (const node of editor.nodes) {
+      if (node.type === Nodes.Input) inputs.push({ name: node.name });
+      else if (node.type === Nodes.Output) outputs.push({ name: node.name });
+    }
+    state.modelEditors[index].inputs = inputs;
+    state.modelEditors[index].outputs = outputs;
     state.modelEditors[index].saved = true;
   },
   setUnsaved(state) {
