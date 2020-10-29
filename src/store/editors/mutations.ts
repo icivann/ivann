@@ -27,17 +27,28 @@ const editorMutations: MutationTree<EditorsState> = {
           editor,
           inputs: [],
           outputs: [],
+          saved: true,
         }) - 1;
         break;
       case EditorType.DATA:
         state.currEditorType = editorType;
         state.editorNames.add(name);
-        state.currEditorIndex = state.dataEditors.push({ id, name, editor }) - 1;
+        state.currEditorIndex = state.dataEditors.push({
+          id,
+          name,
+          editor,
+          saved: true,
+        }) - 1;
         break;
       case EditorType.TRAIN:
         state.currEditorType = editorType;
         state.editorNames.add(name);
-        state.currEditorIndex = state.trainEditors.push({ id, name, editor }) - 1;
+        state.currEditorIndex = state.trainEditors.push({
+          id,
+          name,
+          editor,
+          saved: true,
+        }) - 1;
         break;
       default:
         break;
@@ -55,6 +66,19 @@ const editorMutations: MutationTree<EditorsState> = {
 
     state.currEditorType = EditorType.MODEL;
     state.currEditorIndex = 0;
+  },
+  saveModel(state, index) {
+    const { editor, name } = state.modelEditors[index];
+    console.log(`Saving editor ${name}`);
+    // TODO: Iterate through editor nodes for Input/Outputs
+    // TODO: Set Inputs
+    /* state.modelEditors[index].inputs = inputs; */
+    // TODO: Set Outputs
+    /* state.modelEditors[index].outputs = outputs; */
+    state.modelEditors[index].saved = true;
+  },
+  setUnsaved(state) {
+    state.modelEditors[state.currEditorIndex].saved = false;
   },
 };
 

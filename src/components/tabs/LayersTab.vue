@@ -2,8 +2,8 @@
   <div class="layers-tab">
     <ExpandablePanel name="Input/Output">
       <ButtonGrid>
-        <AddNodeButton node="Input" name="Input"/>
-        <AddNodeButton node="Output" name="Output"/>
+        <AddNodeButton node="Input" name="Input" @node-created="setUnsaved"/>
+        <AddNodeButton node="Output" name="Output" @node-created="setUnsaved"/>
       </ButtonGrid>
     </ExpandablePanel>
     <ExpandablePanel name="Linear">
@@ -46,6 +46,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
+import { mapMutations } from 'vuex';
 
 @Component({
   components: {
@@ -53,6 +54,7 @@ import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
     AddNodeButton,
     ButtonGrid,
   },
+  methods: mapMutations(['setUnsaved']),
 })
 export default class LayersTab extends Vue {
 }

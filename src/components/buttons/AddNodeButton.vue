@@ -15,7 +15,7 @@ import EditorManager from '@/EditorManager';
 export default class AddNodeButton extends Vue {
   @Prop({ required: true }) readonly node!: string;
   @Prop() readonly name!: string;
-  @Prop() readonly options?: never;
+  @Prop() readonly options?: unknown;
 
   private fontSize = 1.0;
 
@@ -39,6 +39,7 @@ export default class AddNodeButton extends Vue {
       const { x: xPanning, y: yPanning } = panning;
       node.position.x = (window.innerWidth / (3 * scaling)) - xPanning;
       node.position.y = (window.innerHeight / (3 * scaling)) - yPanning;
+      this.$emit('node-created', node);
     }
   }
 }

@@ -10,6 +10,7 @@ export interface EditorModel {
   id: UUID;
   name: string;
   editor: Editor;
+  saved: boolean;
   inputs?: EditorIO[];
   outputs?: EditorIO[];
 }
