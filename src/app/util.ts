@@ -1,6 +1,10 @@
 export class UUID {
   constructor(public readonly id: string) {
   }
+
+  public toString(): string {
+    return this.id;
+  }
 }
 
 export function randomUuid(): UUID {
