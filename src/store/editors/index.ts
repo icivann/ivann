@@ -1,4 +1,5 @@
 import { Module } from 'vuex';
+import { randomUuid } from '@/app/util';
 import { RootState } from '@/store/types';
 import EditorType from '@/EditorType';
 import newEditor from '@/baklava/Utils';
@@ -11,11 +12,13 @@ export const editorState: EditorsState = {
   currEditorIndex: 0,
   editorNames: new Set<string>(['untitled']),
   overviewEditor: {
+    id: randomUuid(),
     name: 'Overview',
     editor: newEditor(EditorType.OVERVIEW), // TODO: Lazy create?
   },
   modelEditors: [
     {
+      id: randomUuid(),
       name: 'untitled',
       editor: newEditor(EditorType.MODEL),
       inputs: [],

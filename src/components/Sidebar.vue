@@ -1,25 +1,36 @@
 <template>
   <div class="right">
-    <Tabs>
-      <Tab :name="nodesTab">
-        <LayersTab v-if="isModels"/>
-        <ComponentsTab v-if="isOverview"/>
+    <Tabs v-if="currEditorType === modelType">
+      <Tab name="Layers">
+        <LayersTab/>
       </Tab>
       <Tab name="Search">
         <SearchTab/>
       </Tab>
     </Tabs>
+    <Tabs v-else-if="currEditorType === overviewType">
+      <Tab name="Components">
+        <ComponentsTab/>
+      </Tab>
+    </Tabs>
+    <Tabs v-else-if="currEditorType === dataType">
+      <Tab name="Data Stuff"/>
+    </Tabs>
+    <Tabs v-else-if="currEditorType === trainType">
+      <Tab name="Steam Training"/>
+    </Tabs>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import Tabs from '@/components/tabs/Tabs.vue';
 import Tab from '@/components/tabs/Tab.vue';
 import LayersTab from '@/components/tabs/LayersTab.vue';
 import SearchTab from '@/components/tabs/SearchTab.vue';
 import EditorType from '@/EditorType';
 import ComponentsTab from '@/components/tabs/ComponentsTab.vue';
+import { mapGetters } from 'vuex';
 
 @Component({
   components: {
@@ -29,43 +40,13 @@ import ComponentsTab from '@/components/tabs/ComponentsTab.vue';
     Tab,
     Tabs,
   },
+  computed: mapGetters(['currEditorType']),
 })
 export default class Sidebar extends Vue {
-  private isModels = true;
-  private isOverview = false;
-  private isTrain = false;
-  private isData = false;
-  private nodesTab = 'Layers'
-
-  @Watch('$store.getters.currEditorType')
-  onEditorsUpdate(editor: EditorType) {
-    this.isModels = false;
-    this.isOverview = false;
-    this.isTrain = false;
-    this.isData = false;
-
-    switch (editor) {
-      case EditorType.OVERVIEW:
-        this.nodesTab = 'Components';
-        this.isOverview = true;
-        break;
-      case EditorType.MODEL:
-        this.nodesTab = 'Layers';
-        this.isModels = true;
-        break;
-      case EditorType.DATA:
-        this.nodesTab = 'DataMagic';
-        this.isData = true;
-        break;
-      case EditorType.TRAIN:
-        this.nodesTab = 'SteamTrain';
-        this.isTrain = true;
-        break;
-      default:
-        this.nodesTab = 'UNKOWN';
-        break;
-    }
-  }
+  private modelType = EditorType.MODEL;
+  private dataType = EditorType.DATA;
+  private trainType = EditorType.TRAIN;
+  private overviewType = EditorType.OVERVIEW;
 }
 </script>
 

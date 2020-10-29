@@ -5,6 +5,7 @@ import newEditor from '@/baklava/Utils';
 import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
 import { loadEditor, loadEditors } from '@/file/EditorAsJson';
+import { randomUuid, UUID } from '@/app/util';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
@@ -13,6 +14,7 @@ const editorMutations: MutationTree<EditorsState> = {
     EditorManager.getInstance().resetView();
   },
   newEditor(state, { editorType, name }) {
+    const id: UUID = randomUuid();
     const editor: Editor = newEditor(editorType);
 
     switch (editorType) {
@@ -20,6 +22,7 @@ const editorMutations: MutationTree<EditorsState> = {
         state.currEditorType = editorType;
         state.editorNames.add(name);
         state.currEditorIndex = state.modelEditors.push({
+          id,
           name,
           editor,
           inputs: [],
@@ -29,12 +32,12 @@ const editorMutations: MutationTree<EditorsState> = {
       case EditorType.DATA:
         state.currEditorType = editorType;
         state.editorNames.add(name);
-        state.currEditorIndex = state.dataEditors.push({ name, editor }) - 1;
+        state.currEditorIndex = state.dataEditors.push({ id, name, editor }) - 1;
         break;
       case EditorType.TRAIN:
         state.currEditorType = editorType;
         state.editorNames.add(name);
-        state.currEditorIndex = state.trainEditors.push({ name, editor }) - 1;
+        state.currEditorIndex = state.trainEditors.push({ id, name, editor }) - 1;
         break;
       default:
         break;
@@ -52,9 +55,6 @@ const editorMutations: MutationTree<EditorsState> = {
 
     state.currEditorType = EditorType.MODEL;
     state.currEditorIndex = 0;
-
-    // TODO: Remove this hack - causes <baklava-editor> to re-render
-    state.modelEditors[0].name += ' ';
   },
 };
 

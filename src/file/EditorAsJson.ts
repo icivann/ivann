@@ -3,6 +3,7 @@ import EditorType from '@/EditorType';
 import newEditor from '@/baklava/Utils';
 import { Editor } from '@baklavajs/core';
 import EditorManager from '@/EditorManager';
+import { randomUuid, UUID } from '@/app/util';
 
 export const FILENAME = 'ivann';
 
@@ -27,6 +28,7 @@ export function loadEditor(
   editorType: EditorType, editorSaved: any, names: Set<string>,
 ): EditorModel {
   const { name, editorState } = editorSaved;
+  const id: UUID = randomUuid();
 
   names.add(name);
 
@@ -34,7 +36,7 @@ export function loadEditor(
   editor.use(EditorManager.getInstance().viewPlugin);
   editor.load(editorState);
 
-  return { name, editor };
+  return { id, name, editor };
 }
 
 export function loadEditors(
