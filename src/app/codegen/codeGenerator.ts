@@ -29,7 +29,7 @@ let nodeTypeCounters = new Map<string, number>();
 const indent = '  ';
 
 function getNodeType(node: GraphNode): string {
-  return node.modelNode.constructor.name.toLowerCase();
+  return node.mlNode.constructor.name.toLowerCase();
 }
 
 function getNodeName(node: GraphNode): string {
@@ -66,12 +66,12 @@ function generateModelGraphCode(
   let code: string[] = [];
 
   // TODO: check here for other branching nodes e.g. Concat
-  if (node.modelNode instanceof InModel) {
+  if (node.mlNode instanceof InModel) {
     incomingBranch = incomingBranch !== 0 ? incomingBranch + 1 : incomingBranch;
     code.push(`${getBrachVar(incomingBranch)} = ${nodeName}`);
-  } else if (node.modelNode instanceof OutModel) {
+  } else if (node.mlNode instanceof OutModel) {
     outputs.add(getBrachVar(incomingBranch));
-  } else if (node.modelNode instanceof Concat) {
+  } else if (node.mlNode instanceof Concat) {
     // TODO: test this
     const readyConnections: number[] = branchesMap.get(node) ?? [];
     if (readyConnections.length !== node.inputInterfaces.size - 1) {
@@ -142,7 +142,7 @@ function generateModel(graph: Graph): string {
   nodeTypeCounters = new Map<string, number>();
   const outputs: Set<string> = new Set();
 
-  const inputs = graph.nodesAsArray.filter((item: GraphNode) => item.modelNode instanceof InModel);
+  const inputs = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof InModel);
   const inputNames = inputs.map((node) => getNodeName(node));
   let forward: string[] = [`${indent}def forward(self, ${inputNames.join(', ')})`];
 
@@ -163,8 +163,8 @@ function generateModel(graph: Graph): string {
   const nodeDefinitions: string[] = [];
   // TODO: sort layer definitions
   graph.nodesAsArray.forEach((n) => {
-    if ((n.modelNode as ModelLayerNode).initCode !== undefined) {
-      nodeDefinitions.push(`self.${getNodeName(n)} = ${(n.modelNode as ModelLayerNode).initCode()}`);
+    if ((n.mlNode as ModelLayerNode).initCode !== undefined) {
+      nodeDefinitions.push(`self.${getNodeName(n)} = ${(n.mlNode as ModelLayerNode).initCode()}`);
     }
   });
   const init = [`${indent}def __init__(self):`].concat(nodeDefinitions);

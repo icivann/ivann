@@ -1,20 +1,5 @@
-import GraphNode from '@/app/ir/GraphNode';
-import Conv2D from '@/app/ir/conv/Conv2D';
-import {
-  BuiltinActivationF,
-  BuiltinInitializer,
-  BuiltinRegularizer,
-  Initializer,
-  Padding,
-  Regularizer,
-} from '@/app/ir/irCommon';
-import MaxPool2D from '@/app/ir/maxPool/maxPool2D';
-import InModel from '@/app/ir/InModel';
-import OutModel from '@/app/ir/OutModel';
 import generateCode from '@/app/codegen/codeGenerator';
-import Graph from '@/app/ir/Graph';
 import istateToGraph from '@/app/ir/istateToGraph';
-import { diffStringsUnified } from 'jest-diff';
 
 function removeBlankLines(x: string): string {
   return x.trim();
@@ -44,9 +29,7 @@ class Model(nn.Module):
     return x`.trim();
     expected = removeBlankLines(expected);
 
-    const diff = diffStringsUnified(expected, actual);
-    console.log(diff);
-    expect(actual).toMatch(expected);
+    expect(actual).toBe(expected);
   });
   it('concat branch test', () => {
     const iState = JSON.parse('{"nodes":[{"type":"I/O","id":"node_16040096081900","name":"InModel","options":[],"state":{},"interfaces":[["Output",{"id":"ni_16040096081911","value":null}]],"position":{"x":8.773945375544749,"y":169.22570492635924},"width":200,"twoColumn":false},{"type":"I/O","id":"node_160400969358118","name":"OutModel","options":[],"state":{},"interfaces":[["Input",{"id":"ni_160400969358219","value":null}]],"position":{"x":1005.9686556627672,"y":158},"width":200,"twoColumn":false},{"type":"Convolution2D","id":"node_160400986337934","name":"Convolution2D","options":[["Filters",1],["Kernel Size",[1,1]],["Stride",[1,1]],["Padding","Valid"],["Activation","None"],["Use Bias",1],["Weights Initializer","Xavier"],["Bias Initializer","Zeros"],["Bias Regularizer","None"],["Weights Regularizer","None"]],"state":{},"interfaces":[["Input",{"id":"ni_160400986337935","value":null}],["Output",{"id":"ni_160400986337936","value":null}]],"position":{"x":341.44307155028986,"y":105.230719863825},"width":200,"twoColumn":false},{"type":"MaxPooling2D","id":"node_160400987431140","name":"MaxPooling2D","options":[["Kernel Size",[1,1]],["Stride",[1,1]],["Padding","Valid"]],"state":{},"interfaces":[["Input",{"id":"ni_160400987431141","value":null}],["Output",{"id":"ni_160400987431142","value":null}]],"position":{"x":351.3786343853439,"y":315.29690551925114},"width":200,"twoColumn":false},{"type":"Operations","id":"node_160400988154146","name":"Concat","options":[],"state":{},"interfaces":[["Input 1",{"id":"ni_160400988154147","value":null}],["Input 2",{"id":"ni_160400988154148","value":null}],["Output",{"id":"ni_160400988154149","value":null}]],"position":{"x":692.0265030157651,"y":171.940927470616},"width":200,"twoColumn":false}],"connections":[{"id":"160400986848639","from":"ni_16040096081911","to":"ni_160400986337935"},{"id":"160400987670845","from":"ni_16040096081911","to":"ni_160400987431141"},{"id":"160400989758452","from":"ni_160400986337936","to":"ni_160400988154147"},{"id":"160400990025955","from":"ni_160400987431142","to":"ni_160400988154148"},{"id":"160400992456061","from":"ni_160400988154149","to":"ni_160400969358219"}],"panning":{"x":74.43120140268195,"y":165.8682089212183},"scaling":0.7045398550853204}');
@@ -72,8 +55,6 @@ class Model(nn.Module):
     return x_3`.trim();
     expected = removeBlankLines(expected);
 
-    const diff = diffStringsUnified(expected, actual);
-    console.log(diff);
     expect(actual).toMatch(expected);
   });
 
@@ -102,8 +83,6 @@ class Model(nn.Module):
     return x_1, x_2`.trim();
     expected = removeBlankLines(expected);
 
-    const diff = diffStringsUnified(expected, actual);
-    console.log(diff);
     expect(actual).toMatch(expected);
   });
   it('nested branching', () => {
@@ -137,8 +116,6 @@ class Model(nn.Module):
     return x_1, x_2, x_4, x_5`.trim();
     expected = removeBlankLines(expected);
 
-    const diff = diffStringsUnified(expected, actual);
-    console.log(diff);
     expect(actual).toMatch(expected);
   });
   it('branching input', () => {
@@ -164,8 +141,6 @@ class Model(nn.Module):
     return x_1, x_2`.trim();
     expected = removeBlankLines(expected);
 
-    const diff = diffStringsUnified(expected, actual);
-    console.log(diff);
     expect(actual).toMatch(expected);
   });
 });
