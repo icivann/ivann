@@ -37,7 +37,8 @@ export default class Conv2D {
     );
   }
 
+  // eslint-disable-next-line class-methods-use-this
   public initCode(): string {
-    return `Conv2D(16, ${this.filters}, ${this.stride})`;
+    return 'Conv2D(16, 32, 2,2)';
   }
 }

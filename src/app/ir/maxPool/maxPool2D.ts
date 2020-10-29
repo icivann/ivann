@@ -17,7 +17,8 @@ export default class MaxPool2D {
     );
   }
 
+  // eslint-disable-next-line class-methods-use-this
   public initCode(): string {
-    return `MaxPool2d((${this.kernel}))`;
+    return 'MaxPool2d((28,28))';
   }
 }
