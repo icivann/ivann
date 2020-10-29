@@ -1,12 +1,12 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { Nodes } from '@/nodes/model/Types';
 import parse from '@/app/parser/parser';
 
 export enum CustomOptions{
   InlineCode = 'Inline Code',
 }
 export default class Custom extends Node {
-  type = Layers.Custom;
+  type = Nodes.Custom;
   name = Nodes.Custom;
 
   private inputNames: string[] = [];

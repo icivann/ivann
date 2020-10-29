@@ -106,7 +106,7 @@
 import { Component } from 'vue-property-decorator';
 import { Components } from '@baklavajs/plugin-renderer-vue';
 import ArrowButton from '@/inputs/ArrowButton.vue';
-import { Layers } from '@/nodes/model/Types';
+import { Nodes } from '@/nodes/model/Types';
 
 @Component({
   components: { ArrowButton },
@@ -120,16 +120,20 @@ export default class CustomNode extends Components.Node {
 
   get titleBackground() {
     switch (this.data.type) {
-      case Layers.Linear:
+      case Nodes.Dense:
         return { background: 'var(--black)' };
-      case Layers.Conv:
+      case Nodes.Conv1D:
+      case Nodes.Conv2D:
+      case Nodes.Conv3D:
         return { background: 'var(--blue)' };
-      case Layers.Pool:
+      case Nodes.MaxPool2D:
         return { background: 'var(--red)' };
-      case Layers.Regularization:
+      case Nodes.Dropout:
         return { background: 'var(--pink)' };
-      case Layers.Reshape:
+      case Nodes.Flatten:
         return { background: 'var(--green)' };
+      case Nodes.Custom:
+        return { background: 'var(--purple)' };
       default:
         return { background: 'var(--black)' };
     }
@@ -137,22 +141,38 @@ export default class CustomNode extends Components.Node {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   #arrow-button {
     position: absolute;
     top: 5px;
     right: 0;
     padding-right: 10px;
   }
-  #header {
-    color: white;
-    padding: 0.4em 0.75em;
-    border-radius: 4px 4px 0 0;
-    font-size: 16px;
-    font-weight: 800;
-    text-align: center;
-  }
+
   #content {
     background: var(--dark-grey);
+  }
+
+  .node {
+    /*font-family: Roboto, serif;*/
+    font-size: 14px;
+    &:hover {
+      box-shadow: 0 0 0 0.35px var(--blue);
+    }
+    &.--selected {
+      z-index: 5;
+      box-shadow: 0 0 0 1px var(--blue);
+    }
+    & > #header {
+      color: var(--foreground);
+      padding: 0.2em 0.75em;
+      border-radius: 4px 4px 0 0;
+      font-size: 17px;
+      text-align: center;
+
+      & > span {
+        pointer-events: none;
+      }
+    }
   }
 </style>

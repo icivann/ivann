@@ -6,12 +6,15 @@ export interface EditorModel {
   editor: Editor;
 }
 
-export interface EditorsState {
-  currEditorType: EditorType;
-  currEditorIndex: number;
-  editorNames: Set<string>;
+export interface EditorModels {
   overviewEditor: EditorModel;
   modelEditors: EditorModel[];
   dataEditors: EditorModel[];
   trainEditors: EditorModel[];
+}
+
+export interface EditorsState extends EditorModels {
+  currEditorType: EditorType;
+  currEditorIndex: number;
+  editorNames: Set<string>;
 }
