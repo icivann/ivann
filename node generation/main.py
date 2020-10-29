@@ -3,6 +3,7 @@ import os
 
 type_map = {
   "int": "IntOption",
+  "float": "SliderOption",
   "Union": "VectorOption",
   "Optional[Union]": "VectorOption",
   "str": "DropdownOption",
@@ -11,6 +12,7 @@ type_map = {
 
 IR_map = {
   "int": "bigint",
+  "float": "number",
   "Union": "[T]",
   "Optional[Union]": "[T]",
   "str": "enum",
@@ -176,16 +178,21 @@ static build(options: Map<string, any>): {class_name} {{
 
 
 if __name__ == "__main__":
-  string = "torch.nn.Conv1d(in_channels: int, out_channels: int, kernel_size: Union[T, Tuple[T]], stride: Union[T, Tuple[T]] = 1, padding: Union[T, Tuple[T]] = 0, dilation: Union[T, Tuple[T]] = 1, groups: int = 1, bias: bool = True, padding_mode: str = 'zeros')"
-  string2 = "torch.nn.MaxPool2d(kernel_size: Union[T, Tuple[T, ...]], stride: Optional[Union[T, Tuple[T, ...]]] = None, padding: Union[T, Tuple[T, ...]] = 0, dilation: Union[T, Tuple[T, ...]] = 1, return_indices: bool = False, ceil_mode: bool = False)"
-  string3 ="torch.nn.Conv2d(in_channels: int, out_channels: int, kernel_size: Union[T, Tuple[T, T]], stride: Union[T, Tuple[T, T]] = 1, padding: Union[T, Tuple[T, T]] = 0, dilation: Union[T, Tuple[T, T]] = 1, groups: int = 1, bias: bool = True, padding_mode: str = 'zeros')"
-  string4 = "torch.nn.MaxPool2d(kernel_size: Union[T, Tuple[T, ...]], stride: Optional[Union[T, Tuple[T, ...]]] = None, padding: Union[T, Tuple[T, ...]] = 0, dilation: Union[T, Tuple[T, ...]] = 1, return_indices: bool = False, ceil_mode: bool = False)"
 
-  class_name, options_map = parse(string4)
+  f_path = os.path.join("Nodes.txt")
+  documentation = open(f_path, "r")
+  documentation = documentation.read()
+  nodes = documentation.split("\n")
+  print(len(nodes))
 
-  dimensions = re.findall(r'\d+', class_name)
-  dimensions = list(map(int, dimensions))
-  print(options_map)
+  for i in range (len(nodes)):
+    if nodes[i] == "":
+      continue
+    class_name, options_map = parse(nodes[i])
 
-  create_baklava(class_name, options_map, dimensions)
-  create_ir_node(class_name, options_map, dimensions)
+    dimensions = re.findall(r'\d+', class_name)
+    dimensions = list(map(int, dimensions))
+    print(options_map)
+
+    create_baklava(class_name, options_map, dimensions)
+    create_ir_node(class_name, options_map, dimensions)
