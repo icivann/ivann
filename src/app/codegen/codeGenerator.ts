@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import GraphNode from '@/app/ir/GraphNode';
 import Conv2D from '@/app/ir/conv/Conv2D';
 import { UUID } from '@/app/util';
@@ -52,53 +53,85 @@ function getBrachVar(branchCounter: number): string {
 // returns:
 //    code lines generated as array of strings
 //    highet branch number it finished on
-function generateModelGraphCode(node: GraphNode, incomingBranch: number, branchesMap:
-  Map<GraphNode, number[]>, graph: Graph, outputs: Set<string>):
-  [string[], number] {
-  let currentBranch = incomingBranch;
+function generateModelGraphCode(
+  node: GraphNode,
+  incomingBranch: number,
+  branch: number,
+  branchesMap: Map<GraphNode, number[]>,
+  graph: Graph,
+  outputs: Set<string>,
+): [string[], number] {
   const nodeName = getNodeName(node);
 
   let code: string[] = [];
 
   // TODO: check here for other branching nodes e.g. Concat
   if (node.modelNode instanceof InModel) {
-    if (currentBranch !== 0) { currentBranch += 1; }
-    code.push(`${getBrachVar(currentBranch)} = ${nodeName}`);
+    incomingBranch = incomingBranch !== 0 ? incomingBranch + 1 : incomingBranch;
+    code.push(`${getBrachVar(incomingBranch)} = ${nodeName}`);
   } else if (node.modelNode instanceof OutModel) {
-    outputs.add(getBrachVar(currentBranch));
+    outputs.add(getBrachVar(incomingBranch));
   } else if (node.modelNode instanceof Concat) {
     // TODO: test this
     const readyConnections: number[] = branchesMap.get(node) ?? [];
-    if (readyConnections.length !== node.inputInterfaces.size) {
+    if (readyConnections.length !== node.inputInterfaces.size - 1) {
       const incomingBranches = branchesMap.get(node);
       if (incomingBranches !== undefined) {
-        incomingBranches.push(currentBranch);
+        incomingBranches.push(incomingBranch);
         branchesMap.set(node, incomingBranches);
+      } else {
+        branchesMap.set(node, [incomingBranch]);
       }
-      return [code, currentBranch];
+      return [code, incomingBranch];
     }
-    currentBranch += 1;
-    const params = readyConnections.map((branch) => getBrachVar(branch)).join(',');
-    code.push(`${getBrachVar(currentBranch)} = torch.cat(${params})`);
+    readyConnections.push(branch);
+    const params = readyConnections.map((branch) => getBrachVar(branch)).join(', ');
+    branch += 1;
+    code.push(`${getBrachVar(branch)} = torch.cat(${params})`);
   } else {
-    code.push(`${getBrachVar(currentBranch)} = self.${nodeName}(${getBrachVar(currentBranch)})`);
+    code.push(`${getBrachVar(branch)} = self.${nodeName}(${getBrachVar(incomingBranch)})`);
   }
 
-  graph.nextNodesFrom(node).forEach((n) => {
-    const incomingBranches = branchesMap.get(n);
-    if (incomingBranches !== undefined) {
-      incomingBranches.push(1);
-      branchesMap.set(n, incomingBranches);
-    } else {
-      branchesMap.set(n, [currentBranch]);
-    }
-    const [retCode, retBranch] = generateModelGraphCode(n, currentBranch, branchesMap, graph,
-      outputs);
-    currentBranch = Math.max(currentBranch, retBranch);
-    code = code.concat(retCode);
-  });
+  const children = graph.nextNodesFrom(node);
 
-  return [code, currentBranch];
+  // If we only have one child, we pass in our current branch
+  if (children.length === 1) {
+    const [retCode, retBranch] = generateModelGraphCode(
+      children[0],
+      branch,
+      branch,
+      branchesMap,
+      graph,
+      outputs,
+    );
+
+    return [code.concat(retCode), retBranch];
+  }
+
+  if (children.length > 1) { // If we have multiple children, we have to split branches
+    let childBranch = branch + 1;
+    let maxChildBranch = branch;
+    children.forEach((child) => {
+      const [retCode, retBranch] = generateModelGraphCode(
+        child,
+        branch,
+        childBranch,
+        branchesMap,
+        graph,
+        outputs,
+      );
+
+      childBranch = retBranch + 1;
+      maxChildBranch = retBranch;
+
+      code = code.concat(retCode);
+    });
+
+    return [code, maxChildBranch];
+  }
+
+  // If we have no children
+  return [[], branch];
 }
 
 function generateModel(graph: Graph): string {
@@ -121,13 +154,14 @@ function generateModel(graph: Graph): string {
   const branchesMap = new Map<GraphNode, number[]>();
 
   inputs.forEach((n) => {
-    const [retCode, retBranch] = generateModelGraphCode(n, currentBranch, branchesMap, graph,
+    const [retCode, retBranch] = generateModelGraphCode(n, 0, currentBranch, branchesMap, graph,
       outputs);
-    currentBranch = Math.max(currentBranch, retBranch);
+    currentBranch = retBranch + 1;
     forward = forward.concat(retCode);
   });
 
   const nodeDefinitions: string[] = [];
+  // TODO: sort layer definitions
   graph.nodesAsArray.forEach((n) => {
     if ((n.modelNode as ModelLayerNode).initCode !== undefined) {
       nodeDefinitions.push(`self.${getNodeName(n)} = ${(n.modelNode as ModelLayerNode).initCode()}`);
