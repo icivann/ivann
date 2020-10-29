@@ -1,8 +1,8 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { Nodes } from '@/nodes/model/Types';
 
 export default class Dropout extends Node {
-  type = Layers.Regularization
+  type = Nodes.Dropout;
   name = Nodes.Dropout;
 
   constructor() {
