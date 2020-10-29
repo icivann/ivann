@@ -29,6 +29,13 @@ export default class Graph {
   nextNodesFrom(source: GraphNode): GraphNode[] {
     return this.nodesFromNode.get(source)!;
   }
+
+  nextNodeFrom(source: GraphNode, iName: string): GraphNode | undefined {
+    const next = source.outputInterfaces.get(iName);
+    return next === undefined
+      ? undefined
+      : this.nodesByInputInterface.get(this.inToOutConnections.get(next)!);
+  }
 }
 
 type Connection = [UUID, UUID]
