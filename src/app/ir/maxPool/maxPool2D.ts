@@ -11,11 +11,11 @@ export default class MaxPool2D {
   }
 
   static build(options: Map<string, any>): ModelNode {
-    if(!(options.size == Object.keys(MaxPool2DOptions).length
-      && options.get(MaxPool2DOptions.KernelSize).size == 2
-      && options.get(MaxPool2DOptions.Stride).size == 2
-    )){
-      console.log("DEAD");
+    if (!(options.size === Object.keys(MaxPool2DOptions).length
+      && options.get(MaxPool2DOptions.KernelSize).size === 2
+      && options.get(MaxPool2DOptions.Stride).size === 2
+    )) {
+      console.log('DEAD');
     }
     return new MaxPool2D(
       getPadding(options.get(MaxPool2DOptions.Padding)),

@@ -5,4 +5,4 @@ import Dropout from '@/app/ir/dropout';
 
 export type MlNode = ModelNode
 
-export type ModelNode =  Dense | Dropout | Conv | MaxPool
+export type ModelNode = Dense | Dropout | Conv | MaxPool

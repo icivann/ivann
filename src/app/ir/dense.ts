@@ -3,7 +3,7 @@ import {
   getInitializer,
   getRegularizer,
   Initializer,
-  Regularizer
+  Regularizer,
 } from '@/app/ir/irCommon';
 import { Option } from '@/app/util';
 import { DenseOptions } from '@/nodes/model/linear/Dense.ts';
