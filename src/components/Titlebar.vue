@@ -25,6 +25,9 @@
       <span class="icon-button" @click="save">
         <i class="titlebar-icon fas fa-save fa-lg mx-2"/>
       </span>
+      <span class="icon-button" @click="newProject">
+        <i class="titlebar-icon fas fa-file fa-lg mx-2"/>
+      </span>
     </div>
   </div>
 </template>
@@ -40,7 +43,7 @@ import { FILENAME, saveEditor, saveEditors } from '@/file/EditorAsJson';
 @Component
 export default class Titlebar extends Vue {
   @Getter('allEditorModels') editorModels!: EditorModels;
-  @Mutation('loadEditors') loadEditors!: (editorModels: EditorModels) => void;
+  @Mutation('loadEditors') loadEditors!: (file: any) => void;
 
   private share() {
     console.log(`Share button pressed. ${this.$data}`);
@@ -84,6 +87,38 @@ export default class Titlebar extends Vue {
     };
 
     download(FILENAME, JSON.stringify(editorsSaved));
+  }
+
+  private newProject() {
+    // TODO FE-55 Implement better Confirm dialog
+    if (window.confirm('Are you sure you want to create a new project? '
+      + 'All unsaved progress will be lost.')) {
+      const blankProject = {
+        overviewEditor: {
+          name: 'Overview',
+          editorState: {
+            nodes: [],
+            connections: [],
+          },
+        },
+        modelEditors: [{
+          name: 'untitled',
+          editorState: {
+            nodes: [],
+            connections: [],
+            panning: {
+              x: 0,
+              y: 0,
+            },
+            scaling: 1,
+          },
+        }],
+        dataEditors: [],
+        trainEditors: [],
+      };
+      this.loadEditors(blankProject);
+      this.$cookies.remove('unsaved');
+    }
   }
 }
 </script>
