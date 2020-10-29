@@ -9,7 +9,7 @@ type Options = Map<string, any>
 export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['Convolution2D', Conv2D.build],
   ['MaxPooling2D', MaxPool2D.build],
-  ['Custom', Custom.build as (r: Options) => MlNode],
-  ['InModel', InModel.build as (r: Options) => MlNode],
-  ['OutModel', OutModel.build as (r: Options) => MlNode],
+  ['Custom', Custom.build],
+  ['InModel', InModel.build],
+  ['OutModel', OutModel.build],
 ]);

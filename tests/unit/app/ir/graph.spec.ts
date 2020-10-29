@@ -6,6 +6,7 @@ describe('Graph', () => {
 
   it('t1', () => {
     const graph1 = istateToGraph(istate1);
+    const initial = graph1.nodesAsArray.filter((n) => n.mlNode);
     console.log(graph1);
   });
 });
