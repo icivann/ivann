@@ -1,6 +1,10 @@
 import { getPadding, Padding } from '@/app/ir/irCommon';
-import { ModelNode } from '@/app/ir/mainNodes';
-import { MaxPool2DOptions } from '@/nodes/model/pool/MaxPool2D';
+
+export enum MaxPool3DOptions{
+  KernelSize = 'Kernel Size',
+  Stride = 'Stride',
+  Padding = 'Padding'
+}
 
 export default class MaxPool3D {
   constructor(
@@ -10,15 +14,15 @@ export default class MaxPool3D {
   ) {
   }
 
-  static build(options: Map<string, any>): ModelNode {
+  static build(options: Map<string, any>): MaxPool3D {
     return new MaxPool3D(
-      getPadding(options.get(MaxPool2DOptions.Padding)),
-      [options.get(MaxPool2DOptions.KernelSize)[0],
-        options.get(MaxPool2DOptions.KernelSize)[1],
-        options.get(MaxPool2DOptions.KernelSize)[2]],
-      [options.get(MaxPool2DOptions.Stride)[0],
-        options.get(MaxPool2DOptions.Stride)[1],
-        options.get(MaxPool2DOptions.Stride)[2]],
+      getPadding(options.get(MaxPool3DOptions.Padding)),
+      [options.get(MaxPool3DOptions.KernelSize)[0],
+        options.get(MaxPool3DOptions.KernelSize)[1],
+        options.get(MaxPool3DOptions.KernelSize)[2]],
+      [options.get(MaxPool3DOptions.Stride)[0],
+        options.get(MaxPool3DOptions.Stride)[1],
+        options.get(MaxPool3DOptions.Stride)[2]],
     );
   }
 }

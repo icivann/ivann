@@ -6,6 +6,13 @@ import EditorType from '@/EditorType';
 const editorGetters: GetterTree<EditorsState, RootState> = {
   currEditorType: (state) => state.currEditorType,
   currEditorIndex: (state) => state.currEditorIndex,
+  editorNames: (state) => state.editorNames,
+  allEditorModels: (state) => ({
+    overviewEditor: state.overviewEditor,
+    modelEditors: state.modelEditors,
+    dataEditors: state.dataEditors,
+    trainEditors: state.trainEditors,
+  }),
   currEditorModel: (state, getters) => {
     const index = getters.currEditorIndex;
     switch (getters.currEditorType) {

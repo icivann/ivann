@@ -1,6 +1,5 @@
 import { getPadding, Padding } from '@/app/ir/irCommon';
 import { MaxPool2DOptions } from '@/nodes/model/pool/MaxPool2D';
-import { ModelNode } from '@/app/ir/mainNodes';
 
 export default class MaxPool2D {
   constructor(
@@ -10,7 +9,7 @@ export default class MaxPool2D {
   ) {
   }
 
-  static build(options: Map<string, any>): ModelNode {
+  static build(options: Map<string, any>): MaxPool2D {
     if (!(options.size === Object.keys(MaxPool2DOptions).length
       && options.get(MaxPool2DOptions.KernelSize).size === 2
       && options.get(MaxPool2DOptions.Stride).size === 2

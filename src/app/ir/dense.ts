@@ -6,7 +6,7 @@ import {
   Regularizer,
 } from '@/app/ir/irCommon';
 import { Option } from '@/app/util';
-import { DenseOptions } from '@/nodes/model/linear/Dense.ts';
+import { DenseOptions } from '@/nodes/model/linear/Dense';
 
 export default class Dense {
   constructor(

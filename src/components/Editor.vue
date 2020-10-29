@@ -4,7 +4,7 @@
       <div class="px-0 canvas-frame"
            :style="`width: min(calc(100vw - 3rem - ${sidebarWidth}px), ${editorWidth}%)`">
         <Canvas
-          :viewPlugin="this.currViewPlugin()"
+          :viewPlugin="this.manager.viewPlugin"
           :editorModel="currEditorModel"
         />
       </div>
@@ -26,7 +26,7 @@ import Resizer from '@/components/Resize/Resizer.vue';
 import Resizable from '@/components/Resize/Resizable.vue';
 import { mapGetters } from 'vuex';
 import EditorType from '@/EditorType';
-import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
+import { Getter } from 'vuex-class';
 
 @Component({
   components: {
@@ -35,37 +35,16 @@ import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
     Sidebar,
     Canvas,
   },
-  computed: mapGetters([
-    'currEditorType',
-    'currEditorModel',
-    'overviewEditor',
-    'modelEditor',
-    'dataEditor',
-    'trainEditor',
-  ]),
+  computed: mapGetters(['currEditorModel']),
 })
 export default class Editor extends Vue {
   private manager: EditorManager = EditorManager.getInstance();
   private editorWidth = 75; /* percentage */
   private sidebarWidth = 280; /* pixels */
+  @Getter('currEditorType') currEditorType!: EditorType;
 
   private changeWidth(percentage: number) {
     this.editorWidth = percentage;
-  }
-
-  private currViewPlugin(): ViewPlugin | undefined {
-    switch (this.$store.getters.currEditorType) {
-      case EditorType.OVERVIEW:
-        return this.manager.overviewCanvas.viewPlugin;
-      case EditorType.MODEL:
-        return this.manager.modelCanvas.viewPlugin;
-      case EditorType.DATA:
-        return this.manager.dataCanvas.viewPlugin;
-      case EditorType.TRAIN:
-        return this.manager.trainCanvas.viewPlugin;
-      default:
-        return undefined;
-    }
   }
 }
 </script>

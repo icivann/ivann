@@ -9,13 +9,14 @@ import { EditorsState } from './types';
 export const editorState: EditorsState = {
   currEditorType: EditorType.MODEL,
   currEditorIndex: 0,
+  editorNames: new Set<string>(['untitled']),
   overviewEditor: {
     name: 'Overview',
     editor: newEditor(EditorType.OVERVIEW), // TODO: Lazy create?
   },
   modelEditors: [
     {
-      name: 'untitled 0',
+      name: 'untitled',
       editor: newEditor(EditorType.MODEL),
     },
   ],
