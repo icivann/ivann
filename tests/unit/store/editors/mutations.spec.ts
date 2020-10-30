@@ -1,5 +1,6 @@
 import editorMutations from '@/store/editors/mutations';
 import EditorType from '@/EditorType';
+import { editorState } from '@/store/editors';
 import { mockEditorState } from './mockData';
 
 describe('editorMutations', () => {

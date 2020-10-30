@@ -12,11 +12,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Navbar from '@/components/navbar/Navbar.vue';
 import Editor from '@/components/Editor.vue';
 import Titlebar from '@/components/Titlebar.vue';
+import { Mutation } from 'vuex-class';
 
 @Component({
   components: {
@@ -26,6 +27,13 @@ import Titlebar from '@/components/Titlebar.vue';
   },
 })
 export default class Home extends Vue {
+  @Mutation('loadEditors') loadEditors!: (file: any) => void;
+
+  created() {
+    if (this.$cookies.isKey('unsaved')) {
+      this.loadEditors(this.$cookies.get('unsaved'));
+    }
+  }
 }
 </script>
 

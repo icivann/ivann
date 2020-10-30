@@ -2,6 +2,9 @@
 import { BaklavaVuePlugin } from '@baklavajs/plugin-renderer-vue';
 import '@baklavajs/plugin-renderer-vue/dist/styles.css';
 
+// Import Vue-Cookies
+import VueCookies from 'vue-cookies';
+
 // Import fontawesome
 import '@fortawesome/fontawesome-free/css/all.css'; // Fontawesome
 import '@fortawesome/fontawesome-free/js/all';
@@ -14,6 +17,7 @@ import router from './router';
 import store from './store';
 
 Vue.use(BaklavaVuePlugin);
+Vue.use(VueCookies);
 Vue.config.productionTip = false;
 
 new Vue({
