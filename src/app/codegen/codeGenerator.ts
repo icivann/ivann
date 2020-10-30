@@ -186,7 +186,7 @@ function generateModel(graph: Graph): string {
   // TODO: sort layer definitions
   graph.nodesAsArray.forEach((n) => {
     if ((n.mlNode as ModelLayerNode).initCode !== undefined) {
-      nodeDefinitions.push(`self.${getNodeName(n)} = ${(n.mlNode as ModelLayerNode).initCode()}`);
+      nodeDefinitions.push(`self.${getNodeName(n)} = nn.${(n.mlNode as ModelLayerNode).initCode()}`);
     }
   });
   const init = [`${indent}def __init__(self):`].concat(nodeDefinitions);
@@ -194,7 +194,7 @@ function generateModel(graph: Graph): string {
   const forwardMethod = forward.join(`\n${indent}${indent}`);
   const initMethod = init.join(`\n${indent}${indent}`);
 
-  return [header, initMethod, forwardMethod].join('\n');
+  return [header, initMethod, forwardMethod].join('\n\n');
 }
 
 function generateFunctions(graph: Graph): string {
