@@ -25,7 +25,7 @@ export default class Canvas extends Vue {
   @Prop({ required: true }) readonly editorModel!: EditorModel;
   @Mutation('setUnsaved') setUnsaved!: (model: EditorModel) => void;
 
-  public engine = new Engine(true);
+  private engine = new Engine(true);
 
   @Watch('editorModel')
   onEditorChange(editorModel: EditorModel) {

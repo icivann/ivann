@@ -45,7 +45,6 @@ export default class Titlebar extends Vue {
   @Getter('allEditorModels') editorModels!: EditorModels;
   @Mutation('loadEditors') loadEditors!: (file: any) => void;
   @Mutation('resetState') resetState!: () => void;
-  @Mutation('setUnsaved') setUnsaved!: () => void;
 
   private share() {
     console.log(`Share button pressed. ${this.$data}`);
