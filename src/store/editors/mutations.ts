@@ -73,8 +73,8 @@ const editorMutations: MutationTree<EditorsState> = {
     const inputs: EditorIO[] = [];
     const outputs: EditorIO[] = [];
     for (const node of editor.nodes) {
-      if (node.type === Nodes.Input) inputs.push({ name: node.name });
-      else if (node.type === Nodes.Output) outputs.push({ name: node.name });
+      if (node.type === Nodes.InModel) inputs.push({ name: node.name });
+      else if (node.type === Nodes.OutModel) outputs.push({ name: node.name });
     }
     state.modelEditors[index].inputs = inputs;
     state.modelEditors[index].outputs = outputs;
