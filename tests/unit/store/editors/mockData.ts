@@ -7,7 +7,6 @@ export const mockOverviewEditor: EditorModel = {
   id: randomUuid(),
   name: 'Overview',
   editor: newEditor(EditorType.OVERVIEW),
-  saved: true,
 };
 
 export const mockModelEditors: EditorModel[] = [
@@ -15,19 +14,16 @@ export const mockModelEditors: EditorModel[] = [
     id: randomUuid(),
     name: 'name0',
     editor: newEditor(EditorType.MODEL),
-    saved: true,
   },
   {
     id: randomUuid(),
     name: 'name1',
     editor: newEditor(EditorType.MODEL),
-    saved: true,
   },
   {
     id: randomUuid(),
     name: 'name2',
     editor: newEditor(EditorType.MODEL),
-    saved: true,
   },
 ];
 

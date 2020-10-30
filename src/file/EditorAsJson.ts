@@ -36,12 +36,7 @@ export function loadEditor(
   editor.use(EditorManager.getInstance().viewPlugin);
   editor.load(editorState);
 
-  return {
-    id,
-    name,
-    editor,
-    saved: false,
-  };
+  return { id, name, editor };
 }
 
 export function loadEditors(

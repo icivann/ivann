@@ -12,19 +12,16 @@ export const editorState: EditorsState = {
   currEditorIndex: 0,
   editorNames: new Set<string>(['untitled']),
   overviewEditor: {
+    // TODO: Map of editors used in overview to their nodes?
     id: randomUuid(),
     name: 'Overview',
     editor: newEditor(EditorType.OVERVIEW), // TODO: Lazy create?
-    saved: true,
   },
   modelEditors: [
     {
       id: randomUuid(),
       name: 'untitled',
       editor: newEditor(EditorType.MODEL),
-      saved: true,
-      inputs: [],
-      outputs: [],
     },
   ],
   dataEditors: [],
