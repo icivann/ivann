@@ -1,11 +1,11 @@
 import { Node } from '@baklavajs/core';
-import { Nodes } from '@/nodes/model/Types';
+import { Layers, Nodes } from '@/nodes/model/Types';
 import { valuesOf } from '@/app/util';
 import { BuiltinActivationF, BuiltinInitializer, BuiltinRegularizer } from '@/app/ir/irCommon';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
 export default class Dense extends Node {
-  type = Nodes.Dense;
+  type = Layers.Linear;
   name = Nodes.Dense;
 
   constructor() {

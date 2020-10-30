@@ -11,6 +11,9 @@ import Conv2D from '@/nodes/model/conv/Conv2D';
 import Conv3D from '@/nodes/model/conv/Conv3D';
 import Output from '@/nodes/model/Output';
 import Input from '@/nodes/model/Input';
+import InModel from '@/nodes/model/InModel';
+import OutModel from '@/nodes/model/OutModel';
+import Concat from '@/nodes/model/operations/Concat';
 
 export default class ModelCanvas extends AbstractCanvas {
   public registerNodes(editor: Editor): void {
@@ -24,5 +27,8 @@ export default class ModelCanvas extends AbstractCanvas {
     editor.registerNodeType(Nodes.Custom, Custom, Layers.Custom);
     editor.registerNodeType(Nodes.Output, Output, Layers.Core);
     editor.registerNodeType(Nodes.Input, Input, Layers.Core);
+    editor.registerNodeType(Nodes.InModel, InModel, Layers.IO);
+    editor.registerNodeType(Nodes.OutModel, OutModel, Layers.IO);
+    editor.registerNodeType(Nodes.Concat, Concat, Layers.Operations);
   }
 }

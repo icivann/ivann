@@ -30,6 +30,7 @@
 </template>
 
 <script lang="ts">
+import generateCode from '@/app/codegen/codeGenerator';
 import { Component, Vue } from 'vue-property-decorator';
 import { Getter, Mutation } from 'vuex-class';
 import { EditorModels } from '@/store/editors/types';
