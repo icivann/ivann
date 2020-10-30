@@ -5,6 +5,8 @@ export const enum Layers {
   Regularization = 'Regularization',
   Reshape = 'Reshaping',
   Custom = 'Custom',
+  Operations = 'Operations',
+  IO = 'I/O',
 }
 
 export const enum Nodes {
@@ -15,5 +17,8 @@ export const enum Nodes {
   MaxPool2D = 'MaxPooling2D',
   Dropout = 'Dropout',
   Flatten = 'Flatten',
-  Custom = 'Custom'
+  Custom = 'Custom',
+  Concat = 'Concat',
+  InModel = 'InModel',
+  OutModel = 'OutModel',
 }

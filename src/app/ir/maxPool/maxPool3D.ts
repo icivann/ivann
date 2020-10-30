@@ -7,4 +7,7 @@ export default class MaxPool3D {
         public readonly stride: [bigint, bigint, bigint],
   ) {
   }
+  public initCode(): string {
+    return `MaxPool3d(${this.kernel})`;
+  }
 }

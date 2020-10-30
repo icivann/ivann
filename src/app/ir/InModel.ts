@@ -1,7 +1,11 @@
 class InModel {
   constructor(
-    public readonly dimension: bigint[],
-  ) {}
+  ) {
+  }
+
+  static build(options: Map<string, any>): InModel {
+    return new InModel();
+  }
 }
 
 export default InModel;

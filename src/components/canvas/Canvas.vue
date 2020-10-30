@@ -1,6 +1,6 @@
 <template>
   <div class="canvas h-100">
-    <baklava-editor :plugin="viewPlugin" :key="editorModel.name"></baklava-editor>
+    <baklava-editor :plugin="viewPlugin" :key="editorModel.id.toString()"></baklava-editor>
   </div>
 </template>
 
@@ -11,13 +11,16 @@ import {
   Vue,
   Watch,
 } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
 import { Engine } from '@baklavajs/plugin-engine';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
-import { EditorModel } from '@/store/editors/types';
+import { EditorModel, EditorModels } from '@/store/editors/types';
 import istateToGraph from '@/app/ir/istateToGraph';
+import { saveEditor, saveEditors } from '@/file/EditorAsJson';
 
 @Component
 export default class Canvas extends Vue {
+  @Getter('allEditorModels') editorModels!: EditorModels;
   @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
 
@@ -26,6 +29,7 @@ export default class Canvas extends Vue {
   @Watch('editorModel')
   onEditorChange(editorModel: EditorModel) {
     editorModel.editor.use(this.viewPlugin);
+    editorModel.editor.use(this.engine);
   }
 
   created(): void {
@@ -34,6 +38,24 @@ export default class Canvas extends Vue {
 
     this.engine.events.calculated.addListener(this, () => {
       console.log('Something changed!');
+
+      // Auto-Saving
+      const {
+        overviewEditor,
+        modelEditors,
+        dataEditors,
+        trainEditors,
+      } = this.editorModels;
+
+      const editorsSaved = {
+        overviewEditor: saveEditor(overviewEditor),
+        modelEditors: saveEditors(modelEditors),
+        dataEditors: saveEditors(dataEditors),
+        trainEditors: saveEditors(trainEditors),
+      };
+      this.$cookies.set('unsaved', editorsSaved);
+
+      // Building IR
       const state = this.editorModel.editor.save();
       istateToGraph(state);
     });

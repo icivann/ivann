@@ -15,4 +15,7 @@ export default class Conv3D {
     public readonly stride: [bigint, bigint, bigint],
   ) {
   }
+  public initCode(): string {
+    return `Conv3D(16, ${this.filters}, ${this.stride})`;
+  }
 }
