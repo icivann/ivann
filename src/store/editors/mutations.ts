@@ -83,6 +83,27 @@ const editorMutations: MutationTree<EditorsState> = {
   setUnsaved(state) {
     state.modelEditors[state.currEditorIndex].saved = false;
   },
+  resetState(state) {
+    state.overviewEditor = {
+      id: randomUuid(),
+      name: 'Overview',
+      editor: newEditor(EditorType.OVERVIEW),
+      saved: true,
+    };
+    state.modelEditors = [{
+      id: randomUuid(),
+      name: 'untitled',
+      editor: newEditor(EditorType.MODEL),
+      saved: true,
+    }];
+    state.dataEditors = [];
+    state.trainEditors = [];
+
+    state.editorNames = new Set<string>(['untitled']);
+
+    state.currEditorType = EditorType.MODEL;
+    state.currEditorIndex = 0;
+  },
 };
 
 export default editorMutations;

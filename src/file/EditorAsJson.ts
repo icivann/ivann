@@ -40,7 +40,7 @@ export function loadEditor(
     id,
     name,
     editor,
-    saved: true,
+    saved: false,
   };
 }
 
