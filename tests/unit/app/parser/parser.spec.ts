@@ -15,9 +15,8 @@ describe('parser', () => {
       ),
     ];
 
-    return parse(text).then((res) => {
-      expect(res).toEqual(expected);
-    });
+    const res = parse(text);
+    expect(res).toEqual(expected);
   });
 
   it('parses a function with no final line', () => {
@@ -33,9 +32,8 @@ describe('parser', () => {
       ),
     ];
 
-    return parse(text).then((res) => {
-      expect(res).toEqual(expected);
-    });
+    const res = parse(text);
+    expect(res).toEqual(expected);
   });
 
   it('parses a single function without args correctly', () => {
@@ -51,9 +49,8 @@ describe('parser', () => {
       ),
     ];
 
-    return parse(text).then((res) => {
-      expect(res).toEqual(expected);
-    });
+    const res = parse(text);
+    expect(res).toEqual(expected);
   });
 
   it('parses a tab indent correctly', () => {
@@ -69,9 +66,8 @@ describe('parser', () => {
       ),
     ];
 
-    return parse(text).then((res) => {
-      expect(res).toEqual(expected);
-    });
+    const res = parse(text);
+    expect(res).toEqual(expected);
   });
 
   it('parses two functions correctly', () => {
@@ -97,9 +93,8 @@ describe('parser', () => {
       ),
     ];
 
-    return parse(text).then((res) => {
-      expect(res).toEqual(expected);
-    });
+    const res = parse(text);
+    expect(res).toEqual(expected);
   });
 
   it('parses a function with multiple levels of indentation', () => {
@@ -116,16 +111,15 @@ describe('parser', () => {
       ),
     ];
 
-    return parse(text).then((res) => {
-      expect(res).toEqual(expected);
-    });
+    const res = parse(text);
+    expect(res).toEqual(expected);
   });
   it('fails to parse a non file with no functions', () => {
     const text = 'line1\n'
       + '  line2\n'
       + '  line3\n';
 
-    expect(parse(text)).rejects.toThrowError();
+    expect(parse(text)).toBeInstanceOf(Error);
   });
 
   it('fails to parse a file with a badly indented function', () => {
@@ -133,7 +127,7 @@ describe('parser', () => {
       + '  def func(arg1):\n'
       + '    line3\n';
 
-    expect(parse(text)).rejects.toThrowError();
+    expect(parse(text)).toBeInstanceOf(Error);
   });
 
   it('fails to parse a badly formatted function signature 1', () => {
@@ -141,7 +135,7 @@ describe('parser', () => {
       + '  line2\n'
       + '  line3\n';
 
-    expect(parse(text)).rejects.toThrowError();
+    expect(parse(text)).toBeInstanceOf(Error);
   });
 
   it('fails to parse a badly formatted function signature 2', () => {
@@ -149,7 +143,7 @@ describe('parser', () => {
       + '  line2\n'
       + '  line3\n';
 
-    expect(parse(text)).rejects.toThrowError();
+    expect(parse(text)).toBeInstanceOf(Error);
   });
 
   it('fails to parse a badly formatted function signature 3', () => {
@@ -157,7 +151,7 @@ describe('parser', () => {
       + '  line2\n'
       + '  line3\n';
 
-    expect(parse(text)).rejects.toThrowError();
+    expect(parse(text)).toBeInstanceOf(Error);
   });
 
   it('fails to parse a badly formatted function signature 4', () => {
@@ -165,6 +159,6 @@ describe('parser', () => {
       + '  line2\n'
       + '  line3\n';
 
-    expect(parse(text)).rejects.toThrowError();
+    expect(parse(text)).toBeInstanceOf(Error);
   });
 });

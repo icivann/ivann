@@ -2,7 +2,7 @@ import { Node } from '@baklavajs/core';
 import { Nodes, Layers } from '@/nodes/model/Types';
 
 export default class InModel extends Node {
-  type = Layers.IO;
+  type = Nodes.InModel;
   name = Nodes.InModel;
 
   constructor() {

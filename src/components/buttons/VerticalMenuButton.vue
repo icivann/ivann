@@ -4,6 +4,7 @@
     :class="isSelected ? 'selected' : ''"
     @click="onClick">
     {{label}}
+    <slot/>
   </div>
 </template>
 

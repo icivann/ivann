@@ -10,8 +10,8 @@
       </span>
     </div>
     <div class="col text-right">
-      <span class="icon-button" @click="share">
-        <i class="titlebar-icon fas fa-share-alt fa-lg mx-2"/>
+      <span class="icon-button" @click="codegen">
+        <i class="titlebar-icon fas fa-code fa-lg mx-2"/>
       </span>
       <input
         type="file"
@@ -36,18 +36,24 @@
 import generateCode from '@/app/codegen/codeGenerator';
 import { Component, Vue } from 'vue-property-decorator';
 import { Getter, Mutation } from 'vuex-class';
-import { EditorModels } from '@/store/editors/types';
-import { download } from '@/file/Utils';
+import { EditorModel, EditorModels } from '@/store/editors/types';
+import { download, downloadPython } from '@/file/Utils';
 import { FILENAME, saveEditor, saveEditors } from '@/file/EditorAsJson';
+import istateToGraph from '@/app/ir/istateToGraph';
 
 @Component
 export default class Titlebar extends Vue {
   @Getter('allEditorModels') editorModels!: EditorModels;
+  @Getter('currEditorModel') currEditor!: EditorModel;
   @Mutation('loadEditors') loadEditors!: (file: any) => void;
   @Mutation('resetState') resetState!: () => void;
 
-  private share() {
-    console.log(`Share button pressed. ${this.$data}`);
+  private codegen() {
+    const { name, editorState } = saveEditor(this.currEditor);
+    const graph = istateToGraph(editorState);
+    const generatedCode = generateCode(graph);
+
+    downloadPython(name, generatedCode);
   }
 
   private uploadFile = () => {
