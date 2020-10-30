@@ -22,7 +22,7 @@ class Model(nn.Module):
   def __init__(self):
     self.conv2d_1 = Conv2D(16, 32, 2,2)
     self.maxpool2d_1 = MaxPool2d((28,28))
-  def forward(self, inmodel_1)
+  def forward(self, inmodel_1):
     x = inmodel_1
     x = self.conv2d_1(x)
     x = self.maxpool2d_1(x)
@@ -48,7 +48,7 @@ class Model(nn.Module):
   def __init__(self):
     self.conv2d_1 = Conv2D(16, 32, 2,2)
     self.maxpool2d_1 = MaxPool2d((28,28))
-  def forward(self, inmodel_1)
+  def forward(self, inmodel_1):
     x = inmodel_1
     x_1 = self.conv2d_1(x)
     x_2 = self.maxpool2d_1(x)
@@ -76,7 +76,7 @@ class Model(nn.Module):
     self.conv2d_1 = Conv2D(16, 32, 2,2)
     self.conv2d_2 = Conv2D(16, 32, 2,2)
     self.conv2d_3 = Conv2D(16, 32, 2,2)
-  def forward(self, inmodel_1)
+  def forward(self, inmodel_1):
     x = inmodel_1
     x = self.conv2d_1(x)
     x_1 = self.conv2d_2(x)
@@ -107,7 +107,7 @@ class Model(nn.Module):
     self.maxpool2d_1 = MaxPool2d((28,28))
     self.conv2d_4 = Conv2D(16, 32, 2,2)
     self.conv2d_5 = Conv2D(16, 32, 2,2)
-  def forward(self, inmodel_1)
+  def forward(self, inmodel_1):
     x = inmodel_1
     x = self.conv2d_1(x)
     x_1 = self.conv2d_2(x)
@@ -137,7 +137,7 @@ class Model(nn.Module):
   def __init__(self):
     self.conv2d_1 = Conv2D(16, 32, 2,2)
     self.maxpool2d_1 = MaxPool2d((28,28))
-  def forward(self, inmodel_1)
+  def forward(self, inmodel_1):
     x = inmodel_1
     x_1 = self.conv2d_1(x)
     x_2 = self.maxpool2d_1(x)
@@ -165,7 +165,7 @@ def customFunc(arg1):
 class Model(nn.Module):
   def __init__(self):
     self.conv2d_1 = Conv2D(16, 32, 2,2)
-  def forward(self, inmodel_1)
+  def forward(self, inmodel_1):
     x = inmodel_1
     x = self.conv2d_1(x)
     x_1 = customFunc(x)
@@ -193,7 +193,7 @@ def customFunc(arg1):
 class Model(nn.Module):
   def __init__(self):
     self.conv2d_1 = Conv2D(16, 32, 2,2)
-  def forward(self, inmodel_1)
+  def forward(self, inmodel_1):
     x = inmodel_1
     x = self.conv2d_1(x)
     x_1 = customFunc(x)
@@ -222,7 +222,7 @@ class Model(nn.Module):
   def __init__(self):
     self.conv2d_1 = Conv2D(16, 32, 2,2)
     self.conv2d_2 = Conv2D(16, 32, 2,2)
-  def forward(self, inmodel_1)
+  def forward(self, inmodel_1):
     x = inmodel_1
     x_1 = self.conv2d_1(x)
     x_2 = self.conv2d_2(x)

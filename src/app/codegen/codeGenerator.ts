@@ -166,7 +166,7 @@ function generateModel(graph: Graph): string {
 
   const inputs = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof InModel);
   const inputNames = inputs.map((node) => getNodeName(node));
-  let forward: string[] = [`${indent}def forward(self, ${inputNames.join(', ')})`];
+  let forward: string[] = [`${indent}def forward(self, ${inputNames.join(', ')}):`];
 
   // dummy GraphNode to start off the recusrive DFS traversal
   // const startLayer = new InModel([0n]);
