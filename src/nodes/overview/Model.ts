@@ -1,25 +1,19 @@
 import { Node } from '@baklavajs/core';
 import { Overview } from '@/nodes/model/Types';
-import { EditorIO } from '@/store/editors/types';
-
-export interface ModelOption {
-  name: string;
-  inputs?: EditorIO[];
-  outputs?: EditorIO[];
-}
+import { EditorIO, EditorModel } from '@/store/editors/types';
 
 export default class Model extends Node {
   name = '';
   type = Overview.ModelNode;
 
-  constructor(model?: ModelOption) {
+  constructor(model?: EditorModel) {
     super();
     if (model) {
       this.createFromSidebar(model);
     }
   }
 
-  private createFromSidebar(model: ModelOption): void {
+  private createFromSidebar(model: EditorModel): void {
     const { inputs, outputs, name } = model;
     this.name = name;
 
