@@ -1,6 +1,6 @@
 <template>
   <div class="right">
-    <Tabs v-if="currEditorType === modelType">
+    <Tabs v-show="currEditorType === modelType">
       <Tab name="Layers">
         <LayersTab/>
       </Tab>
@@ -8,15 +8,15 @@
         <SearchTab/>
       </Tab>
     </Tabs>
-    <Tabs v-else-if="currEditorType === overviewType">
+    <Tabs v-show="currEditorType === overviewType">
       <Tab name="Components">
         <ComponentsTab/>
       </Tab>
     </Tabs>
-    <Tabs v-else-if="currEditorType === dataType">
+    <Tabs v-show="currEditorType === dataType">
       <Tab name="Data Stuff"/>
     </Tabs>
-    <Tabs v-else-if="currEditorType === trainType">
+    <Tabs v-show="currEditorType === trainType">
       <Tab name="Steam Training"/>
     </Tabs>
   </div>
