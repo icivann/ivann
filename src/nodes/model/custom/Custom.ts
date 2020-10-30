@@ -37,20 +37,17 @@ export default class Custom extends Node {
       if (code === '') {
         this.removeAllInputs();
       } else {
-        parse(code)
-          .then((functions) => {
-            this.setError(false);
-            console.log(functions);
-            if (functions.length > 0) {
-              const func = functions[0];
-              this.setInputs(func.args);
-            }
-          })
-          .catch((err: Error) => {
-            this.setError(true);
-            // TODO Do feedback
-            throw err;
-          });
+        const functions = parse(code);
+
+        if (functions instanceof Error) {
+          this.setError(true);
+        } else {
+          this.setError(false);
+          if (functions.length > 0) {
+            const func = functions[0];
+            this.setInputs(func.args);
+          }
+        }
       }
     }
   }
