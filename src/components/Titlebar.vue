@@ -44,6 +44,7 @@ import { FILENAME, saveEditor, saveEditors } from '@/file/EditorAsJson';
 export default class Titlebar extends Vue {
   @Getter('allEditorModels') editorModels!: EditorModels;
   @Mutation('loadEditors') loadEditors!: (file: any) => void;
+  @Mutation('resetState') resetState!: () => void;
 
   private share() {
     console.log(`Share button pressed. ${this.$data}`);
@@ -93,30 +94,7 @@ export default class Titlebar extends Vue {
     // TODO FE-55 Implement better Confirm dialog
     if (window.confirm('Are you sure you want to create a new project? '
       + 'All unsaved progress will be lost.')) {
-      const blankProject = {
-        overviewEditor: {
-          name: 'Overview',
-          editorState: {
-            nodes: [],
-            connections: [],
-          },
-        },
-        modelEditors: [{
-          name: 'untitled',
-          editorState: {
-            nodes: [],
-            connections: [],
-            panning: {
-              x: 0,
-              y: 0,
-            },
-            scaling: 1,
-          },
-        }],
-        dataEditors: [],
-        trainEditors: [],
-      };
-      this.loadEditors(blankProject);
+      this.resetState();
       this.$cookies.remove('unsaved');
     }
   }
