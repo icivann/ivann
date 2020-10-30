@@ -15,12 +15,16 @@ export const editorState: EditorsState = {
     id: randomUuid(),
     name: 'Overview',
     editor: newEditor(EditorType.OVERVIEW), // TODO: Lazy create?
+    saved: true,
   },
   modelEditors: [
     {
       id: randomUuid(),
       name: 'untitled',
       editor: newEditor(EditorType.MODEL),
+      saved: true,
+      inputs: [],
+      outputs: [],
     },
   ],
   dataEditors: [],

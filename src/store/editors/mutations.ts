@@ -1,11 +1,12 @@
 import { MutationTree } from 'vuex';
-import { EditorsState } from '@/store/editors/types';
+import { EditorIO, EditorsState } from '@/store/editors/types';
 import { Editor } from '@baklavajs/core';
 import newEditor from '@/baklava/Utils';
 import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
 import { loadEditor, loadEditors } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
+import { Nodes } from '@/nodes/model/Types';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
@@ -21,17 +22,34 @@ const editorMutations: MutationTree<EditorsState> = {
       case EditorType.MODEL:
         state.currEditorType = editorType;
         state.editorNames.add(name);
-        state.currEditorIndex = state.modelEditors.push({ id, name, editor }) - 1;
+        state.currEditorIndex = state.modelEditors.push({
+          id,
+          name,
+          editor,
+          inputs: [],
+          outputs: [],
+          saved: true,
+        }) - 1;
         break;
       case EditorType.DATA:
         state.currEditorType = editorType;
         state.editorNames.add(name);
-        state.currEditorIndex = state.dataEditors.push({ id, name, editor }) - 1;
+        state.currEditorIndex = state.dataEditors.push({
+          id,
+          name,
+          editor,
+          saved: true,
+        }) - 1;
         break;
       case EditorType.TRAIN:
         state.currEditorType = editorType;
         state.editorNames.add(name);
-        state.currEditorIndex = state.trainEditors.push({ id, name, editor }) - 1;
+        state.currEditorIndex = state.trainEditors.push({
+          id,
+          name,
+          editor,
+          saved: true,
+        }) - 1;
         break;
       default:
         break;
@@ -50,16 +68,33 @@ const editorMutations: MutationTree<EditorsState> = {
     state.currEditorType = EditorType.MODEL;
     state.currEditorIndex = 0;
   },
+  saveModel(state, index) {
+    const { editor } = state.modelEditors[index];
+    const inputs: EditorIO[] = [];
+    const outputs: EditorIO[] = [];
+    for (const node of editor.nodes) {
+      if (node.type === Nodes.InModel) inputs.push({ name: node.name });
+      else if (node.type === Nodes.OutModel) outputs.push({ name: node.name });
+    }
+    state.modelEditors[index].inputs = inputs;
+    state.modelEditors[index].outputs = outputs;
+    state.modelEditors[index].saved = true;
+  },
+  setUnsaved(state) {
+    state.modelEditors[state.currEditorIndex].saved = false;
+  },
   resetState(state) {
     state.overviewEditor = {
       id: randomUuid(),
       name: 'Overview',
       editor: newEditor(EditorType.OVERVIEW),
+      saved: true,
     };
     state.modelEditors = [{
       id: randomUuid(),
       name: 'untitled',
       editor: newEditor(EditorType.MODEL),
+      saved: true,
     }];
     state.dataEditors = [];
     state.trainEditors = [];

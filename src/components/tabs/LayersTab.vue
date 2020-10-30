@@ -1,5 +1,11 @@
 <template>
   <div class="layers-tab">
+    <ExpandablePanel name="I/O">
+      <ButtonGrid>
+        <AddNodeButton node="InModel" name="Input"/>
+        <AddNodeButton node="OutModel" name="Output"/>
+      </ButtonGrid>
+    </ExpandablePanel>
     <ExpandablePanel name="Linear">
       <ButtonGrid>
         <AddNodeButton node="Dense" name="Dense"/>
@@ -30,6 +36,11 @@
     <ExpandablePanel name="Custom">
       <ButtonGrid>
         <AddNodeButton node="Custom" name="Custom"/>
+      </ButtonGrid>
+    </ExpandablePanel>
+    <ExpandablePanel name="Operations">
+      <ButtonGrid>
+        <AddNodeButton node="Concat" name="Concat"/>
       </ButtonGrid>
     </ExpandablePanel>
   </div>

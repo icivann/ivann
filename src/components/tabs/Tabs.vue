@@ -40,6 +40,7 @@ export default class Tabs extends Vue {
     display: flex;
     height: 60px;
     background: var(--background);
+    overflow-x: hidden;
   }
 
   .tab-head {
