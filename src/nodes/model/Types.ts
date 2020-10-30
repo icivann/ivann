@@ -9,6 +9,10 @@ export const enum Layers {
   IO = 'I/O',
 }
 
+export const enum Overview {
+  ModelNode = 'ModelNode',
+}
+
 export const enum Nodes {
   Dense = 'Dense',
   Conv1D = 'Convolution1D',

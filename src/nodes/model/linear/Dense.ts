@@ -5,7 +5,7 @@ import { BuiltinActivationF, BuiltinInitializer, BuiltinRegularizer } from '@/ap
 import CheckboxValue from '@/baklava/CheckboxValue';
 
 export default class Dense extends Node {
-  type = Layers.Linear;
+  type = Nodes.Dense;
   name = Nodes.Dense;
 
   constructor() {

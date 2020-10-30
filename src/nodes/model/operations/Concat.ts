@@ -2,7 +2,7 @@ import { Node } from '@baklavajs/core';
 import { Layers, Nodes } from '@/nodes/model/Types';
 
 export default class Concat extends Node {
-  type = Layers.Operations;
+  type = Nodes.Concat;
   name = Nodes.Concat;
 
   constructor() {

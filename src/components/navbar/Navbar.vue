@@ -26,6 +26,7 @@
         v-if="isModelContextualMenuOpen"
         :editors="modelEditors"
         :editor-type="editorType.MODEL"
+        :save="true"
       />
     </div>
 
