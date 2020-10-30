@@ -1,23 +1,29 @@
 import re
 import os
 
+ir_folder = os.path.join("..", "src", "app", "ir", "pytorch model")
+baklava_folder = os.path.join("..", "src", "nodes", "pytorch model")
+
 type_map = {
   "int": "IntOption",
   "float": "SliderOption",
   "Union": "VectorOption",
   "Optional[Union]": "VectorOption",
+  "Optional[T]": "VectorOption",
   "str": "DropdownOption",
   "bool": "TickBoxOption"
 }
 
-IR_map = {
+boolean_ = {
   "int": "bigint",
   "float": "number",
   "Union": "[T]",
+  "Optional[T]": "[T]",
   "Optional[Union]": "[T]",
   "str": "enum",
   "bool": "boolean"
 }
+IR_map = boolean_
 
 def parse_options(string):
   string = re.sub('(Union\[T,( )*Tuple\[([A-Z, .]*\]\]))', 'Union', string)
@@ -67,7 +73,7 @@ def parse(x):
 
 
 def create_baklava(class_name, option_map: dict, dimensions):
-  f_path = os.path.join(f"{class_name.capitalize()}Baklava.ts")
+  f_path = os.path.join(baklava_folder, f"{class_name.capitalize()}Baklava.ts")
   baklava_file = open(f_path, "w")
 
   option_enums_header = f"export enum {class_name.capitalize()}Options {{"
@@ -99,7 +105,7 @@ import {{ TypeOptions }} from '@/nodes/model/BaklavaDisplayTypeOptions';
 
 {option_enums}
 export default class {class_name} extends Node {{
-  type = Layers.;//TODO add layer type
+  type = Nodes.{class_name.capitalize()};
   name = Nodes.{class_name.capitalize()};
 
 constructor() {{
@@ -115,7 +121,7 @@ super();
 
 
 def create_ir_node(class_name, option_map: dict, dimensions):
-  f_path = os.path.join(f"{class_name.lower()}.ts")
+  f_path = os.path.join(ir_folder, f"{class_name.lower()}.ts")
   ir_file = open(f_path, "w")
 
   fields = []
@@ -129,7 +135,7 @@ def create_ir_node(class_name, option_map: dict, dimensions):
 
     if option_type =="enum":
       option_type = field_name.capitalize()
-      buildLine = f"get{field_name.capitalize()}(options.get({class_name}Options.{field_name}))"
+      buildLine = f"get{field_name.capitalize()}(options.get({class_name}Options.{field_name.capitalize()}))"
     elif option_type == "bool":
       continue
     elif option_type == "[T]":
@@ -137,12 +143,12 @@ def create_ir_node(class_name, option_map: dict, dimensions):
       buildLine = "["
       option_type = "["
       for i in range (dimensions[0]-1):
-        buildLine+= f"  options.get({class_name}Options.{field_name}[{i}]), "
+        buildLine+= f"  options.get({class_name}Options.{field_name.capitalize()}[{i}]), "
         option_type+= "bigint, "
-      buildLine+= f"options.get({class_name}Options.{field_name})[{dimensions[0]-1}]], "
+      buildLine+= f"options.get({class_name}Options.{field_name.capitalize()})[{dimensions[0]-1}]], "
       option_type+= "bigint]"
     else:
-      buildLine= f"options.get({class_name}Options.{field_name}),"
+      buildLine= f"options.get({class_name}Options.{field_name.capitalize()}),"
 
 
     fields.append(f"public readonly {field_name}: {option_type},")
@@ -153,7 +159,7 @@ def create_ir_node(class_name, option_map: dict, dimensions):
   build = "\n  ".join(build)
   pythonCode = ", ".join(pythonCode)
 
-  contents = f"""import {{ {class_name}Options }} from '@/nodes/model/{class_name}';
+  contents = f"""import {{ {class_name}Options }} from '@/nodes/pytorch model/{class_name}Baklava';
 
 export default class {class_name} {{
 constructor(
@@ -189,10 +195,11 @@ if __name__ == "__main__":
     if nodes[i] == "":
       continue
     class_name, options_map = parse(nodes[i])
+    print(i, class_name)
 
     dimensions = re.findall(r'\d+', class_name)
     dimensions = list(map(int, dimensions))
-    print(options_map)
 
-    create_baklava(class_name, options_map, dimensions)
+    print(dimensions)
+    # create_baklava(class_name, options_map, dimensions)
     create_ir_node(class_name, options_map, dimensions)

@@ -1,27 +1,28 @@
 import AbstractCanvas from '@/components/canvas/AbstractCanvas';
 import { Editor } from '@baklavajs/core';
 import { Layers, Nodes } from '@/nodes/model/Types';
-import Dense from '@/nodes/model/linear/Dense';
-import MaxPool2D from '@/nodes/model/pool/MaxPool2D';
-import Dropout from '@/nodes/model/regularization/Dropout';
-import Flatten from '@/nodes/model/reshape/Flatten';
+
+import Conv1d from '@/nodes/pytorch model/Conv1dBaklava';
+import Conv2d from '@/nodes/pytorch model/Conv2dBaklava';
+import Conv3d from '@/nodes/pytorch model/Conv3dBaklava';
 import Custom from '@/nodes/model/custom/Custom';
-import Conv1D from '@/nodes/model/conv/Conv1D';
-import Conv2D from '@/nodes/model/conv/Conv2D';
-import Conv3D from '@/nodes/model/conv/Conv3D';
-import InModel from '@/nodes/model/InModel';
 import OutModel from '@/nodes/model/OutModel';
 import Concat from '@/nodes/model/operations/Concat';
+import InModel from '@/nodes/model/InModel';
+import Convtranspose1d from '@/nodes/pytorch model/Convtranspose1dBaklava';
+import Convtranspose2d from '@/nodes/pytorch model/Convtranspose2dBaklava';
+import Convtranspose3d from '@/nodes/pytorch model/Convtranspose3dBaklava';
 
 export default class ModelCanvas extends AbstractCanvas {
   public registerNodes(editor: Editor): void {
-    editor.registerNodeType(Nodes.Dense, Dense, Layers.Linear);
-    editor.registerNodeType(Nodes.Conv1D, Conv1D, Layers.Conv);
-    editor.registerNodeType(Nodes.Conv2D, Conv2D, Layers.Conv);
-    editor.registerNodeType(Nodes.Conv3D, Conv3D, Layers.Conv);
-    editor.registerNodeType(Nodes.MaxPool2D, MaxPool2D, Layers.Pool);
-    editor.registerNodeType(Nodes.Dropout, Dropout, Layers.Regularization);
-    editor.registerNodeType(Nodes.Flatten, Flatten, Layers.Reshape);
+    editor.registerNodeType(Nodes.Conv1D, Conv1d, Layers.Conv);
+    editor.registerNodeType(Nodes.Conv2D, Conv2d, Layers.Conv);
+    editor.registerNodeType(Nodes.Conv3D, Conv3d, Layers.Conv);
+
+    editor.registerNodeType(Nodes.Convtranspose1d, Convtranspose1d, Layers.Conv);
+    editor.registerNodeType(Nodes.Convtranspose2d, Convtranspose2d, Layers.Conv);
+    editor.registerNodeType(Nodes.Convtranspose3d, Convtranspose3d, Layers.Conv);
+
     editor.registerNodeType(Nodes.Custom, Custom, Layers.Custom);
     editor.registerNodeType(Nodes.InModel, InModel, Layers.IO);
     editor.registerNodeType(Nodes.OutModel, OutModel, Layers.IO);
