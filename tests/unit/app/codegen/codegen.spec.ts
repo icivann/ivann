@@ -19,10 +19,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class Model(nn.Module):
+
   def __init__(self):
-    self.conv2d_1 = Conv2D(16, 32, 2,2)
-    self.maxpool2d_1 = MaxPool2d((28,28))
-  def forward(self, inmodel_1)
+    self.conv2d_1 = nn.Conv2D(16, 32, 2,2)
+    self.maxpool2d_1 = nn.MaxPool2d((28,28))
+
+  def forward(self, inmodel_1):
     x = inmodel_1
     x = self.conv2d_1(x)
     x = self.maxpool2d_1(x)
@@ -45,10 +47,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class Model(nn.Module):
+
   def __init__(self):
-    self.conv2d_1 = Conv2D(16, 32, 2,2)
-    self.maxpool2d_1 = MaxPool2d((28,28))
-  def forward(self, inmodel_1)
+    self.conv2d_1 = nn.Conv2D(16, 32, 2,2)
+    self.maxpool2d_1 = nn.MaxPool2d((28,28))
+
+  def forward(self, inmodel_1):
     x = inmodel_1
     x_1 = self.conv2d_1(x)
     x_2 = self.maxpool2d_1(x)
@@ -56,7 +60,7 @@ class Model(nn.Module):
     return x_3`.trim();
     expected = removeBlankLines(expected);
 
-    expect(actual).toMatch(expected);
+    expect(actual).toBe(expected);
   });
 
   it('generates code for nodes with two outputs', () => {
@@ -72,11 +76,13 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class Model(nn.Module):
+
   def __init__(self):
-    self.conv2d_1 = Conv2D(16, 32, 2,2)
-    self.conv2d_2 = Conv2D(16, 32, 2,2)
-    self.conv2d_3 = Conv2D(16, 32, 2,2)
-  def forward(self, inmodel_1)
+    self.conv2d_1 = nn.Conv2D(16, 32, 2,2)
+    self.conv2d_2 = nn.Conv2D(16, 32, 2,2)
+    self.conv2d_3 = nn.Conv2D(16, 32, 2,2)
+
+  def forward(self, inmodel_1):
     x = inmodel_1
     x = self.conv2d_1(x)
     x_1 = self.conv2d_2(x)
@@ -84,7 +90,7 @@ class Model(nn.Module):
     return x_1, x_2`.trim();
     expected = removeBlankLines(expected);
 
-    expect(actual).toMatch(expected);
+    expect(actual).toBe(expected);
   });
 
   it('generates code for nested branching', () => {
@@ -100,14 +106,16 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class Model(nn.Module):
+
   def __init__(self):
-    self.conv2d_1 = Conv2D(16, 32, 2,2)
-    self.conv2d_2 = Conv2D(16, 32, 2,2)
-    self.conv2d_3 = Conv2D(16, 32, 2,2)
-    self.maxpool2d_1 = MaxPool2d((28,28))
-    self.conv2d_4 = Conv2D(16, 32, 2,2)
-    self.conv2d_5 = Conv2D(16, 32, 2,2)
-  def forward(self, inmodel_1)
+    self.conv2d_1 = nn.Conv2D(16, 32, 2,2)
+    self.conv2d_2 = nn.Conv2D(16, 32, 2,2)
+    self.conv2d_3 = nn.Conv2D(16, 32, 2,2)
+    self.maxpool2d_1 = nn.MaxPool2d((28,28))
+    self.conv2d_4 = nn.Conv2D(16, 32, 2,2)
+    self.conv2d_5 = nn.Conv2D(16, 32, 2,2)
+
+  def forward(self, inmodel_1):
     x = inmodel_1
     x = self.conv2d_1(x)
     x_1 = self.conv2d_2(x)
@@ -118,7 +126,7 @@ class Model(nn.Module):
     return x_1, x_2, x_4, x_5`.trim();
     expected = removeBlankLines(expected);
 
-    expect(actual).toMatch(expected);
+    expect(actual).toBe(expected);
   });
 
   it('branching input', () => {
@@ -134,17 +142,19 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class Model(nn.Module):
+
   def __init__(self):
-    self.conv2d_1 = Conv2D(16, 32, 2,2)
-    self.maxpool2d_1 = MaxPool2d((28,28))
-  def forward(self, inmodel_1)
+    self.conv2d_1 = nn.Conv2D(16, 32, 2,2)
+    self.maxpool2d_1 = nn.MaxPool2d((28,28))
+
+  def forward(self, inmodel_1):
     x = inmodel_1
     x_1 = self.conv2d_1(x)
     x_2 = self.maxpool2d_1(x)
     return x_1, x_2`.trim();
     expected = removeBlankLines(expected);
 
-    expect(actual).toMatch(expected);
+    expect(actual).toBe(expected);
   });
 
   it('generates code for custom nodes with a two parameters', () => {
@@ -163,16 +173,18 @@ def customFunc(arg1):
   pass
 
 class Model(nn.Module):
+
   def __init__(self):
-    self.conv2d_1 = Conv2D(16, 32, 2,2)
-  def forward(self, inmodel_1)
+    self.conv2d_1 = nn.Conv2D(16, 32, 2,2)
+
+  def forward(self, inmodel_1):
     x = inmodel_1
     x = self.conv2d_1(x)
     x_1 = customFunc(x)
     return x_1`.trim();
     expected = removeBlankLines(expected);
 
-    expect(actual).toMatch(expected);
+    expect(actual).toBe(expected);
   });
 
   it('generates code for custom nodes with a two parameters', () => {
@@ -191,16 +203,18 @@ def customFunc(arg1):
   pass
 
 class Model(nn.Module):
+
   def __init__(self):
-    self.conv2d_1 = Conv2D(16, 32, 2,2)
-  def forward(self, inmodel_1)
+    self.conv2d_1 = nn.Conv2D(16, 32, 2,2)
+
+  def forward(self, inmodel_1):
     x = inmodel_1
     x = self.conv2d_1(x)
     x_1 = customFunc(x)
     return x_1`.trim();
     expected = removeBlankLines(expected);
 
-    expect(actual).toMatch(expected);
+    expect(actual).toBe(expected);
   });
 
   it('generates code for custom nodes with a two parameters', () => {
@@ -219,10 +233,12 @@ def customFunc(arg1, arg2):
   pass
 
 class Model(nn.Module):
+
   def __init__(self):
-    self.conv2d_1 = Conv2D(16, 32, 2,2)
-    self.conv2d_2 = Conv2D(16, 32, 2,2)
-  def forward(self, inmodel_1)
+    self.conv2d_1 = nn.Conv2D(16, 32, 2,2)
+    self.conv2d_2 = nn.Conv2D(16, 32, 2,2)
+
+  def forward(self, inmodel_1):
     x = inmodel_1
     x_1 = self.conv2d_1(x)
     x_2 = self.conv2d_2(x)
@@ -230,6 +246,6 @@ class Model(nn.Module):
     return x_3`.trim();
     expected = removeBlankLines(expected);
 
-    expect(actual).toMatch(expected);
+    expect(actual).toBe(expected);
   });
 });
