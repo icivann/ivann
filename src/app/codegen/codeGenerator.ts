@@ -1,22 +1,14 @@
 /* eslint-disable no-param-reassign */
 import GraphNode from '@/app/ir/GraphNode';
-import Conv2D from '@/app/ir/conv/Conv2D';
-import { UUID } from '@/app/util';
-import {
-  BuiltinActivationF,
-  BuiltinInitializer,
-  BuiltinRegularizer,
-  Initializer,
-  Padding,
-  Regularizer,
-} from '@/app/ir/irCommon';
-import MaxPool2D from '@/app/ir/maxPool/maxPool2D';
 import { ModelLayerNode } from '@/app/ir/mainNodes';
-import InModel from '../ir/InModel';
+import InModel from '@/app/ir/InModel';
+import parse from '@/app/parser/parser';
+import ParsedFunction from '@/app/parser/ParsedFunction';
 
-import OutModel from '../ir/OutModel';
-import Graph from '../ir/Graph';
-import Concat from '../ir/Concat';
+import OutModel from '@/app/ir/OutModel';
+import Graph from '@/app/ir/Graph';
+import Concat from '@/app/ir/Concat';
+import Custom from '@/app/ir/Custom';
 
 const imports = [
   'import torch',
@@ -46,7 +38,7 @@ function getNodeName(node: GraphNode): string {
   return name;
 }
 
-function getBrachVar(branchCounter: number): string {
+function getBranchVar(branchCounter: number): string {
   return (branchCounter === 0) ? 'x' : `x_${branchCounter}`;
 }
 
@@ -68,9 +60,9 @@ function generateModelGraphCode(
   // TODO: check here for other branching nodes e.g. Concat
   if (node.mlNode instanceof InModel) {
     incomingBranch = incomingBranch !== 0 ? incomingBranch + 1 : incomingBranch;
-    code.push(`${getBrachVar(incomingBranch)} = ${nodeName}`);
+    code.push(`${getBranchVar(incomingBranch)} = ${nodeName}`);
   } else if (node.mlNode instanceof OutModel) {
-    outputs.add(getBrachVar(incomingBranch));
+    outputs.add(getBranchVar(incomingBranch));
   } else if (node.mlNode instanceof Concat) {
     // TODO: test this
     const readyConnections: number[] = branchesMap.get(node) ?? [];
@@ -85,11 +77,41 @@ function generateModelGraphCode(
       return [code, incomingBranch];
     }
     readyConnections.push(branch);
-    const params = readyConnections.map((branch) => getBrachVar(branch)).join(', ');
+    const params = readyConnections.map((branch) => getBranchVar(branch)).join(', ');
     branch += 1;
-    code.push(`${getBrachVar(branch)} = torch.cat(${params})`);
+    code.push(`${getBranchVar(branch)} = torch.cat(${params})`);
+  } else if (node.mlNode instanceof Custom) {
+    const readyConnections: number[] = branchesMap.get(node) ?? [];
+
+    if (readyConnections.length !== node.inputInterfaces.size - 1) {
+      const incomingBranches = branchesMap.get(node);
+      if (incomingBranches !== undefined) {
+        incomingBranches.push(incomingBranch);
+        branchesMap.set(node, incomingBranches);
+      } else {
+        branchesMap.set(node, [incomingBranch]);
+      }
+      return [code, incomingBranch];
+    }
+
+    const parsedFuncs = parse(node.mlNode.code);
+
+    if (parsedFuncs instanceof Error) {
+      // TODO handle error
+      console.error(parsedFuncs);
+    } else if (parsedFuncs.length > 0) {
+      const parsedFunc = parsedFuncs[0];
+
+      readyConnections.push(branch);
+      const params = readyConnections.map((branch) => getBranchVar(branch)).join(', ');
+      branch += 1;
+
+      code.push(`${getBranchVar(branch)} = ${parsedFunc.name}(${params})`);
+    } else {
+      // TODO handle error
+    }
   } else {
-    code.push(`${getBrachVar(branch)} = self.${nodeName}(${getBrachVar(incomingBranch)})`);
+    code.push(`${getBranchVar(branch)} = self.${nodeName}(${getBranchVar(incomingBranch)})`);
   }
 
   const children = graph.nextNodesFrom(node);
@@ -175,8 +197,34 @@ function generateModel(graph: Graph): string {
   return [header, initMethod, forwardMethod].join('\n');
 }
 
+function generateFunctions(graph: Graph): string {
+  const customNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Custom);
+
+  if (customNodes.length === 0) {
+    return '';
+  }
+
+  const funcs: string[] = [];
+  customNodes.forEach((node) => {
+    if (node.mlNode instanceof Custom) {
+      funcs.push(node.mlNode.code);
+    }
+  });
+
+  return funcs.join('\n\n');
+}
+
 export default function generateCode(graph: Graph): string {
+  const funcs = generateFunctions(graph);
   const model = generateModel(graph);
-  const result = [imports, model].join('\n\n');
-  return result;
+
+  const result = [imports];
+
+  if (funcs.length > 0) {
+    result.push(funcs);
+  }
+
+  result.push(model);
+
+  return result.join('\n\n');
 }

@@ -8,7 +8,7 @@ class Custom {
 
   static build(options: Map<string, any>): Custom {
     return new Custom(
-      options.get(CustomOptions.InlineCode),
+      options.get(CustomOptions.InlineCode).text,
     );
   }
 }
