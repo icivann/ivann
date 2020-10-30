@@ -39,7 +39,6 @@ export default class AddNodeButton extends Vue {
       const { x: xPanning, y: yPanning } = panning;
       node.position.x = (window.innerWidth / (3 * scaling)) - xPanning;
       node.position.y = (window.innerHeight / (3 * scaling)) - yPanning;
-      this.$emit('node-created', node);
     }
   }
 }
