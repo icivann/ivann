@@ -4,6 +4,7 @@
       <ButtonGrid>
         <AddNodeButton node="InModel" name="Input"/>
         <AddNodeButton node="OutModel" name="Output"/>
+        <!--TODO: pass in option to tell that it should open dialogue for unique name-->
       </ButtonGrid>
     </ExpandablePanel>
     <ExpandablePanel name="Linear">

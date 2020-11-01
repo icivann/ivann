@@ -1,7 +1,9 @@
-export default function editorIOPartition(updated: string[], old: string[]): {
+export interface NodeIOChange {
   added: string[];
   removed: string[];
-} {
+}
+
+export default function editorIOPartition(updated: string[], old: string[]): NodeIOChange {
   const added: string[] = [];
   const removed: string[] = [];
 

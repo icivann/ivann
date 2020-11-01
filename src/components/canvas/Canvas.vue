@@ -11,7 +11,7 @@ import {
   Vue,
   Watch,
 } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { Getter, Mutation } from 'vuex-class';
 import { Engine } from '@baklavajs/plugin-engine';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import { EditorModel, EditorModels } from '@/store/editors/types';
@@ -20,11 +20,11 @@ import { saveEditor, saveEditors } from '@/file/EditorAsJson';
 
 @Component
 export default class Canvas extends Vue {
-  @Getter('allEditorModels') editorModels!: EditorModels;
   @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
+  @Prop({ required: true }) readonly engine!: Engine;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
-
-  private engine = new Engine(true);
+  @Getter('allEditorModels') editorModels!: EditorModels;
+  @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
 
   @Watch('editorModel')
   onEditorChange(editorModel: EditorModel) {
@@ -39,8 +39,8 @@ export default class Canvas extends Vue {
     this.engine.events.calculated.addListener(this, () => {
       console.log('Something changed!');
 
-      // TODO: Update overview editor if required
-      // updateNodeInOverview(currEditor)
+      // Update overview editor if required
+      this.updateNodeInOverview(this.editorModel);
 
       // Auto-Saving
       const {

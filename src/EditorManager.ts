@@ -9,6 +9,7 @@ import Dropdown from '@/baklava/options/Dropdown.vue';
 import Checkbox from '@/baklava/options/Checkbox.vue';
 import CustomNode from '@/baklava/CustomNode.vue';
 import TextArea from '@/baklava/options/TextArea.vue';
+import { Engine } from '@baklavajs/plugin-engine';
 
 export default class EditorManager {
   private static instance: EditorManager;
@@ -19,6 +20,8 @@ export default class EditorManager {
   private train: TrainCanvas = new TrainCanvas();
 
   private view: ViewPlugin = new ViewPlugin();
+
+  private eng: Engine = new Engine(true);
 
   get overviewCanvas(): OverviewCanvas {
     return this.overview;
@@ -35,6 +38,10 @@ export default class EditorManager {
 
   get viewPlugin(): ViewPlugin {
     return this.view;
+  }
+
+  get engine(): Engine {
+    return this.eng;
   }
 
   public resetView(): void {

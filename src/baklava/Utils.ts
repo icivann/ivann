@@ -32,6 +32,11 @@ export default function newEditor(editorType: EditorType) {
       break;
   }
 
+  // Guarantee calculate is called on removal of node
+  editor.events.removeNode.addListener(editor, () => {
+    EditorManager.getInstance().engine.calculate();
+  });
+
   if (canvas) {
     editor.use(canvas.optionPlugin);
     canvas.registerNodes(editor);

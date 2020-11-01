@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { Nodes } from '@/nodes/model/Types';
 
 export default class OutModel extends Node {
   type = Nodes.OutModel;

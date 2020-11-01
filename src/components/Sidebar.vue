@@ -1,16 +1,16 @@
 <template>
   <div class="right">
+    <Tabs v-show="currEditorType === overviewType">
+      <Tab name="Components">
+        <ComponentsTab/>
+      </Tab>
+    </Tabs>
     <Tabs v-show="currEditorType === modelType">
       <Tab name="Layers">
         <LayersTab/>
       </Tab>
       <Tab name="Search">
         <SearchTab/>
-      </Tab>
-    </Tabs>
-    <Tabs v-show="currEditorType === overviewType">
-      <Tab name="Components">
-        <ComponentsTab/>
       </Tab>
     </Tabs>
     <Tabs v-show="currEditorType === dataType">

@@ -1,11 +1,14 @@
 import { MutationTree } from 'vuex';
-import { EditorsState } from '@/store/editors/types';
+import { EditorModel, EditorsState } from '@/store/editors/types';
 import { Editor } from '@baklavajs/core';
 import newEditor from '@/baklava/Utils';
 import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
 import { loadEditor, loadEditors } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
+import Model from '@/nodes/overview/Model';
+import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
+import { getEditorIOs } from '@/store/editors/utils';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
@@ -81,10 +84,25 @@ const editorMutations: MutationTree<EditorsState> = {
     state.currEditorType = EditorType.MODEL;
     state.currEditorIndex = 0;
   },
-  // updateNodeInOverview(state, currEditor: EditorModel) {
-  //   // Loop through nodes in overview editor
-  //   // find corresponding node for currEditor and update
-  // },
+  updateNodeInOverview(state, currEditor: EditorModel) {
+    // Loop through nodes in currEditor and find differences
+    // inputs, outputs, ...
+    // TODO: Add type checking here?
+    const { inputs, outputs } = getEditorIOs(currEditor);
+
+    // Loop through nodes in overview editor
+    // find corresponding node for currEditor and update
+    const { nodes } = state.overviewEditor.editor;
+    const overviewNodes = nodes.filter((node) => node.name === currEditor.name) as Model[];
+    if (overviewNodes.length > 0) {
+      const { inputs: oldInputs, outputs: oldOutputs } = overviewNodes[0].getCurrentIO();
+      const inputChange: NodeIOChange = editorIOPartition(inputs, oldInputs);
+      const outputChange: NodeIOChange = editorIOPartition(outputs, oldOutputs);
+      for (const overviewNode of overviewNodes) {
+        overviewNode.updateIO(inputChange, outputChange);
+      }
+    }
+  },
 };
 
 export default editorMutations;
