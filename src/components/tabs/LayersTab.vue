@@ -2,9 +2,8 @@
   <div class="layers-tab">
     <ExpandablePanel name="I/O">
       <ButtonGrid>
-        <AddNodeButton node="InModel" name="Input"/>
-        <AddNodeButton node="OutModel" name="Output"/>
-        <!--TODO: pass in option to tell that it should open dialogue for unique name-->
+        <AddNodeButton node="InModel" name="Input" :names="editorIONames"/>
+        <AddNodeButton node="OutModel" name="Output" :names="editorIONames"/>
       </ButtonGrid>
     </ExpandablePanel>
     <ExpandablePanel name="Linear">
@@ -52,6 +51,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
+import { mapGetters } from 'vuex';
 
 @Component({
   components: {
@@ -59,6 +59,7 @@ import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
     AddNodeButton,
     ButtonGrid,
   },
+  computed: mapGetters(['editorIONames']),
 })
 export default class LayersTab extends Vue {
 }

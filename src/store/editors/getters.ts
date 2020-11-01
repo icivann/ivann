@@ -2,6 +2,7 @@ import { GetterTree } from 'vuex';
 import { RootState } from '@/store/types';
 import { EditorsState } from '@/store/editors/types';
 import EditorType from '@/EditorType';
+import { Nodes } from '@/nodes/model/Types';
 
 const editorGetters: GetterTree<EditorsState, RootState> = {
   currEditorType: (state) => state.currEditorType,
@@ -35,6 +36,15 @@ const editorGetters: GetterTree<EditorsState, RootState> = {
   modelEditor: (state) => (index: number) => state.modelEditors[index],
   dataEditor: (state) => (index: number) => state.dataEditors[index],
   trainEditor: (state) => (index: number) => state.trainEditors[index],
+  editorIONames: (state, getters) => {
+    const names: Set<string> = new Set<string>();
+    for (const node of getters.currEditorModel.editor.nodes) {
+      if (node.type === Nodes.InModel || node.type === Nodes.OutModel) {
+        names.add(node.name);
+      }
+    }
+    return names;
+  },
 };
 
 export default editorGetters;

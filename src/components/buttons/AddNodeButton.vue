@@ -16,6 +16,7 @@ export default class AddNodeButton extends Vue {
   @Prop({ required: true }) readonly node!: string;
   @Prop() readonly name!: string;
   @Prop() readonly options?: unknown;
+  @Prop() readonly names?: Set<string>;
 
   private fontSize = 1.0;
 
@@ -28,6 +29,22 @@ export default class AddNodeButton extends Vue {
   }
 
   private addNode() {
+    let name: string | null = null;
+    if (this.names) {
+      let isNameUnique = false;
+      while (!isNameUnique) {
+        name = prompt('Please enter a unique name for the IO');
+
+        // Name is null if cancelled
+        if (name === null) return;
+
+        // Loop until unique non-empty name has been entered
+        if (name !== '' && !this.names.has(name)) {
+          isNameUnique = true;
+        }
+      }
+    }
+
     const { editor } = this.$store.getters.currEditorModel;
     const NodeType = editor.nodeTypes.get(this.node);
 
@@ -39,6 +56,8 @@ export default class AddNodeButton extends Vue {
       const { x: xPanning, y: yPanning } = panning;
       node.position.x = (window.innerWidth / (3 * scaling)) - xPanning;
       node.position.y = (window.innerHeight / (3 * scaling)) - yPanning;
+
+      if (name !== null) node.name = name;
     }
   }
 }

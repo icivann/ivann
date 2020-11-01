@@ -7,9 +7,9 @@ import Vector from '@/baklava/options/Vector.vue';
 import Integer from '@/baklava/options/Integer.vue';
 import Dropdown from '@/baklava/options/Dropdown.vue';
 import Checkbox from '@/baklava/options/Checkbox.vue';
+import { Engine } from '@baklavajs/plugin-engine';
 import CustomNode from '@/baklava/CustomNode.vue';
 import TextArea from '@/baklava/options/TextArea.vue';
-import { Engine } from '@baklavajs/plugin-engine';
 
 export default class EditorManager {
   private static instance: EditorManager;
