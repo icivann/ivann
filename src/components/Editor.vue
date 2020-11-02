@@ -5,6 +5,7 @@
            :style="`width: min(calc(100vw - 3rem - ${sidebarWidth}px), ${editorWidth}%)`">
         <Canvas
           :viewPlugin="this.manager.viewPlugin"
+          :engine="this.manager.engine"
           :editorModel="currEditorModel"
         />
       </div>

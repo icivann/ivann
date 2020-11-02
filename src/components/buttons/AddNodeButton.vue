@@ -10,12 +10,14 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import EditorManager from '@/EditorManager';
+import { uniqueTextInput } from '@/inputs/prompt';
 
 @Component({})
 export default class AddNodeButton extends Vue {
   @Prop({ required: true }) readonly node!: string;
   @Prop() readonly name!: string;
   @Prop() readonly options?: unknown;
+  @Prop() readonly names?: Set<string>;
 
   private fontSize = 1.0;
 
@@ -28,6 +30,12 @@ export default class AddNodeButton extends Vue {
   }
 
   private addNode() {
+    let name: string | null = null;
+    if (this.names) {
+      name = uniqueTextInput(this.names, 'Please enter a unique name for the IO');
+      if (name === null) return;
+    }
+
     const { editor } = this.$store.getters.currEditorModel;
     const NodeType = editor.nodeTypes.get(this.node);
 
@@ -35,10 +43,13 @@ export default class AddNodeButton extends Vue {
       console.error(`Undefined Node Type: ${this.node}`);
     } else {
       const node = editor.addNode(new NodeType(this.options));
+
+      // Set position (and name) of newly created node
       const { scaling, panning } = EditorManager.getInstance().viewPlugin;
       const { x: xPanning, y: yPanning } = panning;
       node.position.x = (window.innerWidth / (3 * scaling)) - xPanning;
       node.position.y = (window.innerHeight / (3 * scaling)) - yPanning;
+      if (name !== null) node.name = name;
     }
   }
 }

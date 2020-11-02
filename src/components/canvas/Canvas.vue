@@ -20,12 +20,11 @@ import { saveEditor, saveEditors } from '@/file/EditorAsJson';
 
 @Component
 export default class Canvas extends Vue {
-  @Getter('allEditorModels') editorModels!: EditorModels;
   @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
+  @Prop({ required: true }) readonly engine!: Engine;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
-  @Mutation('setUnsaved') setUnsaved!: (model: EditorModel) => void;
-
-  private engine = new Engine(true);
+  @Getter('allEditorModels') editorModels!: EditorModels;
+  @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
 
   @Watch('editorModel')
   onEditorChange(editorModel: EditorModel) {
@@ -39,7 +38,10 @@ export default class Canvas extends Vue {
 
     this.engine.events.calculated.addListener(this, () => {
       console.log('Something changed!');
-      this.setUnsaved(this.editorModel);
+
+      // Update overview editor if required
+      this.updateNodeInOverview(this.editorModel);
+
       // Auto-Saving
       const {
         overviewEditor,
