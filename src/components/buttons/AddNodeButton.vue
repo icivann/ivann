@@ -10,6 +10,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import EditorManager from '@/EditorManager';
+import { uniqueTextInput } from '@/inputs/prompt';
 
 @Component({})
 export default class AddNodeButton extends Vue {
@@ -31,18 +32,8 @@ export default class AddNodeButton extends Vue {
   private addNode() {
     let name: string | null = null;
     if (this.names) {
-      let isNameUnique = false;
-      while (!isNameUnique) {
-        name = prompt('Please enter a unique name for the IO');
-
-        // Name is null if cancelled
-        if (name === null) return;
-
-        // Loop until unique non-empty name has been entered
-        if (name !== '' && !this.names.has(name)) {
-          isNameUnique = true;
-        }
-      }
+      name = uniqueTextInput(this.names, 'Please enter a unique name for the IO');
+      if (name === null) return;
     }
 
     const { editor } = this.$store.getters.currEditorModel;
@@ -52,11 +43,12 @@ export default class AddNodeButton extends Vue {
       console.error(`Undefined Node Type: ${this.node}`);
     } else {
       const node = editor.addNode(new NodeType(this.options));
+
+      // Set position (and name) of newly created node
       const { scaling, panning } = EditorManager.getInstance().viewPlugin;
       const { x: xPanning, y: yPanning } = panning;
       node.position.x = (window.innerWidth / (3 * scaling)) - xPanning;
       node.position.y = (window.innerHeight / (3 * scaling)) - yPanning;
-
       if (name !== null) node.name = name;
     }
   }
