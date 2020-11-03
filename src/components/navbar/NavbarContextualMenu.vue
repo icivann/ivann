@@ -23,6 +23,7 @@ import EditorType from '@/EditorType';
 import { Getter, Mutation } from 'vuex-class';
 import { EditorModel } from '@/store/editors/types';
 import { uniqueTextInput } from '@/inputs/prompt';
+import { saveEditor, SaveWithNames } from '@/file/EditorAsJson';
 
 @Component({
   components: { VerticalMenuButton },
@@ -36,6 +37,8 @@ export default class NavbarContextualMenu extends Vue {
   @Prop({ required: true }) readonly editors!: EditorModel[];
   @Prop({ required: true }) readonly editorType!: EditorType;
   @Getter('editorNames') editorNames!: Set<string>;
+  @Getter('saveWithNames') saveWithNames!: SaveWithNames;
+  @Getter('currEditorModel') currEditorModel!: EditorModel;
   @Mutation('newEditor') newEditor!: (arg0: { editorType: EditorType; name: string}) => void;
 
   private createNewEditor(): void {
@@ -43,6 +46,9 @@ export default class NavbarContextualMenu extends Vue {
       'Please enter a unique name for the editor');
     if (name !== null) {
       this.newEditor({ editorType: this.editorType, name });
+      // Auto-Saving this new Editor
+      this.$cookies.set('unsaved-project', this.saveWithNames);
+      this.$cookies.set(`unsaved-editor-${name}`, saveEditor(this.currEditorModel));
     }
   }
 }

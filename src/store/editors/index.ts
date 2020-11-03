@@ -8,22 +8,16 @@ import editorMutations from './mutations';
 import { EditorsState } from './types';
 
 export const editorState: EditorsState = {
-  currEditorType: EditorType.MODEL,
+  currEditorType: EditorType.OVERVIEW,
   currEditorIndex: 0,
-  editorNames: new Set<string>(['untitled']),
+  editorNames: new Set<string>(['Overview']),
   overviewEditor: {
     // TODO: Map of editors used in overview to their nodes?
     id: randomUuid(),
     name: 'Overview',
-    editor: newEditor(EditorType.OVERVIEW), // TODO: Lazy create?
+    editor: newEditor(EditorType.OVERVIEW),
   },
-  modelEditors: [
-    {
-      id: randomUuid(),
-      name: 'untitled',
-      editor: newEditor(EditorType.MODEL),
-    },
-  ],
+  modelEditors: [],
   dataEditors: [],
   trainEditors: [],
 };
