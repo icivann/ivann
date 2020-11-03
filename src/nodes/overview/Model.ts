@@ -54,10 +54,10 @@ export default class Model extends Node {
       id: this.id,
       name: this.name,
       options: Array.from(this.options.entries())
-        .map(([k, o]) => [k, o.value]) as any,
+        .map(([k, o]) => [k, o.value]),
       state: this.state,
       interfaces: Array.from(this.interfaces.entries())
-        .map(([k, i]) => [k, { isInput: i.isInput, ...i.save() }]) as any,
+        .map(([k, i]) => [k, { isInput: i.isInput, ...i.save() }]),
     };
     return this.hooks.save.execute(state);
   }

@@ -4,7 +4,7 @@ import { Editor } from '@baklavajs/core';
 import newEditor from '@/baklava/Utils';
 import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
-import { loadEditors, Save } from '@/file/EditorAsJson';
+import { loadEditor, loadEditors, Save } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
 import Model from '@/nodes/overview/Model';
 import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
