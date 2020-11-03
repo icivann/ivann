@@ -55,9 +55,6 @@ const editorMutations: MutationTree<EditorsState> = {
   loadEditors(state, file: Save) {
     const editorNames: Set<string> = new Set<string>();
 
-    console.log('vuexload');
-    console.log(JSON.stringify(file.overviewEditor));
-    console.log(JSON.stringify(file.dataEditors));
     [state.overviewEditor] = loadEditors(EditorType.OVERVIEW, [file.overviewEditor], editorNames);
     state.modelEditors = loadEditors(EditorType.MODEL, file.modelEditors, editorNames);
     state.dataEditors = loadEditors(EditorType.DATA, file.dataEditors, editorNames);
