@@ -16,7 +16,7 @@ import { Engine } from '@baklavajs/plugin-engine';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import { EditorModel, EditorModels } from '@/store/editors/types';
 import istateToGraph from '@/app/ir/istateToGraph';
-import { saveEditor, saveEditors } from '@/file/EditorAsJson';
+import { saveEditor, SaveWithNames } from '@/file/EditorAsJson';
 
 @Component
 export default class Canvas extends Vue {
@@ -24,6 +24,7 @@ export default class Canvas extends Vue {
   @Prop({ required: true }) readonly engine!: Engine;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
   @Getter('allEditorModels') editorModels!: EditorModels;
+  @Getter('saveWithNames') saveWithNames!: SaveWithNames;
   @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
 
   @Watch('editorModel')
@@ -42,25 +43,14 @@ export default class Canvas extends Vue {
       // Update overview editor if required
       this.updateNodeInOverview(this.editorModel);
 
-      // Auto-Saving
-      const {
-        overviewEditor,
-        modelEditors,
-        dataEditors,
-        trainEditors,
-      } = this.editorModels;
+      const editorSave = saveEditor(this.editorModel);
 
-      const editorsSaved = {
-        overviewEditor: saveEditor(overviewEditor),
-        modelEditors: saveEditors(modelEditors),
-        dataEditors: saveEditors(dataEditors),
-        trainEditors: saveEditors(trainEditors),
-      };
-      this.$cookies.set('unsaved', editorsSaved);
+      // Auto-Saving
+      this.$cookies.set('unsaved-project', this.saveWithNames);
+      this.$cookies.set(`unsaved-editor-${this.editorModel.name}`, editorSave);
 
       // Building IR
-      const state = this.editorModel.editor.save();
-      istateToGraph(state);
+      istateToGraph(editorSave.state);
     });
   }
 }
