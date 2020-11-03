@@ -18,6 +18,8 @@ import Navbar from '@/components/navbar/Navbar.vue';
 import Editor from '@/components/Editor.vue';
 import Titlebar from '@/components/Titlebar.vue';
 import { Mutation } from 'vuex-class';
+import { Save, SaveWithNames } from '@/file/EditorAsJson';
+import EditorManager from '@/EditorManager';
 
 @Component({
   components: {
@@ -27,11 +29,19 @@ import { Mutation } from 'vuex-class';
   },
 })
 export default class Home extends Vue {
-  @Mutation('loadEditors') loadEditors!: (file: any) => void;
+  @Mutation('loadEditors') loadEditors!: (save: Save) => void;
 
   created() {
-    if (this.$cookies.isKey('unsaved')) {
-      this.loadEditors(this.$cookies.get('unsaved'));
+    // Auto-loading
+    if (this.$cookies.isKey('unsaved-project')) {
+      const saveWithNames: SaveWithNames = this.$cookies.get('unsaved-project');
+      const overviewEditor = this.$cookies.get('unsaved-editor-Overview');
+      const modelEditors = saveWithNames.modelEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
+      const dataEditors = saveWithNames.dataEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
+      const trainEditors = saveWithNames.trainEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
+      this.loadEditors(new Save(overviewEditor, modelEditors, dataEditors, trainEditors));
+      // We reset the view to set the panning and scaling on the current view.
+      EditorManager.getInstance().resetView();
     }
   }
 }

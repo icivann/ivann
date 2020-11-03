@@ -1,14 +1,15 @@
 import { GetterTree } from 'vuex';
 import { RootState } from '@/store/types';
-import { EditorsState } from '@/store/editors/types';
+import { EditorModels, EditorsState } from '@/store/editors/types';
 import EditorType from '@/EditorType';
 import { Nodes } from '@/nodes/model/Types';
+import { SaveWithNames } from '@/file/EditorAsJson';
 
 const editorGetters: GetterTree<EditorsState, RootState> = {
   currEditorType: (state) => state.currEditorType,
   currEditorIndex: (state) => state.currEditorIndex,
   editorNames: (state) => state.editorNames,
-  allEditorModels: (state) => ({
+  allEditorModels: (state): EditorModels => ({
     overviewEditor: state.overviewEditor,
     modelEditors: state.modelEditors,
     dataEditors: state.dataEditors,
@@ -45,6 +46,12 @@ const editorGetters: GetterTree<EditorsState, RootState> = {
     }
     return names;
   },
+  saveWithNames: (state): SaveWithNames => ({
+    overviewEditor: state.overviewEditor.name,
+    modelEditors: state.modelEditors.map((editor) => editor.name),
+    dataEditors: state.dataEditors.map((editor) => editor.name),
+    trainEditors: state.trainEditors.map((editor) => editor.name),
+  }),
 };
 
 export default editorGetters;

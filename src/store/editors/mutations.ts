@@ -4,7 +4,7 @@ import { Editor } from '@baklavajs/core';
 import newEditor from '@/baklava/Utils';
 import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
-import { loadEditor, loadEditors } from '@/file/EditorAsJson';
+import { loadEditors, Save } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
 import Model from '@/nodes/overview/Model';
 import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
@@ -52,17 +52,17 @@ const editorMutations: MutationTree<EditorsState> = {
         break;
     }
   },
-  loadEditors(state, file) {
+  loadEditors(state, file: Save) {
     const editorNames: Set<string> = new Set<string>();
 
-    state.overviewEditor = loadEditor(EditorType.OVERVIEW, file.overviewEditor, editorNames);
+    [state.overviewEditor] = loadEditors(EditorType.OVERVIEW, [file.overviewEditor], editorNames);
     state.modelEditors = loadEditors(EditorType.MODEL, file.modelEditors, editorNames);
     state.dataEditors = loadEditors(EditorType.DATA, file.dataEditors, editorNames);
     state.trainEditors = loadEditors(EditorType.TRAIN, file.trainEditors, editorNames);
 
     state.editorNames = editorNames;
 
-    state.currEditorType = EditorType.MODEL;
+    state.currEditorType = EditorType.OVERVIEW;
     state.currEditorIndex = 0;
   },
   resetState(state) {
@@ -71,17 +71,13 @@ const editorMutations: MutationTree<EditorsState> = {
       name: 'Overview',
       editor: newEditor(EditorType.OVERVIEW),
     };
-    state.modelEditors = [{
-      id: randomUuid(),
-      name: 'untitled',
-      editor: newEditor(EditorType.MODEL),
-    }];
+    state.modelEditors = [];
     state.dataEditors = [];
     state.trainEditors = [];
 
-    state.editorNames = new Set<string>(['untitled']);
+    state.editorNames = new Set<string>(['Overview']);
 
-    state.currEditorType = EditorType.MODEL;
+    state.currEditorType = EditorType.OVERVIEW;
     state.currEditorIndex = 0;
   },
   updateNodeInOverview(state, currEditor: EditorModel) {
