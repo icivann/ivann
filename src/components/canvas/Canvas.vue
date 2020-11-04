@@ -14,7 +14,7 @@ import {
 import { Getter, Mutation } from 'vuex-class';
 import { Engine } from '@baklavajs/plugin-engine';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
-import { EditorModel, EditorModels } from '@/store/editors/types';
+import { EditorModel } from '@/store/editors/types';
 import istateToGraph from '@/app/ir/istateToGraph';
 import { saveEditor, SaveWithNames } from '@/file/EditorAsJson';
 
@@ -23,7 +23,7 @@ export default class Canvas extends Vue {
   @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
   @Prop({ required: true }) readonly engine!: Engine;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
-  @Getter('allEditorModels') editorModels!: EditorModels;
+  @Getter('overviewEditor') overviewEditor!: EditorModel;
   @Getter('saveWithNames') saveWithNames!: SaveWithNames;
   @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
 
@@ -43,14 +43,16 @@ export default class Canvas extends Vue {
       // Update overview editor if required
       this.updateNodeInOverview(this.editorModel);
 
-      const editorSave = saveEditor(this.editorModel);
+      // Auto-Saving - have to save Overview as that may have changed
+      const currEditorSave = saveEditor(this.editorModel);
+      const overviewEditorSave = saveEditor(this.overviewEditor);
 
-      // Auto-Saving
       this.$cookies.set('unsaved-project', this.saveWithNames);
-      this.$cookies.set(`unsaved-editor-${this.editorModel.name}`, editorSave);
+      this.$cookies.set(`unsaved-editor-${this.editorModel.name}`, currEditorSave);
+      this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
 
       // Building IR
-      istateToGraph(editorSave.state);
+      istateToGraph(currEditorSave.state);
     });
   }
 }
