@@ -4,7 +4,7 @@ import { Editor } from '@baklavajs/core';
 import newEditor from '@/baklava/Utils';
 import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
-import { loadEditor, loadEditors, Save } from '@/file/EditorAsJson';
+import { loadEditors, Save } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
 import Model from '@/nodes/overview/Model';
 import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
@@ -51,6 +51,56 @@ const editorMutations: MutationTree<EditorsState> = {
       default:
         break;
     }
+  },
+  renameEditor(state, { editorType, index, name }) {
+    switch (editorType) {
+      case EditorType.MODEL:
+        state.modelEditors[index].name = name;
+        state.editorNames.delete(state.modelEditors[index].name);
+        state.editorNames.add(name);
+        break;
+      case EditorType.DATA:
+        state.dataEditors[index].name = name;
+        state.editorNames.delete(state.dataEditors[index].name);
+        state.editorNames.add(name);
+        break;
+      case EditorType.TRAIN:
+        state.trainEditors[index].name = name;
+        state.editorNames.delete(state.trainEditors[index].name);
+        state.editorNames.add(name);
+        break;
+      default:
+        break;
+    }
+  },
+  deleteEditor(state, { editorType, index }) {
+    let hasEditor = false;
+    switch (editorType) {
+      case EditorType.MODEL:
+        state.editorNames.delete(state.modelEditors[index].name);
+        state.modelEditors = state.modelEditors.filter((val, i) => i !== index);
+        hasEditor = state.modelEditors.length > 0;
+        break;
+      case EditorType.DATA:
+        state.editorNames.delete(state.dataEditors[index].name);
+        state.dataEditors = state.dataEditors.filter((val, i) => i !== index);
+        hasEditor = state.dataEditors.length > 0;
+        break;
+      case EditorType.TRAIN:
+        state.editorNames.delete(state.trainEditors[index].name);
+        state.trainEditors = state.trainEditors.filter((val, i) => i !== index);
+        hasEditor = state.trainEditors.length > 0;
+        break;
+      default:
+        break;
+    }
+
+    // If no editor left in editorType, switch to overview
+    if (!hasEditor) {
+      state.currEditorType = EditorType.OVERVIEW;
+    }
+    state.currEditorIndex = 0;
+    EditorManager.getInstance().resetView();
   },
   loadEditors(state, file: Save) {
     const editorNames: Set<string> = new Set<string>();

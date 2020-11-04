@@ -1,11 +1,17 @@
 <template>
     <div id="contextual-menu">
       <div v-for="(editor, index) in editors" :key="index">
-        <VerticalMenuButton
-          :label="editor.name"
-          :onClick="() => switchEditor({ editorType, index})"
-          :isSelected="editorType === currEditorType && index === currEditorIndex">
-        </VerticalMenuButton>
+        <div id="row">
+          <VerticalMenuButton
+            :label="editor.name"
+            :onClick="() => switchEditor({editorType, index})"
+            :isSelected="editorType === currEditorType && index === currEditorIndex">
+          </VerticalMenuButton>
+          <div>
+            <RenameEditorButton :editorType="editorType" :index="index"/>
+            <DeleteEditorButton :editorType="editorType" :index="index"/>
+          </div>
+        </div>
       </div>
       <VerticalMenuButton
         :label="'+'"
@@ -24,9 +30,11 @@ import { Getter, Mutation } from 'vuex-class';
 import { EditorModel } from '@/store/editors/types';
 import { uniqueTextInput } from '@/inputs/prompt';
 import { saveEditor, SaveWithNames } from '@/file/EditorAsJson';
+import RenameEditorButton from '@/components/buttons/RenameEditorButton.vue';
+import DeleteEditorButton from '@/components/buttons/DeleteEditorButton.vue';
 
 @Component({
-  components: { VerticalMenuButton },
+  components: { VerticalMenuButton, RenameEditorButton, DeleteEditorButton },
   computed: mapGetters([
     'currEditorType',
     'currEditorIndex',
@@ -56,6 +64,12 @@ export default class NavbarContextualMenu extends Vue {
 </script>
 
 <style scoped>
+  #row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   #contextual-menu {
     border: 1px solid var(--grey);
   }
