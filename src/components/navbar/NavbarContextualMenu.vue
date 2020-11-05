@@ -1,24 +1,26 @@
 <template>
-    <div id="contextual-menu">
-      <div v-for="(editor, index) in editors" :key="index">
+  <div id="contextual-menu">
+    <div v-for="(editor, index) in editors" :key="index">
+      <div>
         <div id="row">
           <VerticalMenuButton
             :label="editor.name"
             :onClick="() => switchEditor({editorType, index})"
             :isSelected="editorType === currEditorType && index === currEditorIndex">
           </VerticalMenuButton>
-          <div>
+          <div class="buttons">
             <RenameEditorButton :editorType="editorType" :index="index"/>
             <DeleteEditorButton :editorType="editorType" :index="index"/>
           </div>
         </div>
       </div>
-      <VerticalMenuButton
-        :label="'+'"
-        :onClick="this.createNewEditor"
-        :isSelected="false"
-      />
     </div>
+    <VerticalMenuButton
+      :label="'+'"
+      :onClick="this.createNewEditor"
+      :isSelected="false"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -47,7 +49,7 @@ export default class NavbarContextualMenu extends Vue {
   @Getter('editorNames') editorNames!: Set<string>;
   @Getter('saveWithNames') saveWithNames!: SaveWithNames;
   @Getter('currEditorModel') currEditorModel!: EditorModel;
-  @Mutation('newEditor') newEditor!: (arg0: { editorType: EditorType; name: string}) => void;
+  @Mutation('newEditor') newEditor!: (arg0: { editorType: EditorType; name: string }) => void;
 
   private createNewEditor(): void {
     const name: string | null = uniqueTextInput(this.editorNames,
@@ -63,11 +65,21 @@ export default class NavbarContextualMenu extends Vue {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   #row {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    &:hover {
+      background: #1c1c1c;
+      transition-duration: 0.1s;
+      border-left-color: var(--blue);
+      cursor: pointer;
+    }
+  }
+
+  .buttons {
+    display: flex;
   }
 
   #contextual-menu {
