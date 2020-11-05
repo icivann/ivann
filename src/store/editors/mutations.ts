@@ -49,6 +49,7 @@ const editorMutations: MutationTree<EditorsState> = {
         }) - 1;
         break;
       default:
+        console.log('Attempted to create non existent editor type');
         break;
     }
   },
@@ -70,36 +71,43 @@ const editorMutations: MutationTree<EditorsState> = {
         state.editorNames.add(name);
         break;
       default:
+        console.log('Attempted to rename non existent editor type');
         break;
     }
   },
   deleteEditor(state, { editorType, index }) {
-    let hasEditor = false;
+    const sameEditorType = state.currEditorType === editorType;
+    const diffIndex = state.currEditorIndex - index;
+    const deletingCurr = sameEditorType && diffIndex === 0;
+
+    // If deleting current editor, switch to overview
+    if (deletingCurr) {
+      state.currEditorType = EditorType.OVERVIEW;
+      state.currEditorIndex = 0;
+    }
+
     switch (editorType) {
       case EditorType.MODEL:
         state.editorNames.delete(state.modelEditors[index].name);
         state.modelEditors = state.modelEditors.filter((val, i) => i !== index);
-        hasEditor = state.modelEditors.length > 0;
         break;
       case EditorType.DATA:
         state.editorNames.delete(state.dataEditors[index].name);
         state.dataEditors = state.dataEditors.filter((val, i) => i !== index);
-        hasEditor = state.dataEditors.length > 0;
         break;
       case EditorType.TRAIN:
         state.editorNames.delete(state.trainEditors[index].name);
         state.trainEditors = state.trainEditors.filter((val, i) => i !== index);
-        hasEditor = state.trainEditors.length > 0;
         break;
       default:
+        console.log('Attempted to delete non existent editor type');
         break;
     }
 
-    // If no editor left in editorType, switch to overview
-    if (!hasEditor) {
-      state.currEditorType = EditorType.OVERVIEW;
+    // Maintain same current editor
+    if (diffIndex > 0) {
+      state.currEditorIndex -= 1;
     }
-    state.currEditorIndex = 0;
     EditorManager.getInstance().resetView();
   },
   loadEditors(state, file: Save) {
