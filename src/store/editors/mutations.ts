@@ -4,7 +4,7 @@ import { Editor } from '@baklavajs/core';
 import newEditor from '@/baklava/Utils';
 import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
-import { loadEditor, loadEditors, Save } from '@/file/EditorAsJson';
+import { loadEditors, Save } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
 import Model from '@/nodes/overview/Model';
 import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
@@ -49,8 +49,66 @@ const editorMutations: MutationTree<EditorsState> = {
         }) - 1;
         break;
       default:
+        console.log('Attempted to create non existent editor type');
         break;
     }
+  },
+  renameEditor(state, { editorType, index, name }) {
+    switch (editorType) {
+      case EditorType.MODEL:
+        state.modelEditors[index].name = name;
+        state.editorNames.delete(state.modelEditors[index].name);
+        state.editorNames.add(name);
+        break;
+      case EditorType.DATA:
+        state.dataEditors[index].name = name;
+        state.editorNames.delete(state.dataEditors[index].name);
+        state.editorNames.add(name);
+        break;
+      case EditorType.TRAIN:
+        state.trainEditors[index].name = name;
+        state.editorNames.delete(state.trainEditors[index].name);
+        state.editorNames.add(name);
+        break;
+      default:
+        console.log('Attempted to rename non existent editor type');
+        break;
+    }
+  },
+  deleteEditor(state, { editorType, index }) {
+    const sameEditorType = state.currEditorType === editorType;
+    const diffIndex = state.currEditorIndex - index;
+    const deletingCurr = sameEditorType && diffIndex === 0;
+
+    // If deleting current editor, switch to overview
+    if (deletingCurr) {
+      state.currEditorType = EditorType.OVERVIEW;
+      state.currEditorIndex = 0;
+    }
+
+    switch (editorType) {
+      case EditorType.MODEL:
+        state.editorNames.delete(state.modelEditors[index].name);
+        state.modelEditors = state.modelEditors.filter((val, i) => i !== index);
+        break;
+      case EditorType.DATA:
+        state.editorNames.delete(state.dataEditors[index].name);
+        state.dataEditors = state.dataEditors.filter((val, i) => i !== index);
+        break;
+      case EditorType.TRAIN:
+        state.editorNames.delete(state.trainEditors[index].name);
+        state.trainEditors = state.trainEditors.filter((val, i) => i !== index);
+        break;
+      default:
+        console.log('Attempted to delete non existent editor type');
+        break;
+    }
+
+    // Maintain same current editor
+    if (diffIndex > 0) {
+      state.currEditorIndex -= 1;
+    }
+    EditorManager.getInstance().resetView();
   },
   loadEditors(state, file: Save) {
     const editorNames: Set<string> = new Set<string>();
