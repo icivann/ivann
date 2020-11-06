@@ -20,6 +20,7 @@ export const editorState: EditorsState = {
   modelEditors: [],
   dataEditors: [],
   trainEditors: [],
+  inCodeVault: false,
 };
 
 export const editors: Module<EditorsState, RootState> = {

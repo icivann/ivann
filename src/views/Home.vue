@@ -6,7 +6,8 @@
         <Navbar />
       </div>
       <div class="col d-flex flex-column p-0">
-        <Editor />
+        <Editor v-show="!inCodeVault"/>
+        <CodeVault v-show="inCodeVault"/>
       </div>
     </div>
   </div>
@@ -17,17 +18,21 @@ import { Component, Vue } from 'vue-property-decorator';
 import Navbar from '@/components/navbar/Navbar.vue';
 import Editor from '@/components/Editor.vue';
 import Titlebar from '@/components/Titlebar.vue';
+import { mapGetters } from 'vuex';
 import { Getter, Mutation } from 'vuex-class';
 import { Save, saveEditor, SaveWithNames } from '@/file/EditorAsJson';
 import EditorManager from '@/EditorManager';
 import { EditorModel } from '@/store/editors/types';
+import CodeVault from '@/components/CodeVault.vue';
 
 @Component({
   components: {
+    CodeVault,
     Titlebar,
     Navbar,
     Editor,
   },
+  computed: mapGetters(['inCodeVault']),
 })
 export default class Home extends Vue {
   @Getter('currEditorModel') currEditorModel!: EditorModel;

@@ -19,4 +19,5 @@ export interface EditorsState extends EditorModels {
   currEditorType: EditorType;
   currEditorIndex: number;
   editorNames: Set<string>;
+  inCodeVault: boolean;
 }

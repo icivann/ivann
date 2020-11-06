@@ -66,6 +66,7 @@ const editorGetters: GetterTree<EditorsState, RootState> = {
     dataEditors: state.dataEditors.map((editor) => editor.name),
     trainEditors: state.trainEditors.map((editor) => editor.name),
   }),
+  inCodeVault: (state) => state.inCodeVault,
 };
 
 export default editorGetters;
