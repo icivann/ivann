@@ -1,16 +1,18 @@
 <template>
-  <div class="node-button" @click="addNode">
+  <div class="node-button" @click="onClick" draggable="true" @dragend="dragEnd">
     <div class="icon">
       <slot/>
     </div>
-    <div class="name" :style="'font-size: ' + fontSize + 'em'">{{name}}</div>
+    <div class="name" :style="'font-size: ' + fontSize + 'em'">{{ name }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import EditorManager from '@/EditorManager';
+import { Getter } from 'vuex-class';
+import { EditorModel } from '@/store/editors/types';
 import { uniqueTextInput } from '@/inputs/prompt';
+import EditorManager from '@/EditorManager';
 
 @Component({})
 export default class AddNodeButton extends Vue {
@@ -18,8 +20,13 @@ export default class AddNodeButton extends Vue {
   @Prop() readonly name!: string;
   @Prop() readonly options?: unknown;
   @Prop() readonly names?: Set<string>;
+  @Getter('currEditorModel') currEditorModel!: EditorModel;
 
   private fontSize = 1.0;
+
+  private dragEnd(event: DragEvent) {
+    this.addNode(event.pageX - 60, event.pageY - 60);
+  }
 
   created() {
     let factor = (this.name.length - 10) / 3;
@@ -29,7 +36,11 @@ export default class AddNodeButton extends Vue {
     }
   }
 
-  private addNode() {
+  private onClick() {
+    this.addNode(window.innerWidth / 3, window.innerHeight / 3);
+  }
+
+  private addNode(x: number, y: number) {
     let name: string | null = null;
     if (this.names) {
       name = uniqueTextInput(this.names, 'Please enter a unique name for the IO');
@@ -47,9 +58,10 @@ export default class AddNodeButton extends Vue {
       // Set position (and name) of newly created node
       const { scaling, panning } = EditorManager.getInstance().viewPlugin;
       const { x: xPanning, y: yPanning } = panning;
-      node.position.x = (window.innerWidth / (3 * scaling)) - xPanning;
-      node.position.y = (window.innerHeight / (3 * scaling)) - yPanning;
-      if (name !== null) node.name = name;
+
+      node.position.x = (x / scaling) - xPanning;
+      node.position.y = (y / scaling) - yPanning;
+      if (name) node.name = name;
     }
   }
 }

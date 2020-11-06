@@ -1,6 +1,6 @@
 <template>
   <div class="canvas h-100">
-    <baklava-editor :plugin="viewPlugin" :key="editorModel.id.toString()"></baklava-editor>
+    <baklava-editor :plugin="viewPlugin" :key="editorModel.id.toString()"/>
   </div>
 </template>
 
