@@ -106,7 +106,7 @@ export default class Navbar extends Vue {
   @Getter('currEditorType') currEditorType!: EditorType;
   @Getter('inCodeVault') inCodeVault!: boolean;
 
-  private isSelected(editorType?: EditorType) {
+  private isSelected(editorType: EditorType) {
     return !this.inCodeVault && (this.currEditorType === editorType) ? 'selected' : '';
   }
 
