@@ -16,7 +16,7 @@ import { Engine } from '@baklavajs/plugin-engine';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import { EditorModel } from '@/store/editors/types';
 import istateToGraph from '@/app/ir/istateToGraph';
-import { saveEditor, SaveWithNames } from '@/file/EditorAsJson';
+import { EditorSave, saveEditor } from '@/file/EditorAsJson';
 
 @Component
 export default class Canvas extends Vue {
@@ -24,13 +24,18 @@ export default class Canvas extends Vue {
   @Prop({ required: true }) readonly engine!: Engine;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
   @Getter('overviewEditor') overviewEditor!: EditorModel;
-  @Getter('saveWithNames') saveWithNames!: SaveWithNames;
   @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
 
   @Watch('editorModel')
-  onEditorChange(editorModel: EditorModel) {
-    editorModel.editor.use(this.viewPlugin);
-    editorModel.editor.use(this.engine);
+  onEditorChange(newEditorModel: EditorModel, oldEditorModel: EditorModel) {
+    newEditorModel.editor.use(this.viewPlugin);
+    newEditorModel.editor.use(this.engine);
+
+    // Save oldEditorModel as periodic save may not have captured last changes
+    const oldEditorSaved: EditorSave = saveEditor(oldEditorModel);
+    const overviewEditorSave: EditorSave = saveEditor(this.overviewEditor);
+    this.$cookies.set(`unsaved-editor-${oldEditorModel.name}`, oldEditorSaved);
+    this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
   }
 
   created(): void {
@@ -40,18 +45,8 @@ export default class Canvas extends Vue {
     this.engine.events.calculated.addListener(this, () => {
       console.log('Something changed!');
 
-      // Update overview editor if required
-      this.updateNodeInOverview(this.editorModel);
-
-      // Auto-Saving - have to save Overview as that may have changed
-      const currEditorSave = saveEditor(this.editorModel);
-      const overviewEditorSave = saveEditor(this.overviewEditor);
-
-      this.$cookies.set('unsaved-project', this.saveWithNames);
-      this.$cookies.set(`unsaved-editor-${this.editorModel.name}`, currEditorSave);
-      this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
-
       // Building IR
+      const currEditorSave = saveEditor(this.editorModel);
       istateToGraph(currEditorSave.state);
     });
   }
