@@ -12,6 +12,7 @@ import { getEditorIOs } from '@/store/editors/utils';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
+    state.inCodeVault = false;
     state.currEditorType = editorType;
     state.currEditorIndex = index;
     EditorManager.getInstance().resetView();
@@ -156,6 +157,9 @@ const editorMutations: MutationTree<EditorsState> = {
         overviewNode.updateIO(inputChange, outputChange);
       }
     }
+  },
+  enterCodeVault(state) {
+    state.inCodeVault = true;
   },
 };
 

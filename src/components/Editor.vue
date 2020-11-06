@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid d-flex flex-column">
+  <div class="editor container-fluid">
     <Resizable class="row" @width-change="changeWidth">
       <div class="px-0 canvas-frame"
            :style="`width: min(calc(100vw - 3rem - ${sidebarWidth}px), ${editorWidth}%)`">
@@ -53,5 +53,10 @@ export default class Editor extends Vue {
 <style scoped>
   .canvas-frame {
     min-width: 20%;
+  }
+
+  .editor {
+    display: flex;
+    flex-direction: column;
   }
 </style>

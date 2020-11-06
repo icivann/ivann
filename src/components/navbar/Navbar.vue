@@ -6,7 +6,7 @@
       :class="isSelected(editorType.OVERVIEW)"
       @click="switchEditor({editorType: editorType.OVERVIEW})"
     >
-      <i class="fas fa-hammer tab-icon"></i>
+      <i class="fas fa-hammer tab-icon"/>
     </div>
 
     <div class="py-1 px-2">
@@ -40,7 +40,7 @@
       @mouseover="displayNavbarContextualMenu(editorType.DATA)"
       @mouseleave="hideNavbarContextualMenu()"
     >
-      <i class="fas fa-database tab-icon"></i>
+      <i class="fas fa-database tab-icon"/>
       <NavbarContextualMenu
         class="navbar-contextual-menu"
         v-if="isDataContextualMenuOpen"
@@ -60,13 +60,23 @@
       @mouseover="displayNavbarContextualMenu(editorType.TRAIN)"
       @mouseleave="hideNavbarContextualMenu()"
     >
-      <i class="fas fa-cogs tab-icon"></i>
+      <i class="fas fa-cogs tab-icon"/>
       <NavbarContextualMenu
         class="navbar-contextual-menu"
         v-if="isTrainContextualMenuOpen"
         :editors="trainEditors"
         :editor-type="editorType.TRAIN"
       />
+    </div>
+
+    <!-- Code Vault -->
+    <div class="flex-grow-1"/>
+    <div
+      class="build tab-button"
+      :class="inCodeVault && 'selected'"
+      @click="enterCodeVault"
+    >
+      <i class="fab fa-python tab-icon"/>
     </div>
   </div>
 </template>
@@ -84,8 +94,9 @@ import NavbarContextualMenu from '@/components/navbar/NavbarContextualMenu.vue';
     'modelEditors',
     'dataEditors',
     'trainEditors',
+    'inCodeVault',
   ]),
-  methods: mapMutations(['switchEditor']),
+  methods: mapMutations(['switchEditor', 'enterCodeVault']),
 })
 export default class Navbar extends Vue {
   private editorType = EditorType;
@@ -93,9 +104,10 @@ export default class Navbar extends Vue {
   private isDataContextualMenuOpen = false;
   private isTrainContextualMenuOpen = false;
   @Getter('currEditorType') currEditorType!: EditorType;
+  @Getter('inCodeVault') inCodeVault!: boolean;
 
-  private isSelected(editorType: EditorType) {
-    return (this.currEditorType === editorType) ? 'selected' : '';
+  private isSelected(editorType?: EditorType) {
+    return !this.inCodeVault && (this.currEditorType === editorType) ? 'selected' : '';
   }
 
   private displayNavbarContextualMenu(editorType: EditorType) {
