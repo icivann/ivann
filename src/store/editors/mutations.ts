@@ -18,6 +18,7 @@ const editorMutations: MutationTree<EditorsState> = {
     EditorManager.getInstance().resetView();
   },
   newEditor(state, { editorType, name }) {
+    state.inCodeVault = false;
     const id: UUID = randomUuid();
     const editor: Editor = newEditor(editorType);
 
