@@ -50,6 +50,7 @@ import istateToGraph from '@/app/ir/istateToGraph';
 @Component
 export default class Titlebar extends Vue {
   @Getter('allEditorModels') editorModels!: EditorModels;
+  @Getter('currEditorModel') overviewEditor!: EditorModel;
   @Getter('currEditorModel') currEditor!: EditorModel;
   @Getter('saveWithNames') saveWithNames!: SaveWithNames;
   @Mutation('loadEditors') loadEditors!: (save: Save) => void;
@@ -77,8 +78,11 @@ export default class Titlebar extends Vue {
     fr.onload = (event) => {
       if (!event.target) return;
 
-      // Load all editors using parsed file
+      // Load all editors using parsed file and set cookies
       this.loadEditors(JSON.parse(event.target.result as string));
+      this.$cookies.keys().forEach((key) => this.$cookies.remove(key));
+      this.$cookies.set('unsaved-project', this.saveWithNames);
+      // TODO: FE-65 Set cookies for all editors
     };
 
     // Trigger the file to be read

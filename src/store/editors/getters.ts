@@ -37,6 +37,20 @@ const editorGetters: GetterTree<EditorsState, RootState> = {
   modelEditor: (state) => (index: number) => state.modelEditors[index],
   dataEditor: (state) => (index: number) => state.dataEditors[index],
   trainEditor: (state) => (index: number) => state.trainEditors[index],
+  editor: (state) => (editorType: EditorType, index: number) => {
+    switch (editorType) {
+      case EditorType.OVERVIEW:
+        return state.overviewEditor;
+      case EditorType.MODEL:
+        return state.modelEditors[index];
+      case EditorType.DATA:
+        return state.dataEditors[index];
+      case EditorType.TRAIN:
+        return state.trainEditors[index];
+      default:
+        return {};
+    }
+  },
   editorIONames: (state, getters) => {
     const names: Set<string> = new Set<string>();
     for (const node of getters.currEditorModel.editor.nodes) {
