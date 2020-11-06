@@ -12,11 +12,13 @@ import { getEditorIOs } from '@/store/editors/utils';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
+    state.inCodeVault = false;
     state.currEditorType = editorType;
     state.currEditorIndex = index;
     EditorManager.getInstance().resetView();
   },
   newEditor(state, { editorType, name }) {
+    state.inCodeVault = false;
     const id: UUID = randomUuid();
     const editor: Editor = newEditor(editorType);
 
@@ -156,6 +158,9 @@ const editorMutations: MutationTree<EditorsState> = {
         overviewNode.updateIO(inputChange, outputChange);
       }
     }
+  },
+  enterCodeVault(state) {
+    state.inCodeVault = true;
   },
 };
 
