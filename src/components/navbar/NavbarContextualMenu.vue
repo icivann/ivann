@@ -95,6 +95,8 @@ export default class NavbarContextualMenu extends Vue {
   }
 
   #contextual-menu {
+    // In order to have a higher z-index than IDE in CodeVault.
+    z-index: 5;
     border: 1px solid var(--grey);
   }
 </style>

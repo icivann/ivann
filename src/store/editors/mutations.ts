@@ -9,6 +9,7 @@ import { randomUuid, UUID } from '@/app/util';
 import Model from '@/nodes/overview/Model';
 import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
 import { getEditorIOs } from '@/store/editors/utils';
+import Custom from '@/nodes/model/custom/Custom';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
@@ -183,8 +184,14 @@ const editorMutations: MutationTree<EditorsState> = {
       }
     }
   },
-  enterCodeVault(state) {
+  enterCodeVault(state, node?: Custom) {
+    state.nodeTriggeringCodeVault = node;
+    console.log(`New code: ${state.nodeTriggeringCodeVault?.getInlineCode()}`);
     state.inCodeVault = true;
+  },
+  leaveCodeVault(state) {
+    state.inCodeVault = false;
+    state.nodeTriggeringCodeVault = undefined;
   },
 };
 

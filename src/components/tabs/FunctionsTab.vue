@@ -1,6 +1,6 @@
 <template>
   <div>
-    Function Stuff goes here
+    Functions stuff...
   </div>
 </template>
 

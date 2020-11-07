@@ -21,6 +21,7 @@ export const editorState: EditorsState = {
   dataEditors: [],
   trainEditors: [],
   inCodeVault: false,
+  nodeTriggeringCodeVault: undefined,
 };
 
 export const editors: Module<EditorsState, RootState> = {

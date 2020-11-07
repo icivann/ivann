@@ -1,11 +1,11 @@
 <template>
   <div class="vault">
-    <Tabs>
+    <Tabs full-screen-tab="IDE">
       <Tab name="Functions">
         <FunctionsTab/>
       </Tab>
-      <Tab name="Notepad">
-        Notepad stuff goes here
+      <Tab class="h-100" name="IDE">
+        <IdeTab/>
       </Tab>
     </Tabs>
   </div>
@@ -16,10 +16,12 @@ import { Component, Vue } from 'vue-property-decorator';
 import Tabs from '@/components/tabs/Tabs.vue';
 import Tab from '@/components/tabs/Tab.vue';
 import FunctionsTab from '@/components/tabs/FunctionsTab.vue';
+import IdeTab from '@/components/tabs/IdeTab.vue';
 
 @Component({
   components: {
     FunctionsTab,
+    IdeTab,
     Tab,
     Tabs,
   },
