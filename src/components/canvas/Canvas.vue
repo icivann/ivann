@@ -11,31 +11,22 @@ import {
   Vue,
   Watch,
 } from 'vue-property-decorator';
-import { Getter, Mutation } from 'vuex-class';
 import { Engine } from '@baklavajs/plugin-engine';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import { EditorModel } from '@/store/editors/types';
 import istateToGraph from '@/app/ir/istateToGraph';
-import { EditorSave, saveEditor } from '@/file/EditorAsJson';
+import { saveEditor } from '@/file/EditorAsJson';
 
 @Component
 export default class Canvas extends Vue {
   @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
   @Prop({ required: true }) readonly engine!: Engine;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
-  @Getter('overviewEditor') overviewEditor!: EditorModel;
-  @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
 
   @Watch('editorModel')
-  onEditorChange(newEditorModel: EditorModel, oldEditorModel: EditorModel) {
+  onEditorChange(newEditorModel: EditorModel) {
     newEditorModel.editor.use(this.viewPlugin);
     newEditorModel.editor.use(this.engine);
-
-    // Save oldEditorModel as periodic save may not have captured last changes
-    const oldEditorSaved: EditorSave = saveEditor(oldEditorModel);
-    const overviewEditorSave: EditorSave = saveEditor(this.overviewEditor);
-    this.$cookies.set(`unsaved-editor-${oldEditorModel.name}`, oldEditorSaved);
-    this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
   }
 
   created(): void {
