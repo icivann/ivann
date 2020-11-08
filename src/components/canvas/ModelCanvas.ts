@@ -19,9 +19,9 @@ export default class ModelCanvas extends AbstractCanvas {
     editor.registerNodeType(Nodes.Conv2D, Conv2d, Layers.Conv);
     editor.registerNodeType(Nodes.Conv3D, Conv3d, Layers.Conv);
 
-    editor.registerNodeType(Nodes.Convtranspose1d, Convtranspose1d, Layers.Conv);
-    editor.registerNodeType(Nodes.Convtranspose2d, Convtranspose2d, Layers.Conv);
-    editor.registerNodeType(Nodes.Convtranspose3d, Convtranspose3d, Layers.Conv);
+    editor.registerNodeType(Nodes.ConvTranspose1d, Convtranspose1d, Layers.Conv);
+    editor.registerNodeType(Nodes.ConvTranspose2d, Convtranspose2d, Layers.Conv);
+    editor.registerNodeType(Nodes.ConvTranspose3d, Convtranspose3d, Layers.Conv);
 
     editor.registerNodeType(Nodes.Custom, Custom, Layers.Custom);
     editor.registerNodeType(Nodes.InModel, InModel, Layers.IO);

@@ -14,13 +14,12 @@ import MaxPool3d from '@/app/ir/model/maxpool3d';
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
 export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
-  ['Convolution1D', Conv1d.build],
-  ['Convolution2D', Conv1d.build],
-  ['Convolution3D', Conv1d.build],
-  ['Convolution1D', Conv1d.build],
-  ['ConvolutionTranspose1d', ConvTranspose1d.build],
-  ['ConvolutionTranspose2d', ConvTranspose2d.build],
-  ['ConvolutionTranspose3d', ConvTranspose3d.build],
+  ['Conv1D', Conv1d.build],
+  ['Conv2D', Conv1d.build],
+  ['Conv3D', Conv1d.build],
+  ['ConvTranspose1d', ConvTranspose1d.build],
+  ['ConvTranspose2d', ConvTranspose2d.build],
+  ['ConvTranspose3d', ConvTranspose3d.build],
   ['MaxPooling1D', MaxPool1d.build],
   ['MaxPooling2D', MaxPool2d.build],
   ['MaxPooling3D', MaxPool3d.build],

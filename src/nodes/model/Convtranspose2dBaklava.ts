@@ -16,8 +16,8 @@ export enum ConvTranspose2dOptions {
   PaddingMode = 'Padding mode'
 }
 export default class ConvTranspose2d extends Node {
-  type = Nodes.Convtranspose2d;
-  name = Nodes.Convtranspose2d;
+  type = Nodes.ConvTranspose2d;
+  name = Nodes.ConvTranspose2d;
 
   constructor() {
     super();
