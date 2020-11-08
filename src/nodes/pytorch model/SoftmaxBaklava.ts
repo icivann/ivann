@@ -9,10 +9,10 @@ export default class Softmax extends Node {
   type = Nodes.Softmax;
   name = Nodes.Softmax;
 
-constructor() {
-super();
-  this.addInputInterface('Input');
-  this.addOutputInterface('Output');
-  this.addOption(SoftmaxOptions.Dim, TypeOptions.VectorOption, undefined);
+  constructor() {
+    super();
+    this.addInputInterface('Input');
+    this.addOutputInterface('Output');
+    this.addOption(SoftmaxOptions.Dim, TypeOptions.VectorOption, undefined);
   }
 }

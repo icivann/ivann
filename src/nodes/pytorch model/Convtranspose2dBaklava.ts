@@ -4,34 +4,34 @@ import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
 export enum ConvTranspose2dOptions {
-  In_channels = 'In channels',
-  Out_channels = 'Out channels',
-  Kernel_size = 'Kernel size',
+  InChannels = 'In channels',
+  OutChannels = 'Out channels',
+  KernelSize = 'Kernel size',
   Stride = 'Stride',
   Padding = 'Padding',
-  Output_padding = 'Output padding',
+  OutputPadding = 'Output padding',
   Groups = 'Groups',
   Bias = 'Bias',
   Dilation = 'Dilation',
-  Padding_mode = 'Padding mode'
+  PaddingMode = 'Padding mode'
 }
 export default class ConvTranspose2d extends Node {
   type = Nodes.Convtranspose2d;
   name = Nodes.Convtranspose2d;
 
-constructor() {
-super();
-  this.addInputInterface('Input');
-  this.addOutputInterface('Output');
-  this.addOption(ConvTranspose2dOptions.In_channels, TypeOptions.IntOption, 0);
-  this.addOption(ConvTranspose2dOptions.Out_channels, TypeOptions.IntOption, 0);
-  this.addOption(ConvTranspose2dOptions.Kernel_size, TypeOptions.VectorOption, [0,0]);
-  this.addOption(ConvTranspose2dOptions.Stride, TypeOptions.VectorOption, [1,1]);
-  this.addOption(ConvTranspose2dOptions.Padding, TypeOptions.VectorOption, [0,0]);
-  this.addOption(ConvTranspose2dOptions.Output_padding, TypeOptions.VectorOption, [0,0]);
-  this.addOption(ConvTranspose2dOptions.Groups, TypeOptions.IntOption, 1);
-  this.addOption(ConvTranspose2dOptions.Bias, TypeOptions.TickBoxOption, CheckboxValue.CHECKED);
-  this.addOption(ConvTranspose2dOptions.Dilation, TypeOptions.IntOption, 1);
-  this.addOption(ConvTranspose2dOptions.Padding_mode, TypeOptions.DropdownOption, 'zeros');
+  constructor() {
+    super();
+    this.addInputInterface('Input');
+    this.addOutputInterface('Output');
+    this.addOption(ConvTranspose2dOptions.InChannels, TypeOptions.IntOption, 0);
+    this.addOption(ConvTranspose2dOptions.OutChannels, TypeOptions.IntOption, 0);
+    this.addOption(ConvTranspose2dOptions.KernelSize, TypeOptions.VectorOption, [0, 0]);
+    this.addOption(ConvTranspose2dOptions.Stride, TypeOptions.VectorOption, [1, 1]);
+    this.addOption(ConvTranspose2dOptions.Padding, TypeOptions.VectorOption, [0, 0]);
+    this.addOption(ConvTranspose2dOptions.OutputPadding, TypeOptions.VectorOption, [0, 0]);
+    this.addOption(ConvTranspose2dOptions.Groups, TypeOptions.IntOption, 1);
+    this.addOption(ConvTranspose2dOptions.Bias, TypeOptions.TickBoxOption, CheckboxValue.CHECKED);
+    this.addOption(ConvTranspose2dOptions.Dilation, TypeOptions.IntOption, 1);
+    this.addOption(ConvTranspose2dOptions.PaddingMode, TypeOptions.DropdownOption, 'zeros');
   }
 }

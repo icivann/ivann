@@ -1,20 +1,18 @@
-import { ReLUOptions } from '@/nodes/pytorch model/ReLUBaklava';
+import { ReLUOptions } from '@/nodes/pytorch model/ReluBaklava';
 
 export default class ReLU {
-constructor(
+  constructor(
   public readonly inplace: boolean,
-) {
-}
- 
-static build(options: Map<string, any>): ReLU {
-  return new ReLU(
-    options.get(ReLUOptions.Inplace),
-  );
-  
+  ) {
   }
-  
-  public initCode(): string{
+
+  static build(options: Map<string, any>): ReLU {
+    return new ReLU(
+      options.get(ReLUOptions.Inplace),
+    );
+  }
+
+  public initCode(): string {
     return `ReLU(inplace=${this.inplace})`;
   }
 }
-  

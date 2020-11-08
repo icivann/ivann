@@ -37,7 +37,7 @@ export default class Conv2D {
     );
   }
 
-  public initCode() : string {
+  public initCode(): string {
     return `Conv2D(filters=${this.filters}, )`;
   }
 }

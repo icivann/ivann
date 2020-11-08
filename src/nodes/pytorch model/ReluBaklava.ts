@@ -9,10 +9,10 @@ export default class ReLU extends Node {
   type = Nodes.Relu;
   name = Nodes.Relu;
 
-constructor() {
-super();
-  this.addInputInterface('Input');
-  this.addOutputInterface('Output');
-  this.addOption(ReLUOptions.Inplace, TypeOptions.TickBoxOption);
+  constructor() {
+    super();
+    this.addInputInterface('Input');
+    this.addOutputInterface('Output');
+    this.addOption(ReLUOptions.Inplace, TypeOptions.TickBoxOption);
   }
 }
