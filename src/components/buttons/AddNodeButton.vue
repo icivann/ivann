@@ -1,5 +1,5 @@
 <template>
-  <div class="node-button" @click="onClick" draggable="true" @dragend="dragEnd">
+  <div class="node-button" @click="onClick" draggable="true" @dragend="dragEnd" :id="name">
     <div class="icon">
       <slot/>
     </div>
@@ -9,24 +9,28 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
-import { EditorModel } from '@/store/editors/types';
+import { Mutation } from 'vuex-class';
 import { uniqueTextInput } from '@/inputs/prompt';
 import EditorManager from '@/EditorManager';
 
-@Component({})
+@Component
 export default class AddNodeButton extends Vue {
   @Prop({ required: true }) readonly node!: string;
   @Prop() readonly name!: string;
   @Prop() readonly options?: unknown;
   @Prop() readonly names?: Set<string>;
-  @Getter('currEditorModel') currEditorModel!: EditorModel;
+  @Mutation('enableDrop') readonly enableDrop!: (value: boolean) => void;
 
   private fontSize = 1.0;
 
-  private dragEnd(event: DragEvent) {
-    this.addNode(event.pageX - 60, event.pageY - 60);
-  }
+  private dragEnd = (event: DragEvent) => {
+    const { canDrop } = this.$store.getters;
+    if (canDrop) {
+      this.enableDrop(false);
+      // TODO: When different Node Widths are implemented, centre node on cursor.
+      this.addNode(event.pageX - 160, event.pageY - 60);
+    }
+  };
 
   created() {
     let factor = (this.name.length - 10) / 3;

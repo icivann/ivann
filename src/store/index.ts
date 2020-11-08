@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import { RootState } from '@/store/types';
 import { editors } from '@/store/editors';
+import { dragDrop } from '@/store/dragDrop';
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ const store: StoreOptions<RootState> = {
   },
   modules: {
     editors,
+    dragDrop,
   },
 };
 

@@ -1,5 +1,6 @@
 <template>
-  <div class="canvas h-100">
+  <div class="canvas h-100" @dragover.prevent @dragenter="enableAddNode"
+       @dragleave="disableAddNode" @drop="addNode">
     <baklava-editor :plugin="viewPlugin" :key="editorModel.id.toString()"/>
   </div>
 </template>
@@ -25,6 +26,9 @@ export default class Canvas extends Vue {
   @Prop({ required: true }) readonly editorModel!: EditorModel;
   @Getter('overviewEditor') overviewEditor!: EditorModel;
   @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
+  @Mutation('enableDrop') readonly enableDrop!: (value: boolean) => void;
+
+  private depthCounter = 0;
 
   @Watch('editorModel')
   onEditorChange(newEditorModel: EditorModel, oldEditorModel: EditorModel) {
@@ -36,6 +40,27 @@ export default class Canvas extends Vue {
     const overviewEditorSave: EditorSave = saveEditor(this.overviewEditor);
     this.$cookies.set(`unsaved-editor-${oldEditorModel.name}`, oldEditorSaved);
     this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
+  }
+
+  private addNode() {
+    this.depthCounter -= 1;
+    /* Node added by AddNodeButton */
+  }
+
+  private enableAddNode() {
+    /* Keep track of accidentally dragged over other nodes. */
+    this.depthCounter += 1;
+    if (this.depthCounter === 1) {
+      this.enableDrop(true);
+    }
+  }
+
+  private disableAddNode() {
+    this.depthCounter -= 1;
+    /* Don't disable if mouse over other node. */
+    if (this.depthCounter === 0) {
+      this.enableDrop(false);
+    }
   }
 
   created(): void {
@@ -60,5 +85,9 @@ export default class Canvas extends Vue {
     background-image: linear-gradient(#2c2c2c 1px, transparent 1px),
       linear-gradient(90deg, #2c2c2c 1px, transparent 1px);
     background-size: 10px 50px, 50px 50px, 10px 10px, 10px 10px;
+  }
+
+  .canvas {
+    z-index: 1000;
   }
 </style>
