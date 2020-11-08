@@ -29,4 +29,8 @@ export default class MaxPool3d {
   public initCode(): string {
     return `MaxPool3d(kernel_size=${this.kernel_size}, stride=${this.stride}, padding=${this.padding}, dilation=${this.dilation}, return_indices=${this.return_indices}, ceil_mode=${this.ceil_mode})`;
   }
+
+  public callCode(params: string[], name: string): string {
+    return `${name}(${params.join(', ')})`;
+  }
 }

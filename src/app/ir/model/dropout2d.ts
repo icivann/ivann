@@ -17,4 +17,8 @@ export default class Dropout2d {
   public initCode(): string {
     return `Dropout2d(p=${this.p}, inplace=${this.inplace})`;
   }
+
+  public callCode(params: string[], name: string): string {
+    return `${name}(${params.join(', ')})`;
+  }
 }

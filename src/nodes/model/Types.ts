@@ -9,9 +9,13 @@ export const enum Layers {
   IO = 'I/O',
 }
 
-export const enum Overview {
-  ModelNode = 'ModelNode',
-  TrainNode = 'TrainNode',
+export const enum OverviewLayers {
+  Train = 'Train',
+}
+
+export const enum OverviewNodes {
+  Model = 'ModelNode',
+  TrainClassifier = 'TrainClassiferNode',
 }
 
 export const enum Nodes {
