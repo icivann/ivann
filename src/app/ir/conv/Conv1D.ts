@@ -29,7 +29,12 @@ export default class Conv1D {
     );
     return node;
   }
+
   public initCode(): string {
     return `Conv1D(16, ${this.filters}, ${this.stride})`;
+  }
+
+  public callCode(params: string[], name: string): string {
+    return `self.${name}(${params.join(', ')})`;
   }
 }

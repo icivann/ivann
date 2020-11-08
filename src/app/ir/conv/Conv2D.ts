@@ -40,4 +40,8 @@ export default class Conv2D {
   public initCode(): string {
     return `Conv2D(filters=${this.filters}, )`;
   }
+
+  public callCode(params: string[], name: string): string {
+    return `${name}(${params.join(', ')})`;
+  }
 }

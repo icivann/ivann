@@ -41,4 +41,8 @@ export default class Conv2d {
     dilation=${this.dilation}, groups=${this.groups}, bias=${this.bias},
     padding_mode=${this.padding_mode})`;
   }
+
+  public callCode(params: string[], name: string): string {
+    return `${name}(${params.join(', ')})`;
+  }
 }

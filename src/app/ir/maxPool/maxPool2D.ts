@@ -3,9 +3,9 @@ import { MaxPool2DOptions } from '@/nodes/model/pool/MaxPool2D';
 
 export default class MaxPool2D {
   constructor(
-        public padding: Padding,
-        public readonly kernel: [bigint, bigint],
-        public readonly stride: [bigint, bigint],
+    public padding: Padding,
+    public readonly kernel: [bigint, bigint],
+    public readonly stride: [bigint, bigint],
   ) {
   }
 
@@ -20,5 +20,9 @@ export default class MaxPool2D {
   // eslint-disable-next-line class-methods-use-this
   public initCode(): string {
     return 'MaxPool2d((28,28))';
+  }
+
+  public callCode(params: string[], name: string): string {
+    return `${name}(${params.join(', ')})`;
   }
 }

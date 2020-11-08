@@ -2,8 +2,6 @@
 import GraphNode from '@/app/ir/GraphNode';
 import { ModelLayerNode } from '@/app/ir/mainNodes';
 import InModel from '@/app/ir/InModel';
-import parse from '@/app/parser/parser';
-import ParsedFunction from '@/app/parser/ParsedFunction';
 
 import OutModel from '@/app/ir/OutModel';
 import Graph from '@/app/ir/Graph';
@@ -13,7 +11,8 @@ import Custom from '@/app/ir/Custom';
 const imports = [
   'import torch',
   'import torch.nn as nn',
-  'import torch.nn.functional as F'].join('\n');
+  'import torch.nn.functional as F',
+].join('\n');
 
 let nodeNames = new Map<GraphNode, string>();
 let nodeTypeCounters = new Map<string, number>();
@@ -63,7 +62,7 @@ function generateModelGraphCode(
     code.push(`${getBranchVar(incomingBranch)} = ${nodeName}`);
   } else if (node.mlNode instanceof OutModel) {
     outputs.add(getBranchVar(incomingBranch));
-  } else if (node.mlNode instanceof Concat) {
+  } else if (node.mlNode instanceof Concat || node.mlNode instanceof Custom) {
     // TODO: test this
     const readyConnections: number[] = branchesMap.get(node) ?? [];
     if (readyConnections.length !== node.inputInterfaces.size - 1) {
@@ -76,40 +75,12 @@ function generateModelGraphCode(
       }
       return [code, incomingBranch];
     }
+
     readyConnections.push(branch);
-    const params = readyConnections.map((branch) => getBranchVar(branch)).join(', ');
+    const params = readyConnections.map((branch) => getBranchVar(branch));
     branch += 1;
-    code.push(`${getBranchVar(branch)} = torch.cat(${params})`);
-  } else if (node.mlNode instanceof Custom) {
-    const readyConnections: number[] = branchesMap.get(node) ?? [];
 
-    if (readyConnections.length !== node.inputInterfaces.size - 1) {
-      const incomingBranches = branchesMap.get(node);
-      if (incomingBranches !== undefined) {
-        incomingBranches.push(incomingBranch);
-        branchesMap.set(node, incomingBranches);
-      } else {
-        branchesMap.set(node, [incomingBranch]);
-      }
-      return [code, incomingBranch];
-    }
-
-    const parsedFuncs = parse(node.mlNode.code);
-
-    if (parsedFuncs instanceof Error) {
-      // TODO handle error
-      console.error(parsedFuncs);
-    } else if (parsedFuncs.length > 0) {
-      const parsedFunc = parsedFuncs[0];
-
-      readyConnections.push(branch);
-      const params = readyConnections.map((branch) => getBranchVar(branch)).join(', ');
-      branch += 1;
-
-      code.push(`${getBranchVar(branch)} = ${parsedFunc.name}(${params})`);
-    } else {
-      // TODO handle error
-    }
+    code.push(`${getBranchVar(branch)} = ${node.mlNode.callCode(params, '')}`);
   } else {
     code.push(`${getBranchVar(branch)} = self.${nodeName}(${getBranchVar(incomingBranch)})`);
   }
