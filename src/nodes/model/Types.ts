@@ -11,6 +11,7 @@ export const enum Layers {
 
 export const enum Overview {
   ModelNode = 'ModelNode',
+  TrainNode = 'TrainNode',
 }
 
 export const enum Nodes {
@@ -34,4 +35,5 @@ export const enum Nodes {
   Concat = 'Concat',
   InModel = 'InModel',
   OutModel = 'OutModel',
+  TrainClassifier = 'TrainClassifier',
 }

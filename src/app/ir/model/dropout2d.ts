@@ -1,4 +1,4 @@
-import { Dropout2dOptions } from '@/nodes/pytorch model/Dropout2dBaklava';
+import { Dropout2dOptions } from '@/nodes/model/Dropout2dBaklava';
 
 export default class Dropout2d {
   constructor(

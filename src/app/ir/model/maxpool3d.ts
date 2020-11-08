@@ -1,4 +1,4 @@
-import { MaxPool3dOptions } from '@/nodes/pytorch model/Maxpool3dBaklava';
+import { MaxPool3dOptions } from '@/nodes/model/Maxpool3dBaklava';
 
 export default class MaxPool3d {
   constructor(

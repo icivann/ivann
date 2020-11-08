@@ -1,4 +1,4 @@
-import { ReLUOptions } from '@/nodes/pytorch model/ReluBaklava';
+import { ReLUOptions } from '@/nodes/model/ReluBaklava';
 
 export default class ReLU {
   constructor(
