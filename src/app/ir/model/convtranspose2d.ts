@@ -1,4 +1,4 @@
-import { ConvTranspose2dOptions } from '@/nodes/pytorch model/Convtranspose2dBaklava';
+import { ConvTranspose2dOptions } from '@/nodes/model/Convtranspose2dBaklava';
 
 enum PaddingMode {
   zeros ='zeros', reflect ='reflect', replicate ='replicate', circular = 'circular'

@@ -159,7 +159,7 @@ def create_ir_node(class_name, option_map: dict, dimensions):
   build = "\n  ".join(build)
   pythonCode = ", ".join(pythonCode)
 
-  contents = f"""import {{ {class_name}Options }} from '@/nodes/pytorch model/{class_name}Baklava';
+  contents = f"""import {{ {class_name}Options }} from '@/nodes/model/{class_name}Baklava';
 
 export default class {class_name} {{
 constructor(

@@ -1,4 +1,4 @@
-import { Conv1dOptions } from '@/nodes/pytorch model/Conv1dBaklava';
+import { Conv1dOptions } from '@/nodes/model/Conv1dBaklava';
 
 enum PaddingMode {
   zeros ='zeros', reflect ='reflect', replicate ='replicate', circular = 'circular'
