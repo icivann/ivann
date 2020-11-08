@@ -9,7 +9,6 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Mutation } from 'vuex-class';
 import { uniqueTextInput } from '@/inputs/prompt';
 import EditorManager from '@/EditorManager';
 
@@ -19,14 +18,13 @@ export default class AddNodeButton extends Vue {
   @Prop() readonly name!: string;
   @Prop() readonly options?: unknown;
   @Prop() readonly names?: Set<string>;
-  @Mutation('enableDrop') readonly enableDrop!: (value: boolean) => void;
 
+  private editorManager = EditorManager.getInstance();
   private fontSize = 1.0;
 
   private dragEnd = (event: DragEvent) => {
-    const { canDrop } = this.$store.getters;
-    if (canDrop) {
-      this.enableDrop(false);
+    if (this.editorManager.canDrop) {
+      this.editorManager.enableDrop(false);
       // TODO: When different Node Widths are implemented, centre node on cursor.
       this.addNode(event.pageX - 160, event.pageY - 60);
     }

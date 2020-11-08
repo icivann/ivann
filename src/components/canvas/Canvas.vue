@@ -12,23 +12,21 @@ import {
   Vue,
   Watch,
 } from 'vue-property-decorator';
-import { Getter, Mutation } from 'vuex-class';
 import { Engine } from '@baklavajs/plugin-engine';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import { EditorModel } from '@/store/editors/types';
 import istateToGraph from '@/app/ir/istateToGraph';
 import { saveEditor } from '@/file/EditorAsJson';
+import EditorManager from '@/EditorManager';
 
 @Component
 export default class Canvas extends Vue {
   @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
   @Prop({ required: true }) readonly engine!: Engine;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
-  @Getter('overviewEditor') overviewEditor!: EditorModel;
-  @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
-  @Mutation('enableDrop') readonly enableDrop!: (value: boolean) => void;
 
   private depthCounter = 0;
+  private editorManager = EditorManager.getInstance();
 
   @Watch('editorModel')
   onEditorChange(newEditorModel: EditorModel) {
@@ -45,7 +43,7 @@ export default class Canvas extends Vue {
     /* Keep track of accidentally dragged over other nodes. */
     this.depthCounter += 1;
     if (this.depthCounter === 1) {
-      this.enableDrop(true);
+      this.editorManager.enableDrop(true);
     }
   }
 
@@ -53,7 +51,7 @@ export default class Canvas extends Vue {
     this.depthCounter -= 1;
     /* Don't disable if mouse over other node. */
     if (this.depthCounter === 0) {
-      this.enableDrop(false);
+      this.editorManager.enableDrop(false);
     }
   }
 
