@@ -18,11 +18,10 @@ export default class DeleteEditorButton extends Vue {
   @Prop({ required: true }) readonly name!: string;
   @Getter('overviewEditor') overviewEditor!: EditorModel;
   @Getter('saveWithNames') saveWithNames!: SaveWithNames;
-  @Mutation('deleteEditor') delete!:
-    (arg0: { editorType: EditorType; index: number; name: string }) => void;
+  @Mutation('deleteEditor') delete!: (arg0: { editorType: EditorType; index: number }) => void;
 
   private deleteEditor() {
-    this.delete({ editorType: this.editorType, index: this.index, name: this.name });
+    this.delete({ editorType: this.editorType, index: this.index });
 
     // Re-save overview after nodes may have been removed
     const overviewEditorSave = saveEditor(this.overviewEditor);

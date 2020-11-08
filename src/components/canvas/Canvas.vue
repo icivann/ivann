@@ -17,7 +17,7 @@ import { Engine } from '@baklavajs/plugin-engine';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import { EditorModel } from '@/store/editors/types';
 import istateToGraph from '@/app/ir/istateToGraph';
-import { EditorSave, saveEditor } from '@/file/EditorAsJson';
+import { saveEditor } from '@/file/EditorAsJson';
 
 @Component
 export default class Canvas extends Vue {
@@ -31,15 +31,9 @@ export default class Canvas extends Vue {
   private depthCounter = 0;
 
   @Watch('editorModel')
-  onEditorChange(newEditorModel: EditorModel, oldEditorModel: EditorModel) {
+  onEditorChange(newEditorModel: EditorModel) {
     newEditorModel.editor.use(this.viewPlugin);
     newEditorModel.editor.use(this.engine);
-
-    // Save oldEditorModel as periodic save may not have captured last changes
-    const oldEditorSaved: EditorSave = saveEditor(oldEditorModel);
-    const overviewEditorSave: EditorSave = saveEditor(this.overviewEditor);
-    this.$cookies.set(`unsaved-editor-${oldEditorModel.name}`, oldEditorSaved);
-    this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
   }
 
   private addNode() {
@@ -85,9 +79,5 @@ export default class Canvas extends Vue {
     background-image: linear-gradient(#2c2c2c 1px, transparent 1px),
       linear-gradient(90deg, #2c2c2c 1px, transparent 1px);
     background-size: 10px 50px, 50px 50px, 10px 10px, 10px 10px;
-  }
-
-  .canvas {
-    z-index: 1000;
   }
 </style>

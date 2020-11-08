@@ -55,23 +55,23 @@ const editorMutations: MutationTree<EditorsState> = {
         break;
     }
   },
-  renameEditor(state, {
-    editorType, index, name, oldName,
-  }) {
+  renameEditor(state, { editorType, index, name }) {
+    let oldName: string | null = null;
+
     switch (editorType) {
       case EditorType.MODEL:
+        oldName = state.modelEditors[index].name;
         state.modelEditors[index].name = name;
-        state.editorNames.delete(state.modelEditors[index].name);
         state.editorNames.add(name);
         break;
       case EditorType.DATA:
+        oldName = state.dataEditors[index].name;
         state.dataEditors[index].name = name;
-        state.editorNames.delete(state.dataEditors[index].name);
         state.editorNames.add(name);
         break;
       case EditorType.TRAIN:
+        oldName = state.trainEditors[index].name;
         state.trainEditors[index].name = name;
-        state.editorNames.delete(state.trainEditors[index].name);
         state.editorNames.add(name);
         break;
       default:
@@ -79,13 +79,19 @@ const editorMutations: MutationTree<EditorsState> = {
         break;
     }
 
-    // Loop through nodes in overview editor, find corresponding nodes and rename them
-    const { nodes } = state.overviewEditor.editor;
-    for (const node of nodes) {
-      if (node.name === oldName) node.name = name;
+    if (oldName !== null) {
+      state.editorNames.delete(oldName);
+
+      // Loop through nodes in overview editor, find corresponding nodes and rename them
+      const { nodes } = state.overviewEditor.editor;
+      for (const node of nodes) {
+        if (node.name === oldName) node.name = name;
+      }
     }
   },
-  deleteEditor(state, { editorType, index, name }) {
+  deleteEditor(state, { editorType, index }) {
+    let name: string | null = null;
+
     const sameEditorType = state.currEditorType === editorType;
     const diffIndex = state.currEditorIndex - index;
     const deletingCurr = sameEditorType && diffIndex === 0;
@@ -98,15 +104,15 @@ const editorMutations: MutationTree<EditorsState> = {
 
     switch (editorType) {
       case EditorType.MODEL:
-        state.editorNames.delete(state.modelEditors[index].name);
+        name = state.modelEditors[index].name;
         state.modelEditors = state.modelEditors.filter((val, i) => i !== index);
         break;
       case EditorType.DATA:
-        state.editorNames.delete(state.dataEditors[index].name);
+        name = state.dataEditors[index].name;
         state.dataEditors = state.dataEditors.filter((val, i) => i !== index);
         break;
       case EditorType.TRAIN:
-        state.editorNames.delete(state.trainEditors[index].name);
+        name = state.trainEditors[index].name;
         state.trainEditors = state.trainEditors.filter((val, i) => i !== index);
         break;
       default:
@@ -120,10 +126,14 @@ const editorMutations: MutationTree<EditorsState> = {
     }
     EditorManager.getInstance().resetView();
 
-    // Loop through nodes in overview editor, find corresponding nodes and delete them
-    const { nodes } = state.overviewEditor.editor;
-    for (const node of nodes) {
-      if (node.name === name) state.overviewEditor.editor.removeNode(node);
+    if (name !== null) {
+      state.editorNames.delete(name);
+
+      // Loop through nodes in overview editor, find corresponding nodes and delete them
+      const { nodes } = state.overviewEditor.editor;
+      for (const node of nodes) {
+        if (node.name === name) state.overviewEditor.editor.removeNode(node);
+      }
     }
   },
   loadEditors(state, file: Save) {
