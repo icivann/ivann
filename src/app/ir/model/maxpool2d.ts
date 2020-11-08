@@ -1,4 +1,4 @@
-import { MaxPool2dOptions } from '@/nodes/model/Maxpool2dBaklava';
+import { MaxPool2dOptions } from '@/nodes/model/Maxpool2d';
 
 export default class MaxPool2d {
   constructor(

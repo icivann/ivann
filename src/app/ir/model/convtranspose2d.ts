@@ -1,4 +1,4 @@
-import { ConvTranspose2dOptions } from '@/nodes/model/Convtranspose2dBaklava';
+import { ConvTranspose2dOptions } from '@/nodes/model/Convtranspose2d';
 
 enum PaddingMode {
   zeros ='zeros', reflect ='reflect', replicate ='replicate', circular = 'circular'

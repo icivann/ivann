@@ -2,16 +2,16 @@ import AbstractCanvas from '@/components/canvas/AbstractCanvas';
 import { Editor } from '@baklavajs/core';
 import { Layers, Nodes } from '@/nodes/model/Types';
 
-import Conv1d from '@/nodes/model/Conv1dBaklava';
-import Conv2d from '@/nodes/model/Conv2dBaklava';
-import Conv3d from '@/nodes/model/Conv3dBaklava';
+import Conv1d from '@/nodes/model/Conv1d';
+import Conv2d from '@/nodes/model/Conv2d';
+import Conv3d from '@/nodes/model/Conv3d';
 import Custom from '@/nodes/model/custom/Custom';
 import OutModel from '@/nodes/model/OutModel';
 import Concat from '@/nodes/model/operations/Concat';
 import InModel from '@/nodes/model/InModel';
-import Convtranspose1d from '@/nodes/model/Convtranspose1dBaklava';
-import Convtranspose2d from '@/nodes/model/Convtranspose2dBaklava';
-import Convtranspose3d from '@/nodes/model/Convtranspose3dBaklava';
+import Convtranspose1d from '@/nodes/model/Convtranspose1d';
+import Convtranspose2d from '@/nodes/model/Convtranspose2d';
+import Convtranspose3d from '@/nodes/model/Convtranspose3d';
 
 export default class ModelCanvas extends AbstractCanvas {
   public registerNodes(editor: Editor): void {

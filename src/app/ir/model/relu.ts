@@ -1,4 +1,4 @@
-import { ReLUOptions } from '@/nodes/model/ReluBaklava';
+import { ReLUOptions } from '@/nodes/model/Relu';
 
 export default class ReLU {
   constructor(

@@ -1,4 +1,4 @@
-import { Conv2dOptions } from '@/nodes/model/Conv2dBaklava';
+import { Conv2dOptions } from '@/nodes/model/Conv2d';
 
 enum PaddingMode {
   zeros ='zeros', reflect ='reflect', replicate ='replicate', circular = 'circular'

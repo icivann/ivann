@@ -1,4 +1,4 @@
-import { Conv3dOptions } from '@/nodes/model/Conv3dBaklava';
+import { Conv3dOptions } from '@/nodes/model/Conv3d';
 
 enum PaddingMode {
   zeros ='zeros', reflect ='reflect', replicate ='replicate', circular = 'circular'

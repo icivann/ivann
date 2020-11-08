@@ -1,4 +1,4 @@
-import { Dropout3dOptions } from '@/nodes/model/Dropout3dBaklava';
+import { Dropout3dOptions } from '@/nodes/model/Dropout3d';
 
 export default class Dropout3d {
   constructor(
