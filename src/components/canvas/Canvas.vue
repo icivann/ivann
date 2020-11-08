@@ -1,6 +1,7 @@
 <template>
-  <div class="canvas h-100">
-    <baklava-editor :plugin="viewPlugin" :key="editorModel.id.toString()"></baklava-editor>
+  <div class="canvas h-100" @dragover.prevent @dragenter="enableAddNode"
+       @dragleave="disableAddNode" @drop="addNode">
+    <baklava-editor :plugin="viewPlugin" :key="editorModel.id.toString()"/>
   </div>
 </template>
 
@@ -16,6 +17,7 @@ import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import { EditorModel } from '@/store/editors/types';
 import istateToGraph from '@/app/ir/istateToGraph';
 import { saveEditor } from '@/file/EditorAsJson';
+import EditorManager from '@/EditorManager';
 
 @Component
 export default class Canvas extends Vue {
@@ -23,10 +25,34 @@ export default class Canvas extends Vue {
   @Prop({ required: true }) readonly engine!: Engine;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
 
+  private depthCounter = 0;
+  private editorManager = EditorManager.getInstance();
+
   @Watch('editorModel')
   onEditorChange(newEditorModel: EditorModel) {
     newEditorModel.editor.use(this.viewPlugin);
     newEditorModel.editor.use(this.engine);
+  }
+
+  private addNode() {
+    this.depthCounter -= 1;
+    /* Node added by AddNodeButton */
+  }
+
+  private enableAddNode() {
+    /* Keep track of accidentally dragged over other nodes. */
+    this.depthCounter += 1;
+    if (this.depthCounter === 1) {
+      this.editorManager.enableDrop(true);
+    }
+  }
+
+  private disableAddNode() {
+    this.depthCounter -= 1;
+    /* Don't disable if mouse over other node. */
+    if (this.depthCounter === 0) {
+      this.editorManager.enableDrop(false);
+    }
   }
 
   created(): void {

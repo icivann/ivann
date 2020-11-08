@@ -23,6 +23,8 @@ export default class EditorManager {
 
   private eng: Engine = new Engine(true);
 
+  private dropStatus = false;
+
   get overviewCanvas(): OverviewCanvas {
     return this.overview;
   }
@@ -47,6 +49,14 @@ export default class EditorManager {
   public resetView(): void {
     this.view.panning = { x: 0, y: 0 };
     this.view.scaling = 1;
+  }
+
+  public enableDrop(value: boolean): void {
+    this.dropStatus = value;
+  }
+
+  get canDrop(): boolean {
+    return this.dropStatus;
   }
 
   private constructor() {
