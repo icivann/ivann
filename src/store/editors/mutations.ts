@@ -1,20 +1,24 @@
 import { MutationTree } from 'vuex';
-import { EditorIO, EditorsState } from '@/store/editors/types';
+import { EditorModel, EditorsState } from '@/store/editors/types';
 import { Editor } from '@baklavajs/core';
 import newEditor from '@/baklava/Utils';
 import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
-import { loadEditor, loadEditors } from '@/file/EditorAsJson';
+import { loadEditors, Save } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
-import { Nodes } from '@/nodes/model/Types';
+import Model from '@/nodes/overview/Model';
+import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
+import { getEditorIOs } from '@/store/editors/utils';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
+    state.inCodeVault = false;
     state.currEditorType = editorType;
     state.currEditorIndex = index;
     EditorManager.getInstance().resetView();
   },
   newEditor(state, { editorType, name }) {
+    state.inCodeVault = false;
     const id: UUID = randomUuid();
     const editor: Editor = newEditor(editorType);
 
@@ -26,9 +30,6 @@ const editorMutations: MutationTree<EditorsState> = {
           id,
           name,
           editor,
-          inputs: [],
-          outputs: [],
-          saved: true,
         }) - 1;
         break;
       case EditorType.DATA:
@@ -38,7 +39,6 @@ const editorMutations: MutationTree<EditorsState> = {
           id,
           name,
           editor,
-          saved: true,
         }) - 1;
         break;
       case EditorType.TRAIN:
@@ -48,61 +48,143 @@ const editorMutations: MutationTree<EditorsState> = {
           id,
           name,
           editor,
-          saved: true,
         }) - 1;
         break;
       default:
+        console.log('Attempted to create non existent editor type');
         break;
     }
   },
-  loadEditors(state, file) {
+  renameEditor(state, { editorType, index, name }) {
+    let oldName: string | null = null;
+
+    switch (editorType) {
+      case EditorType.MODEL:
+        oldName = state.modelEditors[index].name;
+        state.modelEditors[index].name = name;
+        state.editorNames.add(name);
+        break;
+      case EditorType.DATA:
+        oldName = state.dataEditors[index].name;
+        state.dataEditors[index].name = name;
+        state.editorNames.add(name);
+        break;
+      case EditorType.TRAIN:
+        oldName = state.trainEditors[index].name;
+        state.trainEditors[index].name = name;
+        state.editorNames.add(name);
+        break;
+      default:
+        console.log('Attempted to rename non existent editor type');
+        break;
+    }
+
+    if (oldName !== null) {
+      state.editorNames.delete(oldName);
+
+      // Loop through nodes in overview editor, find corresponding nodes and rename them
+      const { nodes } = state.overviewEditor.editor;
+      for (const node of nodes) {
+        if (node.name === oldName) node.name = name;
+      }
+    }
+  },
+  deleteEditor(state, { editorType, index }) {
+    let name: string | null = null;
+
+    const sameEditorType = state.currEditorType === editorType;
+    const diffIndex = state.currEditorIndex - index;
+    const deletingCurr = sameEditorType && diffIndex === 0;
+
+    // If deleting current editor, switch to overview
+    if (deletingCurr) {
+      state.currEditorType = EditorType.OVERVIEW;
+      state.currEditorIndex = 0;
+    }
+
+    switch (editorType) {
+      case EditorType.MODEL:
+        name = state.modelEditors[index].name;
+        state.modelEditors = state.modelEditors.filter((val, i) => i !== index);
+        break;
+      case EditorType.DATA:
+        name = state.dataEditors[index].name;
+        state.dataEditors = state.dataEditors.filter((val, i) => i !== index);
+        break;
+      case EditorType.TRAIN:
+        name = state.trainEditors[index].name;
+        state.trainEditors = state.trainEditors.filter((val, i) => i !== index);
+        break;
+      default:
+        console.log('Attempted to delete non existent editor type');
+        break;
+    }
+
+    // Maintain same current editor
+    if (diffIndex > 0) {
+      state.currEditorIndex -= 1;
+    }
+    EditorManager.getInstance().resetView();
+
+    if (name !== null) {
+      state.editorNames.delete(name);
+
+      // Loop through nodes in overview editor, find corresponding nodes and delete them
+      const { nodes } = state.overviewEditor.editor;
+      for (const node of nodes) {
+        if (node.name === name) state.overviewEditor.editor.removeNode(node);
+      }
+    }
+  },
+  loadEditors(state, file: Save) {
     const editorNames: Set<string> = new Set<string>();
 
-    state.overviewEditor = loadEditor(EditorType.OVERVIEW, file.overviewEditor, editorNames);
+    [state.overviewEditor] = loadEditors(EditorType.OVERVIEW, [file.overviewEditor], editorNames);
     state.modelEditors = loadEditors(EditorType.MODEL, file.modelEditors, editorNames);
     state.dataEditors = loadEditors(EditorType.DATA, file.dataEditors, editorNames);
     state.trainEditors = loadEditors(EditorType.TRAIN, file.trainEditors, editorNames);
 
     state.editorNames = editorNames;
 
-    state.currEditorType = EditorType.MODEL;
+    state.currEditorType = EditorType.OVERVIEW;
     state.currEditorIndex = 0;
-  },
-  saveModel(state, index) {
-    const { editor } = state.modelEditors[index];
-    const inputs: EditorIO[] = [];
-    const outputs: EditorIO[] = [];
-    for (const node of editor.nodes) {
-      if (node.type === Nodes.InModel) inputs.push({ name: node.name });
-      else if (node.type === Nodes.OutModel) outputs.push({ name: node.name });
-    }
-    state.modelEditors[index].inputs = inputs;
-    state.modelEditors[index].outputs = outputs;
-    state.modelEditors[index].saved = true;
-  },
-  setUnsaved(state) {
-    state.modelEditors[state.currEditorIndex].saved = false;
   },
   resetState(state) {
     state.overviewEditor = {
       id: randomUuid(),
       name: 'Overview',
       editor: newEditor(EditorType.OVERVIEW),
-      saved: true,
     };
-    state.modelEditors = [{
-      id: randomUuid(),
-      name: 'untitled',
-      editor: newEditor(EditorType.MODEL),
-      saved: true,
-    }];
+    state.modelEditors = [];
     state.dataEditors = [];
     state.trainEditors = [];
 
-    state.editorNames = new Set<string>(['untitled']);
+    state.editorNames = new Set<string>(['Overview']);
 
-    state.currEditorType = EditorType.MODEL;
+    state.currEditorType = EditorType.OVERVIEW;
     state.currEditorIndex = 0;
+  },
+  updateNodeInOverview(state, currEditor: EditorModel) {
+    // Loop through nodes in currEditor and find differences
+    // inputs, outputs, ...
+    // TODO: Add type checking here?
+    const { inputs, outputs } = getEditorIOs(currEditor);
+
+    // Loop through nodes in overview editor
+    // find corresponding node for currEditor and update
+    const { nodes } = state.overviewEditor.editor;
+    const overviewNodes = nodes.filter((node) => node.name === currEditor.name) as Model[];
+    if (overviewNodes.length > 0) {
+      const { inputs: oldInputs, outputs: oldOutputs } = overviewNodes[0].getCurrentIO();
+      const inputChange: NodeIOChange = editorIOPartition(inputs, oldInputs);
+      const outputChange: NodeIOChange = editorIOPartition(outputs, oldOutputs);
+      for (const overviewNode of overviewNodes) {
+        overviewNode.updateIO(inputChange, outputChange);
+      }
+    }
+  },
+  enterCodeVault(state) {
+    state.inCodeVault = true;
   },
 };
 

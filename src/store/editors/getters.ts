@@ -1,13 +1,15 @@
 import { GetterTree } from 'vuex';
 import { RootState } from '@/store/types';
-import { EditorsState } from '@/store/editors/types';
+import { EditorModels, EditorsState } from '@/store/editors/types';
 import EditorType from '@/EditorType';
+import { Nodes } from '@/nodes/model/Types';
+import { SaveWithNames } from '@/file/EditorAsJson';
 
 const editorGetters: GetterTree<EditorsState, RootState> = {
   currEditorType: (state) => state.currEditorType,
   currEditorIndex: (state) => state.currEditorIndex,
   editorNames: (state) => state.editorNames,
-  allEditorModels: (state) => ({
+  allEditorModels: (state): EditorModels => ({
     overviewEditor: state.overviewEditor,
     modelEditors: state.modelEditors,
     dataEditors: state.dataEditors,
@@ -35,6 +37,36 @@ const editorGetters: GetterTree<EditorsState, RootState> = {
   modelEditor: (state) => (index: number) => state.modelEditors[index],
   dataEditor: (state) => (index: number) => state.dataEditors[index],
   trainEditor: (state) => (index: number) => state.trainEditors[index],
+  editor: (state) => (editorType: EditorType, index: number) => {
+    switch (editorType) {
+      case EditorType.OVERVIEW:
+        return state.overviewEditor;
+      case EditorType.MODEL:
+        return state.modelEditors[index];
+      case EditorType.DATA:
+        return state.dataEditors[index];
+      case EditorType.TRAIN:
+        return state.trainEditors[index];
+      default:
+        return {};
+    }
+  },
+  editorIONames: (state, getters) => {
+    const names: Set<string> = new Set<string>();
+    for (const node of getters.currEditorModel.editor.nodes) {
+      if (node.type === Nodes.InModel || node.type === Nodes.OutModel) {
+        names.add(node.name);
+      }
+    }
+    return names;
+  },
+  saveWithNames: (state): SaveWithNames => ({
+    overviewEditor: state.overviewEditor.name,
+    modelEditors: state.modelEditors.map((editor) => editor.name),
+    dataEditors: state.dataEditors.map((editor) => editor.name),
+    trainEditors: state.trainEditors.map((editor) => editor.name),
+  }),
+  inCodeVault: (state) => state.inCodeVault,
 };
 
 export default editorGetters;
