@@ -1,4 +1,5 @@
 import Custom from '@/app/ir/Custom';
+import Adadelta from '@/app/ir/optimizers/Adadelta';
 import InModel from './InModel';
 import OutModel from './OutModel';
 import Concat from './Concat';
@@ -12,7 +13,7 @@ import MaxPool1d from './model/maxpool1d';
 import MaxPool2d from './model/maxpool2d';
 import MaxPool3d from './model/maxpool3d';
 
-export type MlNode = ModelNode
+export type MlNode = ModelNode | OptimizerNode
 
 export type Conv = Conv1d | Conv2d | Conv3d | ConvTranspose1d | ConvTranspose2d | ConvTranspose3d
 
@@ -23,3 +24,5 @@ export type ModelLayerNode = Conv | MaxPool
 export type Operations = Concat
 
 export type ModelNode = ModelLayerNode | InModel | OutModel | Custom | Operations
+
+export type OptimizerNode = Adadelta

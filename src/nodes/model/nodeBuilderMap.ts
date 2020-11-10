@@ -10,10 +10,12 @@ import ConvTranspose3d from '@/app/ir/model/convtranspose3d';
 import MaxPool1d from '@/app/ir/model/maxpool1d';
 import MaxPool2d from '@/app/ir/model/maxpool2d';
 import MaxPool3d from '@/app/ir/model/maxpool3d';
+import Adadelta from '@/app/ir/optimizers/Adadelta';
 
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
 export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
+  // Model Nodes
   ['Convolution1D', Conv1d.build],
   ['Convolution2D', Conv1d.build],
   ['Convolution3D', Conv1d.build],
@@ -27,5 +29,6 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['Custom', Custom.build as (r: Options) => MlNode],
   ['Concat', Concat.build],
   ['InModel', InModel.build],
-  ['OutModel', OutModel.build],
+  // Optimizers
+  ['Adadelta', Adadelta.build],
 ]);
