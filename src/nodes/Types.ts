@@ -11,11 +11,13 @@ export const enum Layers {
 
 export const enum OverviewLayers {
   Train = 'Train',
+  Optimizers = 'Optimizers',
 }
 
 export const enum OverviewNodes {
   Model = 'ModelNode',
-  TrainClassifier = 'TrainClassiferNode',
+  TrainClassifier = 'TrainClassifier',
+  Adadelta = 'Adadelta',
 }
 
 export const enum Nodes {

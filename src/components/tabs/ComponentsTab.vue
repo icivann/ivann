@@ -18,7 +18,7 @@ import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
 import { mapGetters } from 'vuex';
-import { Overview } from '@/nodes/model/Types';
+import { OverviewNodes } from '@/nodes/Types';
 
 @Component({
   components: {
@@ -29,6 +29,6 @@ import { Overview } from '@/nodes/model/Types';
   computed: mapGetters(['modelEditors']),
 })
 export default class ComponentsTab extends Vue {
-  private modelNodeType = Overview.ModelNode;
+  private modelNodeType = OverviewNodes.Model;
 }
 </script>
