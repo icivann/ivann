@@ -1,7 +1,7 @@
 <template>
   <div class="d-sm-flex">
     <UIButton text="Select Function" :primary="true" class="m-auto"
-              @click="enterCodeVault(option.customNode)"/>
+              @click="toCodeVault(option.customNode)"/>
   </div>
 </template>
 
@@ -15,7 +15,8 @@ import UIButton from '@/components/buttons/UIButton.vue';
   components: { UIButton },
 })
 export default class CodeVaultButton extends Vue {
-  @Mutation('enterCodeVault') enterCodeVault!: (node?: Custom) => void;
+  @Mutation('enterCodeVault') enterCodeVault!: () => void;
+  @Mutation('linkNode') linkNode!: (node?: Custom) => void;
   @Prop() value!: number;
 
   @Prop({ type: String }) name!: string;
@@ -24,5 +25,10 @@ export default class CodeVaultButton extends Vue {
   option!: {
     customNode?: Custom;
   };
+
+  private toCodeVault(node: Custom) {
+    this.linkNode(node);
+    this.enterCodeVault();
+  }
 }
 </script>

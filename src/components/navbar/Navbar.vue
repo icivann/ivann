@@ -74,7 +74,7 @@
     <div
       class="build tab-button"
       :class="inCodeVault && 'selected'"
-      @click="enterCodeVault()"
+      @click="enterCodeVault"
     >
       <i class="fab fa-python tab-icon"/>
     </div>

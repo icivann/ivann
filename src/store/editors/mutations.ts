@@ -184,14 +184,11 @@ const editorMutations: MutationTree<EditorsState> = {
       }
     }
   },
-  enterCodeVault(state, node?: Custom) {
-    state.nodeTriggeringCodeVault = node;
-    console.log(`New code: ${state.nodeTriggeringCodeVault?.getInlineCode()}`);
+  enterCodeVault(state) {
     state.inCodeVault = true;
   },
   leaveCodeVault(state) {
     state.inCodeVault = false;
-    state.nodeTriggeringCodeVault = undefined;
   },
 };
 

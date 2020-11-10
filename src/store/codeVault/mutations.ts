@@ -1,6 +1,7 @@
 import { MutationTree } from 'vuex';
 import { CodeVaultState, CustomFilename, ParsedFile } from '@/store/codeVault/types';
 import ParsedFunction from '@/app/parser/ParsedFunction';
+import Custom from '@/nodes/model/custom/Custom';
 
 const codeVaultMutations: MutationTree<CodeVaultState> = {
   resetState(state) {
@@ -40,6 +41,10 @@ const codeVaultMutations: MutationTree<CodeVaultState> = {
       }
       return file;
     });
+  },
+  linkNode(state, node?: Custom) {
+    state.nodeTriggeringCodeVault = node;
+    console.log(`New code: ${state.nodeTriggeringCodeVault?.getInlineCode()}`);
   },
 };
 

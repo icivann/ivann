@@ -3,7 +3,7 @@
     <div class="tabs">
       <div class="tab-head" :class="index === selected && 'selected'"
            v-for="(tab, index) in tabs" :key="index"
-           @click="selectTab(index, tab.name)">
+           @click="selectTab(index)">
         {{tab.name}}
       </div>
     </div>
@@ -21,11 +21,9 @@ import Tab from '@/components/tabs/Tab.vue';
 export default class Tabs extends Vue {
   private tabs = this.$children as [Tab];
   private selected = 0;
-  private selectedName = '';
 
-  private selectTab(given: number, tabName: string) {
+  private selectTab(given: number) {
     this.selected = given;
-    this.selectedName = tabName;
     this.tabs.forEach((tab, index) => {
       tab.setVisible(index === given);
     });
@@ -33,7 +31,6 @@ export default class Tabs extends Vue {
 
   mounted() {
     this.tabs[0].setVisible(true);
-    this.selectedName = this.tabs[0].name;
   }
 }
 </script>

@@ -21,5 +21,4 @@ export interface EditorsState extends EditorModels {
   currEditorIndex: number;
   editorNames: Set<string>;
   inCodeVault: boolean;
-  nodeTriggeringCodeVault?: Custom;
 }

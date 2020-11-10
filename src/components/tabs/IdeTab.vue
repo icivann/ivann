@@ -3,7 +3,7 @@
     <div id="ace"/>
     <div class="save-banner">
       <div>
-        <UIButton text="Cancel" @click="leaveCodeVault"/>
+        <UIButton text="Cancel" @click="cancel"/>
       </div>
       <div>
         <UIButton text="Save" :primary="true" @click="save"/>
@@ -34,6 +34,7 @@ export default class IdeTab extends Vue {
   @Getter('nodeTriggeringCodeVault') nodeTriggeringCodeVault?: Custom;
   @Getter('inCodeVault') inCodeVault!: boolean;
   @Mutation('leaveCodeVault') leaveCodeVault!: () => void;
+  @Mutation('linkNode') linkNode!: (node?: Custom) => void;
   private editor?: Ace.Editor;
 
   /**
@@ -42,7 +43,7 @@ export default class IdeTab extends Vue {
    * Else, set empty the editor.
    */
   @Watch('inCodeVault')
-  onInCodeVaultChanged(inCodeVault: boolean) {
+  private onInCodeVaultChanged(inCodeVault: boolean) {
     if (inCodeVault && this.editor) {
       if (this.nodeTriggeringCodeVault) {
         this.editor.setValue(this.nodeTriggeringCodeVault.getInlineCode());
@@ -58,17 +59,23 @@ export default class IdeTab extends Vue {
     this.editor.getSession().setMode('ace/mode/python');
     this.editor.setTheme('ace/theme/ivann');
     this.editor.resize(true);
+    this.editor.$blockScrolling = Infinity; // Get rid unnecessary Console info
     if (this.nodeTriggeringCodeVault) {
       this.editor.setValue(this.nodeTriggeringCodeVault.getInlineCode());
       this.editor.clearSelection();
     }
   }
 
-  save() {
+  private save() {
     if (this.nodeTriggeringCodeVault && this.editor) {
       this.nodeTriggeringCodeVault.setInlineCode(this.editor.getValue());
     }
     this.leaveCodeVault();
+  }
+
+  private cancel() {
+    this.leaveCodeVault();
+    this.linkNode(undefined); // Unlink node.
   }
 }
 </script>
