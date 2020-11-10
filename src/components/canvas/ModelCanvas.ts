@@ -22,16 +22,16 @@ import ReLU from '@/nodes/model/Relu';
 
 export default class ModelCanvas extends AbstractCanvas {
   public registerNodes(editor: Editor): void {
-    editor.registerNodeType(Nodes.Conv1D, Conv1d, Layers.Conv);
-    editor.registerNodeType(Nodes.Conv2D, Conv2d, Layers.Conv);
-    editor.registerNodeType(Nodes.Conv3D, Conv3d, Layers.Conv);
+    editor.registerNodeType(Nodes.Conv1d, Conv1d, Layers.Conv);
+    editor.registerNodeType(Nodes.Conv2d, Conv2d, Layers.Conv);
+    editor.registerNodeType(Nodes.Conv3d, Conv3d, Layers.Conv);
     editor.registerNodeType(Nodes.ConvTranspose1d, Convtranspose1d, Layers.Conv);
     editor.registerNodeType(Nodes.ConvTranspose2d, Convtranspose2d, Layers.Conv);
     editor.registerNodeType(Nodes.ConvTranspose3d, Convtranspose3d, Layers.Conv);
 
-    editor.registerNodeType(Nodes.MaxPool1D, Maxpool1d, Layers.Pool);
-    editor.registerNodeType(Nodes.MaxPool2D, Maxpool2d, Layers.Pool);
-    editor.registerNodeType(Nodes.MaxPool3D, Maxpool3d, Layers.Pool);
+    editor.registerNodeType(Nodes.MaxPool1d, Maxpool1d, Layers.Pool);
+    editor.registerNodeType(Nodes.MaxPool2d, Maxpool2d, Layers.Pool);
+    editor.registerNodeType(Nodes.MaxPool3d, Maxpool3d, Layers.Pool);
 
     editor.registerNodeType(Nodes.Dropout, Dropout, Layers.Dropout);
     editor.registerNodeType(Nodes.Dropout2d, Dropout2d, Layers.Dropout);

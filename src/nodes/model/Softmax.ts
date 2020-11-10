@@ -13,6 +13,6 @@ export default class Softmax extends Node {
     super();
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
-    this.addOption(SoftmaxOptions.Dim, TypeOptions.VectorOption, undefined);
+    this.addOption(SoftmaxOptions.Dim, TypeOptions.VectorOption, 1);
   }
 }

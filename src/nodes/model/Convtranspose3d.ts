@@ -2,6 +2,8 @@ import { Node } from '@baklavajs/core';
 import { Layers, Nodes } from '@/nodes/model/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
+import { valuesOf } from '@/app/util';
+import { PaddingMode } from '@/app/ir/irCommon';
 
 export enum ConvTranspose3dOptions {
   InChannels = 'In channels',
@@ -32,6 +34,7 @@ export default class ConvTranspose3d extends Node {
     this.addOption(ConvTranspose3dOptions.Groups, TypeOptions.IntOption, 1);
     this.addOption(ConvTranspose3dOptions.Bias, TypeOptions.TickBoxOption, CheckboxValue.CHECKED);
     this.addOption(ConvTranspose3dOptions.Dilation, TypeOptions.VectorOption, 1);
-    this.addOption(ConvTranspose3dOptions.PaddingMode, TypeOptions.DropdownOption, 'zeros');
+    this.addOption(ConvTranspose3dOptions.PaddingMode, TypeOptions.DropdownOption, 'zeros',
+      undefined, { items: valuesOf(PaddingMode) });
   }
 }

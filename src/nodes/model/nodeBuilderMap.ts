@@ -18,15 +18,15 @@ import ReLU from '@/app/ir/model/relu';
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
 export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
-  ['Conv1D', Conv1d.build],
-  ['Conv2D', Conv1d.build],
-  ['Conv3D', Conv1d.build],
+  ['Conv1d', Conv1d.build],
+  ['Conv2d', Conv1d.build],
+  ['Conv3d', Conv1d.build],
   ['ConvTranspose1d', ConvTranspose1d.build],
   ['ConvTranspose2d', ConvTranspose2d.build],
   ['ConvTranspose3d', ConvTranspose3d.build],
-  ['MaxPool1D', MaxPool1d.build],
-  ['MaxPool2D', MaxPool2d.build],
-  ['MaxPool3D', MaxPool3d.build],
+  ['MaxPool1d', MaxPool1d.build],
+  ['MaxPool2d', MaxPool2d.build],
+  ['MaxPool3d', MaxPool3d.build],
   ['Dropout', Dropout.build],
   ['Dropout2d', Dropout2d.build],
   ['Dropout3d', Dropout3d.build],

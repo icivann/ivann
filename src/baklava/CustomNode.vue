@@ -120,13 +120,11 @@ export default class CustomNode extends Components.Node {
 
   get titleBackground() {
     switch (this.data.type) {
-      case Nodes.Dense:
-        return { background: 'var(--black)' };
-      case Nodes.Conv1D:
-      case Nodes.Conv2D:
-      case Nodes.Conv3D:
+      case Nodes.Conv1d:
+      case Nodes.Conv2d:
+      case Nodes.Conv3d:
         return { background: 'var(--blue)' };
-      case Nodes.MaxPool2D:
+      case Nodes.MaxPool2d:
         return { background: 'var(--red)' };
       case Nodes.Dropout:
         return { background: 'var(--pink)' };

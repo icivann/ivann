@@ -2,6 +2,8 @@ import { Node } from '@baklavajs/core';
 import { Layers, Nodes } from '@/nodes/model/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
+import { valuesOf } from '@/app/util';
+import { PaddingMode } from '@/app/ir/irCommon';
 
 export enum Conv2dOptions {
   InChannels = 'In channels',
@@ -15,8 +17,8 @@ export enum Conv2dOptions {
   PaddingMode = 'Padding mode'
 }
 export default class Conv2d extends Node {
-  type = Nodes.Conv2D;
-  name = Nodes.Conv2D;
+  type = Nodes.Conv2d;
+  name = Nodes.Conv2d;
 
   constructor() {
     super();
@@ -30,6 +32,7 @@ export default class Conv2d extends Node {
     this.addOption(Conv2dOptions.Dilation, TypeOptions.VectorOption, [1, 1]);
     this.addOption(Conv2dOptions.Groups, TypeOptions.IntOption, 1);
     this.addOption(Conv2dOptions.Bias, TypeOptions.TickBoxOption, CheckboxValue.CHECKED);
-    this.addOption(Conv2dOptions.PaddingMode, TypeOptions.DropdownOption, 'zeros');
+    this.addOption(Conv2dOptions.PaddingMode, TypeOptions.DropdownOption, 'zeros',
+      undefined, { items: valuesOf(PaddingMode) });
   }
 }

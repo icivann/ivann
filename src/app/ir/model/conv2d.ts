@@ -1,23 +1,21 @@
 import { Conv2dOptions } from '@/nodes/model/Conv2d';
+import { PaddingMode } from '@/app/ir/irCommon';
 
-enum PaddingMode {
-  zeros ='zeros', reflect ='reflect', replicate ='replicate', circular = 'circular'
-}
 function getPaddingMode(s: string): PaddingMode {
   return PaddingMode[s as keyof typeof PaddingMode];
 }
 
 export default class Conv2d {
   constructor(
-  public readonly in_channels: bigint,
-  public readonly out_channels: bigint,
-  public readonly kernel_size: [bigint, bigint],
-  public readonly stride: [bigint, bigint],
-  public readonly padding: [bigint, bigint],
-  public readonly dilation: [bigint, bigint],
-  public readonly groups: bigint,
-  public readonly bias: boolean,
-  public readonly padding_mode: PaddingMode,
+    public readonly in_channels: bigint,
+    public readonly out_channels: bigint,
+    public readonly kernel_size: [bigint, bigint],
+    public readonly stride: [bigint, bigint],
+    public readonly padding: [bigint, bigint],
+    public readonly dilation: [bigint, bigint],
+    public readonly groups: bigint,
+    public readonly bias: boolean,
+    public readonly padding_mode: PaddingMode,
   ) {
   }
 

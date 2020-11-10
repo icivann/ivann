@@ -1,4 +1,5 @@
 import { MaxPool1dOptions } from '@/nodes/model/Maxpool1d';
+import { Conv1dOptions } from '@/nodes/model/Conv1d';
 
 export default class MaxPool1d {
   constructor(

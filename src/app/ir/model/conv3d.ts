@@ -1,8 +1,6 @@
 import { Conv3dOptions } from '@/nodes/model/Conv3d';
+import { PaddingMode } from '@/app/ir/irCommon';
 
-enum PaddingMode {
-  zeros ='zeros', reflect ='reflect', replicate ='replicate', circular = 'circular'
-}
 function getPaddingMode(s: string): PaddingMode {
   return PaddingMode[s as keyof typeof PaddingMode];
 }
