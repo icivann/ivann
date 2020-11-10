@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Overview } from '@/nodes/model/Types';
+import { OverviewNodes } from '@/nodes/Types';
 import { EditorModel } from '@/store/editors/types';
 import { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
 import { getEditorIOs } from '@/store/editors/utils';
@@ -7,7 +7,7 @@ import { INodeState } from '@baklavajs/core/dist/baklavajs-core/types/state.d';
 
 export default class Model extends Node {
   name = '';
-  type = Overview.ModelNode;
+  type = OverviewNodes.Model;
 
   constructor(model?: EditorModel) {
     super();

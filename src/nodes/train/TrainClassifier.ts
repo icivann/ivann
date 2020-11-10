@@ -1,6 +1,6 @@
 import { Node } from '@baklavajs/core';
 import { valuesOf } from '@/app/util';
-import { Nodes, OverviewNodes } from '@/nodes/model/Types';
+import { Nodes, OverviewNodes } from '@/nodes/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 
 export enum TrainClassifierOptions {

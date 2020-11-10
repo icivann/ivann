@@ -1,5 +1,5 @@
 import { EditorModel } from '@/store/editors/types';
-import { Nodes } from '@/nodes/model/Types';
+import { Nodes } from '@/nodes/Types';
 
 export function getEditorIOs(editorModel: EditorModel): { inputs: string[]; outputs: string[] } {
   const inputs: string[] = [];

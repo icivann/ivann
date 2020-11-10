@@ -106,7 +106,7 @@
 import { Component } from 'vue-property-decorator';
 import { Components } from '@baklavajs/plugin-renderer-vue';
 import ArrowButton from '@/inputs/ArrowButton.vue';
-import { Nodes } from '@/nodes/model/Types';
+import { Nodes } from '@/nodes/Types';
 
 @Component({
   components: { ArrowButton },

@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { Layers, Nodes } from '@/nodes/Types';
 
 export default class Concat extends Node {
   type = Nodes.Concat;

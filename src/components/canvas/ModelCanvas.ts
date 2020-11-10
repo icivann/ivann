@@ -1,6 +1,6 @@
 import AbstractCanvas from '@/components/canvas/AbstractCanvas';
 import { Editor } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { Layers, Nodes } from '@/nodes/Types';
 
 import Conv1d from '@/nodes/model/Conv1dBaklava';
 import Conv2d from '@/nodes/model/Conv2dBaklava';

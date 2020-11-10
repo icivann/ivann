@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { Layers, Nodes } from '@/nodes/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 
 export enum Dropout3dOptions {

@@ -2,7 +2,7 @@ import { GetterTree } from 'vuex';
 import { RootState } from '@/store/types';
 import { EditorModels, EditorsState } from '@/store/editors/types';
 import EditorType from '@/EditorType';
-import { Nodes } from '@/nodes/model/Types';
+import { Nodes } from '@/nodes/Types';
 import { SaveWithNames } from '@/file/EditorAsJson';
 
 const editorGetters: GetterTree<EditorsState, RootState> = {

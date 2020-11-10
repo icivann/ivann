@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Nodes } from '@/nodes/model/Types';
+import { Nodes } from '@/nodes/Types';
 import parse from '@/app/parser/parser';
 
 export enum CustomOptions{
