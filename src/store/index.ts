@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import { RootState } from '@/store/types';
 import { editors } from '@/store/editors';
+import { codeVault } from '@/store/codeVault';
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ const store: StoreOptions<RootState> = {
   },
   modules: {
     editors,
+    codeVault,
   },
 };
 
