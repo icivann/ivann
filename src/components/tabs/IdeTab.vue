@@ -1,13 +1,12 @@
 <template>
   <div class="h-100">
-    <div id="ace">
-    </div>
-    <div class="save-banner row">
-      <div class="col-1 offset-10 my-auto">
-        <button class="btn btn-sm btn-secondary pull-right" @click="leaveCodeVault">Cancel</button>
+    <div id="ace"/>
+    <div class="save-banner">
+      <div>
+        <UIButton text="Cancel" @click="leaveCodeVault"/>
       </div>
-      <div class="col-1 my-auto">
-        <button class="btn btn-sm btn-primary pull-right" @click="save">Save</button>
+      <div>
+        <UIButton text="Save" :primary="true" @click="save"/>
       </div>
     </div>
   </div>
@@ -19,12 +18,14 @@ import Tabs from '@/components/tabs/Tabs.vue';
 import Tab from '@/components/tabs/Tab.vue';
 import Ace from 'brace';
 import 'brace/mode/python';
-import 'brace/theme/monokai';
+import '@/assets/ivann-theme';
 import { Getter, Mutation } from 'vuex-class';
 import Custom from '@/nodes/model/custom/Custom';
+import UIButton from '@/components/buttons/UIButton.vue';
 
 @Component({
   components: {
+    UIButton,
     Tab,
     Tabs,
   },
@@ -55,7 +56,7 @@ export default class IdeTab extends Vue {
   mounted() {
     this.editor = Ace.edit('ace');
     this.editor.getSession().setMode('ace/mode/python');
-    this.editor.setTheme('ace/theme/monokai');
+    this.editor.setTheme('ace/theme/ivann');
     this.editor.resize(true);
     if (this.nodeTriggeringCodeVault) {
       this.editor.setValue(this.nodeTriggeringCodeVault.getInlineCode());
@@ -74,11 +75,21 @@ export default class IdeTab extends Vue {
 
 <style scoped>
 .save-banner {
-  border-top: 0.1rem solid var(--dark-grey);
+  border-top: 1px solid var(--grey);
   background: var(--background);
   height: 3em;
+  display: flex;
+  padding-left: calc(100% - 11em);
+}
+.button {
+  margin-top: 14px;
+  margin-right: 1rem;
 }
 #ace {
-  height: calc(100% - 3em - 2em);
+  border-top: 1px solid var(--grey);
+  height: calc(100% - 3em);
+  font-size: 1em;
+  font-family: monospace;
+  font-weight: lighter;
 }
 </style>

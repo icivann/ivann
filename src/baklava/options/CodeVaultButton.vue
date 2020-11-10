@@ -1,8 +1,7 @@
 <template>
   <div class="d-sm-flex">
-    <button class="btn btn-primary btn-sm mx-auto" @click="enterCodeVault(option.customNode)">
-      Enter Func
-    </button>
+    <UIButton text="Select Function" :primary="true" class="m-auto"
+              @click="enterCodeVault(option.customNode)"/>
   </div>
 </template>
 
@@ -10,8 +9,11 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Mutation } from 'vuex-class';
 import Custom from '@/nodes/model/custom/Custom';
+import UIButton from '@/components/buttons/UIButton.vue';
 
-@Component
+@Component({
+  components: { UIButton },
+})
 export default class CodeVaultButton extends Vue {
   @Mutation('enterCodeVault') enterCodeVault!: (node?: Custom) => void;
   @Prop() value!: number;

@@ -7,19 +7,18 @@
         {{tab.name}}
       </div>
     </div>
-    <div class="tab-content" v-bind:class="{ 'fill-parent': fullScreenTab === selectedName }">
+    <div class="tab-content">
       <slot/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import Tab from '@/components/tabs/Tab.vue';
 
 @Component
 export default class Tabs extends Vue {
-  @Prop({ default: undefined }) readonly fullScreenTab?: string;
   private tabs = this.$children as [Tab];
   private selected = 0;
   private selectedName = '';
@@ -73,14 +72,6 @@ export default class Tabs extends Vue {
   }
 
   .tab-content {
-    margin: 1em;
-    max-height: calc(100% - 60px - 2em);
-    overflow: auto;
-    scrollbar-width: none;
-  }
-
-  .tab-content.fill-parent {
-    margin: 0;
     height: 100%;
     max-height: calc(100% - 60px);
     overflow: auto;

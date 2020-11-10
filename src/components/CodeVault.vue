@@ -4,7 +4,7 @@
       <Tab name="Functions">
         <FunctionsTab/>
       </Tab>
-      <Tab class="h-100" name="IDE">
+      <Tab name="IDE" :padded="false">
         <IdeTab/>
       </Tab>
     </Tabs>
