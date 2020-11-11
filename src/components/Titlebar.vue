@@ -46,6 +46,7 @@ import {
   SaveWithNames,
 } from '@/file/EditorAsJson';
 import istateToGraph from '@/app/ir/istateToGraph';
+import { ParsedFile } from '@/store/codeVault/types';
 
 @Component
 export default class Titlebar extends Vue {
@@ -53,7 +54,9 @@ export default class Titlebar extends Vue {
   @Getter('currEditorModel') overviewEditor!: EditorModel;
   @Getter('currEditorModel') currEditor!: EditorModel;
   @Getter('saveWithNames') saveWithNames!: SaveWithNames;
+  @Getter('files') files!: ParsedFile[];
   @Mutation('loadEditors') loadEditors!: (save: Save) => void;
+  @Mutation('loadFiles') loadFiles!: (files: ParsedFile[]) => void;
   @Mutation('resetState') resetState!: () => void;
 
   private codegen() {
@@ -80,7 +83,9 @@ export default class Titlebar extends Vue {
       if (!event.target) return;
 
       // Load all editors using parsed file and set cookies
-      this.loadEditors(JSON.parse(event.target.result as string));
+      const parsed = JSON.parse(event.target.result as string);
+      this.loadEditors(parsed.editors);
+      this.loadFiles(parsed.files);
       this.$cookies.keys().forEach((key) => this.$cookies.remove(key));
       this.$cookies.set('unsaved-project', this.saveWithNames);
       // TODO: FE-65 Set cookies for all editors
@@ -105,7 +110,10 @@ export default class Titlebar extends Vue {
       trainEditors: saveEditors(trainEditors),
     };
 
-    download(FILENAME, JSON.stringify(editorsSaved));
+    download(FILENAME, JSON.stringify({
+      editors: editorsSaved,
+      files: this.files,
+    }));
   }
 
   private newProject() {
