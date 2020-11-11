@@ -1,17 +1,23 @@
 import { Node } from '@baklavajs/core';
 import { valuesOf } from '@/app/util';
-import { Nodes, OverviewNodes } from '@/nodes/Types';
+import { OverviewNodes } from '@/nodes/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 
 export enum TrainClassifierOptions {
   LossFunction = 'LossFunction',
-  Optimizer = 'Optimizer',
-  BatchSize = 'BatchSize',
   Epochs = 'Epochs',
+  Device = 'Device',
+  LogInterval = 'Log Interval'
 }
 
 export enum TrainClassifierLossFunctions {
-  CrossEntropyLoss = 'Cross Entropy Loss',
+  CrossEntropyLoss = 'cross_entropy',
+  NllLoss = 'nll_loss',
+}
+
+export enum Devices {
+  CPU = 'cpu',
+  CUDA = 'cuda',
 }
 
 export default class TrainClassifier extends Node {
@@ -21,13 +27,16 @@ export default class TrainClassifier extends Node {
   constructor() {
     super();
 
-    this.addOption(TrainClassifierOptions.LossFunction, TypeOptions.DropdownOption);
-    this.addOption(TrainClassifierOptions.BatchSize, TypeOptions.IntOption, 32);
-    this.addOption(TrainClassifierOptions.Epochs, TypeOptions.IntOption, 100);
-
-    this.addOption('Activation', 'DropdownOption', 'None', undefined, {
+    this.addOption(TrainClassifierOptions.LossFunction, 'DropdownOption', TrainClassifierLossFunctions.CrossEntropyLoss, undefined, {
       items: valuesOf(TrainClassifierLossFunctions),
     });
+    this.addOption(TrainClassifierOptions.Epochs, TypeOptions.IntOption, 10);
+    this.addOption(TrainClassifierOptions.Device, TypeOptions.DropdownOption, Devices.CPU,
+      undefined,
+      {
+        items: valuesOf(Devices),
+      });
+    this.addOption(TrainClassifierOptions.LogInterval, TypeOptions.IntOption, 0);
 
     this.addInputInterface('Predictions');
     this.addInputInterface('Labels');
