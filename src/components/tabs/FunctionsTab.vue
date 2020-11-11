@@ -1,18 +1,36 @@
 <template>
-  <div>
-    Functions stuff...
-    <div>
-      <UIButton text="Upload File" @click="uploadFile"/>
-      <input
-        type="file"
-        id="upload-python-file"
-        style="display: none"
-        @change="load"
-      >
+  <div class="d-flex h-100">
+    <div id="left" class="panel">
+      <div class="d-flex">
+        <div>
+          <UIButton text="Upload File" @click="uploadFile"/>
+          <input
+            type="file"
+            id="upload-python-file"
+            style="display: none"
+            @change="load"
+          >
+        </div>
+        <div class="ml-3">
+          <UIButton text="Create File" @click="createFile"/>
+        </div>
+      </div>
+      <div class="button-list">
+        <FileFuncButton header="SelectedFile.py (2)" :selected="true">
+          def func(x, y)...
+        </FileFuncButton>
+      </div>
     </div>
-    <br>
-    <div>
-      <UIButton text="Create File" @click="createFile"/>
+    <div id="right" class="panel">
+      SelectedFile.py
+      <div class="button-list">
+        <FileFuncButton header="def func(x, y):">
+          pass...
+        </FileFuncButton>
+        <FileFuncButton header="def func2(x):">
+          pass...
+        </FileFuncButton>
+      </div>
     </div>
   </div>
 </template>
@@ -28,9 +46,11 @@ import { Result } from '@/app/util';
 import { Getter, Mutation } from 'vuex-class';
 import { ParsedFile } from '@/store/codeVault/types';
 import { uniqueTextInput } from '@/inputs/prompt';
+import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
 
 @Component({
   components: {
+    FileFuncButton,
     Tab,
     Tabs,
     UIButton,
@@ -88,4 +108,19 @@ export default class FunctionsTab extends Vue {
 </script>
 
 <style scoped>
+  #left {
+    width: 40%;
+    border-right: var(--grey) 1px solid;
+  }
+  #right {
+    width: 60%;
+  }
+  .panel {
+    user-select: none;
+    padding: 1em;
+    border-top: var(--grey) 1px solid;
+  }
+  .button-list {
+    margin-top: 1em;
+  }
 </style>
