@@ -69,8 +69,8 @@ export default class Tabs extends Vue {
   }
 
   .tab-content {
-    margin: 1em;
-    max-height: calc(100% - 60px - 2em);
+    height: 100%;
+    max-height: calc(100% - 60px);
     overflow: auto;
     scrollbar-width: none;
   }

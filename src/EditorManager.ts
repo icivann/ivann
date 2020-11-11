@@ -10,6 +10,7 @@ import Checkbox from '@/baklava/options/Checkbox.vue';
 import { Engine } from '@baklavajs/plugin-engine';
 import CustomNode from '@/baklava/CustomNode.vue';
 import TextArea from '@/baklava/options/TextArea.vue';
+import CodeVaultButton from '@/baklava/options/CodeVaultButton.vue';
 
 export default class EditorManager {
   private static instance: EditorManager;
@@ -65,6 +66,7 @@ export default class EditorManager {
     this.view.registerOption('DropdownOption', Dropdown);
     this.view.registerOption('TickBoxOption', Checkbox);
     this.view.registerOption('TextAreaOption', TextArea);
+    this.view.registerOption('CodeVaultButtonOption', CodeVaultButton);
 
     this.view.components.node = CustomNode;
   }

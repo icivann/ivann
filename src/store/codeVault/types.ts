@@ -1,4 +1,5 @@
 import ParsedFunction from '@/app/parser/ParsedFunction';
+import Custom from '@/nodes/model/custom/Custom';
 
 export const CustomFilename = 'Notepad';
 
@@ -9,4 +10,5 @@ export interface ParsedFile {
 
 export interface CodeVaultState {
   files: ParsedFile[];
+  nodeTriggeringCodeVault?: Custom;
 }

@@ -9,6 +9,7 @@ export const codeVaultState: CodeVaultState = {
     filename: CustomFilename,
     functions: [],
   }],
+  nodeTriggeringCodeVault: undefined,
 };
 
 export const codeVault: Module<CodeVaultState, RootState> = {
