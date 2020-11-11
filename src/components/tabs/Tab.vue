@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" class="">
+  <div v-if="visible" class="tab" :class="padded && 'padded'">
     <slot/>
   </div>
 </template>
@@ -9,7 +9,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Tab extends Vue {
-  @Prop() readonly name!: string;
+  @Prop({ required: true }) readonly name!: string;
+  @Prop({ default: true }) readonly padded?: boolean;
   private visible = false;
 
   public setVisible(value: boolean) {
@@ -17,3 +18,13 @@ export default class Tab extends Vue {
   }
 }
 </script>
+
+<style scoped>
+  .padded {
+    margin: 1em;
+  }
+
+  .tab {
+    height: 100%;
+  }
+</style>

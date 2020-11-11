@@ -10,6 +10,7 @@ import Checkbox from '@/baklava/options/Checkbox.vue';
 import { Engine } from '@baklavajs/plugin-engine';
 import CustomNode from '@/baklava/CustomNode.vue';
 import TextArea from '@/baklava/options/TextArea.vue';
+import CodeVaultButton from '@/baklava/options/CodeVaultButton.vue';
 
 export default class EditorManager {
   private static instance: EditorManager;
@@ -22,6 +23,8 @@ export default class EditorManager {
   private view: ViewPlugin = new ViewPlugin();
 
   private eng: Engine = new Engine(true);
+
+  private dropStatus = false;
 
   get overviewCanvas(): OverviewCanvas {
     return this.overview;
@@ -49,12 +52,21 @@ export default class EditorManager {
     this.view.scaling = 1;
   }
 
+  public enableDrop(value: boolean): void {
+    this.dropStatus = value;
+  }
+
+  get canDrop(): boolean {
+    return this.dropStatus;
+  }
+
   private constructor() {
     this.view.registerOption('VectorOption', Vector);
     this.view.registerOption('IntOption', Integer);
     this.view.registerOption('DropdownOption', Dropdown);
     this.view.registerOption('TickBoxOption', Checkbox);
     this.view.registerOption('TextAreaOption', TextArea);
+    this.view.registerOption('CodeVaultButtonOption', CodeVaultButton);
 
     this.view.components.node = CustomNode;
   }

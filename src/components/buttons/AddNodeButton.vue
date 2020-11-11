@@ -1,25 +1,34 @@
 <template>
-  <div class="node-button" @click="addNode">
+  <div class="node-button" @click="onClick" draggable="true" @dragend="dragEnd" :id="name">
     <div class="icon">
       <slot/>
     </div>
-    <div class="name" :style="'font-size: ' + fontSize + 'em'">{{name}}</div>
+    <div class="name" :style="'font-size: ' + fontSize + 'em'">{{ name }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import EditorManager from '@/EditorManager';
 import { uniqueTextInput } from '@/inputs/prompt';
+import EditorManager from '@/EditorManager';
 
-@Component({})
+@Component
 export default class AddNodeButton extends Vue {
   @Prop({ required: true }) readonly node!: string;
   @Prop() readonly name!: string;
   @Prop() readonly options?: unknown;
   @Prop() readonly names?: Set<string>;
 
+  private editorManager = EditorManager.getInstance();
   private fontSize = 1.0;
+
+  private dragEnd = (event: DragEvent) => {
+    if (this.editorManager.canDrop) {
+      this.editorManager.enableDrop(false);
+      // TODO: When different Node Widths are implemented, centre node on cursor.
+      this.addNode(event.pageX - 160, event.pageY - 60);
+    }
+  };
 
   created() {
     let factor = (this.name.length - 10) / 3;
@@ -29,7 +38,11 @@ export default class AddNodeButton extends Vue {
     }
   }
 
-  private addNode() {
+  private onClick() {
+    this.addNode(window.innerWidth / 3, window.innerHeight / 3);
+  }
+
+  private addNode(x: number, y: number) {
     let name: string | null = null;
     if (this.names) {
       name = uniqueTextInput(this.names, 'Please enter a unique name for the IO');
@@ -47,9 +60,10 @@ export default class AddNodeButton extends Vue {
       // Set position (and name) of newly created node
       const { scaling, panning } = EditorManager.getInstance().viewPlugin;
       const { x: xPanning, y: yPanning } = panning;
-      node.position.x = (window.innerWidth / (3 * scaling)) - xPanning;
-      node.position.y = (window.innerHeight / (3 * scaling)) - yPanning;
-      if (name !== null) node.name = name;
+
+      node.position.x = (x / scaling) - xPanning;
+      node.position.y = (y / scaling) - yPanning;
+      if (name) node.name = name;
     }
   }
 }

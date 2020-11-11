@@ -22,18 +22,13 @@ export default class RenameEditorButton extends Vue {
   @Getter('editor') getEditor!: (editorType: EditorType, index: number) => EditorModel;
   @Getter('overviewEditor') overviewEditor!: EditorModel;
   @Mutation('renameEditor') rename!:
-    (arg0: { editorType: EditorType; index: number; name: string; oldName: string }) => void;
+    (arg0: { editorType: EditorType; index: number; name: string }) => void;
 
   private renameEditor() {
     const name: string | null = uniqueTextInput(this.editorNames,
       'Please enter a unique name for the editor');
     if (name !== null) {
-      this.rename({
-        editorType: this.editorType,
-        index: this.index,
-        name,
-        oldName: this.oldName,
-      });
+      this.rename({ editorType: this.editorType, index: this.index, name });
 
       // Re-save overview to get new node name
       const overviewEditorSave = saveEditor(this.overviewEditor);

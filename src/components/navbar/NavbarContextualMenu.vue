@@ -5,7 +5,7 @@
         <div id="row">
           <VerticalMenuButton
             :label="editor.name"
-            :onClick="() => switchEditor({editorType, index})"
+            :onClick="() => switchEditor(editorType, index)"
             :isSelected="editorType === currEditorType && index === currEditorIndex">
           </VerticalMenuButton>
           <div class="buttons">
@@ -26,13 +26,14 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import VerticalMenuButton from '@/components/buttons/VerticalMenuButton.vue';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 import EditorType from '@/EditorType';
 import { Getter, Mutation } from 'vuex-class';
 import { EditorModel } from '@/store/editors/types';
 import { uniqueTextInput } from '@/inputs/prompt';
 import RenameEditorButton from '@/components/buttons/RenameEditorButton.vue';
 import DeleteEditorButton from '@/components/buttons/DeleteEditorButton.vue';
+import { EditorSave, saveEditor } from '@/file/EditorAsJson';
 
 @Component({
   components: { VerticalMenuButton, RenameEditorButton, DeleteEditorButton },
@@ -40,13 +41,16 @@ import DeleteEditorButton from '@/components/buttons/DeleteEditorButton.vue';
     'currEditorType',
     'currEditorIndex',
   ]),
-  methods: mapMutations(['switchEditor']),
 })
 export default class NavbarContextualMenu extends Vue {
   @Prop({ required: true }) readonly editors!: EditorModel[];
   @Prop({ required: true }) readonly editorType!: EditorType;
   @Getter('editorNames') editorNames!: Set<string>;
+  @Getter('currEditorModel') currEditorModel!: EditorModel;
+  @Getter('overviewEditor') overviewEditor!: EditorModel;
   @Mutation('newEditor') newEditor!: (arg0: { editorType: EditorType; name: string }) => void;
+  @Mutation('switchEditor') switch!: (arg0: { editorType: EditorType; index: number }) => void;
+  @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
 
   private createNewEditor(): void {
     const name: string | null = uniqueTextInput(this.editorNames,
@@ -55,6 +59,19 @@ export default class NavbarContextualMenu extends Vue {
       this.newEditor({ editorType: this.editorType, name });
       // New editor will be saved in periodic auto-save
     }
+  }
+
+  private switchEditor(editorType: EditorType, index: number) {
+    // Save currEditorModel before switching as periodic save may not have captured last changes
+    // and update overview editor if required
+    this.updateNodeInOverview(this.currEditorModel);
+
+    const oldEditorSaved: EditorSave = saveEditor(this.currEditorModel);
+    const overviewEditorSave: EditorSave = saveEditor(this.overviewEditor);
+    this.$cookies.set(`unsaved-editor-${this.currEditorModel.name}`, oldEditorSaved);
+    this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
+
+    this.switch({ editorType, index });
   }
 }
 
@@ -78,6 +95,9 @@ export default class NavbarContextualMenu extends Vue {
   }
 
   #contextual-menu {
+    // In order to have a higher z-index than IDE in CodeVault.
+    z-index: 5;
     border: 1px solid var(--grey);
+    user-select: none;
   }
 </style>
