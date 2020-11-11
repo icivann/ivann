@@ -13,6 +13,10 @@ function getIndentation(file: string): string | null {
     const line = lines[i];
 
     if (line.length > 0) {
+      // If there is no character on the line
+      if (line.search(/\S/) < 0) {
+        return null;
+      }
       // Indent is with spaces
       if (line[0] === ' ') {
         return ' '.repeat(line.search(/\S/));
@@ -73,7 +77,7 @@ function parse(str: string): Result<ParsedFunction[]> {
     if (isParsingFunction) {
       if (isLineIndented(line, indentation)) {
         if (!isParsingFunction) {
-          return new Error(`unexpected indentation at line ${i}: ${line}`);
+          return new Error(`unexpected indentation at line ${i + 1}: ${line}`);
         }
 
         // Parsing function body
@@ -95,7 +99,7 @@ function parse(str: string): Result<ParsedFunction[]> {
         const signature = parseFunctionSignature(line);
 
         if (signature === null) {
-          return new Error(`failed to parse function definition at line ${i}: ${line}`);
+          return new Error(`failed to parse function definition at line ${i + 1}: ${line}`);
         }
 
         isParsingFunction = true;
@@ -104,7 +108,7 @@ function parse(str: string): Result<ParsedFunction[]> {
       }
 
       if (isLineIndented(line, indentation)) {
-        return new Error(`unexpected indentation at line ${i}: ${line}`);
+        return new Error(`unexpected indentation at line ${i + 1}: ${line}`);
       }
     }
   }
