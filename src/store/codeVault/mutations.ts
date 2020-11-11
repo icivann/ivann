@@ -7,6 +7,9 @@ const codeVaultMutations: MutationTree<CodeVaultState> = {
   resetState(state) {
     state.files = [];
   },
+  loadFiles(state, files: ParsedFile[]) {
+    state.files = files;
+  },
   addFile(state, file: ParsedFile) {
     state.files.push(file);
   },
