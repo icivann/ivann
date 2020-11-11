@@ -11,7 +11,7 @@
             @change="load"
           >
         </div>
-        <div class="ml-3">
+        <div>
           <UIButton text="Create File" @click="createFile"/>
         </div>
       </div>
@@ -37,6 +37,10 @@
                         @click="selectFunction(index)">
           {{ func.toString().slice(0, 100) }}...
         </FileFuncButton>
+      </div>
+      <div class="confirm-button">
+        <UIButton text="Cancel" @click="cancelClick"/>
+        <UIButton text="Confirm" :primary="true" @click="confirmClick"/>
       </div>
     </div>
   </div>
@@ -134,6 +138,14 @@ export default class FunctionsTab extends Vue {
 
     this.addFile({ filename: `${name}.py`, functions: [] });
   }
+
+  private confirmClick = () => {
+    console.log('confirm');
+  };
+
+  private cancelClick = () => {
+    console.log('cancel');
+  };
 }
 </script>
 
@@ -157,5 +169,16 @@ export default class FunctionsTab extends Vue {
   .button-list {
     margin-top: 1em;
     margin-bottom: 1em;
+    height: calc(100% - 3.5em);
+  }
+
+  .confirm-button {
+    display: flex;
+    float: right;
+    padding-bottom: 0.5em;
+  }
+
+  .button {
+    margin-right: 1em;
   }
 </style>
