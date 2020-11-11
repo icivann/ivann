@@ -10,6 +10,10 @@
         @change="load"
       >
     </div>
+    <br>
+    <div>
+      <UIButton text="Create File" @click="createFile"/>
+    </div>
   </div>
 </template>
 
@@ -23,6 +27,7 @@ import ParsedFunction from '@/app/parser/ParsedFunction';
 import { Result } from '@/app/util';
 import { Getter, Mutation } from 'vuex-class';
 import { ParsedFile } from '@/store/codeVault/types';
+import { uniqueTextInput } from '@/inputs/prompt';
 
 @Component({
   components: {
@@ -32,6 +37,7 @@ import { ParsedFile } from '@/store/codeVault/types';
   },
 })
 export default class FunctionsTab extends Vue {
+  @Getter('filenames') filenames!: Set<string>;
   @Getter('file') file!: (filename: string) => ParsedFile | undefined;
   @Mutation('addFile') addFile!: (file: ParsedFile) => void;
 
@@ -68,6 +74,15 @@ export default class FunctionsTab extends Vue {
 
     // Trigger the file to be read
     fr.readAsText(files[0]);
+  }
+
+  private createFile() {
+    const name: string | null = uniqueTextInput(
+      this.filenames, 'Please enter a unique name for the file',
+    );
+    if (name === null) return;
+
+    this.addFile({ filename: name, functions: [] });
   }
 }
 </script>
