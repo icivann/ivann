@@ -20,13 +20,14 @@ export default class Conv2d {
   }
 
   static build(options: Map<string, any>): Conv2d {
+    console.log(options);
     return new Conv2d(
       options.get(Conv2dOptions.InChannels),
       options.get(Conv2dOptions.OutChannels),
-      [options.get(Conv2dOptions.KernelSize[0]), options.get(Conv2dOptions.KernelSize)[1]],
-      [options.get(Conv2dOptions.Stride[0]), options.get(Conv2dOptions.Stride)[1]],
-      [options.get(Conv2dOptions.Padding[0]), options.get(Conv2dOptions.Padding)[1]],
-      [options.get(Conv2dOptions.Dilation[0]), options.get(Conv2dOptions.Dilation)[1]],
+      [options.get(Conv2dOptions.KernelSize)[0], options.get(Conv2dOptions.KernelSize)[1]],
+      [options.get(Conv2dOptions.Stride)[0], options.get(Conv2dOptions.Stride)[1]],
+      [options.get(Conv2dOptions.Padding)[0], options.get(Conv2dOptions.Padding)[1]],
+      [options.get(Conv2dOptions.Dilation)[0], options.get(Conv2dOptions.Dilation)[1]],
       options.get(Conv2dOptions.Groups),
       options.get(Conv2dOptions.Bias),
       getPaddingMode(options.get(Conv2dOptions.PaddingMode)),
@@ -34,9 +35,6 @@ export default class Conv2d {
   }
 
   public initCode(): string {
-    return `Conv2d(in_channels=${this.in_channels}, out_channels=${this.out_channels},
-    kernel_size=${this.kernel_size}, stride=${this.stride}, padding=${this.padding},
-    dilation=${this.dilation}, groups=${this.groups}, bias=${this.bias},
-    padding_mode=${this.padding_mode})`;
+    return `Conv2d(in_channels=${this.in_channels}, out_channels=${this.out_channels}, kernel_size=(${this.kernel_size}), stride=(${this.stride}), padding=(${this.padding}), dilation=(${this.dilation}), groups=${this.groups}, bias=${this.bias}, padding_mode='${this.padding_mode}')`;
   }
 }

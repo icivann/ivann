@@ -23,13 +23,13 @@ export default class ConvTranspose2d {
     return new ConvTranspose2d(
       options.get(ConvTranspose2dOptions.InChannels),
       options.get(ConvTranspose2dOptions.OutChannels),
-      [options.get(ConvTranspose2dOptions.KernelSize[0]),
+      [options.get(ConvTranspose2dOptions.KernelSize)[0],
         options.get(ConvTranspose2dOptions.KernelSize)[1]],
-      [options.get(ConvTranspose2dOptions.Stride[0]),
+      [options.get(ConvTranspose2dOptions.Stride)[0],
         options.get(ConvTranspose2dOptions.Stride)[1]],
-      [options.get(ConvTranspose2dOptions.Padding[0]),
+      [options.get(ConvTranspose2dOptions.Padding)[0],
         options.get(ConvTranspose2dOptions.Padding)[1]],
-      [options.get(ConvTranspose2dOptions.OutputPadding[0]),
+      [options.get(ConvTranspose2dOptions.OutputPadding)[0],
         options.get(ConvTranspose2dOptions.OutputPadding)[1]],
       options.get(ConvTranspose2dOptions.Groups),
       options.get(ConvTranspose2dOptions.Bias),
@@ -39,6 +39,6 @@ export default class ConvTranspose2d {
   }
 
   public initCode(): string {
-    return `ConvTranspose2d(in_channels=${this.in_channels}, out_channels=${this.out_channels}, kernel_size=${this.kernel_size}, stride=${this.stride}, padding=${this.padding}, output_padding=${this.output_padding}, groups=${this.groups}, bias=${this.bias}, dilation=${this.dilation}, padding_mode=${this.padding_mode})`;
+    return `ConvTranspose2d(in_channels=${this.in_channels}, out_channels=${this.out_channels}, kernel_size=(${this.kernel_size}), stride=(${this.stride}), padding=(${this.padding}), output_padding=(${this.output_padding}), groups=${this.groups}, bias=${this.bias}, dilation=${this.dilation}, padding_mode='${this.padding_mode}')`;
   }
 }

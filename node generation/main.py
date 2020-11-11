@@ -1,8 +1,8 @@
 import re
 import os
 
-ir_folder = os.path.join("..", "src", "app", "ir", "pytorch model")
-baklava_folder = os.path.join("..", "src", "nodes", "pytorch model")
+ir_folder = os.path.join("..", "src", "app", "ir", "model")
+baklava_folder = os.path.join("..", "src", "nodes", "model")
 
 type_map = {
   "int": "IntOption",
@@ -143,17 +143,22 @@ def create_ir_node(class_name, option_map: dict, dimensions):
       buildLine = "["
       option_type = "["
       for i in range (dimensions[0]-1):
-        buildLine+= f"  options.get({class_name}Options.{field_name.capitalize()}[{i}]), "
+        buildLine+= f"  options.get({class_name}Options.{field_name.capitalize()})[{i}], "
         option_type+= "bigint, "
       buildLine+= f"options.get({class_name}Options.{field_name.capitalize()})[{dimensions[0]-1}]], "
       option_type+= "bigint]"
     else:
       buildLine= f"options.get({class_name}Options.{field_name.capitalize()}),"
 
-
     fields.append(f"public readonly {field_name}: {option_type},")
     build.append(buildLine)
-    pythonCode.append(f"{field_name}=${{this.{field_name}}}")
+    pythonCode.append(f"{field_name}=")
+    if dimensions[0] > 1:
+      pythonCode.append(f"(${{this.{field_name}}})")
+    elif option_type == "str":
+      pythonCode.append(f"'${{this.{field_name}}}'")
+    else:
+      pythonCode.append(f"${{this.{field_name}}}")
 
   fields = "\n  ".join(fields)
   build = "\n  ".join(build)

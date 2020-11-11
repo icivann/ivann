@@ -13,13 +13,13 @@ export default class MaxPool3d {
 
   static build(options: Map<string, any>): MaxPool3d {
     return new MaxPool3d(
-      [options.get(MaxPool3dOptions.KernelSize[0]), options.get(MaxPool3dOptions.KernelSize[1]),
+      [options.get(MaxPool3dOptions.KernelSize)[0], options.get(MaxPool3dOptions.KernelSize)[1],
         options.get(MaxPool3dOptions.KernelSize)[2]],
-      [options.get(MaxPool3dOptions.Stride[0]), options.get(MaxPool3dOptions.Stride[1]),
+      [options.get(MaxPool3dOptions.Stride)[0], options.get(MaxPool3dOptions.Stride)[1],
         options.get(MaxPool3dOptions.Stride)[2]],
-      [options.get(MaxPool3dOptions.Padding[0]), options.get(MaxPool3dOptions.Padding[1]),
+      [options.get(MaxPool3dOptions.Padding)[0], options.get(MaxPool3dOptions.Padding)[1],
         options.get(MaxPool3dOptions.Padding)[2]],
-      [options.get(MaxPool3dOptions.Dilation[0]), options.get(MaxPool3dOptions.Dilation[1]),
+      [options.get(MaxPool3dOptions.Dilation)[0], options.get(MaxPool3dOptions.Dilation)[1],
         options.get(MaxPool3dOptions.Dilation)[2]],
       options.get(MaxPool3dOptions.ReturnIndices),
       options.get(MaxPool3dOptions.CeilMode),
@@ -27,6 +27,6 @@ export default class MaxPool3d {
   }
 
   public initCode(): string {
-    return `MaxPool3d(kernel_size=${this.kernel_size}, stride=${this.stride}, padding=${this.padding}, dilation=${this.dilation}, return_indices=${this.return_indices}, ceil_mode=${this.ceil_mode})`;
+    return `MaxPool3d(kernel_size=(${this.kernel_size}), stride=(${this.stride}), padding=(${this.padding}), dilation=(${this.dilation}), return_indices=${this.return_indices}, ceil_mode=${this.ceil_mode})`;
   }
 }

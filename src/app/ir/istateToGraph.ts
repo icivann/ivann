@@ -60,5 +60,7 @@ export default function istateToGraph(istate: IState): Graph {
   const connections = istate.connections.map(
     (c) => [c.from, c.to].map((s) => new UUID(s)) as [UUID, UUID],
   );
+  console.log(graphNodes.values());
+  console.log(istate);
   return new Graph(new Set(graphNodes.values()), connections);
 }
