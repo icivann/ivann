@@ -44,7 +44,6 @@ const codeVaultMutations: MutationTree<CodeVaultState> = {
   },
   linkNode(state, node?: Custom) {
     state.nodeTriggeringCodeVault = node;
-    console.log(`New code: ${state.nodeTriggeringCodeVault?.getInlineCode()}`);
   },
 };
 
