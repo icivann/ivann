@@ -64,6 +64,7 @@ export default class Titlebar extends Vue {
     downloadPython(name, generatedCode);
   }
 
+  // Trigger click of input tag for uploading file
   private uploadFile = () => {
     const element = document.getElementById('upload-file');
     if (!element) return;
