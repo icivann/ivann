@@ -1,16 +1,18 @@
+/* eslint-disable max-classes-per-file */
 import { EditorModel } from '@/store/editors/types';
 import EditorType from '@/EditorType';
 import newEditor from '@/baklava/Utils';
 import { Editor } from '@baklavajs/core';
 import EditorManager from '@/EditorManager';
 import { randomUuid, UUID } from '@/app/util';
+import { IState } from '@baklavajs/core/dist/baklavajs-core/types/state.d';
 
 export const FILENAME = 'ivann';
 
-export function saveEditor(editor: EditorModel) {
+export function saveEditor(editor: EditorModel): EditorSave {
   return {
     name: editor.name,
-    editorState: editor.editor.save(),
+    state: editor.editor.save(),
   };
 }
 
@@ -24,29 +26,23 @@ export function saveEditors(editors: EditorModel[]) {
 }
 
 export function loadEditor(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  editorType: EditorType, editorSaved: any, names: Set<string>,
+  editorType: EditorType, editorSaved: EditorSave, names: Set<string>,
 ): EditorModel {
-  const { name, editorState } = editorSaved;
+  const { name, state } = editorSaved;
   const id: UUID = randomUuid();
 
   names.add(name);
 
   const editor: Editor = newEditor(editorType);
   editor.use(EditorManager.getInstance().viewPlugin);
-  editor.load(editorState);
+  editor.use(EditorManager.getInstance().engine);
+  editor.load(state);
 
-  return {
-    id,
-    name,
-    editor,
-    saved: false,
-  };
+  return { id, name, editor };
 }
 
 export function loadEditors(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  editorType: EditorType, editorsSaved: any, names: Set<string>,
+  editorType: EditorType, editorsSaved: EditorSave[], names: Set<string>,
 ): EditorModel[] {
   const editorsLoaded = [];
   for (const editorSaved of editorsSaved) {
@@ -54,4 +50,29 @@ export function loadEditors(
   }
 
   return editorsLoaded;
+}
+
+export class EditorSave {
+  constructor(
+    public readonly name: string,
+    public readonly state: IState,
+  ) {}
+}
+
+export class Save {
+  constructor(
+    public readonly overviewEditor: EditorSave,
+    public readonly modelEditors: EditorSave[],
+    public readonly dataEditors: EditorSave[],
+    public readonly trainEditors: EditorSave[],
+  ) {}
+}
+
+export class SaveWithNames {
+  constructor(
+    public readonly overviewEditor: string,
+    public readonly modelEditors: string[],
+    public readonly dataEditors: string[],
+    public readonly trainEditors: string[],
+  ) {}
 }

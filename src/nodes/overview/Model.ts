@@ -1,6 +1,9 @@
 import { Node } from '@baklavajs/core';
 import { Overview } from '@/nodes/model/Types';
-import { EditorIO, EditorModel } from '@/store/editors/types';
+import { EditorModel } from '@/store/editors/types';
+import { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
+import { getEditorIOs } from '@/store/editors/utils';
+import { INodeState } from '@baklavajs/core/dist/baklavajs-core/types/state.d';
 
 export default class Model extends Node {
   name = '';
@@ -9,24 +12,53 @@ export default class Model extends Node {
   constructor(model?: EditorModel) {
     super();
     if (model) {
-      this.createFromSidebar(model);
+      this.name = model.name;
+      const { inputs, outputs } = getEditorIOs(model);
+      this.updateIO({ added: inputs, removed: [] }, { added: outputs, removed: [] });
     }
   }
 
-  private createFromSidebar(model: EditorModel): void {
-    const { inputs, outputs, name } = model;
-    this.name = name;
+  public getCurrentIO(): ({
+    inputs: string[];
+    outputs: string[];
+  }) {
+    const inputs: string[] = [];
+    const outputs: string[] = [];
+    this.interfaces.forEach(((value, key) => {
+      (value.isInput ? inputs : outputs).push(key);
+    }));
+    return { inputs, outputs };
+  }
 
-    if (inputs) {
-      for (const input of inputs) {
-        this.addInputInterface(input.name);
-      }
-    }
+  public updateIO(inputChange: NodeIOChange, outputChange: NodeIOChange) {
+    for (const inputAdded of inputChange.added) this.addInputInterface(inputAdded);
+    for (const inputRemoved of inputChange.removed) this.removeInterface(inputRemoved);
+    for (const outputAdded of outputChange.added) this.addOutputInterface(outputAdded);
+    for (const outputRemoved of outputChange.removed) this.removeInterface(outputRemoved);
+  }
 
-    if (outputs) {
-      for (const output of outputs) {
-        this.addOutputInterface(output.name);
-      }
-    }
+  public load(state: INodeState) {
+    const inputs: string[] = [];
+    const outputs: string[] = [];
+    state.interfaces.forEach(([k, v]) => {
+      if ('isInput' in v) (v.isInput ? inputs : outputs).push(k);
+    });
+    this.updateIO({ added: inputs, removed: [] }, { added: outputs, removed: [] });
+    super.load(state);
+  }
+
+  public save(): INodeState {
+    /* Copied from default Node implementation, but interfaces extended with isInput. */
+    const state: INodeState = {
+      type: this.type,
+      id: this.id,
+      name: this.name,
+      options: Array.from(this.options.entries())
+        .map(([k, o]) => [k, o.value]),
+      state: this.state,
+      interfaces: Array.from(this.interfaces.entries())
+        .map(([k, i]) => [k, { isInput: i.isInput, ...i.save() }]),
+    };
+    return this.hooks.save.execute(state);
   }
 }

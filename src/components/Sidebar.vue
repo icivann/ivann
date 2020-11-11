@@ -1,6 +1,11 @@
 <template>
   <div class="right">
-    <Tabs v-show="currEditorType === modelType">
+    <Tabs v-show="currEditorType === editorType.OVERVIEW">
+      <Tab name="Components">
+        <ComponentsTab/>
+      </Tab>
+    </Tabs>
+    <Tabs v-show="currEditorType === editorType.MODEL">
       <Tab name="Layers">
         <LayersTab/>
       </Tab>
@@ -8,15 +13,10 @@
         <SearchTab/>
       </Tab>
     </Tabs>
-    <Tabs v-show="currEditorType === overviewType">
-      <Tab name="Components">
-        <ComponentsTab/>
-      </Tab>
-    </Tabs>
-    <Tabs v-show="currEditorType === dataType">
+    <Tabs v-show="currEditorType === editorType.DATA">
       <Tab name="Data Stuff"/>
     </Tabs>
-    <Tabs v-show="currEditorType === trainType">
+    <Tabs v-show="currEditorType === editorType.TRAIN">
       <Tab name="Steam Training"/>
     </Tabs>
   </div>
@@ -43,10 +43,7 @@ import { mapGetters } from 'vuex';
   computed: mapGetters(['currEditorType']),
 })
 export default class Sidebar extends Vue {
-  private modelType = EditorType.MODEL;
-  private dataType = EditorType.DATA;
-  private trainType = EditorType.TRAIN;
-  private overviewType = EditorType.OVERVIEW;
+  private editorType = EditorType;
 }
 </script>
 

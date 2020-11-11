@@ -10,8 +10,8 @@
       </span>
     </div>
     <div class="col text-right">
-      <span class="icon-button" @click="share">
-        <i class="titlebar-icon fas fa-share-alt fa-lg mx-2"/>
+      <span class="icon-button" @click="codegen">
+        <i class="titlebar-icon fas fa-code fa-lg mx-2"/>
       </span>
       <input
         type="file"
@@ -36,18 +36,32 @@
 import generateCode from '@/app/codegen/codeGenerator';
 import { Component, Vue } from 'vue-property-decorator';
 import { Getter, Mutation } from 'vuex-class';
-import { EditorModels } from '@/store/editors/types';
-import { download } from '@/file/Utils';
-import { FILENAME, saveEditor, saveEditors } from '@/file/EditorAsJson';
+import { EditorModel, EditorModels } from '@/store/editors/types';
+import { download, downloadPython } from '@/file/Utils';
+import {
+  FILENAME,
+  Save,
+  saveEditor,
+  saveEditors,
+  SaveWithNames,
+} from '@/file/EditorAsJson';
+import istateToGraph from '@/app/ir/istateToGraph';
 
 @Component
 export default class Titlebar extends Vue {
   @Getter('allEditorModels') editorModels!: EditorModels;
-  @Mutation('loadEditors') loadEditors!: (file: any) => void;
+  @Getter('currEditorModel') overviewEditor!: EditorModel;
+  @Getter('currEditorModel') currEditor!: EditorModel;
+  @Getter('saveWithNames') saveWithNames!: SaveWithNames;
+  @Mutation('loadEditors') loadEditors!: (save: Save) => void;
   @Mutation('resetState') resetState!: () => void;
 
-  private share() {
-    console.log(`Share button pressed. ${this.$data}`);
+  private codegen() {
+    const { name, state } = saveEditor(this.currEditor);
+    const graph = istateToGraph(state);
+    const generatedCode = generateCode(graph);
+
+    downloadPython(name, generatedCode);
   }
 
   private uploadFile = () => {
@@ -64,8 +78,11 @@ export default class Titlebar extends Vue {
     fr.onload = (event) => {
       if (!event.target) return;
 
-      // Load all editors using parsed file
+      // Load all editors using parsed file and set cookies
       this.loadEditors(JSON.parse(event.target.result as string));
+      this.$cookies.keys().forEach((key) => this.$cookies.remove(key));
+      this.$cookies.set('unsaved-project', this.saveWithNames);
+      // TODO: FE-65 Set cookies for all editors
     };
 
     // Trigger the file to be read
@@ -80,7 +97,7 @@ export default class Titlebar extends Vue {
       trainEditors,
     } = this.editorModels;
 
-    const editorsSaved = {
+    const editorsSaved: Save = {
       overviewEditor: saveEditor(overviewEditor),
       modelEditors: saveEditors(modelEditors),
       dataEditors: saveEditors(dataEditors),
@@ -95,7 +112,9 @@ export default class Titlebar extends Vue {
     if (window.confirm('Are you sure you want to create a new project? '
       + 'All unsaved progress will be lost.')) {
       this.resetState();
-      this.$cookies.remove('unsaved');
+      this.$cookies.keys().forEach((key) => this.$cookies.remove(key));
+      this.$cookies.set('unsaved-project', this.saveWithNames);
+      this.$cookies.set('unsaved-editor-Overview', saveEditor(this.editorModels.overviewEditor));
     }
   }
 }

@@ -21,18 +21,11 @@ export default class VerticalMenuButton extends Vue {
 
 <style scoped>
   .button {
-    background: #202020;
     text-align: center;
     color: #e0e0e0;
     font-size: 14px;
     padding: 10px;
-  }
-
-  .button:hover {
-    background: #1c1c1c;
-    transition-duration: 0.1s;
-    border-left-color: var(--blue);
-    cursor: pointer;
+    width: 100%;
   }
 
   .selected {

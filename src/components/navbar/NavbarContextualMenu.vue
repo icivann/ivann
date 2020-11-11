@@ -1,66 +1,103 @@
 <template>
-    <div id="contextual-menu">
-      <div v-for="(editor, index) in editors" :key="index">
-        <VerticalMenuButton
-          :label="editor.name + (editor.saved ? '' : '*')"
-          :onClick="() => switchEditor({ editorType, index})"
-          :isSelected="editorType === currEditorType && index === currEditorIndex">
-          <SaveEditorButton :index="index" v-if="save"/>
-        </VerticalMenuButton>
+  <div id="contextual-menu">
+    <div v-for="(editor, index) in editors" :key="index">
+      <div>
+        <div id="row">
+          <VerticalMenuButton
+            :label="editor.name"
+            :onClick="() => switchEditor(editorType, index)"
+            :isSelected="editorType === currEditorType && index === currEditorIndex">
+          </VerticalMenuButton>
+          <div class="buttons">
+            <RenameEditorButton :editorType="editorType" :index="index" :oldName="editor.name"/>
+            <DeleteEditorButton :editorType="editorType" :index="index" :name="editor.name"/>
+          </div>
+        </div>
       </div>
-      <VerticalMenuButton
-        :label="'+'"
-        :onClick="this.createNewEditor"
-        :isSelected="false"
-      />
     </div>
+    <VerticalMenuButton
+      :label="'+'"
+      :onClick="this.createNewEditor"
+      :isSelected="false"
+    />
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import VerticalMenuButton from '@/components/buttons/VerticalMenuButton.vue';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 import EditorType from '@/EditorType';
 import { Getter, Mutation } from 'vuex-class';
-import SaveEditorButton from '@/components/buttons/SaveEditorButton.vue';
 import { EditorModel } from '@/store/editors/types';
+import { uniqueTextInput } from '@/inputs/prompt';
+import RenameEditorButton from '@/components/buttons/RenameEditorButton.vue';
+import DeleteEditorButton from '@/components/buttons/DeleteEditorButton.vue';
+import { EditorSave, saveEditor } from '@/file/EditorAsJson';
 
 @Component({
-  components: { SaveEditorButton, VerticalMenuButton },
+  components: { VerticalMenuButton, RenameEditorButton, DeleteEditorButton },
   computed: mapGetters([
     'currEditorType',
     'currEditorIndex',
   ]),
-  methods: mapMutations(['switchEditor']),
 })
 export default class NavbarContextualMenu extends Vue {
   @Prop({ required: true }) readonly editors!: EditorModel[];
   @Prop({ required: true }) readonly editorType!: EditorType;
-  @Prop() readonly save?: boolean;
   @Getter('editorNames') editorNames!: Set<string>;
-  @Mutation('newEditor') newEditor!: (arg0: { editorType: EditorType; name: string}) => void;
+  @Getter('currEditorModel') currEditorModel!: EditorModel;
+  @Getter('overviewEditor') overviewEditor!: EditorModel;
+  @Mutation('newEditor') newEditor!: (arg0: { editorType: EditorType; name: string }) => void;
+  @Mutation('switchEditor') switch!: (arg0: { editorType: EditorType; index: number }) => void;
+  @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
 
   private createNewEditor(): void {
-    let isNameUnique = false;
-    while (!isNameUnique) {
-      const name = prompt('Please enter a unique name for the editor');
-
-      // Name is null if cancelled
-      if (name === null) break;
-
-      // Loop until unique non-empty name has been entered
-      if (name !== '' && !this.editorNames.has(name)) {
-        isNameUnique = true;
-        this.newEditor({ editorType: this.editorType, name });
-      }
+    const name: string | null = uniqueTextInput(this.editorNames,
+      'Please enter a unique name for the editor');
+    if (name !== null) {
+      this.newEditor({ editorType: this.editorType, name });
+      // New editor will be saved in periodic auto-save
     }
+  }
+
+  private switchEditor(editorType: EditorType, index: number) {
+    // Save currEditorModel before switching as periodic save may not have captured last changes
+    // and update overview editor if required
+    this.updateNodeInOverview(this.currEditorModel);
+
+    const oldEditorSaved: EditorSave = saveEditor(this.currEditorModel);
+    const overviewEditorSave: EditorSave = saveEditor(this.overviewEditor);
+    this.$cookies.set(`unsaved-editor-${this.currEditorModel.name}`, oldEditorSaved);
+    this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
+
+    this.switch({ editorType, index });
   }
 }
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  #row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &:hover {
+      background: #1c1c1c;
+      transition-duration: 0.1s;
+      border-left-color: var(--blue);
+      cursor: pointer;
+    }
+  }
+
+  .buttons {
+    display: flex;
+  }
+
   #contextual-menu {
+    // In order to have a higher z-index than IDE in CodeVault.
+    z-index: 5;
     border: 1px solid var(--grey);
+    user-select: none;
   }
 </style>

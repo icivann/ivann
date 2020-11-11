@@ -1,56 +1,49 @@
 import { Node } from '@baklavajs/core';
 import { Nodes } from '@/nodes/model/Types';
 import parse from '@/app/parser/parser';
+import { INodeState } from '@baklavajs/core/dist/baklavajs-core/types/state.d';
 
+// TODO CORE-58 Change this to use state.inlineCode
 export enum CustomOptions{
   InlineCode = 'Inline Code',
 }
 export default class Custom extends Node {
   type = Nodes.Custom;
-  name = Nodes.Custom;
+  name: string = Nodes.Custom;
 
   private inputNames: string[] = [];
 
-  private code = '';
-
   constructor() {
     super();
-    this.addOption(CustomOptions.InlineCode, 'TextAreaOption',
-      { text: this.code, hasError: false });
-    this.addOutputInterface('Output');
-    this.events.update.addListener(this, (event: any) => {
-      this.nodeUpdated(event);
-    });
+    this.addOption('Enter Func', 'CodeVaultButtonOption', undefined, undefined, { customNode: this });
   }
 
-  private nodeUpdated(event: any) {
-    if (event.name === CustomOptions.InlineCode) {
-      const code = event.option.value.text;
+  public load(state: INodeState) {
+    super.load(state);
+    this.updateNode();
+  }
 
-      /* If the code did not change (probably the hasError did), do not parse it */
-      if (code === this.code) {
-        return;
-      }
+  public setInlineCode(inlineCode: string) {
+    this.state.inlineCode = inlineCode;
+    this.updateNode();
+  }
 
-      this.code = code;
+  public getInlineCode() {
+    return this.state.inlineCode ? this.state.inlineCode : '';
+  }
 
-      if (code === '') {
-        this.removeAllInputs();
-      } else {
-        parse(code)
-          .then((functions) => {
-            this.setError(false);
-            console.log(functions);
-            if (functions.length > 0) {
-              const func = functions[0];
-              this.setInputs(func.args);
-            }
-          })
-          .catch((err: Error) => {
-            this.setError(true);
-            // TODO Do feedback
-            throw err;
-          });
+  private updateNode() {
+    if (this.getInlineCode() === '') {
+      this.name = Nodes.Custom;
+      this.removeAllInputs();
+      this.removeOutput();
+    } else {
+      const functions = parse(this.getInlineCode());
+      if (!(functions instanceof Error) && functions.length > 0) {
+        const func = functions[0];
+        this.name = func.name;
+        this.setInputs(func.args);
+        this.addOutput();
       }
     }
   }
@@ -70,10 +63,13 @@ export default class Custom extends Node {
     this.inputNames = [];
   }
 
-  private setError(error: boolean) {
-    this.setOptionValue(
-      CustomOptions.InlineCode,
-      { text: this.getOptionValue(CustomOptions.InlineCode).text, hasError: error },
-    );
+  private addOutput() {
+    this.addOutputInterface('Output');
+  }
+
+  private removeOutput() {
+    if (this.interfaces.has('Output')) {
+      this.removeInterface('Output');
+    }
   }
 }

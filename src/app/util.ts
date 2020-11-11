@@ -17,7 +17,9 @@ export function randomUuid(): UUID {
   return new UUID(s);
 }
 
-export type Option<T> = null | T
+export type Option<T> = T | null;
+
+export type Result<T> = T | Error;
 
 export function valuesOf(obj: { [s: string]: any }): string[] {
   return Object.values(obj).filter((t) => typeof t === 'string');

@@ -4,7 +4,7 @@ import { Severity } from '@/app/ir/checking/severity';
 
 export const findDanglingInterfaces = (graph: Graph) => graph.nodesAsArray
   // get nodes with output interfaces
-  .filter((n) => n.danglingInterfaces.length != 0)
+  .filter((n) => n.danglingInterfaces.length !== 0)
   .flatMap((node) => node.danglingInterfaces.map((name) => new IrError(
     [node],
     Severity.Error,
