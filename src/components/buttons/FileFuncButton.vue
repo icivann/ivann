@@ -23,7 +23,7 @@ export default class FileFuncButton extends Vue {
     border-radius: 8px;
     color: var(--foreground);
     font-size: initial;
-    margin: 1em 0;
+    margin-bottom: 1em;
     border: 1px solid var(--grey);
     transition-duration: 0.1s;
     position: relative;

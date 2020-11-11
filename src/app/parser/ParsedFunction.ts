@@ -6,9 +6,12 @@ class ParsedFunction {
   ) {
   }
 
+  public signature(): string {
+    return `def ${this.name}(${this.args.join(', ')})`;
+  }
+
   public toString(): string {
-    return `def ${this.name}(${this.args.join(', ')}):\n`
-      + `${this.body}`;
+    return `${this.signature()}:${this.body}`;
   }
 }
 
