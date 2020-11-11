@@ -5,6 +5,11 @@ class ParsedFunction {
     public readonly args: string[],
   ) {
   }
+
+  public toString(): string {
+    return `def ${this.name}(${this.args.join(', ')}):\n`
+      + `${this.body}`;
+  }
 }
 
 export default ParsedFunction;
