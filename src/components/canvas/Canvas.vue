@@ -71,7 +71,7 @@ export default class Canvas extends Vue {
 <style>
   /* Used inside baklava-editor. */
   .node-editor {
-    background-color: #242424;
+    background-color: var(--editor-grey);
     background-image: linear-gradient(#2c2c2c 1px, transparent 1px),
       linear-gradient(90deg, #2c2c2c 1px, transparent 1px);
     background-size: 10px 50px, 50px 50px, 10px 10px, 10px 10px;
