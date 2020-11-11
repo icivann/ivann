@@ -14,10 +14,10 @@ function traverseOptions(options: Array<[string, any]>): Map<string, any> {
 }
 
 function toGraphNode(inode: INodeState): ModelNode {
-  const fromMap = nodeBuilder.get(inode.name);
+  const fromMap = nodeBuilder.get(inode.type);
   if (fromMap === undefined) {
     // TODO: throw exception?
-    throw new Error(`${inode.name} is not mapped.`);
+    throw new Error(`${inode.type} is not mapped.`);
   }
   const options = traverseOptions(inode.options);
   return fromMap!(options);
