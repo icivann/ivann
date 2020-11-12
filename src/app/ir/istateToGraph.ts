@@ -24,6 +24,7 @@ function toGraphNode(inode: INodeState): ModelNode {
 }
 
 export default function istateToGraph(istate: IState): Graph {
+  console.log(`JSON of istate\n${JSON.stringify(istate)}`);
   const interfacesForward = new Map(istate.connections.map(
     (c) => [c.from, c.to],
   ));
@@ -45,6 +46,11 @@ export default function istateToGraph(istate: IState): Graph {
       ([_, i]) => interfacesBackward.has(i.id),
     )]),
   );
+  const nodesToDanglingInterfaces = new Map(
+    istate.nodes.map((n) => [n.id, n.interfaces.filter(
+      ([, i]) => !interfacesBackward.has(i.id) && !interfacesForward.has(i.id),
+    )]),
+  );
 
   // add interfaces to individual nodes
   for (const [id, graphNode] of graphNodes) {
@@ -53,6 +59,10 @@ export default function istateToGraph(istate: IState): Graph {
     }
     for (const [interfaceName, interfaceI] of nodesToOutInterfaces.get(id)!) {
       graphNode.outputInterfaces.set(interfaceName, new UUID(interfaceI.id));
+    }
+    // dangling interfaces
+    for (const [interfaceName] of nodesToDanglingInterfaces.get(id)!) {
+      graphNode.danglingInterfaces.push(interfaceName);
     }
   }
 

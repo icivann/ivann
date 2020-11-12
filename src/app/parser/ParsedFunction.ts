@@ -5,6 +5,14 @@ class ParsedFunction {
     public readonly args: string[],
   ) {
   }
+
+  public signature(): string {
+    return `def ${this.name}(${this.args.join(', ')})`;
+  }
+
+  public toString(): string {
+    return `${this.signature()}:\n${this.body}`;
+  }
 }
 
 export default ParsedFunction;
