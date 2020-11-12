@@ -4,6 +4,8 @@ export enum PaddingMode {
   zeros = 'zeros', reflect = 'reflect', replicate = 'replicate', circular = 'circular'
 }
 
+export const nodeName = 'name';
+
 export type Initializer = CustomInitializer | BuiltinInitializer
 
 export enum BuiltinInitializer {
@@ -21,6 +23,10 @@ export enum BuiltinRegularizer {
 
 export type ActivationF = BuiltinActivationF
 
+export enum Activation {
+  Relu='Relu', Gelu='Gelu'
+}
+
 export enum BuiltinActivationF { None, Relu, Tanh, Sigmoid, Linear }
 
 export function getRegularizer(str: string): Regularizer {
@@ -31,8 +37,8 @@ export function getInitializer(str: string): Initializer {
   return BuiltinInitializer[str as keyof typeof BuiltinInitializer];
 }
 
-export function getBuiltinActivationFunction(str: string): BuiltinActivationF {
-  return BuiltinActivationF[str as keyof typeof BuiltinActivationF];
+export function getActivation(str: string): Activation {
+  return Activation[str as keyof typeof Activation];
 }
 
 export function getPadding(str: string): Padding {

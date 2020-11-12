@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { ModelNodes } from '@/nodes/model/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 
 export enum MaxPool2dOptions {
@@ -11,8 +11,8 @@ export enum MaxPool2dOptions {
   CeilMode = 'Ceil mode'
 }
 export default class MaxPool2d extends Node {
-  type = Nodes.MaxPool2d;
-  name = Nodes.MaxPool2d;
+  type = ModelNodes.MaxPool2d;
+  name = ModelNodes.MaxPool2d;
 
   constructor() {
     super();

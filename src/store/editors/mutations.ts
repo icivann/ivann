@@ -143,6 +143,7 @@ const editorMutations: MutationTree<EditorsState> = {
 
     state.currEditorType = EditorType.OVERVIEW;
     state.currEditorIndex = 0;
+    state.inCodeVault = false;
   },
   updateNodeInOverview(state, currEditor: EditorModel) {
     // Loop through nodes in currEditor and find differences

@@ -21,7 +21,12 @@
                         :key="index"
                         :selected="selectedFile === index"
                         @click="selectFile(index)">
-          {{  getFunctions(index).length > 0 ? getFunctions(index)[0].signature() : '(empty)' }}
+          <div v-if="getFunctions(index).length === 0">(empty)</div>
+          <div v-else>
+            <div v-for="(func, index) of getFunctions(index)" :key="index">
+              {{ func.signature() }}
+            </div>
+          </div>
         </FileFuncButton>
       </div>
     </div>
@@ -35,19 +40,31 @@
                         :key="index"
                         :selected="selectedFunction === index"
                         @click="selectFunction(index)">
-          {{ func.toString().slice(0, 100) }}...
+          {{
+            func.toString()
+              .slice(0, 100) + (func.toString().length > 100 ? '...' : '')
+          }}
         </FileFuncButton>
       </div>
       <div class="confirm-button">
-        <UIButton text="Cancel" @click="cancelClick"/>
-        <UIButton text="Confirm" :primary="true" @click="confirmClick"/>
+        <UIButton
+          text="Cancel"
+          @click="cancelClick"
+          :disabled="disable()"
+        />
+        <UIButton
+          text="Confirm"
+          :primary="true"
+          @click="confirmClick"
+          :disabled="disable()"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import Tabs from '@/components/tabs/Tabs.vue';
 import Tab from '@/components/tabs/Tab.vue';
 import UIButton from '@/components/buttons/UIButton.vue';
@@ -58,6 +75,7 @@ import { Getter, Mutation } from 'vuex-class';
 import { ParsedFile } from '@/store/codeVault/types';
 import { uniqueTextInput } from '@/inputs/prompt';
 import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
+import Custom from '@/nodes/common/Custom';
 
 @Component({
   components: {
@@ -68,13 +86,42 @@ import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
   },
 })
 export default class FunctionsTab extends Vue {
+  @Getter('nodeTriggeringCodeVault') nodeTriggeringCodeVault?: Custom;
+  @Getter('inCodeVault') inCodeVault!: boolean;
+  @Mutation('leaveCodeVault') leaveCodeVault!: () => void;
   @Getter('filenames') filenames!: Set<string>;
   @Getter('file') file!: (filename: string) => ParsedFile | undefined;
-  @Getter('files') files!: ParsedFile[]
+  @Getter('files') files!: ParsedFile[];
   @Mutation('addFile') addFile!: (file: ParsedFile) => void;
+  @Getter('fileIndexFromFilename') fileIndexFromFilename!: (filename: string) => number;
+  @Getter('functionIndexFromFunctionName') functionIndexFromFunctionName!:
+    (fileIndex: number, functionName: string) => number;
 
   private selectedFile = -1;
   private selectedFunction = -1;
+
+  /**
+   * Watches the rendering of the CodeVault in order to update selected function.
+   */
+  @Watch('inCodeVault')
+  private onInCodeVaultChanged(inCodeVault: boolean) {
+    if (inCodeVault) {
+      if (this.nodeTriggeringCodeVault) {
+        const file = this.nodeTriggeringCodeVault.getParsedFileName();
+        const func = this.nodeTriggeringCodeVault.getParsedFunction();
+        if (file && func) {
+          this.selectedFile = this.fileIndexFromFilename(file);
+          this.selectedFunction = this.functionIndexFromFunctionName(
+            this.selectedFile,
+            func.name,
+          );
+          return;
+        }
+      }
+      this.selectedFile = -1;
+      this.selectedFunction = -1;
+    }
+  }
 
   private selectFile(index: number) {
     this.selectedFile = index;
@@ -132,20 +179,35 @@ export default class FunctionsTab extends Vue {
 
   private createFile() {
     const name: string | null = uniqueTextInput(
-      this.filenames, 'Please enter a unique name for the file',
+      this.filenames, 'Please enter a unique name for the file', '.py',
     );
     if (name === null) return;
 
     this.addFile({ filename: `${name}.py`, functions: [] });
   }
 
-  private confirmClick = () => {
-    console.log('confirm');
-  };
+  // Disable buttons when got here through navbar and not custom node
+  private disable(): boolean {
+    return this.nodeTriggeringCodeVault === undefined;
+  }
 
-  private cancelClick = () => {
-    console.log('cancel');
-  };
+  private confirmClick() {
+    if (this.nodeTriggeringCodeVault) {
+      if (this.selectedFile !== -1 && this.selectedFunction !== -1) {
+        this.nodeTriggeringCodeVault.setParsedFileName(this.files[this.selectedFile].filename);
+        this.nodeTriggeringCodeVault.setParsedFunction(
+          this.files[this.selectedFile].functions[this.selectedFunction],
+        );
+        this.leaveCodeVault();
+      } else {
+        console.log('Make a selection!');
+      }
+    }
+  }
+
+  private cancelClick() {
+    this.leaveCodeVault();
+  }
 }
 </script>
 

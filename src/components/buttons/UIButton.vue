@@ -1,5 +1,9 @@
 <template>
-  <div class="button" :class="primary && 'primary'" @click="$emit('click')">
+  <div
+    class="button"
+    :class="!disabled ? primary && 'primary' : 'disabled'"
+    @click="!disabled ? $emit('click') : ''"
+  >
     {{text}}
   </div>
 </template>
@@ -11,6 +15,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class UIButton extends Vue {
   @Prop({ required: true }) text!: string;
   @Prop({ default: false }) primary?: boolean;
+  @Prop({ default: false }) disabled?: boolean;
 }
 </script>
 
@@ -47,6 +52,18 @@ export default class UIButton extends Vue {
 
   &:active {
     background: #1860D6;
+  }
+}
+
+.disabled {
+  background: var(--grey);
+
+  &:hover {
+    background: var(--grey);
+  }
+
+  &:active {
+    background: var(--grey);
   }
 }
 </style>
