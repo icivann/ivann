@@ -36,4 +36,5 @@ export const mockEditorState: EditorsState = {
   dataEditors: [],
   trainEditors: [],
   inCodeVault: false,
+  errorsMap: new Map(),
 };
