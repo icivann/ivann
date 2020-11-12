@@ -84,6 +84,9 @@ export default class FunctionsTab extends Vue {
   @Getter('file') file!: (filename: string) => ParsedFile | undefined;
   @Getter('files') files!: ParsedFile[];
   @Mutation('addFile') addFile!: (file: ParsedFile) => void;
+  @Getter('fileIndexFromFilename') fileIndexFromFilename!: (filename: string) => number;
+  @Getter('functionIndexFromFunctionName') functionIndexFromFunctionName!:
+    (fileIndex: number, functionName: string) => number;
 
   private selectedFile = -1;
   private selectedFunction = -1;
@@ -98,8 +101,8 @@ export default class FunctionsTab extends Vue {
         const file = this.nodeTriggeringCodeVault.getParsedFileName();
         const func = this.nodeTriggeringCodeVault.getParsedFunction();
         if (file && func) {
-          this.selectedFile = this.getFileIndexFromFilename(file);
-          this.selectedFunction = this.getFunctionIndexFromFunctionName(
+          this.selectedFile = this.fileIndexFromFilename(file);
+          this.selectedFunction = this.functionIndexFromFunctionName(
             this.selectedFile,
             func.name,
           );
@@ -128,14 +131,6 @@ export default class FunctionsTab extends Vue {
     const fileList = this.files;
     if (index >= 0 && index < fileList.length) return fileList[index].functions;
     return [];
-  }
-
-  private getFileIndexFromFilename(filename: string) {
-    return this.files.findIndex((file) => file.filename === filename);
-  }
-
-  private getFunctionIndexFromFunctionName(fileIndex: number, functionName: string) {
-    return this.files[fileIndex].functions.findIndex((func) => func.name === functionName);
   }
 
   // Trigger click of input tag for uploading file
