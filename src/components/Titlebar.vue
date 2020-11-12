@@ -82,8 +82,7 @@ export default class Titlebar extends Vue {
     } else if (this.currEditorType === EditorType.MODEL) {
       generatedCode = generateModelCode(graph, name);
     }
-    console.log(generatedCode);
-    // downloadPython('main', generatedCode);
+    downloadPython('main', generatedCode);
   }
 
   // Trigger click of input tag for uploading file
