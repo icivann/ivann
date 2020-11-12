@@ -6,7 +6,7 @@
         <UIButton text="Cancel" @click="cancel"/>
       </div>
       <div>
-        <UIButton text="Save" :primary="true" @click="save"/>
+        <UIButton text="Save Changes" :primary="true" @click="save"/>
       </div>
     </div>
   </div>
@@ -22,6 +22,9 @@ import '@/assets/ivann-theme';
 import { Getter, Mutation } from 'vuex-class';
 import Custom from '@/nodes/model/custom/Custom';
 import UIButton from '@/components/buttons/UIButton.vue';
+import parse from '@/app/parser/parser';
+import ParsedFunction from '@/app/parser/ParsedFunction';
+import { Result } from '@/app/util';
 
 @Component({
   components: {
@@ -37,20 +40,15 @@ export default class IdeTab extends Vue {
   @Mutation('linkNode') linkNode!: (node?: Custom) => void;
   private editor?: Ace.Editor;
 
+  private parsedFunction?: Result<ParsedFunction>;
+
   /**
    * Watches the rendering of the CodeVault in order to update code.
-   * If the CodeVault was entered from a Custom Node, update code.
-   * Else, set empty the editor.
    */
   @Watch('inCodeVault')
   private onInCodeVaultChanged(inCodeVault: boolean) {
     if (inCodeVault && this.editor) {
-      if (this.nodeTriggeringCodeVault) {
-        this.editor.setValue(this.nodeTriggeringCodeVault.getInlineCode());
-      } else {
-        this.editor.setValue('');
-      }
-      this.editor.clearSelection();
+      this.updateCode();
     }
   }
 
@@ -59,23 +57,77 @@ export default class IdeTab extends Vue {
     this.editor.getSession().setMode('ace/mode/python');
     this.editor.setTheme('ace/theme/ivann');
     this.editor.resize(true);
+    this.editor.setOptions({
+      tabSize: 2,
+      useSoftTabs: true,
+    });
     this.editor.$blockScrolling = Infinity; // Get rid unnecessary Console info
-    if (this.nodeTriggeringCodeVault) {
-      this.editor.setValue(this.nodeTriggeringCodeVault.getInlineCode());
-      this.editor.clearSelection();
-    }
+    this.editor.on('change', this.onEditorChange);
+
+    this.updateCode();
   }
 
   private save() {
     if (this.nodeTriggeringCodeVault && this.editor) {
-      this.nodeTriggeringCodeVault.setInlineCode(this.editor.getValue());
+      if (!(this.parsedFunction instanceof Error)) {
+        this.nodeTriggeringCodeVault.setInlineCode(this.parsedFunction);
+        this.leaveCodeVault();
+      } else {
+        window.alert('Cannot save function with errors.');
+      }
     }
-    this.leaveCodeVault();
   }
 
   private cancel() {
     this.leaveCodeVault();
     this.linkNode(undefined); // Unlink node.
+  }
+
+  /**
+   * On Editor Change, parses the code and shows an Error if there is one.
+   */
+  private onEditorChange() {
+    if (this.editor) {
+      const code = this.editor.getValue();
+      const functionsOrError = parse(code);
+      if (!(functionsOrError instanceof Error)) {
+        if (functionsOrError.length > 0) {
+          this.editor.getSession().clearAnnotations();
+          [this.parsedFunction] = functionsOrError;
+        }
+      } else {
+        this.showError(functionsOrError);
+        this.parsedFunction = functionsOrError;
+      }
+    }
+  }
+
+  private showError(error: Error) {
+    if (this.editor) {
+      this.editor.getSession().setAnnotations([{
+        row: 0,
+        column: 0,
+        text: error.message,
+        type: 'error',
+      }]);
+    }
+  }
+  /**
+   * If the CodeVault was entered from a Custom Node, update code.
+   * Else, empties the editor.
+   */
+  private updateCode() {
+    if (this.editor) {
+      if (this.nodeTriggeringCodeVault) {
+        const inlineCode = this.nodeTriggeringCodeVault.getInlineCode();
+        if (inlineCode) {
+          this.editor.setValue(inlineCode.toString());
+        }
+      } else {
+        this.editor.setValue('');
+      }
+      this.editor.clearSelection();
+    }
   }
 }
 </script>
@@ -86,7 +138,7 @@ export default class IdeTab extends Vue {
   background: var(--background);
   height: 3em;
   display: flex;
-  padding-left: calc(100% - 11em);
+  padding-left: calc(100% - 15.5em);
 }
 .button {
   margin-top: 14px;

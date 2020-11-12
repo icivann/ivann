@@ -4,6 +4,11 @@ import { CodeVaultState } from '@/store/codeVault/types';
 
 const codeVaultGetters: GetterTree<CodeVaultState, RootState> = {
   files: (state) => state.files,
+  filenames: (state) => {
+    const names: Set<string> = new Set();
+    state.files.forEach((file) => names.add(file.filename));
+    return names;
+  },
   file: (state) => (filename: string) => state.files.find((file) => file.filename === filename),
   nodeTriggeringCodeVault: (state) => state.nodeTriggeringCodeVault,
 };
