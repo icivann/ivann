@@ -10,3 +10,12 @@ export interface CodeVaultState {
   files: ParsedFile[];
   nodeTriggeringCodeVault?: Custom;
 }
+
+export interface CodeVaultSaveWithNames {
+  files: FileSaveWithNames[];
+}
+
+export interface FileSaveWithNames {
+  filename: string;
+  functionNames: string[];
+}

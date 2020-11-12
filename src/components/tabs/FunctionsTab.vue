@@ -72,7 +72,7 @@ import parse from '@/app/parser/parser';
 import ParsedFunction from '@/app/parser/ParsedFunction';
 import { Result } from '@/app/util';
 import { Getter, Mutation } from 'vuex-class';
-import { ParsedFile } from '@/store/codeVault/types';
+import { CodeVaultSaveWithNames, ParsedFile } from '@/store/codeVault/types';
 import { uniqueTextInput } from '@/inputs/prompt';
 import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
 import Custom from '@/nodes/common/Custom';
@@ -96,6 +96,7 @@ export default class FunctionsTab extends Vue {
   @Getter('fileIndexFromFilename') fileIndexFromFilename!: (filename: string) => number;
   @Getter('functionIndexFromFunctionName') functionIndexFromFunctionName!:
     (fileIndex: number, functionName: string) => number;
+  @Getter('codeVaultSaveWithNames') codeVaultSaveWithNames!: CodeVaultSaveWithNames;
 
   private selectedFile = -1;
   private selectedFunction = -1;
@@ -166,10 +167,11 @@ export default class FunctionsTab extends Vue {
 
       // Parse file - report any errors
       const parsed: Result<ParsedFunction[]> = parse(event.target.result as string);
-      if ('message' in parsed) {
+      if (parsed instanceof Error) {
         console.error(parsed);
       } else {
         this.addFile({ filename: files[0].name, functions: parsed });
+        this.saveToCookies(files[0].name, parsed);
       }
     };
 
@@ -207,6 +209,13 @@ export default class FunctionsTab extends Vue {
 
   private cancelClick() {
     this.leaveCodeVault();
+  }
+
+  private saveToCookies(filename: string, functions: ParsedFunction[]) {
+    this.$cookies.set('unsaved-code-vault', this.codeVaultSaveWithNames);
+    functions.forEach((func) => {
+      this.$cookies.set(`unsaved-function-${filename}-${func.name}`, JSON.stringify(func));
+    });
   }
 }
 </script>

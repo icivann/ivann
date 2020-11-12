@@ -24,6 +24,7 @@ import { Save, saveEditor, SaveWithNames } from '@/file/EditorAsJson';
 import EditorManager from '@/EditorManager';
 import { EditorModel } from '@/store/editors/types';
 import CodeVault from '@/components/CodeVault.vue';
+import { CodeVaultSaveWithNames, ParsedFile } from '@/store/codeVault/types';
 
 @Component({
   components: {
@@ -40,6 +41,7 @@ export default class Home extends Vue {
   @Getter('saveWithNames') saveWithNames!: SaveWithNames;
   @Mutation('loadEditors') loadEditors!: (save: Save) => void;
   @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
+  @Mutation('loadFiles') loadFiles!: (files: ParsedFile[]) => void;
 
   created() {
     // Auto-loading
@@ -53,6 +55,17 @@ export default class Home extends Vue {
       });
       // We reset the view to set the panning and scaling on the current view.
       EditorManager.getInstance().resetView();
+
+      // Auto-Load Code Vault
+      if (this.$cookies.isKey('unsaved-code-vault')) {
+        const codeVaultSaveWithNames = this.$cookies.get('unsaved-code-vault') as CodeVaultSaveWithNames;
+        const files: ParsedFile[] = codeVaultSaveWithNames.files.map((file) => ({
+          filename: file.filename,
+          functions: file.functionNames
+            .map((functionName) => this.$cookies.get(`unsaved-function-${file.filename}-${functionName}`)),
+        }));
+        this.loadFiles(files);
+      }
     }
 
     // Set up auto-save every 5 seconds
