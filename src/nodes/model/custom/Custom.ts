@@ -3,6 +3,10 @@ import { Nodes } from '@/nodes/model/Types';
 import { INodeState } from '@baklavajs/core/dist/baklavajs-core/types/state.d';
 import ParsedFunction from '@/app/parser/ParsedFunction';
 
+// TODO CORE-58 Change InlineCode Option to use state.parsedFunction
+export enum CustomOptions {
+  InlineCode = 'Inline Code',
+}
 export default class Custom extends Node {
   type = Nodes.Custom;
   name: string = Nodes.Custom;
