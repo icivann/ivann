@@ -116,11 +116,11 @@ import { Severity } from '@/app/ir/checking/severity';
 import { OverviewNodes } from '@/nodes/overview/Types';
 import { CommonNodes } from '@/nodes/common/Types';
 
-  @Component({
-    components: { ArrowButton },
-  })
+@Component({
+  components: { ArrowButton },
+})
 export default class CustomNode extends Components.Node {
-  @Getter('errorsMap') errorsMap !: Map<string, IrError[]>
+  @Getter('errorsMap') errorsMap!: Map<string, IrError[]>
   private shouldShowOptions = false;
 
   contextMenu = {
@@ -131,7 +131,6 @@ export default class CustomNode extends Components.Node {
   };
 
   private currentErrors: IrError[] = []
-  // eslint-disable-next-line class-methods-use-this
   get messages(): string | undefined {
     return this.currentErrors.length !== 0
       ? this.currentErrors.map((e) => e.formattedMessage).reduce((prev, curr) => `${prev}\n${curr}`)
@@ -172,7 +171,7 @@ export default class CustomNode extends Components.Node {
 
   private getContextualMenuItems() {
     const items = [{ value: 'delete', label: 'Delete' }];
-    if (this.data.type !== OverviewNodes.ModelNode) {
+    if (this.data.type !== OverviewNodes.ModelNode && this.data.type !== CommonNodes.Custom) {
       items.unshift({ value: 'rename', label: 'Rename' });
     }
     return items;
