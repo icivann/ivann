@@ -1,18 +1,47 @@
 <template>
-  <div>
-    Functions stuff...
-    <div>
-      <UIButton text="Upload File" @click="uploadFile"/>
-      <input
-        type="file"
-        id="upload-python-file"
-        style="display: none"
-        @change="load"
-      >
+  <div class="d-flex h-100">
+    <div id="left" class="panel">
+      <div class="d-flex">
+        <div>
+          <UIButton text="Upload File" @click="uploadFile"/>
+          <input
+            type="file"
+            id="upload-python-file"
+            style="display: none"
+            @change="load"
+          >
+        </div>
+        <div>
+          <UIButton text="Create File" @click="createFile"/>
+        </div>
+      </div>
+      <div class="button-list">
+        <FileFuncButton v-for="(file, index) of files"
+                        :header="`${file.filename} (${file.functions.length})`"
+                        :key="index"
+                        :selected="selectedFile === index"
+                        @click="selectFile(index)">
+          {{  getFunctions(index).length > 0 ? getFunctions(index)[0].signature() : '(empty)' }}
+        </FileFuncButton>
+      </div>
     </div>
-    <br>
-    <div>
-      <UIButton text="Create File" @click="createFile"/>
+    <div id="right" class="panel">
+      <div class="button-list">
+        <div v-if="getFunctions(selectedFile).length === 0" class="text-center">
+          {{ selectedFile === -1 ? 'Select a file.' : 'No functions defined!' }}
+        </div>
+        <FileFuncButton v-for="(func, index) of getFunctions(selectedFile)"
+                        :header="`def ${func.name}`"
+                        :key="index"
+                        :selected="selectedFunction === index"
+                        @click="selectFunction(index)">
+          {{ func.toString().slice(0, 100) }}...
+        </FileFuncButton>
+      </div>
+      <div class="confirm-button">
+        <UIButton text="Cancel" @click="cancelClick"/>
+        <UIButton text="Confirm" :primary="true" @click="confirmClick"/>
+      </div>
     </div>
   </div>
 </template>
@@ -28,9 +57,11 @@ import { Result } from '@/app/util';
 import { Getter, Mutation } from 'vuex-class';
 import { ParsedFile } from '@/store/codeVault/types';
 import { uniqueTextInput } from '@/inputs/prompt';
+import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
 
 @Component({
   components: {
+    FileFuncButton,
     Tab,
     Tabs,
     UIButton,
@@ -39,14 +70,37 @@ import { uniqueTextInput } from '@/inputs/prompt';
 export default class FunctionsTab extends Vue {
   @Getter('filenames') filenames!: Set<string>;
   @Getter('file') file!: (filename: string) => ParsedFile | undefined;
+  @Getter('files') files!: ParsedFile[]
   @Mutation('addFile') addFile!: (file: ParsedFile) => void;
+
+  private selectedFile = -1;
+  private selectedFunction = -1;
+
+  private selectFile(index: number) {
+    this.selectedFile = index;
+    this.selectedFunction = -1;
+  }
+
+  private selectFunction(index: number) {
+    if (index === this.selectedFunction) {
+      this.selectedFunction = -1;
+    } else {
+      this.selectedFunction = index;
+    }
+  }
+
+  private getFunctions(index: number): ParsedFunction[] {
+    const fileList = this.files;
+    if (index >= 0 && index < fileList.length) return fileList[index].functions;
+    return [];
+  }
 
   // Trigger click of input tag for uploading file
   private uploadFile = () => {
     const element = document.getElementById('upload-python-file');
     if (!element) return;
     element.click();
-  }
+  };
 
   private load() {
     const { files } = document.getElementById('upload-python-file') as HTMLInputElement;
@@ -82,10 +136,49 @@ export default class FunctionsTab extends Vue {
     );
     if (name === null) return;
 
-    this.addFile({ filename: name, functions: [] });
+    this.addFile({ filename: `${name}.py`, functions: [] });
   }
+
+  private confirmClick = () => {
+    console.log('confirm');
+  };
+
+  private cancelClick = () => {
+    console.log('cancel');
+  };
 }
 </script>
 
 <style scoped>
+  #left {
+    width: 40%;
+    border-right: var(--grey) 1px solid;
+  }
+
+  #right {
+    width: 60%;
+    padding-top: 0;
+  }
+
+  .panel {
+    user-select: none;
+    padding: 1em;
+    border-top: var(--grey) 1px solid;
+  }
+
+  .button-list {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    height: calc(100% - 3.5em);
+  }
+
+  .confirm-button {
+    display: flex;
+    float: right;
+    padding-bottom: 0.5em;
+  }
+
+  .button {
+    margin-right: 1em;
+  }
 </style>

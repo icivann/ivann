@@ -6,7 +6,7 @@
         <UIButton text="Cancel" @click="cancel"/>
       </div>
       <div>
-        <UIButton text="Save" :primary="true" @click="save"/>
+        <UIButton text="Save Changes" :primary="true" @click="save"/>
       </div>
     </div>
   </div>
@@ -138,7 +138,7 @@ export default class IdeTab extends Vue {
   background: var(--background);
   height: 3em;
   display: flex;
-  padding-left: calc(100% - 11em);
+  padding-left: calc(100% - 15.5em);
 }
 .button {
   margin-top: 14px;
