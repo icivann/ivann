@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import Tabs from '@/components/tabs/Tabs.vue';
 import Tab from '@/components/tabs/Tab.vue';
 import UIButton from '@/components/buttons/UIButton.vue';
@@ -66,6 +66,7 @@ import { Getter, Mutation } from 'vuex-class';
 import { ParsedFile } from '@/store/codeVault/types';
 import { uniqueTextInput } from '@/inputs/prompt';
 import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
+import Custom from '@/nodes/model/custom/Custom';
 
 @Component({
   components: {
@@ -76,6 +77,9 @@ import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
   },
 })
 export default class FunctionsTab extends Vue {
+  @Getter('nodeTriggeringCodeVault') nodeTriggeringCodeVault?: Custom;
+  @Getter('inCodeVault') inCodeVault!: boolean;
+  @Mutation('leaveCodeVault') leaveCodeVault!: () => void;
   @Getter('filenames') filenames!: Set<string>;
   @Getter('file') file!: (filename: string) => ParsedFile | undefined;
   @Getter('files') files!: ParsedFile[];
@@ -83,6 +87,24 @@ export default class FunctionsTab extends Vue {
 
   private selectedFile = -1;
   private selectedFunction = -1;
+
+  /**
+   * Watches the rendering of the CodeVault in order to update selected function.
+   */
+  @Watch('inCodeVault')
+  private onInCodeVaultChanged(inCodeVault: boolean) {
+    if (inCodeVault && this.nodeTriggeringCodeVault) {
+      const file = this.nodeTriggeringCodeVault.getParsedFileName();
+      const func = this.nodeTriggeringCodeVault.getParsedFunction();
+      if (file && func) {
+        this.selectedFile = this.getFileIndexFromFilename(file);
+        this.selectedFunction = this.getFunctionIndexFromFunctionName(this.selectedFile, func.name);
+      } else {
+        this.selectedFile = -1;
+        this.selectedFunction = -1;
+      }
+    }
+  }
 
   private selectFile(index: number) {
     this.selectedFile = index;
@@ -101,6 +123,14 @@ export default class FunctionsTab extends Vue {
     const fileList = this.files;
     if (index >= 0 && index < fileList.length) return fileList[index].functions;
     return [];
+  }
+
+  private getFileIndexFromFilename(filename: string) {
+    return this.files.findIndex((file) => file.filename === filename);
+  }
+
+  private getFunctionIndexFromFunctionName(fileIndex: number, functionName: string) {
+    return this.files[fileIndex].functions.findIndex((func) => func.name === functionName);
   }
 
   // Trigger click of input tag for uploading file
@@ -147,13 +177,23 @@ export default class FunctionsTab extends Vue {
     this.addFile({ filename: `${name}.py`, functions: [] });
   }
 
-  private confirmClick = () => {
-    console.log('confirm');
-  };
+  private confirmClick() {
+    if (this.nodeTriggeringCodeVault) {
+      if (this.selectedFile !== -1 && this.selectedFunction !== -1) {
+        this.nodeTriggeringCodeVault.setParsedFileName(this.files[this.selectedFile].filename);
+        this.nodeTriggeringCodeVault.setParsedFunction(
+          this.files[this.selectedFile].functions[this.selectedFunction],
+        );
+        this.leaveCodeVault();
+      } else {
+        console.log('Make a selection!');
+      }
+    }
+  }
 
-  private cancelClick = () => {
-    console.log('cancel');
-  };
+  private cancelClick() {
+    this.leaveCodeVault();
+  }
 }
 </script>
 

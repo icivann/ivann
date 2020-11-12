@@ -33,6 +33,14 @@ export default class Custom extends Node {
     return undefined;
   }
 
+  public setParsedFileName(parsedFileName?: string) {
+    this.state.parsedFileName = parsedFileName;
+  }
+
+  public getParsedFileName(): (string | undefined) {
+    return this.state.parsedFileName;
+  }
+
   private updateNode() {
     const parsedFunction = this.getParsedFunction();
     if (!parsedFunction) {
