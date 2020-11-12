@@ -54,7 +54,7 @@
     <div
       class="build tab-button"
       :class="inCodeVault && 'selected'"
-      @click="enterCodeVault"
+      @click="clickCodeVault"
     >
       <i class="fab fa-python tab-icon"/>
     </div>
@@ -65,7 +65,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import EditorType from '@/EditorType';
 import { mapGetters, mapMutations } from 'vuex';
-import { Getter } from 'vuex-class';
+import { Getter, Mutation } from 'vuex-class';
 import NavbarContextualMenu from '@/components/navbar/NavbarContextualMenu.vue';
 
 @Component({
@@ -75,7 +75,7 @@ import NavbarContextualMenu from '@/components/navbar/NavbarContextualMenu.vue';
     'dataEditors',
     'inCodeVault',
   ]),
-  methods: mapMutations(['switchEditor', 'enterCodeVault']),
+  methods: mapMutations(['switchEditor']),
 })
 export default class Navbar extends Vue {
   private editorType = EditorType;
@@ -83,6 +83,8 @@ export default class Navbar extends Vue {
   private isDataContextualMenuOpen = false;
   @Getter('currEditorType') currEditorType!: EditorType;
   @Getter('inCodeVault') inCodeVault!: boolean;
+  @Mutation('enterCodeVault') enterCodeVault!: () => void;
+  @Mutation('unlinkNode') unlinkNode!: () => void;
 
   private isSelected(editorType: EditorType) {
     return !this.inCodeVault && (this.currEditorType === editorType) ? 'selected' : '';
@@ -104,6 +106,11 @@ export default class Navbar extends Vue {
   private hideNavbarContextualMenu(): void {
     this.isModelContextualMenuOpen = false;
     this.isDataContextualMenuOpen = false;
+  }
+
+  private clickCodeVault() {
+    this.unlinkNode();
+    this.enterCodeVault();
   }
 }
 
