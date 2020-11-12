@@ -31,8 +31,8 @@ class Model(nn.Module):
     self.conv2d_1 = ${conv2dDefGenerated}
     self.maxpool2d_1 = ${maxpool2dDefGenerated}
 
-  def forward(self, input_1):
-    x = input_1
+  def forward(self, inmodel_1):
+    x = inmodel_1
     x = self.conv2d_1(x)
     x = self.maxpool2d_1(x)
     return x`.trim();
@@ -59,8 +59,8 @@ class Model(nn.Module):
     self.conv2d_1 = ${conv2dDefGenerated}
     self.maxpool2d_1 = ${maxpool2dDefGenerated}
 
-  def forward(self, input_1):
-    x = input_1
+  def forward(self, inmodel_1):
+    x = inmodel_1
     x_1 = self.conv2d_1(x)
     x_2 = self.maxpool2d_1(x)
     x_3 = torch.cat(x_1, x_2)
@@ -89,8 +89,8 @@ class Model(nn.Module):
     self.conv2d_2 = ${conv2dDefGenerated}
     self.conv2d_3 = ${conv2dDefGenerated}
 
-  def forward(self, input_1):
-    x = input_1
+  def forward(self, inmodel_1):
+    x = inmodel_1
     x = self.conv2d_1(x)
     x_1 = self.conv2d_2(x)
     x_2 = self.conv2d_3(x)
@@ -124,8 +124,8 @@ class Model(nn.Module):
     self.conv2d_4 = ${conv2dDefGenerated}
     self.conv2d_5 = ${conv2dDefGenerated}
 
-  def forward(self, input_1):
-    x = input_1
+  def forward(self, inmodel_1):
+    x = inmodel_1
     x = self.conv2d_1(x)
     x_1 = self.conv2d_2(x)
     x_2 = self.conv2d_3(x)
@@ -158,8 +158,8 @@ class Model(nn.Module):
     self.conv2d_1 = ${conv2dDefGenerated}
     self.maxpool2d_1 = ${maxpool2dDefGenerated}
 
-  def forward(self, input_1):
-    x = input_1
+  def forward(self, inmodel_1):
+    x = inmodel_1
     x_1 = self.conv2d_1(x)
     x_2 = self.maxpool2d_1(x)
     return x_1, x_2`.trim();
@@ -193,8 +193,8 @@ class Model(nn.Module):
 //   def __init__(self):
 //     self.conv2d_1 = ${conv2dDefGenerated}
 //
-//   def forward(self, input_1):
-//     x = input_1
+//   def forward(self, inmodel_1):
+//     x = inmodel_1
 //     x = self.conv2d_1(x)
 //     x_1 = customFunc(x)
 //     return x_1`.trim();
@@ -226,8 +226,8 @@ class Model(nn.Module):
 //   def __init__(self):
 //     self.conv2d_1 = nn.Conv2d(16, 32, 2,2)
 //
-//   def forward(self, input_1):
-//     x = input_1
+//   def forward(self, inmodel_1):
+//     x = inmodel_1
 //     x = self.conv2d_1(x)
 //     x_1 = customFunc(x)
 //     return x_1`.trim();
@@ -260,8 +260,8 @@ class Model(nn.Module):
 //     self.conv2d_1 = nn.Conv2d(16, 32, 2,2)
 //     self.conv2d_2 = nn.Conv2d(16, 32, 2,2)
 //
-//   def forward(self, input_1):
-//     x = input_1
+//   def forward(self, inmodel_1):
+//     x = inmodel_1
 //     x_1 = self.conv2d_1(x)
 //     x_2 = self.conv2d_2(x)
 //     x_3 = customFunc(x_1, x_2)

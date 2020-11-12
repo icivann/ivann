@@ -21,7 +21,7 @@ let nodeTypeCounters = new Map<string, number>();
 const indent = '  ';
 
 function getNodeType(node: GraphNode): string {
-  return node.mlNode.name.toLowerCase();
+  return node.mlNode.constructor.name.toLowerCase();
 }
 
 function getNodeName(node: GraphNode): string {

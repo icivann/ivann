@@ -16,11 +16,6 @@ import Dropout3d from '@/app/ir/model/dropout3d';
 import ReLU from '@/app/ir/model/relu';
 import Conv2d from '@/app/ir/model/conv2d';
 import Conv3d from '@/app/ir/model/conv3d';
-import Transformer from '@/app/ir/model/transformer';
-import Linear from '@/app/ir/model/linear';
-import Bilinear from '@/app/ir/model/bilinear';
-import Softmin from '@/app/ir/model/softmin';
-import Softmax from '@/app/ir/model/softmax';
 
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
@@ -42,9 +37,4 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['Concat', Concat.build],
   ['InModel', InModel.build],
   ['OutModel', OutModel.build],
-  ['Transformer', Transformer.build],
-  ['Linear', Linear.build],
-  ['Bilinear', Bilinear.build],
-  ['Softmin', Softmin.build],
-  ['Softmax', Softmax.build],
 ]);

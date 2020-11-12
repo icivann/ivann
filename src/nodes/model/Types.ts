@@ -9,8 +9,6 @@ export const enum Layers {
   Custom = 'Custom',
   Operations = 'Operations',
   IO = 'I/O',
-  Transformer = 'Transformer',
-  NonLinearActivation = 'Non-Linear ACtivation'
 }
 
 export const enum Overview {
@@ -37,8 +35,4 @@ export const enum Nodes {
   Concat = 'Concat',
   InModel = 'InModel',
   OutModel = 'OutModel',
-  Bilinear = 'Bilinear',
-  Linear = 'Linear',
-  Softmin = 'Softmin',
-  Transformer = 'Transformer'
 }

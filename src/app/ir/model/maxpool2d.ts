@@ -1,9 +1,7 @@
 import { MaxPool2dOptions } from '@/nodes/model/Maxpool2d';
-import { nodeName } from '@/app/ir/irCommon';
 
 export default class MaxPool2d {
   constructor(
-  public readonly name: string,
   public readonly kernel_size: [bigint, bigint],
   public readonly stride: [bigint, bigint],
   public readonly padding: [bigint, bigint],
@@ -15,7 +13,6 @@ export default class MaxPool2d {
 
   static build(options: Map<string, any>): MaxPool2d {
     return new MaxPool2d(
-      options.get(nodeName),
       [options.get(MaxPool2dOptions.KernelSize)[0], options.get(MaxPool2dOptions.KernelSize)[1]],
       [options.get(MaxPool2dOptions.Stride)[0], options.get(MaxPool2dOptions.Stride)[1]],
       [options.get(MaxPool2dOptions.Padding)[0], options.get(MaxPool2dOptions.Padding)[1]],
