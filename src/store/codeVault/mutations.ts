@@ -45,6 +45,9 @@ const codeVaultMutations: MutationTree<CodeVaultState> = {
   linkNode(state, node?: Custom) {
     state.nodeTriggeringCodeVault = node;
   },
+  unlinkNode(state) {
+    state.nodeTriggeringCodeVault = undefined;
+  },
 };
 
 export default codeVaultMutations;

@@ -93,16 +93,21 @@ export default class FunctionsTab extends Vue {
    */
   @Watch('inCodeVault')
   private onInCodeVaultChanged(inCodeVault: boolean) {
-    if (inCodeVault && this.nodeTriggeringCodeVault) {
-      const file = this.nodeTriggeringCodeVault.getParsedFileName();
-      const func = this.nodeTriggeringCodeVault.getParsedFunction();
-      if (file && func) {
-        this.selectedFile = this.getFileIndexFromFilename(file);
-        this.selectedFunction = this.getFunctionIndexFromFunctionName(this.selectedFile, func.name);
-      } else {
-        this.selectedFile = -1;
-        this.selectedFunction = -1;
+    if (inCodeVault) {
+      if (this.nodeTriggeringCodeVault) {
+        const file = this.nodeTriggeringCodeVault.getParsedFileName();
+        const func = this.nodeTriggeringCodeVault.getParsedFunction();
+        if (file && func) {
+          this.selectedFile = this.getFileIndexFromFilename(file);
+          this.selectedFunction = this.getFunctionIndexFromFunctionName(
+            this.selectedFile,
+            func.name,
+          );
+          return;
+        }
       }
+      this.selectedFile = -1;
+      this.selectedFunction = -1;
     }
   }
 
