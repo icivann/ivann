@@ -6,7 +6,7 @@ const codeVaultGetters: GetterTree<CodeVaultState, RootState> = {
   files: (state) => state.files,
   filenames: (state) => {
     const names: Set<string> = new Set();
-    state.files.forEach((file) => names.add(file.filename.slice(0, -3))); // remove '.py'
+    state.files.forEach((file) => names.add(file.filename));
     return names;
   },
   file: (state) => (filename: string) => state.files.find((file) => file.filename === filename),

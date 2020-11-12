@@ -132,7 +132,7 @@ export default class FunctionsTab extends Vue {
 
   private createFile() {
     const name: string | null = uniqueTextInput(
-      this.filenames, 'Please enter a unique name for the file',
+      this.filenames, 'Please enter a unique name for the file', '.py',
     );
     if (name === null) return;
 
