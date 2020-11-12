@@ -18,12 +18,17 @@ import { EditorModel } from '@/store/editors/types';
 import istateToGraph from '@/app/ir/istateToGraph';
 import { saveEditor } from '@/file/EditorAsJson';
 import EditorManager from '@/EditorManager';
+import { check } from '@/app/ir/checking/check';
+import GraphNode from '@/app/ir/GraphNode';
+import IrError from '@/app/ir/checking/irError';
+import { Mutation } from 'vuex-class';
 
 @Component
 export default class Canvas extends Vue {
   @Prop({ required: true }) readonly viewPlugin!: ViewPlugin;
   @Prop({ required: true }) readonly engine!: Engine;
   @Prop({ required: true }) readonly editorModel!: EditorModel;
+  @Mutation('setErrorsMap') setErrorsMap!: (map: Map<string, IrError[]>) => void
 
   private depthCounter = 0;
   private editorManager = EditorManager.getInstance();
@@ -62,8 +67,30 @@ export default class Canvas extends Vue {
     this.engine.events.calculated.addListener(this, () => {
       // Building IR
       const currEditorSave = saveEditor(this.editorModel);
-      istateToGraph(currEditorSave.state);
+      const irGraph = istateToGraph(currEditorSave.state);
+      const errors = Canvas.errorMap(check(irGraph));
+      this.setErrorsMap(errors);
+      if (errors.size !== 0) {
+        console.log(`Found ${errors.size} errors`);
+      }
     });
+  }
+
+  private static errorMap(errors: IrError[]): Map<string, IrError[]> {
+    const map = new Map<string, IrError[]>();
+    const errorsMap = errors.flatMap(
+      (e) => {
+        const nodes = e.offenders.filter((o) => o instanceof GraphNode) as GraphNode[];
+        return nodes.map(
+          (o) => [o.uniqueId.toString(), e] as [string, IrError],
+        );
+      },
+    );
+    errorsMap.forEach(([str, err]) => {
+      const prev = map.get(str);
+      if (prev) prev.push(err); else map.set(str, [err]);
+    });
+    return map;
   }
 }
 </script>

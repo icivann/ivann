@@ -50,13 +50,13 @@
         <UIButton
           text="Cancel"
           @click="cancelClick"
-          :disabled="disable()"
+          :disabled="!nodeTriggeringCodeVault"
         />
         <UIButton
           text="Confirm"
           :primary="true"
           @click="confirmClick"
-          :disabled="disable()"
+          :disabled="!nodeTriggeringCodeVault || selectedFunction === -1"
         />
       </div>
     </div>
@@ -72,7 +72,7 @@ import parse from '@/app/parser/parser';
 import ParsedFunction from '@/app/parser/ParsedFunction';
 import { Result } from '@/app/util';
 import { Getter, Mutation } from 'vuex-class';
-import { ParsedFile } from '@/store/codeVault/types';
+import { FilenamesList, ParsedFile } from '@/store/codeVault/types';
 import { uniqueTextInput } from '@/inputs/prompt';
 import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
 import Custom from '@/nodes/common/Custom';
@@ -96,6 +96,7 @@ export default class FunctionsTab extends Vue {
   @Getter('fileIndexFromFilename') fileIndexFromFilename!: (filename: string) => number;
   @Getter('functionIndexFromFunctionName') functionIndexFromFunctionName!:
     (fileIndex: number, functionName: string) => number;
+  @Getter('filenamesList') filenamesList!: FilenamesList;
 
   private selectedFile = -1;
   private selectedFunction = -1;
@@ -166,10 +167,12 @@ export default class FunctionsTab extends Vue {
 
       // Parse file - report any errors
       const parsed: Result<ParsedFunction[]> = parse(event.target.result as string);
-      if ('message' in parsed) {
+      if (parsed instanceof Error) {
         console.error(parsed);
       } else {
-        this.addFile({ filename: files[0].name, functions: parsed });
+        const file = { filename: files[0].name, functions: parsed };
+        this.addFile(file);
+        this.saveToCookies(file);
       }
     };
 
@@ -183,12 +186,9 @@ export default class FunctionsTab extends Vue {
     );
     if (name === null) return;
 
-    this.addFile({ filename: `${name}.py`, functions: [] });
-  }
-
-  // Disable buttons when got here through navbar and not custom node
-  private disable(): boolean {
-    return this.nodeTriggeringCodeVault === undefined;
+    const file = { filename: `${name}.py`, functions: [] };
+    this.addFile(file);
+    this.saveToCookies(file);
   }
 
   private confirmClick() {
@@ -207,6 +207,11 @@ export default class FunctionsTab extends Vue {
 
   private cancelClick() {
     this.leaveCodeVault();
+  }
+
+  private saveToCookies(file: ParsedFile) {
+    this.$cookies.set('unsaved-code-vault', this.filenamesList);
+    this.$cookies.set(`unsaved-file-${file.filename}`, file);
   }
 }
 </script>

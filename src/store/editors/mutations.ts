@@ -170,6 +170,9 @@ const editorMutations: MutationTree<EditorsState> = {
   leaveCodeVault(state) {
     state.inCodeVault = false;
   },
+  setErrorsMap(state, errorsMap) {
+    state.errorsMap = errorsMap;
+  },
 };
 
 export default editorMutations;
