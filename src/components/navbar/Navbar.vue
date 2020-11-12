@@ -49,32 +49,12 @@
       />
     </div>
 
-    <div class="py-1 px-2">
-      <hr/>
-    </div>
-
-    <!-- Train -->
-    <div
-      class="train tab-button"
-      :class="isSelected(editorType.TRAIN)"
-      @mouseover="displayNavbarContextualMenu(editorType.TRAIN)"
-      @mouseleave="hideNavbarContextualMenu()"
-    >
-      <i class="fas fa-cogs tab-icon"/>
-      <NavbarContextualMenu
-        class="navbar-contextual-menu"
-        v-if="isTrainContextualMenuOpen"
-        :editors="trainEditors"
-        :editor-type="editorType.TRAIN"
-      />
-    </div>
-
     <!-- Code Vault -->
     <div class="flex-grow-1"/>
     <div
       class="build tab-button"
       :class="inCodeVault && 'selected'"
-      @click="enterCodeVault"
+      @click="clickCodeVault"
     >
       <i class="fab fa-python tab-icon"/>
     </div>
@@ -85,7 +65,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import EditorType from '@/EditorType';
 import { mapGetters, mapMutations } from 'vuex';
-import { Getter } from 'vuex-class';
+import { Getter, Mutation } from 'vuex-class';
 import NavbarContextualMenu from '@/components/navbar/NavbarContextualMenu.vue';
 
 @Component({
@@ -93,18 +73,18 @@ import NavbarContextualMenu from '@/components/navbar/NavbarContextualMenu.vue';
   computed: mapGetters([
     'modelEditors',
     'dataEditors',
-    'trainEditors',
     'inCodeVault',
   ]),
-  methods: mapMutations(['switchEditor', 'enterCodeVault']),
+  methods: mapMutations(['switchEditor']),
 })
 export default class Navbar extends Vue {
   private editorType = EditorType;
   private isModelContextualMenuOpen = false;
   private isDataContextualMenuOpen = false;
-  private isTrainContextualMenuOpen = false;
   @Getter('currEditorType') currEditorType!: EditorType;
   @Getter('inCodeVault') inCodeVault!: boolean;
+  @Mutation('enterCodeVault') enterCodeVault!: () => void;
+  @Mutation('unlinkNode') unlinkNode!: () => void;
 
   private isSelected(editorType: EditorType) {
     return !this.inCodeVault && (this.currEditorType === editorType) ? 'selected' : '';
@@ -118,9 +98,6 @@ export default class Navbar extends Vue {
       case EditorType.DATA:
         this.isDataContextualMenuOpen = true;
         break;
-      case EditorType.TRAIN:
-        this.isTrainContextualMenuOpen = true;
-        break;
       default:
         break;
     }
@@ -129,7 +106,11 @@ export default class Navbar extends Vue {
   private hideNavbarContextualMenu(): void {
     this.isModelContextualMenuOpen = false;
     this.isDataContextualMenuOpen = false;
-    this.isTrainContextualMenuOpen = false;
+  }
+
+  private clickCodeVault() {
+    this.unlinkNode();
+    this.enterCodeVault();
   }
 }
 

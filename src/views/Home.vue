@@ -1,9 +1,9 @@
 <template>
   <div class="home container-fluid d-flex flex-column">
-    <Titlebar />
+    <Titlebar/>
     <div class="row flex-grow-1">
       <div class="navbar-col">
-        <Navbar />
+        <Navbar/>
       </div>
       <div class="col d-flex flex-column p-0">
         <Editor v-show="!inCodeVault"/>
@@ -24,6 +24,7 @@ import { Save, saveEditor, SaveWithNames } from '@/file/EditorAsJson';
 import EditorManager from '@/EditorManager';
 import { EditorModel } from '@/store/editors/types';
 import CodeVault from '@/components/CodeVault.vue';
+import { ParsedFile } from '@/store/codeVault/types';
 
 @Component({
   components: {
@@ -40,6 +41,7 @@ export default class Home extends Vue {
   @Getter('saveWithNames') saveWithNames!: SaveWithNames;
   @Mutation('loadEditors') loadEditors!: (save: Save) => void;
   @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
+  @Mutation('loadFiles') loadFiles!: (files: ParsedFile[]) => void;
 
   created() {
     // Auto-loading
@@ -48,10 +50,18 @@ export default class Home extends Vue {
       const overviewEditor = this.$cookies.get('unsaved-editor-Overview');
       const modelEditors = saveWithNames.modelEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
       const dataEditors = saveWithNames.dataEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
-      const trainEditors = saveWithNames.trainEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
-      this.loadEditors(new Save(overviewEditor, modelEditors, dataEditors, trainEditors));
+      this.loadEditors({
+        overviewEditor, modelEditors, dataEditors,
+      });
       // We reset the view to set the panning and scaling on the current view.
       EditorManager.getInstance().resetView();
+
+      // Auto-Load Code Vault
+      if (this.$cookies.isKey('unsaved-code-vault')) {
+        const filenamesList = this.$cookies.get('unsaved-code-vault');
+        const files = filenamesList.filenames.map((filename: string) => this.$cookies.get(`unsaved-file-${filename}`));
+        this.loadFiles(files);
+      }
     }
 
     // Set up auto-save every 5 seconds

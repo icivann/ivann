@@ -20,7 +20,6 @@ export const editorState: EditorsState = {
   },
   modelEditors: [],
   dataEditors: [],
-  trainEditors: [],
   inCodeVault: false,
   errorsMap: new Map(),
 };

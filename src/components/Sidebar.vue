@@ -14,10 +14,9 @@
       </Tab>
     </Tabs>
     <Tabs v-show="currEditorType === editorType.DATA">
-      <Tab name="Data Stuff"/>
-    </Tabs>
-    <Tabs v-show="currEditorType === editorType.TRAIN">
-      <Tab name="Steam Training"/>
+      <Tab name="Data Components">
+        <DataComponentsTab/>
+      </Tab>
     </Tabs>
   </div>
 </template>
@@ -31,9 +30,11 @@ import SearchTab from '@/components/tabs/SearchTab.vue';
 import EditorType from '@/EditorType';
 import ComponentsTab from '@/components/tabs/ComponentsTab.vue';
 import { mapGetters } from 'vuex';
+import DataComponentsTab from '@/components/tabs/DataComponentsTab.vue';
 
 @Component({
   components: {
+    DataComponentsTab,
     ComponentsTab,
     SearchTab,
     LayersTab,

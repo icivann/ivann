@@ -109,10 +109,12 @@
 import { Component, Watch } from 'vue-property-decorator';
 import { Components } from '@baklavajs/plugin-renderer-vue';
 import ArrowButton from '@/inputs/ArrowButton.vue';
-import { Nodes, Overview } from '@/nodes/model/Types';
+import { ModelNodes } from '@/nodes/model/Types';
 import IrError from '@/app/ir/checking/irError';
 import { Getter } from 'vuex-class';
 import { Severity } from '@/app/ir/checking/severity';
+import { OverviewNodes } from '@/nodes/overview/Types';
+import { CommonNodes } from '@/nodes/common/Types';
 
   @Component({
     components: { ArrowButton },
@@ -170,7 +172,7 @@ export default class CustomNode extends Components.Node {
 
   private getContextualMenuItems() {
     const items = [{ value: 'delete', label: 'Delete' }];
-    if (this.data.type !== Overview.ModelNode) {
+    if (this.data.type !== OverviewNodes.ModelNode) {
       items.unshift({ value: 'rename', label: 'Rename' });
     }
     return items;
@@ -182,19 +184,17 @@ export default class CustomNode extends Components.Node {
 
   get titleBackground() {
     switch (this.data.type) {
-      case Nodes.Dense:
-        return { background: 'var(--black)' };
-      case Nodes.Conv1D:
-      case Nodes.Conv2D:
-      case Nodes.Conv3D:
+      case ModelNodes.Conv1d:
+      case ModelNodes.Conv2d:
+      case ModelNodes.Conv3d:
         return { background: 'var(--blue)' };
-      case Nodes.MaxPool2D:
+      case ModelNodes.MaxPool2d:
         return { background: 'var(--red)' };
-      case Nodes.Dropout:
+      case ModelNodes.Dropout:
         return { background: 'var(--pink)' };
-      case Nodes.Flatten:
+      case ModelNodes.Flatten:
         return { background: 'var(--green)' };
-      case Nodes.Custom:
+      case CommonNodes.Custom:
         return { background: 'var(--purple)' };
       default:
         return { background: 'var(--black)' };
