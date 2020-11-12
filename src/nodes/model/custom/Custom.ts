@@ -3,10 +3,6 @@ import { Nodes } from '@/nodes/model/Types';
 import { INodeState } from '@baklavajs/core/dist/baklavajs-core/types/state.d';
 import ParsedFunction from '@/app/parser/ParsedFunction';
 
-// TODO CORE-58 Change this to use state.inlineCode
-export enum CustomOptions{
-  InlineCode = 'Inline Code',
-}
 export default class Custom extends Node {
   type = Nodes.Custom;
   name: string = Nodes.Custom;
@@ -23,28 +19,29 @@ export default class Custom extends Node {
     this.updateNode();
   }
 
-  public setInlineCode(inlineCode?: ParsedFunction) {
-    this.state.inlineCode = inlineCode;
+  public setParsedFunction(parsedFunction?: ParsedFunction) {
+    this.state.parsedFunction = parsedFunction;
     this.updateNode();
   }
 
-  public getInlineCode(): (ParsedFunction | undefined) {
-    const { inlineCode } = this.state;
-    if (this.state.inlineCode) {
-      return new ParsedFunction(inlineCode.name, inlineCode.body, inlineCode.args);
+  public getParsedFunction(): (ParsedFunction | undefined) {
+    const { parsedFunction } = this.state;
+    if (this.state.parsedFunction) {
+      // Conversion is necessary because Baklava State saves as generic `any`.
+      return new ParsedFunction(parsedFunction.name, parsedFunction.body, parsedFunction.args);
     }
     return undefined;
   }
 
   private updateNode() {
-    const inlineCode = this.getInlineCode();
-    if (!inlineCode) {
+    const parsedFunction = this.getParsedFunction();
+    if (!parsedFunction) {
       this.name = Nodes.Custom;
       this.removeAllInputs();
       this.removeOutput();
     } else {
-      this.name = inlineCode.name;
-      this.setInputs(inlineCode.args);
+      this.name = parsedFunction.name;
+      this.setInputs(parsedFunction.args);
       this.addOutput();
     }
   }
