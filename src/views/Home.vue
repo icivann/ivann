@@ -24,7 +24,7 @@ import { Save, saveEditor, SaveWithNames } from '@/file/EditorAsJson';
 import EditorManager from '@/EditorManager';
 import { EditorModel } from '@/store/editors/types';
 import CodeVault from '@/components/CodeVault.vue';
-import { CodeVaultSaveWithNames, ParsedFile } from '@/store/codeVault/types';
+import { ParsedFile } from '@/store/codeVault/types';
 
 @Component({
   components: {
@@ -58,12 +58,8 @@ export default class Home extends Vue {
 
       // Auto-Load Code Vault
       if (this.$cookies.isKey('unsaved-code-vault')) {
-        const codeVaultSaveWithNames = this.$cookies.get('unsaved-code-vault') as CodeVaultSaveWithNames;
-        const files: ParsedFile[] = codeVaultSaveWithNames.files.map((file) => ({
-          filename: file.filename,
-          functions: file.functionNames
-            .map((functionName) => this.$cookies.get(`unsaved-function-${file.filename}-${functionName}`)),
-        }));
+        const filenamesList = this.$cookies.get('unsaved-code-vault');
+        const files = filenamesList.filenames.map((filename: string) => this.$cookies.get(`unsaved-file-${filename}`));
         this.loadFiles(files);
       }
     }

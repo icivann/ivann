@@ -72,7 +72,7 @@ import parse from '@/app/parser/parser';
 import ParsedFunction from '@/app/parser/ParsedFunction';
 import { Result } from '@/app/util';
 import { Getter, Mutation } from 'vuex-class';
-import { CodeVaultSaveWithNames, ParsedFile } from '@/store/codeVault/types';
+import { FilenamesList, ParsedFile } from '@/store/codeVault/types';
 import { uniqueTextInput } from '@/inputs/prompt';
 import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
 import Custom from '@/nodes/common/Custom';
@@ -96,7 +96,7 @@ export default class FunctionsTab extends Vue {
   @Getter('fileIndexFromFilename') fileIndexFromFilename!: (filename: string) => number;
   @Getter('functionIndexFromFunctionName') functionIndexFromFunctionName!:
     (fileIndex: number, functionName: string) => number;
-  @Getter('codeVaultSaveWithNames') codeVaultSaveWithNames!: CodeVaultSaveWithNames;
+  @Getter('filenamesList') filenamesList!: FilenamesList;
 
   private selectedFile = -1;
   private selectedFunction = -1;
@@ -170,8 +170,9 @@ export default class FunctionsTab extends Vue {
       if (parsed instanceof Error) {
         console.error(parsed);
       } else {
-        this.addFile({ filename: files[0].name, functions: parsed });
-        this.saveToCookies(files[0].name, parsed);
+        const file = { filename: files[0].name, functions: parsed };
+        this.addFile(file);
+        this.saveToCookies(file);
       }
     };
 
@@ -185,7 +186,9 @@ export default class FunctionsTab extends Vue {
     );
     if (name === null) return;
 
-    this.addFile({ filename: `${name}.py`, functions: [] });
+    const file = { filename: `${name}.py`, functions: [] };
+    this.addFile(file);
+    this.saveToCookies(file);
   }
 
   // Disable buttons when got here through navbar and not custom node
@@ -211,11 +214,9 @@ export default class FunctionsTab extends Vue {
     this.leaveCodeVault();
   }
 
-  private saveToCookies(filename: string, functions: ParsedFunction[]) {
-    this.$cookies.set('unsaved-code-vault', this.codeVaultSaveWithNames);
-    functions.forEach((func) => {
-      this.$cookies.set(`unsaved-function-${filename}-${func.name}`, JSON.stringify(func));
-    });
+  private saveToCookies(file: ParsedFile) {
+    this.$cookies.set('unsaved-code-vault', this.filenamesList);
+    this.$cookies.set(`unsaved-file-${file.filename}`, file);
   }
 }
 </script>

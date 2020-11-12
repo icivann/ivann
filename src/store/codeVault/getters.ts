@@ -1,6 +1,6 @@
 import { GetterTree } from 'vuex';
 import { RootState } from '@/store/types';
-import { CodeVaultSaveWithNames, CodeVaultState } from '@/store/codeVault/types';
+import { CodeVaultState, FilenamesList } from '@/store/codeVault/types';
 
 const codeVaultGetters: GetterTree<CodeVaultState, RootState> = {
   files: (state) => state.files,
@@ -15,11 +15,8 @@ const codeVaultGetters: GetterTree<CodeVaultState, RootState> = {
     .files.findIndex((file) => file.filename === filename),
   functionIndexFromFunctionName: (state) => (fileIndex: number, functionName: string) => state
     .files[fileIndex].functions.findIndex((func) => func.name === functionName),
-  codeVaultSaveWithNames: (state): CodeVaultSaveWithNames => ({
-    files: state.files.map((file) => ({
-      filename: file.filename,
-      functionNames: file.functions.map((func) => func.name),
-    })),
+  filenamesList: (state): FilenamesList => ({
+    filenames: state.files.map((file) => file.filename),
   }),
 };
 

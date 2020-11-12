@@ -11,11 +11,6 @@ export interface CodeVaultState {
   nodeTriggeringCodeVault?: Custom;
 }
 
-export interface CodeVaultSaveWithNames {
-  files: FileSaveWithNames[];
-}
-
-export interface FileSaveWithNames {
-  filename: string;
-  functionNames: string[];
+export interface FilenamesList {
+  filenames: string[];
 }
