@@ -23,5 +23,6 @@ export default class Adadelta extends Node {
     this.addOption(AdadeltaOptions.weightDecay, TypeOptions.SliderOption);
 
     this.addInputInterface(AdadeltaOptions.Params);
+    this.addOutputInterface('output');
   }
 }

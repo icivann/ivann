@@ -33,22 +33,20 @@
 </template>
 
 <script lang="ts">
-import generateCode from '@/app/codegen/codeGenerator';
+import generateOverviewCode, { generateModelCode } from '@/app/codegen/codeGenerator';
 import { Component, Vue } from 'vue-property-decorator';
 import { Getter, Mutation } from 'vuex-class';
 import { EditorModel, EditorModels } from '@/store/editors/types';
 import { download, downloadPython } from '@/file/Utils';
 import {
-  FILENAME,
-  Save,
-  saveEditor,
-  saveEditors,
-  SaveWithNames,
+  FILENAME, Save, saveEditor, saveEditors, SaveWithNames,
 } from '@/file/EditorAsJson';
 import istateToGraph from '@/app/ir/istateToGraph';
+import EditorType from '@/EditorType';
 
 @Component
 export default class Titlebar extends Vue {
+  @Getter('currEditorType') currEditorType!: EditorType;
   @Getter('allEditorModels') editorModels!: EditorModels;
   @Getter('currEditorModel') overviewEditor!: EditorModel;
   @Getter('currEditorModel') currEditor!: EditorModel;
@@ -57,18 +55,24 @@ export default class Titlebar extends Vue {
   @Mutation('resetState') resetState!: () => void;
 
   private codegen() {
-    const { name, state } = saveEditor(this.currEditor);
-    const graph = istateToGraph(state);
-    const generatedCode = generateCode(graph);
+    let generatedCode = '';
+    if (this.currEditorType === EditorType.OVERVIEW) {
+      console.log('generating overview');
+      generatedCode = generateOverviewCode(this.currEditor, this.editorModels.modelEditors,
+        this.editorModels.dataEditors);
+    } else if (this.currEditorType === EditorType.MODEL) {
+      generatedCode = generateModelCode(this.currEditor);
+    }
 
-    downloadPython(name, generatedCode);
+    console.log(generatedCode);
+    // downloadPython('main', generatedCode);
   }
 
   private uploadFile = () => {
     const element = document.getElementById('upload-file');
     if (!element) return;
     element.click();
-  }
+  };
 
   private load() {
     const { files } = document.getElementById('upload-file') as HTMLInputElement;
@@ -121,38 +125,38 @@ export default class Titlebar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-  .titlebar {
-    height: 2.5rem;
-    background-color: var(--background-alt);
+.titlebar {
+  height: 2.5rem;
+  background-color: var(--background-alt);
 
-    border-bottom: 0.08rem solid var(--grey);
+  border-bottom: 0.08rem solid var(--grey);
+}
+
+.titlebar-logo {
+  height: 1.2rem;
+}
+
+.text {
+  color: var(--foreground);
+}
+
+.titlebar-icon {
+  color: var(--foreground);
+}
+
+.icon-button {
+  background-color: var(--background-alt);
+  width: 5rem;
+  height: 5rem;
+  margin-left: 0.15rem;
+  margin-right: 0.15rem;
+  padding: 0.3rem 0.1rem;
+  position: relative;
+  top: 0;
+
+  &:hover {
+    background-color: #2c2c2c;
+    cursor: pointer;
   }
-
-  .titlebar-logo {
-    height: 1.2rem;
-  }
-
-  .text {
-    color: var(--foreground);
-  }
-
-  .titlebar-icon {
-    color: var(--foreground);
-  }
-
-  .icon-button {
-    background-color: var(--background-alt);
-    width: 5rem;
-    height: 5rem;
-    margin-left: 0.15rem;
-    margin-right: 0.15rem;
-    padding: 0.3rem 0.1rem;
-    position: relative;
-    top: 0;
-
-    &:hover {
-      background-color: #2c2c2c;
-      cursor: pointer;
-    }
-  }
+}
 </style>

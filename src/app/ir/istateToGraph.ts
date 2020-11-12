@@ -20,6 +20,7 @@ function toGraphNode(inode: INodeState): ModelNode {
     throw new Error(`${inode.type} is not mapped.`);
   }
   const options = traverseOptions(inode.options);
+  options.set('name', inode.name);
   return fromMap!(options);
 }
 

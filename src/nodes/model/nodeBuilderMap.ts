@@ -12,11 +12,13 @@ import MaxPool2d from '@/app/ir/model/maxpool2d';
 import MaxPool3d from '@/app/ir/model/maxpool3d';
 import Adadelta from '@/app/ir/optimizers/Adadelta';
 import TrainClassifier from '@/app/ir/train/TrainClassifier';
+import Model from '@/app/ir/model/model';
 
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
 export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   // Model Nodes
+  ['ModelNode', Model.build],
   ['Convolution1D', Conv1d.build],
   ['Convolution2D', Conv1d.build],
   ['Convolution3D', Conv1d.build],

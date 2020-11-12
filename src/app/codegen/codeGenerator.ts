@@ -1,12 +1,18 @@
 /* eslint-disable no-param-reassign */
 import GraphNode from '@/app/ir/GraphNode';
-import { ModelLayerNode } from '@/app/ir/mainNodes';
+import { ModelLayerNode, TrainNode } from '@/app/ir/mainNodes';
 import InModel from '@/app/ir/InModel';
 
 import OutModel from '@/app/ir/OutModel';
 import Graph from '@/app/ir/Graph';
 import Concat from '@/app/ir/Concat';
 import Custom from '@/app/ir/Custom';
+import { EditorModel } from '@/store/editors/types';
+import { saveEditor } from '@/file/EditorAsJson';
+import istateToGraph from '@/app/ir/istateToGraph';
+import TrainClassifier from '@/app/ir/train/TrainClassifier';
+import Adadelta from '@/app/ir/optimizers/Adadelta';
+import Model from '@/app/ir/model/model';
 
 const imports = [
   'import torch',
@@ -14,16 +20,14 @@ const imports = [
   'import torch.nn.functional as F',
 ].join('\n');
 
-let nodeNames = new Map<GraphNode, string>();
-let nodeTypeCounters = new Map<string, number>();
-
 const indent = '  ';
 
 function getNodeType(node: GraphNode): string {
   return node.mlNode.constructor.name.toLowerCase();
 }
 
-function getNodeName(node: GraphNode): string {
+function getNodeName(node: GraphNode, nodeNames: Map<GraphNode, string>, nodeTypeCounters:
+                    Map<string, number>): string {
   if (nodeNames.has(node)) {
     // TODO: linting complains about nodeNames.get possibly being undefined
     // when I've already checked with nodeNames.has
@@ -51,8 +55,10 @@ function generateModelGraphCode(
   branchesMap: Map<GraphNode, number[]>,
   graph: Graph,
   outputs: Set<string>,
+  nodeNames: Map<GraphNode, string>,
+  nodeTypeCounters: Map<string, number>,
 ): [string[], number] {
-  const nodeName = getNodeName(node);
+  const nodeName = getNodeName(node, nodeNames, nodeTypeCounters);
 
   let code: string[] = [];
 
@@ -96,6 +102,8 @@ function generateModelGraphCode(
       branchesMap,
       graph,
       outputs,
+      nodeNames,
+      nodeTypeCounters,
     );
 
     return [code.concat(retCode), retBranch];
@@ -112,6 +120,8 @@ function generateModelGraphCode(
         branchesMap,
         graph,
         outputs,
+        nodeNames,
+        nodeTypeCounters,
       );
 
       childBranch = retBranch + 1;
@@ -127,16 +137,16 @@ function generateModelGraphCode(
   return [[], branch];
 }
 
-function generateModel(graph: Graph): string {
-  const header = 'class Model(nn.Module):';
+function generateModel(graph: Graph, name: string): string {
+  const header = `class ${name}(nn.Module):`;
 
   // resetting the naming counters for each new graph
-  nodeNames = new Map<GraphNode, string>();
-  nodeTypeCounters = new Map<string, number>();
+  const nodeNames = new Map<GraphNode, string>();
+  const nodeTypeCounters = new Map<string, number>();
   const outputs: Set<string> = new Set();
 
   const inputs = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof InModel);
-  const inputNames = inputs.map((node) => getNodeName(node));
+  const inputNames = inputs.map((node) => getNodeName(node, nodeNames, nodeTypeCounters));
   let forward: string[] = [`${indent}def forward(self, ${inputNames.join(', ')}):`];
 
   // dummy GraphNode to start off the recusrive DFS traversal
@@ -148,7 +158,7 @@ function generateModel(graph: Graph): string {
 
   inputs.forEach((n) => {
     const [retCode, retBranch] = generateModelGraphCode(n, 0, currentBranch, branchesMap, graph,
-      outputs);
+      outputs, nodeNames, nodeTypeCounters);
     currentBranch = retBranch + 1;
     forward = forward.concat(retCode);
   });
@@ -157,7 +167,7 @@ function generateModel(graph: Graph): string {
   // TODO: sort layer definitions
   graph.nodesAsArray.forEach((n) => {
     if ((n.mlNode as ModelLayerNode).initCode !== undefined) {
-      nodeDefinitions.push(`self.${getNodeName(n)} = nn.${(n.mlNode as ModelLayerNode).initCode()}`);
+      nodeDefinitions.push(`self.${getNodeName(n, nodeNames, nodeTypeCounters)} = nn.${(n.mlNode as ModelLayerNode).initCode()}`);
     }
   });
   const init = [`${indent}def __init__(self):`].concat(nodeDefinitions);
@@ -170,8 +180,11 @@ function generateModel(graph: Graph): string {
 
 function generateFunctions(graph: Graph): string {
   const customNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Custom);
+  // TODO: expand to other training nodes (and custom train)
+  const trainNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
+  instanceof TrainClassifier);
 
-  if (customNodes.length === 0) {
+  if (customNodes.length === 0 && trainNodes.length === 0) {
     return '';
   }
 
@@ -182,12 +195,20 @@ function generateFunctions(graph: Graph): string {
     }
   });
 
+  trainNodes.forEach((node) => {
+    if (node.mlNode instanceof TrainClassifier) {
+      funcs.push(node.mlNode.initCode());
+    }
+  });
+
   return funcs.join('\n\n');
 }
 
-export default function generateCode(graph: Graph): string {
+export function generateModelCode(editor: EditorModel): string {
+  const { name, state } = saveEditor(editor);
+  const graph = istateToGraph(state);
   const funcs = generateFunctions(graph);
-  const model = generateModel(graph);
+  const model = generateModel(graph, name);
 
   const result = [imports];
 
@@ -199,3 +220,82 @@ export default function generateCode(graph: Graph): string {
 
   return result.join('\n\n');
 }
+
+function generateTrainingPipeline(node: GraphNode, graph: Graph): string[] {
+  // traverse each incoming connection backwards and link up
+
+  const trainNode = node.mlNode as TrainClassifier;
+
+  // const incomingNodes = graph.prevNodesFrom(node);
+  const optimizer = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
+  instanceof Adadelta)[0].mlNode as Adadelta;
+
+  const model = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
+  instanceof Model)[0].mlNode as Model;
+
+  const body = [];
+
+  const device = `"${trainNode.Device}"`;
+  body.push(`device = ${device}`);
+  const modelName = `${model.name}_model`;
+  body.push(`${modelName} = ${model.name}().to(device)`);
+  body.push(`optimizer = ${optimizer.initCode(`${modelName}.parameters()`)}`);
+  // (model, train_loader, test_loader, optimizer, device, epoch
+  body.push(trainNode.callCode([modelName, 'None', 'None', 'optimizer', device,
+    trainNode.Epochs.toString()]));
+
+  return body;
+}
+
+function generateOverview(graph: Graph, name: string): string {
+  let main = ['def main():'];
+
+  // resetting the naming counters for each new graph
+  const nodeNames = new Map<GraphNode, string>();
+  const nodeTypeCounters = new Map<string, number>();
+
+  const trainNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
+  instanceof TrainClassifier);
+
+  //  train(model, train_data, )
+  trainNodes.forEach((node) => {
+    main = main.concat(generateTrainingPipeline(node, graph));
+  });
+
+  // const main = [header, body.join(`\n${indent}`)];
+  const entry = `if __name__ == '__main__':\n${indent}main()`;
+
+  return [main.join(`\n${indent}`), entry].join('\n\n');
+}
+
+function generateOverviewCode(
+  overviewEditor: EditorModel,
+  modelEditors: EditorModel[],
+  data: EditorModel[],
+): string {
+  const { name, state } = saveEditor(overviewEditor);
+  const graph = istateToGraph(state);
+
+  // TODO: beware of duplicate custom functions
+  const funcs = generateFunctions(graph);
+
+  const models = modelEditors.map((editor) => generateModelCode(editor)).join('\n\n');
+
+  const overview = generateOverview(graph, name);
+
+  // console.log(overview);
+
+  const result = [imports];
+
+  if (funcs.length > 0) {
+    result.push(funcs);
+  }
+
+  result.push(models);
+
+  result.push(overview);
+
+  return result.join('\n\n');
+}
+
+export default generateOverviewCode;
