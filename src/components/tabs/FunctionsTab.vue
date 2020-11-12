@@ -47,8 +47,17 @@
         </FileFuncButton>
       </div>
       <div class="confirm-button">
-        <UIButton text="Cancel" @click="cancelClick"/>
-        <UIButton text="Confirm" :primary="true" @click="confirmClick"/>
+        <UIButton
+          text="Cancel"
+          @click="cancelClick"
+          :disabled="disable()"
+        />
+        <UIButton
+          text="Confirm"
+          :primary="true"
+          @click="confirmClick"
+          :disabled="disable()"
+        />
       </div>
     </div>
   </div>
@@ -175,6 +184,11 @@ export default class FunctionsTab extends Vue {
     if (name === null) return;
 
     this.addFile({ filename: `${name}.py`, functions: [] });
+  }
+
+  // Disable buttons when got here through navbar and not custom node
+  private disable(): boolean {
+    return this.nodeTriggeringCodeVault === undefined;
   }
 
   private confirmClick() {
