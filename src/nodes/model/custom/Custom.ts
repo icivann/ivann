@@ -1,7 +1,7 @@
 import { Node } from '@baklavajs/core';
 import { Nodes } from '@/nodes/model/Types';
-import parse from '@/app/parser/parser';
 import { INodeState } from '@baklavajs/core/dist/baklavajs-core/types/state.d';
+import ParsedFunction from '@/app/parser/ParsedFunction';
 
 // TODO CORE-58 Change this to use state.inlineCode
 export enum CustomOptions{
@@ -15,7 +15,7 @@ export default class Custom extends Node {
 
   constructor() {
     super();
-    this.addOption('Enter Func', 'CodeVaultButtonOption', undefined, undefined, { customNode: this });
+    this.addOption('Select Function', 'CodeVaultButtonOption', undefined, undefined, { customNode: this });
   }
 
   public load(state: INodeState) {
@@ -23,28 +23,29 @@ export default class Custom extends Node {
     this.updateNode();
   }
 
-  public setInlineCode(inlineCode: string) {
+  public setInlineCode(inlineCode?: ParsedFunction) {
     this.state.inlineCode = inlineCode;
     this.updateNode();
   }
 
-  public getInlineCode() {
-    return this.state.inlineCode ? this.state.inlineCode : '';
+  public getInlineCode(): (ParsedFunction | undefined) {
+    const { inlineCode } = this.state;
+    if (this.state.inlineCode) {
+      return new ParsedFunction(inlineCode.name, inlineCode.body, inlineCode.args);
+    }
+    return undefined;
   }
 
   private updateNode() {
-    if (this.getInlineCode() === '') {
+    const inlineCode = this.getInlineCode();
+    if (!inlineCode) {
       this.name = Nodes.Custom;
       this.removeAllInputs();
       this.removeOutput();
     } else {
-      const functions = parse(this.getInlineCode());
-      if (!(functions instanceof Error) && functions.length > 0) {
-        const func = functions[0];
-        this.name = func.name;
-        this.setInputs(func.args);
-        this.addOutput();
-      }
+      this.name = inlineCode.name;
+      this.setInputs(inlineCode.args);
+      this.addOutput();
     }
   }
 

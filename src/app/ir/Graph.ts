@@ -45,8 +45,8 @@ export default class Graph {
     const next = source.outputInterfaces.get(iName);
     return next === undefined
       ? undefined
-      : this.inToOutConnections.get(next.id)!.map((c) => this.nodesByInputInterface.get(c.id)!);
+      : this.inToOutConnections.get(next.id)?.map((c) => this.nodesByInputInterface.get(c.id)!);
   }
 }
 
-type Connection = [UUID, UUID]
+export type Connection = [UUID, UUID]

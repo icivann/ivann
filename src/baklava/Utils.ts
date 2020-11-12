@@ -23,11 +23,6 @@ export default function newEditor(editorType: EditorType) {
       canvas = dataCanvas;
       break;
     }
-    case EditorType.TRAIN: {
-      const { trainCanvas } = EditorManager.getInstance();
-      canvas = trainCanvas;
-      break;
-    }
     default:
       break;
   }

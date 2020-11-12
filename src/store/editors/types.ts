@@ -12,7 +12,6 @@ export interface EditorModels {
   overviewEditor: EditorModel;
   modelEditors: EditorModel[];
   dataEditors: EditorModel[];
-  trainEditors: EditorModel[];
 }
 
 export interface EditorsState extends EditorModels {
