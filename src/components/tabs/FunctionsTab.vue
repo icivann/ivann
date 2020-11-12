@@ -91,8 +91,8 @@ export default class FunctionsTab extends Vue {
 
   private getFunctions(index: number): ParsedFunction[] {
     const fileList = this.files;
-    if (index < 0 || index > fileList.length) return [];
-    return fileList[index].functions;
+    if (index >= 0 && index < fileList.length) return fileList[index].functions;
+    return [];
   }
 
   // Trigger click of input tag for uploading file
