@@ -19,7 +19,6 @@ export const editorState: EditorsState = {
   },
   modelEditors: [],
   dataEditors: [],
-  trainEditors: [],
   inCodeVault: false,
 };
 

@@ -100,14 +100,12 @@ export default class Titlebar extends Vue {
       overviewEditor,
       modelEditors,
       dataEditors,
-      trainEditors,
     } = this.editorModels;
 
     const editorsSaved: Save = {
       overviewEditor: saveEditor(overviewEditor),
       modelEditors: saveEditors(modelEditors),
       dataEditors: saveEditors(dataEditors),
-      trainEditors: saveEditors(trainEditors),
     };
 
     download(FILENAME, JSON.stringify({

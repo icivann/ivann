@@ -16,9 +16,6 @@
     <Tabs v-show="currEditorType === editorType.DATA">
       <Tab name="Data Stuff"/>
     </Tabs>
-    <Tabs v-show="currEditorType === editorType.TRAIN">
-      <Tab name="Steam Training"/>
-    </Tabs>
   </div>
 </template>
 

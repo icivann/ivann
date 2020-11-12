@@ -64,7 +64,6 @@ export class Save {
     public readonly overviewEditor: EditorSave,
     public readonly modelEditors: EditorSave[],
     public readonly dataEditors: EditorSave[],
-    public readonly trainEditors: EditorSave[],
   ) {}
 }
 
@@ -73,6 +72,5 @@ export class SaveWithNames {
     public readonly overviewEditor: string,
     public readonly modelEditors: string[],
     public readonly dataEditors: string[],
-    public readonly trainEditors: string[],
   ) {}
 }
