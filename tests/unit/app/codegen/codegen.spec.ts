@@ -1,4 +1,4 @@
-import generateCode from '@/app/codegen/codeGenerator';
+import generateCode, { generateModelCode } from '@/app/codegen/codeGenerator';
 import istateToGraph from '@/app/ir/istateToGraph';
 import conv2d from '@/app/ir/model/conv2d';
 
@@ -17,13 +17,15 @@ describe('codegen', () => {
     const iState = JSON.parse('{"nodes":[{"type":"InModel","id":"node_16051304291465","name":"input","options":[],"state":{},"interfaces":[["Output",{"id":"ni_16051304291466","value":null}]],"position":{"x":31,"y":162},"width":200,"twoColumn":false},{"type":"Conv2d","id":"node_16051304343277","name":"Conv2d","options":[["In channels",0],["Out channels",0],["Kernel size",[0,0]],["Stride",[1,1]],["Padding",[0,0]],["Dilation",[1,1]],["Groups",1],["Bias",1],["Padding mode","zeros"]],"state":{},"interfaces":[["Input",{"id":"ni_16051304343278","value":null}],["Output",{"id":"ni_16051304343279","value":null}]],"position":{"x":245,"y":150},"width":200,"twoColumn":false},{"type":"OutModel","id":"node_160513044748219","name":"output","options":[],"state":{},"interfaces":[["Input",{"id":"ni_160513044748320","value":null}]],"position":{"x":704,"y":147},"width":200,"twoColumn":false},{"type":"MaxPool2d","id":"node_160513148090922","name":"MaxPool2d","options":[["Kernel size",[0,0]],["Stride",[0,0]],["Padding",[0,0]],["Dilation",[1,1]],["Return indices",null],["Ceil mode",null]],"state":{},"interfaces":[["Input",{"id":"ni_160513148090923","value":null}],["Output",{"id":"ni_160513148090924","value":null}]],"position":{"x":454,"y":163},"width":200,"twoColumn":false}],"connections":[{"id":"160513123339511","from":"ni_16051304291466","to":"ni_16051304343278"},{"id":"160513148489227","from":"ni_16051304343279","to":"ni_160513148090923"},{"id":"160513148671330","from":"ni_160513148090924","to":"ni_160513044748320"}],"panning":{"x":0,"y":0},"scaling":1}');
     const graph = istateToGraph(iState);
     // TODO: create the graph to test code generation
-    let actual = generateCode(graph);
+    let actual = generateModelCode(graph, 'Model');
     actual = removeBlankLines(actual);
 
     let expected = `
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms
 
 class Model(nn.Module):
 
@@ -45,13 +47,15 @@ class Model(nn.Module):
     const iState = JSON.parse('{"nodes":[{"type":"InModel","id":"node_16051304291465","name":"named_input","options":[],"state":{},"interfaces":[["Output",{"id":"ni_16051304291466","value":null}]],"position":{"x":31,"y":162},"width":200,"twoColumn":false},{"type":"Conv2d","id":"node_16051304343277","name":"Conv2dname","options":[["In channels",0],["Out channels",0],["Kernel size",[0,0]],["Stride",[1,1]],["Padding",[0,0]],["Dilation",[1,1]],["Groups",1],["Bias",1],["Padding mode","zeros"]],"state":{},"interfaces":[["Input",{"id":"ni_16051304343278","value":null}],["Output",{"id":"ni_16051304343279","value":null}]],"position":{"x":245,"y":150},"width":200,"twoColumn":false},{"type":"OutModel","id":"node_160513044748219","name":"output","options":[],"state":{},"interfaces":[["Input",{"id":"ni_160513044748320","value":null}]],"position":{"x":704,"y":147},"width":200,"twoColumn":false},{"type":"MaxPool2d","id":"node_160513148090922","name":"MaxPool2d","options":[["Kernel size",[0,0]],["Stride",[0,0]],["Padding",[0,0]],["Dilation",[1,1]],["Return indices",null],["Ceil mode",null]],"state":{},"interfaces":[["Input",{"id":"ni_160513148090923","value":null}],["Output",{"id":"ni_160513148090924","value":null}]],"position":{"x":454,"y":163},"width":200,"twoColumn":false}],"connections":[{"id":"160513123339511","from":"ni_16051304291466","to":"ni_16051304343278"},{"id":"160513148489227","from":"ni_16051304343279","to":"ni_160513148090923"},{"id":"160513148671330","from":"ni_160513148090924","to":"ni_160513044748320"}],"panning":{"x":0,"y":0},"scaling":1}');
     const graph = istateToGraph(iState);
     // TODO: create the graph to test code generation
-    let actual = generateCode(graph);
+    let actual = generateModelCode(graph, 'Model');
     actual = removeBlankLines(actual);
 
     let expected = `
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms
 
 class Model(nn.Module):
 
@@ -73,13 +77,15 @@ class Model(nn.Module):
     const iState = JSON.parse('{"nodes":[{"type":"InModel","id":"node_16051304291465","name":"input","options":[],"state":{},"interfaces":[["Output",{"id":"ni_16051304291466","value":null}]],"position":{"x":31,"y":162},"width":200,"twoColumn":false},{"type":"Conv2d","id":"node_16051304343277","name":"Conv2d","options":[["In channels",0],["Out channels",0],["Kernel size",[0,0]],["Stride",[1,1]],["Padding",[0,0]],["Dilation",[1,1]],["Groups",1],["Bias",1],["Padding mode","zeros"]],"state":{},"interfaces":[["Input",{"id":"ni_16051304343278","value":null}],["Output",{"id":"ni_16051304343279","value":null}]],"position":{"x":245,"y":150},"width":200,"twoColumn":false},{"type":"OutModel","id":"node_160513044748219","name":"output","options":[],"state":{},"interfaces":[["Input",{"id":"ni_160513044748320","value":null}]],"position":{"x":704,"y":147},"width":200,"twoColumn":false},{"type":"MaxPool2d","id":"node_160513148090922","name":"MaxPool2d","options":[["Kernel size",[0,0]],["Stride",[0,0]],["Padding",[0,0]],["Dilation",[1,1]],["Return indices",null],["Ceil mode",null]],"state":{},"interfaces":[["Input",{"id":"ni_160513148090923","value":null}],["Output",{"id":"ni_160513148090924","value":null}]],"position":{"x":251,"y":582},"width":200,"twoColumn":false},{"type":"Concat","id":"node_160513194994734","name":"Concat","options":[],"state":{},"interfaces":[["Input 1",{"id":"ni_160513194994835","value":null}],["Input 2",{"id":"ni_160513194994836","value":null}],["Output",{"id":"ni_160513194994837","value":null}]],"position":{"x":493,"y":274},"width":200,"twoColumn":false}],"connections":[{"id":"160513123339511","from":"ni_16051304291466","to":"ni_16051304343278"},{"id":"160513194393533","from":"ni_16051304291466","to":"ni_160513148090923"},{"id":"160513195310840","from":"ni_16051304343279","to":"ni_160513194994835"},{"id":"160513195526843","from":"ni_160513148090924","to":"ni_160513194994836"},{"id":"160513195733046","from":"ni_160513194994837","to":"ni_160513044748320"}],"panning":{"x":14,"y":-145},"scaling":1}');
     const graph = istateToGraph(iState);
     // TODO: create the graph to test code generation
-    let actual = generateCode(graph);
+    let actual = generateModelCode(graph, 'Model');
     actual = removeBlankLines(actual);
 
     let expected = `
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms
 
 class Model(nn.Module):
 
@@ -102,13 +108,15 @@ class Model(nn.Module):
     const iState = JSON.parse('{"nodes":[{"type":"InModel","id":"node_16051304291465","name":"input","options":[],"state":{},"interfaces":[["Output",{"id":"ni_16051304291466","value":null}]],"position":{"x":-67,"y":163},"width":200,"twoColumn":false},{"type":"Conv2d","id":"node_16051304343277","name":"Conv2d","options":[["In channels",0],["Out channels",0],["Kernel size",[0,0]],["Stride",[1,1]],["Padding",[0,0]],["Dilation",[1,1]],["Groups",1],["Bias",1],["Padding mode","zeros"]],"state":{},"interfaces":[["Input",{"id":"ni_16051304343278","value":null}],["Output",{"id":"ni_16051304343279","value":null}]],"position":{"x":161,"y":147},"width":200,"twoColumn":false},{"type":"OutModel","id":"node_160513044748219","name":"output","options":[],"state":{},"interfaces":[["Input",{"id":"ni_160513044748320","value":null}]],"position":{"x":704,"y":147},"width":200,"twoColumn":false},{"type":"Conv2d","id":"node_160513234026953","name":"Conv2d","options":[["In channels",0],["Out channels",0],["Kernel size",[0,0]],["Stride",[1,1]],["Padding",[0,0]],["Dilation",[1,1]],["Groups",1],["Bias",1],["Padding mode","zeros"]],"state":{},"interfaces":[["Input",{"id":"ni_160513234026954","value":null}],["Output",{"id":"ni_160513234026955","value":null}]],"position":{"x":394,"y":120},"width":200,"twoColumn":false},{"type":"Conv2d","id":"node_160513234536963","name":"Conv2d","options":[["In channels",0],["Out channels",0],["Kernel size",[0,0]],["Stride",[1,1]],["Padding",[0,0]],["Dilation",[1,1]],["Groups",1],["Bias",1],["Padding mode","zeros"]],"state":{},"interfaces":[["Input",{"id":"ni_160513234536964","value":null}],["Output",{"id":"ni_160513234536965","value":null}]],"position":{"x":414,"y":314},"width":200,"twoColumn":false},{"type":"OutModel","id":"node_160513235923569","name":"output2","options":[],"state":{},"interfaces":[["Input",{"id":"ni_160513235923570","value":null}]],"position":{"x":734,"y":329},"width":200,"twoColumn":false}],"connections":[{"id":"160513123339511","from":"ni_16051304291466","to":"ni_16051304343278"},{"id":"160513234209059","from":"ni_16051304343279","to":"ni_160513234026954"},{"id":"160513234367862","from":"ni_160513234026955","to":"ni_160513044748320"},{"id":"160513234901968","from":"ni_16051304343279","to":"ni_160513234536964"},{"id":"160513236247273","from":"ni_160513234536965","to":"ni_160513235923570"}],"panning":{"x":86,"y":-41},"scaling":1}');
     const graph = istateToGraph(iState);
     // TODO: create the graph to test code generation
-    let actual = generateCode(graph);
+    let actual = generateModelCode(graph, 'Model');
     actual = removeBlankLines(actual);
 
     let expected = `
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms
 
 class Model(nn.Module):
 
@@ -134,13 +142,15 @@ class Model(nn.Module):
     );
     const graph = istateToGraph(iState);
     // TODO: create the graph to test code generation
-    let actual = generateCode(graph);
+    let actual = generateModelCode(graph, 'Model');
     actual = removeBlankLines(actual);
 
     let expected = `
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms
 
 class Model(nn.Module):
 
@@ -172,13 +182,15 @@ class Model(nn.Module):
     );
     const graph = istateToGraph(iState);
     // TODO: create the graph to test code generation
-    let actual = generateCode(graph);
+    let actual = generateModelCode(graph, 'Model');
     actual = removeBlankLines(actual);
 
     let expected = `
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms
 
 class Model(nn.Module):
 

@@ -20,4 +20,8 @@ export default class Dropout3d {
   public initCode(): string {
     return `Dropout3d(p=${this.p}, inplace=${this.inplace})`;
   }
+
+  public callCode(params: string[], name: string): string {
+    return `${name}(${params.join(', ')})`;
+  }
 }

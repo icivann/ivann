@@ -18,4 +18,8 @@ export default class ReLU {
   public initCode(): string {
     return `ReLU(inplace=${this.inplace})`;
   }
+
+  public callCode(params: string[], name: string): string {
+    return `${name}(${params.join(', ')})`;
+  }
 }

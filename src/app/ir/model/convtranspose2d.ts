@@ -43,4 +43,8 @@ export default class ConvTranspose2d {
   public initCode(): string {
     return `ConvTranspose2d(in_channels=${this.in_channels}, out_channels=${this.out_channels}, kernel_size=(${this.kernel_size}), stride=(${this.stride}), padding=(${this.padding}), output_padding=(${this.output_padding}), groups=${this.groups}, bias=${this.bias}, dilation=${this.dilation}, padding_mode='${this.padding_mode}')`;
   }
+
+  public callCode(params: string[], name: string): string {
+    return `${name}(${params.join(', ')})`;
+  }
 }

@@ -5,6 +5,18 @@
         <AddNodeButton node="Custom" name="Custom"/>
       </ButtonGrid>
     </ExpandablePanel>
+    <ExpandablePanel name="I/O">
+      <ButtonGrid>
+        <AddNodeButton node="InData" name="InData"/>
+        <AddNodeButton node="OutData" name="OutData"/>
+      </ButtonGrid>
+    </ExpandablePanel>
+    <ExpandablePanel name="Transform">
+      <ButtonGrid>
+        <AddNodeButton node="ToTensor" name="ToTensor"/>
+        <AddNodeButton node="Grayscale" name="Grayscale"/>
+      </ButtonGrid>
+    </ExpandablePanel>
   </div>
 </template>
 

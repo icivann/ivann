@@ -3,6 +3,8 @@ import Model from '@/nodes/overview/Model';
 import { OverviewCategories, OverviewNodes } from '@/nodes/overview/Types';
 import { CommonNodes } from '@/nodes/common/Types';
 import Custom from '@/nodes/common/Custom';
+import TrainClassifier from '@/nodes/overview/train/TrainClassifier';
+import Adadelta from '@/nodes/overview/optimizers/Adadelta';
 
 export default class OverviewCanvas extends AbstractCanvas {
   nodeList = [
@@ -21,6 +23,24 @@ export default class OverviewCanvas extends AbstractCanvas {
         {
           name: CommonNodes.Custom,
           node: Custom,
+        },
+      ],
+    },
+    {
+      category: OverviewCategories.Train,
+      nodes: [
+        {
+          name: OverviewNodes.TrainClassifier,
+          node: TrainClassifier,
+        },
+      ],
+    },
+    {
+      category: OverviewCategories.Optimizer,
+      nodes: [
+        {
+          name: OverviewNodes.Adadelta,
+          node: Adadelta,
         },
       ],
     },

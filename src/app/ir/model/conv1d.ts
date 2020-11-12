@@ -36,6 +36,13 @@ export default class Conv1d {
   }
 
   public initCode(): string {
-    return `Conv1d(in_channels=${this.in_channels}, out_channels=${this.out_channels}, kernel_size=${this.kernel_size}, stride=${this.stride}, padding=${this.padding}, dilation=${this.dilation}, groups=${this.groups}, bias=${this.bias}, padding_mode='${this.padding_mode}')`;
+    return `Conv1d(in_channels=${this.in_channels}, out_channels=${this.out_channels},
+    kernel_size=${this.kernel_size}, stride=${this.stride}, padding=${this.padding},
+    dilation=${this.dilation}, groups=${this.groups}, bias=${this.bias},
+    padding_mode='${this.padding_mode}')`;
+  }
+
+  public callCode(params: string[], name: string): string {
+    return `${name}(${params.join(', ')})`;
   }
 }

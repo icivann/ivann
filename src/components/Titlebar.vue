@@ -33,7 +33,6 @@
 </template>
 
 <script lang="ts">
-import generateCode from '@/app/codegen/codeGenerator';
 import { Component, Vue } from 'vue-property-decorator';
 import { Getter, Mutation } from 'vuex-class';
 import { EditorModel, EditorModels } from '@/store/editors/types';
@@ -47,9 +46,13 @@ import {
 } from '@/file/EditorAsJson';
 import istateToGraph from '@/app/ir/istateToGraph';
 import { ParsedFile } from '@/store/codeVault/types';
+import EditorType from '@/EditorType';
+import { generateModelCode, generateOverviewCode } from '@/app/codegen/codeGenerator';
+import Graph from '@/app/ir/Graph';
 
 @Component
 export default class Titlebar extends Vue {
+  @Getter('currEditorType') currEditorType!: EditorType;
   @Getter('allEditorModels') editorModels!: EditorModels;
   @Getter('currEditorModel') overviewEditor!: EditorModel;
   @Getter('currEditorModel') currEditor!: EditorModel;
@@ -60,11 +63,26 @@ export default class Titlebar extends Vue {
   @Mutation('resetState') resetState!: () => void;
 
   private codegen() {
+    let generatedCode = '';
     const { name, state } = saveEditor(this.currEditor);
     const graph = istateToGraph(state);
-    const generatedCode = generateCode(graph);
-
-    downloadPython(name, generatedCode);
+    if (this.currEditorType === EditorType.OVERVIEW) {
+      console.log('generating overview');
+      const models = this.editorModels.modelEditors.map((editor) => {
+        const { name, state } = saveEditor(editor);
+        const graph = istateToGraph(state);
+        return [graph, name] as [Graph, string];
+      });
+      const data = this.editorModels.dataEditors.map((editor) => {
+        const { name, state } = saveEditor(editor);
+        const graph = istateToGraph(state);
+        return [graph, name] as [Graph, string];
+      });
+      generatedCode = generateOverviewCode(graph, models, data);
+    } else if (this.currEditorType === EditorType.MODEL) {
+      generatedCode = generateModelCode(graph, name);
+    }
+    downloadPython('main', generatedCode);
   }
 
   // Trigger click of input tag for uploading file
