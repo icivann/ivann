@@ -15,10 +15,14 @@ function traverseOptions(options: Array<[string, any]>): Map<string, any> {
 
 function toGraphNode(inode: INodeState): ModelNode {
   const fromMap = nodeBuilder.get(inode.type);
+
   if (fromMap === undefined) {
     // TODO: throw exception?
     throw new Error(`${inode.type} is not mapped.`);
   }
+  const optionsToTraverse = inode.options;
+  optionsToTraverse.push(['name', inode.name]);
+
   const options = traverseOptions(inode.options);
   return fromMap!(options);
 }
@@ -70,5 +74,6 @@ export default function istateToGraph(istate: IState): Graph {
   const connections = istate.connections.map(
     (c) => [c.from, c.to].map((s) => new UUID(s)) as [UUID, UUID],
   );
+  console.log(graphNodes.values());
   return new Graph(new Set(graphNodes.values()), connections);
 }

@@ -1,5 +1,5 @@
 import { ConvTranspose1dOptions } from '@/nodes/model/Convtranspose1d';
-import { PaddingMode } from '@/app/ir/irCommon';
+import { nodeName, PaddingMode } from '@/app/ir/irCommon';
 
 function getPaddingMode(s: string): PaddingMode {
   return PaddingMode[s as keyof typeof PaddingMode];
@@ -7,6 +7,7 @@ function getPaddingMode(s: string): PaddingMode {
 
 export default class ConvTranspose1d {
   constructor(
+  public readonly name: string,
   public readonly in_channels: bigint,
   public readonly out_channels: bigint,
   public readonly kernel_size: [bigint],
@@ -22,6 +23,7 @@ export default class ConvTranspose1d {
 
   static build(options: Map<string, any>): ConvTranspose1d {
     return new ConvTranspose1d(
+      options.get(nodeName),
       options.get(ConvTranspose1dOptions.InChannels),
       options.get(ConvTranspose1dOptions.OutChannels),
       [options.get(ConvTranspose1dOptions.KernelSize)[0]],

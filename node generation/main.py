@@ -10,6 +10,7 @@ type_map = {
   "Union": "VectorOption",
   "Optional[Union]": "VectorOption",
   "Optional[T]": "VectorOption",
+  "Optional[Any]": "VectorOption",
   "str": "DropdownOption",
   "bool": "TickBoxOption"
 }
@@ -20,6 +21,7 @@ boolean_ = {
   "Union": "[T]",
   "Optional[T]": "[T]",
   "Optional[Union]": "[T]",
+  "Optional[Any]": "[T]",
   "str": "enum",
   "bool": "boolean"
 }
@@ -73,7 +75,7 @@ def parse(x):
 
 
 def create_baklava(class_name, option_map: dict, dimensions):
-  f_path = os.path.join(baklava_folder, f"{class_name.capitalize()}Baklava.ts")
+  f_path = os.path.join(baklava_folder, f"{class_name.capitalize()}.ts")
   baklava_file = open(f_path, "w")
 
   option_enums_header = f"export enum {class_name.capitalize()}Options {{"
@@ -128,6 +130,8 @@ def create_ir_node(class_name, option_map: dict, dimensions):
   build = []
   pythonCode =[]
 
+  fields.append("public readonly name: string,")
+  build.append("options.get(nodeName),")
   for k, v in option_map.items():
     field_name = k.lower()
     option_type, default_value = v
@@ -139,13 +143,13 @@ def create_ir_node(class_name, option_map: dict, dimensions):
     elif option_type == "bool":
       continue
     elif option_type == "[T]":
-
+      dim = dimensions[0]-1 if len(dimensions)>0 else 0
       buildLine = "["
       option_type = "["
-      for i in range (dimensions[0]-1):
+      for i in range (dim):
         buildLine+= f"  options.get({class_name}Options.{field_name.capitalize()})[{i}], "
         option_type+= "bigint, "
-      buildLine+= f"options.get({class_name}Options.{field_name.capitalize()})[{dimensions[0]-1}]], "
+      buildLine+= f"options.get({class_name}Options.{field_name.capitalize()})[{dim}]], "
       option_type+= "bigint]"
     else:
       buildLine= f"options.get({class_name}Options.{field_name.capitalize()}),"
@@ -153,7 +157,8 @@ def create_ir_node(class_name, option_map: dict, dimensions):
     fields.append(f"public readonly {field_name}: {option_type},")
     build.append(buildLine)
     pythonCode.append(f"{field_name}=")
-    if dimensions[0] > 1:
+
+    if len(dimensions)>0 and dimensions[0] > 1:
       pythonCode.append(f"(${{this.{field_name}}})")
     elif option_type == "str":
       pythonCode.append(f"'${{this.{field_name}}}'")
@@ -165,6 +170,7 @@ def create_ir_node(class_name, option_map: dict, dimensions):
   pythonCode = ", ".join(pythonCode)
 
   contents = f"""import {{ {class_name}Options }} from '@/nodes/model/{class_name}Baklava';
+import {{ nodeName }} from '@/app/ir/irCommon';
 
 export default class {class_name} {{
 constructor(
@@ -206,5 +212,5 @@ if __name__ == "__main__":
     dimensions = list(map(int, dimensions))
 
     print(dimensions)
-    # create_baklava(class_name, options_map, dimensions)
+    create_baklava(class_name, options_map, dimensions)
     create_ir_node(class_name, options_map, dimensions)

@@ -45,6 +45,24 @@
         <AddNodeButton node="Concat" name="Concat"/>
       </ButtonGrid>
     </ExpandablePanel>
+    <ExpandablePanel name="Linear">
+      <ButtonGrid>
+        <AddNodeButton node="Linear" name="Linear"/>
+        <AddNodeButton node="Bilinear" name="Bilinear"/>
+      </ButtonGrid>
+    </ExpandablePanel>
+    <ExpandablePanel name="Transformer">
+      <ButtonGrid>
+        <AddNodeButton node="Transformer" name="Transformer"/>
+      </ButtonGrid>
+    </ExpandablePanel>
+    <ExpandablePanel name="Non-Linear Activation">
+      <ButtonGrid>
+        <AddNodeButton node="Softmin" name="Softmin"/>
+        <AddNodeButton node="Softmax" name="Softmax"/>
+      </ButtonGrid>
+    </ExpandablePanel>
+
   </div>
 </template>
 
