@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Nodes } from '@/nodes/model/Types';
+import { ModelNodes } from '@/nodes/model/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 import { valuesOf } from '@/app/util';
@@ -18,8 +18,8 @@ export enum Conv1dOptions {
 }
 
 export default class Conv1d extends Node {
-  type = Nodes.Conv1d;
-  name = Nodes.Conv1d;
+  type = ModelNodes.Conv1d;
+  name = ModelNodes.Conv1d;
 
   constructor() {
     super();

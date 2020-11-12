@@ -66,7 +66,7 @@ import { Getter, Mutation } from 'vuex-class';
 import { ParsedFile } from '@/store/codeVault/types';
 import { uniqueTextInput } from '@/inputs/prompt';
 import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
-import Custom from '@/nodes/model/custom/Custom';
+import Custom from '@/nodes/common/Custom';
 
 @Component({
   components: {

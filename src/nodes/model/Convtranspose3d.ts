@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { ModelNodes } from '@/nodes/model/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 import { valuesOf } from '@/app/util';
@@ -18,8 +18,8 @@ export enum ConvTranspose3dOptions {
   PaddingMode = 'Padding mode'
 }
 export default class ConvTranspose3d extends Node {
-  type = Nodes.ConvTranspose3d;
-  name = Nodes.ConvTranspose3d;
+  type = ModelNodes.ConvTranspose3d;
+  name = ModelNodes.ConvTranspose3d;
 
   constructor() {
     super();
