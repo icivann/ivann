@@ -20,9 +20,8 @@ function toGraphNode(inode: INodeState): ModelNode {
     // TODO: throw exception?
     throw new Error(`${inode.type} is not mapped.`);
   }
-  const optionsToTraverse = inode.options;
-  optionsToTraverse.push(['name', inode.name]);
 
+  inode.options.push(['name', inode.name]);
   const options = traverseOptions(inode.options);
   return fromMap!(options);
 }
