@@ -3,26 +3,26 @@ import GraphNode from '@/app/ir/GraphNode';
 import { ModelLayerNode } from '@/app/ir/mainNodes';
 import InModel from '@/app/ir/InModel';
 import parse from '@/app/parser/parser';
-import ParsedFunction from '@/app/parser/ParsedFunction';
 
 import OutModel from '@/app/ir/OutModel';
 import Graph from '@/app/ir/Graph';
 import Concat from '@/app/ir/Concat';
 import Custom from '@/app/ir/Custom';
 
+import generateData from '@/app/codegen/dataGenerator';
+
+import { indent, getNodeType } from '@/app/codegen/common';
+
 const imports = [
   'import torch',
   'import torch.nn as nn',
-  'import torch.nn.functional as F'].join('\n');
+  'import torch.nn.functional as F',
+  'from torch.utils.data import Dataset, DataLoader',
+  'from torchvision import transforms',
+].join('\n');
 
 let nodeNames = new Map<GraphNode, string>();
 let nodeTypeCounters = new Map<string, number>();
-
-const indent = '  ';
-
-function getNodeType(node: GraphNode): string {
-  return node.mlNode.constructor.name.toLowerCase();
-}
 
 function getNodeName(node: GraphNode): string {
   if (nodeNames.has(node)) {
@@ -217,8 +217,9 @@ function generateFunctions(graph: Graph): string {
 export default function generateCode(graph: Graph): string {
   const funcs = generateFunctions(graph);
   const model = generateModel(graph);
+  const data = generateData(graph);
 
-  const result = [imports];
+  const result = [imports, data];
 
   if (funcs.length > 0) {
     result.push(funcs);
