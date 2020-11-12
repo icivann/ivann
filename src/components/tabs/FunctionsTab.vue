@@ -21,7 +21,12 @@
                         :key="index"
                         :selected="selectedFile === index"
                         @click="selectFile(index)">
-          {{  getFunctions(index).length > 0 ? getFunctions(index)[0].signature() : '(empty)' }}
+          <div v-if="getFunctions(index).length === 0">(empty)</div>
+          <div v-else>
+            <div v-for="(func, index) of getFunctions(index)" :key="index">
+              {{ func.signature() }}
+            </div>
+          </div>
         </FileFuncButton>
       </div>
     </div>
@@ -35,7 +40,10 @@
                         :key="index"
                         :selected="selectedFunction === index"
                         @click="selectFunction(index)">
-          {{ func.toString().slice(0, 100) }}...
+          {{
+            func.toString()
+              .slice(0, 100) + (func.toString().length > 100 ? '...' : '')
+          }}
         </FileFuncButton>
       </div>
       <div class="confirm-button">
@@ -70,7 +78,7 @@ import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
 export default class FunctionsTab extends Vue {
   @Getter('filenames') filenames!: Set<string>;
   @Getter('file') file!: (filename: string) => ParsedFile | undefined;
-  @Getter('files') files!: ParsedFile[]
+  @Getter('files') files!: ParsedFile[];
   @Mutation('addFile') addFile!: (file: ParsedFile) => void;
 
   private selectedFile = -1;
@@ -132,7 +140,7 @@ export default class FunctionsTab extends Vue {
 
   private createFile() {
     const name: string | null = uniqueTextInput(
-      this.filenames, 'Please enter a unique name for the file',
+      this.filenames, 'Please enter a unique name for the file', '.py',
     );
     if (name === null) return;
 

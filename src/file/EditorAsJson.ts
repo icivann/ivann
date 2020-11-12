@@ -52,19 +52,15 @@ export function loadEditors(
   return editorsLoaded;
 }
 
-export class EditorSave {
-  constructor(
-    public readonly name: string,
-    public readonly state: IState,
-  ) {}
+export interface EditorSave {
+  name: string;
+  state: IState;
 }
 
-export class Save {
-  constructor(
-    public readonly overviewEditor: EditorSave,
-    public readonly modelEditors: EditorSave[],
-    public readonly dataEditors: EditorSave[],
-  ) {}
+export interface Save {
+  overviewEditor: EditorSave;
+  modelEditors: EditorSave[];
+  dataEditors: EditorSave[];
 }
 
 export class SaveWithNames {
