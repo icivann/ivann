@@ -1,8 +1,10 @@
 import { MaxPool1dOptions } from '@/nodes/model/Maxpool1d';
 import { Conv1dOptions } from '@/nodes/model/Conv1d';
+import { nodeName } from '@/app/ir/irCommon';
 
 export default class MaxPool1d {
   constructor(
+  public readonly name: string,
   public readonly kernel_size: [bigint],
   public readonly stride: [bigint],
   public readonly padding: [bigint],
@@ -14,6 +16,7 @@ export default class MaxPool1d {
 
   static build(options: Map<string, any>): MaxPool1d {
     return new MaxPool1d(
+      options.get(nodeName),
       [options.get(MaxPool1dOptions.KernelSize)[0]],
       [options.get(MaxPool1dOptions.Stride)[0]],
       [options.get(MaxPool1dOptions.Padding)[0]],

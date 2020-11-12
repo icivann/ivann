@@ -1,5 +1,5 @@
 import { Conv2dOptions } from '@/nodes/model/Conv2d';
-import { PaddingMode } from '@/app/ir/irCommon';
+import { nodeName, PaddingMode } from '@/app/ir/irCommon';
 
 function getPaddingMode(s: string): PaddingMode {
   return PaddingMode[s as keyof typeof PaddingMode];
@@ -7,6 +7,7 @@ function getPaddingMode(s: string): PaddingMode {
 
 export default class Conv2d {
   constructor(
+    public readonly name: string,
     public readonly in_channels: bigint,
     public readonly out_channels: bigint,
     public readonly kernel_size: [bigint, bigint],
@@ -22,6 +23,7 @@ export default class Conv2d {
   static build(options: Map<string, any>): Conv2d {
     console.log(options);
     return new Conv2d(
+      options.get(nodeName),
       options.get(Conv2dOptions.InChannels),
       options.get(Conv2dOptions.OutChannels),
       [options.get(Conv2dOptions.KernelSize)[0], options.get(Conv2dOptions.KernelSize)[1]],

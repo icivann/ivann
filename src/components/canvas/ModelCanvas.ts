@@ -19,6 +19,11 @@ import Dropout from '@/nodes/model/Dropout';
 import Dropout2d from '@/nodes/model/Dropout2d';
 import Dropout3d from '@/nodes/model/Dropout3d';
 import ReLU from '@/nodes/model/Relu';
+import Linear from '@/nodes/model/Linear';
+import Transformer from '@/nodes/model/Transformer';
+import Bilinear from '@/nodes/model/Bilinear';
+import Softmax from '@/nodes/model/Softmax';
+import Softmin from '@/nodes/model/Softmin';
 
 export default class ModelCanvas extends AbstractCanvas {
   public registerNodes(editor: Editor): void {
@@ -43,5 +48,12 @@ export default class ModelCanvas extends AbstractCanvas {
     editor.registerNodeType(Nodes.InModel, InModel, Layers.IO);
     editor.registerNodeType(Nodes.OutModel, OutModel, Layers.IO);
     editor.registerNodeType(Nodes.Concat, Concat, Layers.Operations);
+
+    editor.registerNodeType(Nodes.Linear, Linear, Layers.Linear);
+    editor.registerNodeType(Nodes.Bilinear, Bilinear, Layers.Linear);
+
+    editor.registerNodeType(Nodes.Transformer, Transformer, Layers.Transformer);
+    editor.registerNodeType(Nodes.Softmin, Softmin, Layers.NonLinearActivation);
+    editor.registerNodeType(Nodes.Softmax, Softmax, Layers.NonLinearActivation);
   }
 }
