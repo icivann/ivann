@@ -20,7 +20,7 @@ import Ace from 'brace';
 import 'brace/mode/python';
 import '@/assets/ivann-theme';
 import { Getter, Mutation } from 'vuex-class';
-import Custom from '@/nodes/model/custom/Custom';
+import Custom from '@/nodes/common/Custom';
 import UIButton from '@/components/buttons/UIButton.vue';
 import parse from '@/app/parser/parser';
 import ParsedFunction from '@/app/parser/ParsedFunction';

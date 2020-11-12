@@ -2,7 +2,7 @@ import { GetterTree } from 'vuex';
 import { RootState } from '@/store/types';
 import { EditorModels, EditorsState } from '@/store/editors/types';
 import EditorType from '@/EditorType';
-import { Nodes } from '@/nodes/model/Types';
+import { ModelNodes } from '@/nodes/model/Types';
 import { SaveWithNames } from '@/file/EditorAsJson';
 
 const editorGetters: GetterTree<EditorsState, RootState> = {
@@ -47,7 +47,7 @@ const editorGetters: GetterTree<EditorsState, RootState> = {
   editorIONames: (state, getters) => {
     const names: Set<string> = new Set<string>();
     for (const node of getters.currEditorModel.editor.nodes) {
-      if (node.type === Nodes.InModel || node.type === Nodes.OutModel) {
+      if (node.type === ModelNodes.InModel || node.type === ModelNodes.OutModel) {
         names.add(node.name);
       }
     }

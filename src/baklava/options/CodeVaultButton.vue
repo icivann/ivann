@@ -8,7 +8,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Mutation } from 'vuex-class';
-import Custom from '@/nodes/model/custom/Custom';
+import Custom from '@/nodes/common/Custom';
 import UIButton from '@/components/buttons/UIButton.vue';
 
 @Component({

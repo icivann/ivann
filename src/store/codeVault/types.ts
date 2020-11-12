@@ -1,5 +1,5 @@
 import ParsedFunction from '@/app/parser/ParsedFunction';
-import Custom from '@/nodes/model/custom/Custom';
+import Custom from '@/nodes/common/Custom';
 
 export interface ParsedFile {
   filename: string;

@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { ModelNodes } from '@/nodes/model/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 import { valuesOf } from '@/app/util';
@@ -17,8 +17,8 @@ export enum Conv2dOptions {
   PaddingMode = 'Padding mode'
 }
 export default class Conv2d extends Node {
-  type = Nodes.Conv2d;
-  name = Nodes.Conv2d;
+  type = ModelNodes.Conv2d;
+  name = ModelNodes.Conv2d;
 
   constructor() {
     super();
