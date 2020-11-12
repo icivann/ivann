@@ -11,6 +11,7 @@ import { Engine } from '@baklavajs/plugin-engine';
 import CustomNode from '@/baklava/CustomNode.vue';
 import TextArea from '@/baklava/options/TextArea.vue';
 import CodeVaultButton from '@/baklava/options/CodeVaultButton.vue';
+import CustomContextMenu from '@/baklava/CustomContextMenu.vue';
 
 export default class EditorManager {
   private static instance: EditorManager;
@@ -69,6 +70,7 @@ export default class EditorManager {
     this.view.registerOption('CodeVaultButtonOption', CodeVaultButton);
 
     this.view.components.node = CustomNode;
+    this.view.components.contextMenu = CustomContextMenu;
   }
 
   public static getInstance(): EditorManager {
