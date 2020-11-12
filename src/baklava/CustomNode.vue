@@ -106,13 +106,28 @@
 import { Component } from 'vue-property-decorator';
 import { Components } from '@baklavajs/plugin-renderer-vue';
 import ArrowButton from '@/inputs/ArrowButton.vue';
-import { Nodes } from '@/nodes/model/Types';
+import { Nodes, Overview } from '@/nodes/model/Types';
 
 @Component({
   components: { ArrowButton },
 })
 export default class CustomNode extends Components.Node {
   private shouldShowOptions = false;
+
+  contextMenu = {
+    show: false,
+    x: 0,
+    y: 0,
+    items: this.getContextualMenuItems(),
+  };
+
+  private getContextualMenuItems() {
+    const items = [{ value: 'delete', label: 'Delete' }];
+    if (this.data.type !== Overview.ModelNode) {
+      items.unshift({ value: 'rename', label: 'Rename' });
+    }
+    return items;
+  }
 
   private toggleShouldShowOptions(): void {
     this.shouldShowOptions = !this.shouldShowOptions;

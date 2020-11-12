@@ -19,9 +19,9 @@ export default class MaxPool2d extends Node {
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
     this.addOption(MaxPool2dOptions.KernelSize, TypeOptions.VectorOption, [0, 0]);
-    this.addOption(MaxPool2dOptions.Stride, TypeOptions.VectorOption, [0]);
-    this.addOption(MaxPool2dOptions.Padding, TypeOptions.VectorOption, [0]);
-    this.addOption(MaxPool2dOptions.Dilation, TypeOptions.VectorOption, [1]);
+    this.addOption(MaxPool2dOptions.Stride, TypeOptions.VectorOption, [0, 0]);
+    this.addOption(MaxPool2dOptions.Padding, TypeOptions.VectorOption, [0, 0]);
+    this.addOption(MaxPool2dOptions.Dilation, TypeOptions.VectorOption, [1, 1]);
     this.addOption(MaxPool2dOptions.ReturnIndices, TypeOptions.TickBoxOption);
     this.addOption(MaxPool2dOptions.CeilMode, TypeOptions.TickBoxOption);
   }

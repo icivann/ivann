@@ -19,9 +19,9 @@ export default class MaxPool3d extends Node {
     this.addInputInterface('Input');
     this.addOutputInterface('Output');
     this.addOption(MaxPool3dOptions.KernelSize, TypeOptions.VectorOption, [0, 0, 0]);
-    this.addOption(MaxPool3dOptions.Stride, TypeOptions.VectorOption, [0]);
-    this.addOption(MaxPool3dOptions.Padding, TypeOptions.VectorOption, [0]);
-    this.addOption(MaxPool3dOptions.Dilation, TypeOptions.VectorOption, [1]);
+    this.addOption(MaxPool3dOptions.Stride, TypeOptions.VectorOption, [0, 0, 0]);
+    this.addOption(MaxPool3dOptions.Padding, TypeOptions.VectorOption, [0, 0, 0]);
+    this.addOption(MaxPool3dOptions.Dilation, TypeOptions.VectorOption, [1, 1, 1]);
     this.addOption(MaxPool3dOptions.ReturnIndices, TypeOptions.TickBoxOption);
     this.addOption(MaxPool3dOptions.CeilMode, TypeOptions.TickBoxOption);
   }

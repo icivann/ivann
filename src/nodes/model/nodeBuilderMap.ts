@@ -14,13 +14,15 @@ import Dropout from '@/app/ir/model/dropout';
 import Dropout2d from '@/app/ir/model/dropout2d';
 import Dropout3d from '@/app/ir/model/dropout3d';
 import ReLU from '@/app/ir/model/relu';
+import Conv2d from '@/app/ir/model/conv2d';
+import Conv3d from '@/app/ir/model/conv3d';
 
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
 export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['Conv1d', Conv1d.build],
-  ['Conv2d', Conv1d.build],
-  ['Conv3d', Conv1d.build],
+  ['Conv2d', Conv2d.build],
+  ['Conv3d', Conv3d.build],
   ['ConvTranspose1d', ConvTranspose1d.build],
   ['ConvTranspose2d', ConvTranspose2d.build],
   ['ConvTranspose3d', ConvTranspose3d.build],

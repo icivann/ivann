@@ -1,7 +1,7 @@
 <template>
   <div class="vault">
     <Tabs full-screen-tab="IDE">
-      <Tab name="Functions">
+      <Tab name="Functions" :padded="false">
         <FunctionsTab/>
       </Tab>
       <Tab name="IDE" :padded="false">

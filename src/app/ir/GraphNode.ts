@@ -5,10 +5,9 @@ export default class GraphNode {
   constructor(
     public readonly mlNode: MlNode,
     public readonly uniqueId = randomUuid(),
-    public readonly inputInterfaces =
-    new Map<string, UUID>(),
-    public readonly outputInterfaces =
-    new Map<string, UUID>(),
+    public readonly inputInterfaces = new Map<string, UUID>(),
+    public readonly outputInterfaces = new Map<string, UUID>(),
+    public readonly danglingInterfaces = new Array<string>(),
   ) {
   }
 }

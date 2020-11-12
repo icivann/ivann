@@ -1,6 +1,5 @@
 import editorMutations from '@/store/editors/mutations';
 import EditorType from '@/EditorType';
-import { editorState } from '@/store/editors';
 import { mockEditorState } from './mockData';
 
 describe('editorMutations', () => {
@@ -30,20 +29,20 @@ describe('editorMutations', () => {
     });
 
     test('creates new editor and sets it to be current', () => {
-      const editorType: EditorType = EditorType.TRAIN;
+      const editorType: EditorType = EditorType.DATA;
       const name = 'mockName';
       const payload = { editorType, name };
 
-      const currNumTrainEditors = mockEditorState.trainEditors.length;
+      const currNumDataEditors = mockEditorState.dataEditors.length;
       editorMutations.newEditor(mockEditorState, payload);
-      const newNumTrainEditors = mockEditorState.trainEditors.length;
+      const newNumDataEditors = mockEditorState.dataEditors.length;
 
-      expect(newNumTrainEditors - currNumTrainEditors).toEqual(1);
+      expect(newNumDataEditors - currNumDataEditors).toEqual(1);
 
       expect(mockEditorState.editorNames.has(name)).toBe(true);
       expect(mockEditorState).toMatchObject({
         currEditorType: editorType,
-        currEditorIndex: newNumTrainEditors - 1,
+        currEditorIndex: newNumDataEditors - 1,
       });
     });
   });
