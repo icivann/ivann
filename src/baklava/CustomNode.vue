@@ -134,7 +134,7 @@ export default class CustomNode extends Components.Node {
   // eslint-disable-next-line class-methods-use-this
   get messages(): string | undefined {
     return this.currentErrors.length !== 0
-      ? this.currentErrors.map((e) => e.formattedMessage).reduce((prev, curr) => `${prev}\n- ${curr}`)
+      ? this.currentErrors.map((e) => e.formattedMessage).reduce((prev, curr) => `${prev}\n${curr}`)
       : undefined;
   }
   get severity(): Severity[] {

@@ -8,5 +8,5 @@ export const findDanglingInterfaces = (graph: Graph) => graph.nodesAsArray
   .flatMap((node) => node.danglingInterfaces.map((name) => new IrError(
     [node],
     Severity.Error,
-    `Node missing a connection at '${name} in ${typeof node.mlNode}`,
+    `Node missing a connection at '${name}' in ${node.mlNode.name}`,
   )));
