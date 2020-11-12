@@ -47,8 +47,17 @@
         </FileFuncButton>
       </div>
       <div class="confirm-button">
-        <UIButton text="Cancel" @click="cancelClick"/>
-        <UIButton text="Confirm" :primary="true" @click="confirmClick"/>
+        <UIButton
+          text="Cancel"
+          @click="cancelClick"
+          :disabled="disable()"
+        />
+        <UIButton
+          text="Confirm"
+          :primary="true"
+          @click="confirmClick"
+          :disabled="disable()"
+        />
       </div>
     </div>
   </div>
@@ -66,7 +75,7 @@ import { Getter, Mutation } from 'vuex-class';
 import { ParsedFile } from '@/store/codeVault/types';
 import { uniqueTextInput } from '@/inputs/prompt';
 import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
-import Custom from '@/nodes/model/custom/Custom';
+import Custom from '@/nodes/common/Custom';
 
 @Component({
   components: {
@@ -175,6 +184,11 @@ export default class FunctionsTab extends Vue {
     if (name === null) return;
 
     this.addFile({ filename: `${name}.py`, functions: [] });
+  }
+
+  // Disable buttons when got here through navbar and not custom node
+  private disable(): boolean {
+    return this.nodeTriggeringCodeVault === undefined;
   }
 
   private confirmClick() {

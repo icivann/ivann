@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { ModelNodes } from '@/nodes/model/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
@@ -9,8 +9,8 @@ export enum LinearOptions {
   Bias = 'Bias'
 }
 export default class Linear extends Node {
-  type = Nodes.Linear;
-  name = Nodes.Linear;
+  type = ModelNodes.Linear;
+  name = ModelNodes.Linear;
 
   constructor() {
     super();

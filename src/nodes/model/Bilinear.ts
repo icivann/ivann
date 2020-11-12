@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { ModelNodes } from '@/nodes/model/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
@@ -10,8 +10,8 @@ export enum BilinearOptions {
   Bias = 'Bias'
 }
 export default class Bilinear extends Node {
-  type = Nodes.Bilinear;
-  name = Nodes.Bilinear;
+  type = ModelNodes.Bilinear;
+  name = ModelNodes.Bilinear;
 
   constructor() {
     super();

@@ -1,8 +1,18 @@
 import AbstractCanvas from '@/components/canvas/AbstractCanvas';
-import { Editor } from '@baklavajs/core';
+import { DataCategories } from '@/nodes/data/Types';
+import { CommonNodes } from '@/nodes/common/Types';
+import Custom from '@/nodes/common/Custom';
 
 export default class DataCanvas extends AbstractCanvas {
-  registerNodes(editor: Editor): void {
-    console.log('No nodes registered');
-  }
+  public nodeList = [
+    {
+      category: DataCategories.Custom,
+      nodes: [
+        {
+          name: CommonNodes.Custom,
+          node: Custom,
+        },
+      ],
+    },
+  ];
 }
