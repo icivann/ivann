@@ -41,15 +41,6 @@ const editorMutations: MutationTree<EditorsState> = {
           editor,
         }) - 1;
         break;
-      case EditorType.TRAIN:
-        state.currEditorType = editorType;
-        state.editorNames.add(name);
-        state.currEditorIndex = state.trainEditors.push({
-          id,
-          name,
-          editor,
-        }) - 1;
-        break;
       default:
         console.log('Attempted to create non existent editor type');
         break;
@@ -67,11 +58,6 @@ const editorMutations: MutationTree<EditorsState> = {
       case EditorType.DATA:
         oldName = state.dataEditors[index].name;
         state.dataEditors[index].name = name;
-        state.editorNames.add(name);
-        break;
-      case EditorType.TRAIN:
-        oldName = state.trainEditors[index].name;
-        state.trainEditors[index].name = name;
         state.editorNames.add(name);
         break;
       default:
@@ -111,10 +97,6 @@ const editorMutations: MutationTree<EditorsState> = {
         name = state.dataEditors[index].name;
         state.dataEditors = state.dataEditors.filter((val, i) => i !== index);
         break;
-      case EditorType.TRAIN:
-        name = state.trainEditors[index].name;
-        state.trainEditors = state.trainEditors.filter((val, i) => i !== index);
-        break;
       default:
         console.log('Attempted to delete non existent editor type');
         break;
@@ -142,7 +124,6 @@ const editorMutations: MutationTree<EditorsState> = {
     [state.overviewEditor] = loadEditors(EditorType.OVERVIEW, [file.overviewEditor], editorNames);
     state.modelEditors = loadEditors(EditorType.MODEL, file.modelEditors, editorNames);
     state.dataEditors = loadEditors(EditorType.DATA, file.dataEditors, editorNames);
-    state.trainEditors = loadEditors(EditorType.TRAIN, file.trainEditors, editorNames);
 
     state.editorNames = editorNames;
 
@@ -157,7 +138,6 @@ const editorMutations: MutationTree<EditorsState> = {
     };
     state.modelEditors = [];
     state.dataEditors = [];
-    state.trainEditors = [];
 
     state.editorNames = new Set<string>(['Overview']);
 

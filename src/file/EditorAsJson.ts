@@ -61,7 +61,6 @@ export interface Save {
   overviewEditor: EditorSave;
   modelEditors: EditorSave[];
   dataEditors: EditorSave[];
-  trainEditors: EditorSave[];
 }
 
 export class SaveWithNames {
@@ -69,6 +68,5 @@ export class SaveWithNames {
     public readonly overviewEditor: string,
     public readonly modelEditors: string[],
     public readonly dataEditors: string[],
-    public readonly trainEditors: string[],
   ) {}
 }

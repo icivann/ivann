@@ -34,6 +34,5 @@ export const mockEditorState: EditorsState = {
   overviewEditor: mockOverviewEditor,
   modelEditors: mockModelEditors,
   dataEditors: [],
-  trainEditors: [],
   inCodeVault: false,
 };

@@ -48,9 +48,8 @@ export default class Home extends Vue {
       const overviewEditor = this.$cookies.get('unsaved-editor-Overview');
       const modelEditors = saveWithNames.modelEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
       const dataEditors = saveWithNames.dataEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
-      const trainEditors = saveWithNames.trainEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
       this.loadEditors({
-        overviewEditor, modelEditors, dataEditors, trainEditors,
+        overviewEditor, modelEditors, dataEditors,
       });
       // We reset the view to set the panning and scaling on the current view.
       EditorManager.getInstance().resetView();
