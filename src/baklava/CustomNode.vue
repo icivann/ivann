@@ -2,7 +2,10 @@
   <div
     :id="data.id"
     :class="classes"
-    :style="styles"
+    :style="[styles, shading]"
+    :title="showErrorMessages ? messages : undefined"
+    @mouseover="setShowErrorMessages(true)"
+    @mouseleave="setShowErrorMessages(false)"
   >
     <div
       id="header"
@@ -103,10 +106,13 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { Component, Watch } from 'vue-property-decorator';
 import { Components } from '@baklavajs/plugin-renderer-vue';
 import ArrowButton from '@/inputs/ArrowButton.vue';
 import { ModelNodes } from '@/nodes/model/Types';
+import IrError from '@/app/ir/checking/irError';
+import { Getter } from 'vuex-class';
+import { Severity } from '@/app/ir/checking/severity';
 import { OverviewNodes } from '@/nodes/overview/Types';
 import { CommonNodes } from '@/nodes/common/Types';
 
@@ -114,6 +120,7 @@ import { CommonNodes } from '@/nodes/common/Types';
   components: { ArrowButton },
 })
 export default class CustomNode extends Components.Node {
+  @Getter('errorsMap') errorsMap!: Map<string, IrError[]>
   private shouldShowOptions = false;
 
   contextMenu = {
@@ -122,6 +129,45 @@ export default class CustomNode extends Components.Node {
     y: 0,
     items: this.getContextualMenuItems(),
   };
+
+  private currentErrors: IrError[] = []
+  get messages(): string | undefined {
+    return this.currentErrors.length !== 0
+      ? this.currentErrors.map((e) => e.formattedMessage).reduce((prev, curr) => `${prev}\n${curr}`)
+      : undefined;
+  }
+  get severity(): Severity[] {
+    const index = (s: Severity) => Object.keys(Severity).indexOf(s);
+    return this.currentErrors.map((e) => e.severity).sort((a, b) => index(a) - index(b));
+  }
+
+  private showErrorMessages = false;
+
+  setShowErrorMessages(show: boolean) {
+    this.showErrorMessages = show;
+  }
+
+  get shading() {
+    const severities = this.severity;
+    if (severities.length === 0) {
+      return this.selected
+        ? { 'box-shadow': '0 0 0px 2px var(--blue)' }
+        : { 'box-shadow': '0 0 0px 1px var(--black)' };
+    }
+    switch (severities[0]) {
+      case Severity.Error:
+        return { 'box-shadow': '0 0 1px 2px var(--red)' };
+      case Severity.Warning: // WARN
+        return { 'box-shadow': '0 0 1px 2px var(--yellow)' };
+      default:
+        return {};
+    }
+  }
+
+  @Watch('errorsMap')
+  private onErrorsUpdate(errorsMap: Map<string, IrError[]>) {
+    this.currentErrors = errorsMap.get(this.data.id) || [];
+  }
 
   private getContextualMenuItems() {
     const items = [{ value: 'delete', label: 'Delete' }];
