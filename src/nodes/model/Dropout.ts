@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { ModelNodes } from '@/nodes/model/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 
 export enum DropoutOptions {
@@ -7,8 +7,8 @@ export enum DropoutOptions {
   Inplace = 'Inplace'
 }
 export default class Dropout extends Node {
-  type = Nodes.Dropout;
-  name = Nodes.Dropout;
+  type = ModelNodes.Dropout;
+  name = ModelNodes.Dropout;
 
   constructor() {
     super();

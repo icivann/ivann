@@ -1,7 +1,11 @@
+import { nodeName } from '@/app/ir/irCommon';
+
 class Concat {
-  constructor() {}
+  constructor(
+    public readonly name: string,
+  ) {}
   static build(options: Map<string, any>): Concat {
-    return new Concat();
+    return new Concat(options.get(nodeName));
   }
 }
 

@@ -18,6 +18,11 @@ import Dropout3d from '@/app/ir/model/dropout3d';
 import ReLU from '@/app/ir/model/relu';
 import Conv2d from '@/app/ir/model/conv2d';
 import Conv3d from '@/app/ir/model/conv3d';
+import Transformer from '@/app/ir/model/transformer';
+import Linear from '@/app/ir/model/linear';
+import Bilinear from '@/app/ir/model/bilinear';
+import Softmin from '@/app/ir/model/softmin';
+import Softmax from '@/app/ir/model/softmax';
 
 import InData from '@/app/ir/data/InData';
 import ToTensor from '@/app/ir/data/ToTensor';
@@ -49,4 +54,9 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['OutData', OutData.build],
   ['ToTensor', ToTensor.build],
   ['Grayscale', Grayscale.build],
+  ['Transformer', Transformer.build],
+  ['Linear', Linear.build],
+  ['Bilinear', Bilinear.build],
+  ['Softmin', Softmin.build],
+  ['Softmax', Softmax.build],
 ]);

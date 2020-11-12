@@ -20,7 +20,7 @@ import Ace from 'brace';
 import 'brace/mode/python';
 import '@/assets/ivann-theme';
 import { Getter, Mutation } from 'vuex-class';
-import Custom from '@/nodes/model/custom/Custom';
+import Custom from '@/nodes/common/Custom';
 import UIButton from '@/components/buttons/UIButton.vue';
 import parse from '@/app/parser/parser';
 import ParsedFunction from '@/app/parser/ParsedFunction';
@@ -70,7 +70,7 @@ export default class IdeTab extends Vue {
   private save() {
     if (this.nodeTriggeringCodeVault && this.editor) {
       if (!(this.parsedFunction instanceof Error)) {
-        this.nodeTriggeringCodeVault.setInlineCode(this.parsedFunction);
+        this.nodeTriggeringCodeVault.setParsedFunction(this.parsedFunction);
         this.leaveCodeVault();
       } else {
         window.alert('Cannot save function with errors.');
@@ -119,9 +119,9 @@ export default class IdeTab extends Vue {
   private updateCode() {
     if (this.editor) {
       if (this.nodeTriggeringCodeVault) {
-        const inlineCode = this.nodeTriggeringCodeVault.getInlineCode();
-        if (inlineCode) {
-          this.editor.setValue(inlineCode.toString());
+        const parsedFunction = this.nodeTriggeringCodeVault.getParsedFunction();
+        if (parsedFunction) {
+          this.editor.setValue(parsedFunction.toString());
         }
       } else {
         this.editor.setValue('');

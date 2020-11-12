@@ -1,59 +1,26 @@
 <template>
   <div class="layers-tab">
-    <ExpandablePanel name="I/O">
+    <ExpandablePanel v-for="(category) in modelNodes" :key="category.category"
+                     :name="category.category">
       <ButtonGrid>
-        <AddNodeButton node="InModel" name="Input" :names="editorIONames"/>
-        <AddNodeButton node="OutModel" name="Output" :names="editorIONames"/>
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel name="Convolutional">
-      <ButtonGrid>
-        <AddNodeButton node="Conv1d" name="Conv1d"/>
-        <AddNodeButton node="Conv2d" name="Conv2d"/>
-        <AddNodeButton node="Conv3d" name="Conv3d"/>
-        <AddNodeButton node="ConvTranspose1d" name="ConvTranspose1d"/>
-        <AddNodeButton node="ConvTranspose2d" name="ConvTranspose2d"/>
-        <AddNodeButton node="ConvTranspose3d" name="ConvTranspose3d"/>
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel name="Pooling">
-      <ButtonGrid>
-        <AddNodeButton node="MaxPool1d" name="MaxPool1d"/>
-        <AddNodeButton node="MaxPool2d" name="MaxPool2d"/>
-        <AddNodeButton node="MaxPool3d" name="MaxPool3d"/>
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel name="Regularization">
-      <ButtonGrid>
-        <AddNodeButton node="Dropout" name="Dropout"/>
-        <AddNodeButton node="Dropout2d" name="Dropout2d"/>
-        <AddNodeButton node="Dropout3d" name="Dropout3d"/>
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel name="Activation Functions">
-      <ButtonGrid>
-        <AddNodeButton node="Relu" name="Relu"/>
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel name="Custom">
-      <ButtonGrid>
-        <AddNodeButton node="Custom" name="Custom"/>
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel name="Operations">
-      <ButtonGrid>
-        <AddNodeButton node="Concat" name="Concat"/>
+        <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
+                       :node="node.name"
+                       :name="node.name"
+                       :names="node.name === 'InModel' || node.name === 'OutModel'
+                        ? editorIONames : undefined"
+        />
       </ButtonGrid>
     </ExpandablePanel>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
 import { mapGetters } from 'vuex';
+import EditorManager from '@/EditorManager';
 
 @Component({
   components: {
@@ -64,5 +31,6 @@ import { mapGetters } from 'vuex';
   computed: mapGetters(['editorIONames']),
 })
 export default class LayersTab extends Vue {
+  private modelNodes = EditorManager.getInstance().modelCanvas.nodeList;
 }
 </script>

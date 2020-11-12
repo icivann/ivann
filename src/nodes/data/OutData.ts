@@ -1,13 +1,13 @@
 import { Node } from '@baklavajs/core';
-import { Nodes, NodeTypes } from '@/nodes/data/Types';
+import { DataNodes } from '@/nodes/data/Types';
 
 export enum OutDataOptions {
   BatchSize = 'Batch Size',
 }
 
 class OutData extends Node {
-  type = NodeTypes.IO;
-  name = Nodes.OutData;
+  type = DataNodes.OutData;
+  name = DataNodes.OutData;
 
   constructor() {
     super();

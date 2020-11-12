@@ -1,9 +1,9 @@
 import { Node } from '@baklavajs/core';
-import { Nodes, NodeTypes } from '@/nodes/data/Types';
+import { DataNodes } from '@/nodes/data/Types';
 
 export default class Grayscale extends Node {
-  type = NodeTypes.Transform;
-  name = Nodes.Grayscale;
+  type = DataNodes.Grayscale;
+  name = DataNodes.Grayscale;
 
   constructor() {
     super();
