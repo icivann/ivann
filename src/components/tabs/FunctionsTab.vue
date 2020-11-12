@@ -50,13 +50,13 @@
         <UIButton
           text="Cancel"
           @click="cancelClick"
-          :disabled="disable()"
+          :disabled="!nodeTriggeringCodeVault"
         />
         <UIButton
           text="Confirm"
           :primary="true"
           @click="confirmClick"
-          :disabled="disable()"
+          :disabled="!nodeTriggeringCodeVault || selectedFunction === -1"
         />
       </div>
     </div>
@@ -189,11 +189,6 @@ export default class FunctionsTab extends Vue {
     const file = { filename: `${name}.py`, functions: [] };
     this.addFile(file);
     this.saveToCookies(file);
-  }
-
-  // Disable buttons when got here through navbar and not custom node
-  private disable(): boolean {
-    return this.nodeTriggeringCodeVault === undefined;
   }
 
   private confirmClick() {
