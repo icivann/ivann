@@ -171,7 +171,9 @@ export default class CustomNode extends Components.Node {
 
   private getContextualMenuItems() {
     const items = [{ value: 'delete', label: 'Delete' }];
-    if (this.data.type !== OverviewNodes.ModelNode && this.data.type !== CommonNodes.Custom) {
+    if (this.data.type !== OverviewNodes.ModelNode
+      && this.data.type !== OverviewNodes.DataNode
+      && this.data.type !== CommonNodes.Custom) {
       items.unshift({ value: 'rename', label: 'Rename' });
     }
     return items;

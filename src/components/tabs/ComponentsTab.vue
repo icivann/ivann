@@ -2,11 +2,24 @@
   <div>
     <ExpandablePanel name="Models">
       <ButtonGrid>
-        <AddNodeButton v-for="editor in modelEditors"
-                       :node="modelNodeType"
-                       :options="editor"
-                       :key="editor.name"
-                       :name="editor.name"/>
+        <AddNodeButton
+          v-for="editor in modelEditors"
+          :node="overviewNodes.ModelNode"
+          :options="editor"
+          :key="editor.name"
+          :name="editor.name"
+        />
+      </ButtonGrid>
+    </ExpandablePanel>
+    <ExpandablePanel name="Datasets">
+      <ButtonGrid>
+        <AddNodeButton
+          v-for="editor in dataEditors"
+          :node="overviewNodes.DataNode"
+          :options="editor"
+          :key="editor.name"
+          :name="editor.name"
+        />
       </ButtonGrid>
     </ExpandablePanel>
     <ExpandablePanel name="Custom">
@@ -31,9 +44,9 @@ import { OverviewNodes } from '@/nodes/overview/Types';
     AddNodeButton,
     ButtonGrid,
   },
-  computed: mapGetters(['modelEditors']),
+  computed: mapGetters(['modelEditors', 'dataEditors']),
 })
 export default class ComponentsTab extends Vue {
-  private modelNodeType = OverviewNodes.ModelNode;
+  private overviewNodes = OverviewNodes;
 }
 </script>

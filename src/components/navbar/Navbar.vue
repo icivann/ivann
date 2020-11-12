@@ -4,7 +4,7 @@
     <div
       class="build tab-button"
       :class="isSelected(editorType.OVERVIEW)"
-      @click="switchEditor({editorType: editorType.OVERVIEW})"
+      @click="switchOverviewEditor"
     >
       <i class="fas fa-hammer tab-icon"/>
     </div>
@@ -64,9 +64,11 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import EditorType from '@/EditorType';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters } from 'vuex';
 import { Getter, Mutation } from 'vuex-class';
 import NavbarContextualMenu from '@/components/navbar/NavbarContextualMenu.vue';
+import { EditorSave, saveEditor } from '@/file/EditorAsJson';
+import { EditorModel } from '@/store/editors/types';
 
 @Component({
   components: { NavbarContextualMenu },
@@ -75,16 +77,32 @@ import NavbarContextualMenu from '@/components/navbar/NavbarContextualMenu.vue';
     'dataEditors',
     'inCodeVault',
   ]),
-  methods: mapMutations(['switchEditor']),
 })
 export default class Navbar extends Vue {
   private editorType = EditorType;
   private isModelContextualMenuOpen = false;
   private isDataContextualMenuOpen = false;
   @Getter('currEditorType') currEditorType!: EditorType;
+  @Getter('currEditorModel') currEditorModel!: EditorModel;
+  @Getter('overviewEditor') overviewEditor!: EditorModel;
   @Getter('inCodeVault') inCodeVault!: boolean;
+  @Mutation('switchEditor') switch!: (arg0: { editorType: EditorType; index: number }) => void;
+  @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
   @Mutation('enterCodeVault') enterCodeVault!: () => void;
   @Mutation('unlinkNode') unlinkNode!: () => void;
+
+  private switchOverviewEditor() {
+    // Save currEditorModel before switching as periodic save may not have captured last changes
+    // and update overview editor if required
+    this.updateNodeInOverview(this.currEditorModel);
+
+    const oldEditorSaved: EditorSave = saveEditor(this.currEditorModel);
+    const overviewEditorSave: EditorSave = saveEditor(this.overviewEditor);
+    this.$cookies.set(`unsaved-editor-${this.currEditorModel.name}`, oldEditorSaved);
+    this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
+
+    this.switch({ editorType: EditorType.OVERVIEW, index: 0 });
+  }
 
   private isSelected(editorType: EditorType) {
     return !this.inCodeVault && (this.currEditorType === editorType) ? 'selected' : '';

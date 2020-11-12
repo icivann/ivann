@@ -5,6 +5,7 @@ import { CommonNodes } from '@/nodes/common/Types';
 import Custom from '@/nodes/common/Custom';
 import TrainClassifier from '@/nodes/overview/train/TrainClassifier';
 import Adadelta from '@/nodes/overview/optimizers/Adadelta';
+import { Data } from '@/nodes/overview/Data';
 
 export default class OverviewCanvas extends AbstractCanvas {
   nodeList = [
@@ -14,6 +15,15 @@ export default class OverviewCanvas extends AbstractCanvas {
         {
           name: OverviewNodes.ModelNode,
           node: Model,
+        },
+      ],
+    },
+    {
+      category: OverviewCategories.Data,
+      nodes: [
+        {
+          name: OverviewNodes.DataNode,
+          node: Data,
         },
       ],
     },

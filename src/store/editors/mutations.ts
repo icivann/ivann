@@ -146,22 +146,28 @@ const editorMutations: MutationTree<EditorsState> = {
     state.inCodeVault = false;
   },
   updateNodeInOverview(state, currEditor: EditorModel) {
-    // Loop through nodes in currEditor and find differences
-    // inputs, outputs, ...
-    // TODO: Add type checking here?
-    const { inputs, outputs } = getEditorIOs(currEditor);
+    // Loop through nodes in currEditor and find differences - TODO: Add type checking here?
 
-    // Loop through nodes in overview editor
-    // find corresponding node for currEditor and update
-    const { nodes } = state.overviewEditor.editor;
-    const overviewNodes = nodes.filter((node) => node.name === currEditor.name) as Model[];
-    if (overviewNodes.length > 0) {
-      const { inputs: oldInputs, outputs: oldOutputs } = overviewNodes[0].getCurrentIO();
-      const inputChange: NodeIOChange = editorIOPartition(inputs, oldInputs);
-      const outputChange: NodeIOChange = editorIOPartition(outputs, oldOutputs);
-      for (const overviewNode of overviewNodes) {
-        overviewNode.updateIO(inputChange, outputChange);
+    switch (state.currEditorType) {
+      case EditorType.MODEL: {
+        const { inputs, outputs } = getEditorIOs(currEditor);
+
+        // Loop through nodes in overview editor
+        // find corresponding node for currEditor and update
+        const { nodes } = state.overviewEditor.editor;
+        const overviewNodes = nodes.filter((node) => node.name === currEditor.name) as Model[];
+        if (overviewNodes.length > 0) {
+          const { inputs: oldInputs, outputs: oldOutputs } = overviewNodes[0].getCurrentIO();
+          const inputChange: NodeIOChange = editorIOPartition(inputs, oldInputs);
+          const outputChange: NodeIOChange = editorIOPartition(outputs, oldOutputs);
+          for (const overviewNode of overviewNodes) {
+            overviewNode.updateIO(inputChange, outputChange);
+          }
+        }
+        break;
       }
+      default:
+        break;
     }
   },
   enterCodeVault(state) {
