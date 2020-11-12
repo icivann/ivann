@@ -47,13 +47,15 @@ class Model(nn.Module):
     const iState = JSON.parse('{"nodes":[{"type":"InModel","id":"node_16051304291465","name":"named_input","options":[],"state":{},"interfaces":[["Output",{"id":"ni_16051304291466","value":null}]],"position":{"x":31,"y":162},"width":200,"twoColumn":false},{"type":"Conv2d","id":"node_16051304343277","name":"Conv2dname","options":[["In channels",0],["Out channels",0],["Kernel size",[0,0]],["Stride",[1,1]],["Padding",[0,0]],["Dilation",[1,1]],["Groups",1],["Bias",1],["Padding mode","zeros"]],"state":{},"interfaces":[["Input",{"id":"ni_16051304343278","value":null}],["Output",{"id":"ni_16051304343279","value":null}]],"position":{"x":245,"y":150},"width":200,"twoColumn":false},{"type":"OutModel","id":"node_160513044748219","name":"output","options":[],"state":{},"interfaces":[["Input",{"id":"ni_160513044748320","value":null}]],"position":{"x":704,"y":147},"width":200,"twoColumn":false},{"type":"MaxPool2d","id":"node_160513148090922","name":"MaxPool2d","options":[["Kernel size",[0,0]],["Stride",[0,0]],["Padding",[0,0]],["Dilation",[1,1]],["Return indices",null],["Ceil mode",null]],"state":{},"interfaces":[["Input",{"id":"ni_160513148090923","value":null}],["Output",{"id":"ni_160513148090924","value":null}]],"position":{"x":454,"y":163},"width":200,"twoColumn":false}],"connections":[{"id":"160513123339511","from":"ni_16051304291466","to":"ni_16051304343278"},{"id":"160513148489227","from":"ni_16051304343279","to":"ni_160513148090923"},{"id":"160513148671330","from":"ni_160513148090924","to":"ni_160513044748320"}],"panning":{"x":0,"y":0},"scaling":1}');
     const graph = istateToGraph(iState);
     // TODO: create the graph to test code generation
-    let actual = generateCode(graph);
+    let actual = generateModelCode(graph, 'Model');
     actual = removeBlankLines(actual);
 
     let expected = `
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms
 
 class Model(nn.Module):
 

@@ -26,8 +26,8 @@ import InData from '@/app/ir/data/InData';
 import ToTensor from '@/app/ir/data/ToTensor';
 import Grayscale from '@/app/ir/data/Grayscale';
 import OutData from '@/app/ir/data/OutData';
-import Adadelta from '@/app/ir/optimizers/Adadelta';
-import TrainClassifier from '@/app/ir/train/TrainClassifier';
+import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
+import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import Model from '@/app/ir/model/model';
 
 type Options = Map<string, any>

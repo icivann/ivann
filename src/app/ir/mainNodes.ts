@@ -1,7 +1,7 @@
 import Custom from '@/app/ir/Custom';
 
-import Adadelta from '@/app/ir/optimizers/Adadelta';
-import TrainClassifier from '@/app/ir/train/TrainClassifier';
+import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
+import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import InModel from './InModel';
 import OutModel from './OutModel';
 import Concat from './Concat';

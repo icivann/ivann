@@ -7,11 +7,8 @@ import OutModel from '@/app/ir/OutModel';
 import Graph from '@/app/ir/Graph';
 import Concat from '@/app/ir/Concat';
 import Custom from '@/app/ir/Custom';
-import { EditorModel } from '@/store/editors/types';
-import { saveEditor } from '@/file/EditorAsJson';
-import istateToGraph from '@/app/ir/istateToGraph';
-import TrainClassifier from '@/app/ir/train/TrainClassifier';
-import Adadelta from '@/app/ir/optimizers/Adadelta';
+import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
+import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
 import Model from '@/app/ir/model/model';
 
 import { indent, getNodeType } from '@/app/codegen/common';
