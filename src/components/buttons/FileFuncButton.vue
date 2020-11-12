@@ -22,12 +22,13 @@ export default class FileFuncButton extends Vue {
     background: #202020;
     border-radius: 8px;
     color: var(--foreground);
-    font-size: initial;
     margin-bottom: 1em;
     border: 1px solid var(--grey);
     transition-duration: 0.1s;
     position: relative;
     padding: 0.5em 1em;
+    font-family: monospace;
+    font-size: 0.8em;
   }
 
   .func-button:hover {
@@ -39,6 +40,10 @@ export default class FileFuncButton extends Vue {
 
   .header {
     font-weight: bolder;
+  }
+
+  .body {
+    color: var(--grey);
   }
 
   .selected {
