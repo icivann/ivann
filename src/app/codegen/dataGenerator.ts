@@ -51,7 +51,6 @@ function generateDataTransformCode(
       outputs,
     );
 
-    console.log('ret4');
     return [code.concat(retCode), retBranch];
   }
 
@@ -80,8 +79,8 @@ function generateDataTransformCode(
   return [[], branch];
 }
 
-function generateData(graph: Graph): string {
-  const header = 'class MyDataset(Dataset):';
+function generateData(graph: Graph, dataName: string): string {
+  const header = `class ${dataName}(Dataset):`;
 
   const inputs = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof InData);
   const inputNames = inputs.map((node) => getNodeName(node));

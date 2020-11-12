@@ -1,5 +1,7 @@
 import Custom from '@/app/ir/Custom';
 
+import Adadelta from '@/app/ir/optimizers/Adadelta';
+import TrainClassifier from '@/app/ir/train/TrainClassifier';
 import InModel from './InModel';
 import OutModel from './OutModel';
 import Concat from './Concat';
@@ -18,9 +20,8 @@ import OutData from './data/OutData';
 import ToTensor from './data/ToTensor';
 import Grayscale from './data/Grayscale';
 
-export type MlNode = ModelNode | DataNode
-
 // MODEL NODES
+export type MlNode = ModelNode | TrainNode | DataNode | OptimizerNode
 
 export type Conv = Conv1d | Conv2d | Conv3d | ConvTranspose1d | ConvTranspose2d | ConvTranspose3d
 
@@ -33,7 +34,11 @@ export type Operations = Concat
 export type ModelNode = ModelLayerNode | InModel | OutModel | Custom | Operations
 
 // DATA NODES
-
 export type DataNode = InData | OutData | DataTransform
 
 export type DataTransform = ToTensor | Grayscale
+
+// TRAIN NODES
+export type OptimizerNode = Adadelta
+
+export type TrainNode = TrainClassifier
