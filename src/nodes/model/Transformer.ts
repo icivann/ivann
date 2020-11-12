@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { ModelNodes } from '@/nodes/model/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 
 export enum TransformerOptions {
@@ -14,8 +14,8 @@ export enum TransformerOptions {
   CustomDecoder = 'Custom decoder'
 }
 export default class Transformer extends Node {
-  type = Nodes.Transformer;
-  name = Nodes.Transformer;
+  type = ModelNodes.Transformer;
+  name = ModelNodes.Transformer;
 
   constructor() {
     super();

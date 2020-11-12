@@ -1,10 +1,28 @@
 import AbstractCanvas from '@/components/canvas/AbstractCanvas';
-import { Editor } from '@baklavajs/core';
 import Model from '@/nodes/overview/Model';
-import { Overview } from '@/nodes/model/Types';
+import { OverviewCategories, OverviewNodes } from '@/nodes/overview/Types';
+import { CommonNodes } from '@/nodes/common/Types';
+import Custom from '@/nodes/common/Custom';
 
 export default class OverviewCanvas extends AbstractCanvas {
-  registerNodes(editor: Editor): void {
-    editor.registerNodeType(Overview.ModelNode, Model);
-  }
+  nodeList = [
+    {
+      category: OverviewCategories.Model,
+      nodes: [
+        {
+          name: OverviewNodes.ModelNode,
+          node: Model,
+        },
+      ],
+    },
+    {
+      category: OverviewCategories.Custom,
+      nodes: [
+        {
+          name: CommonNodes.Custom,
+          node: Custom,
+        },
+      ],
+    },
+  ];
 }

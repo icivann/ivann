@@ -1,4 +1,4 @@
-import { CustomOptions } from '@/nodes/model/custom/Custom';
+import { CustomOptions } from '@/nodes/common/Custom';
 
 class Custom {
   public readonly name = 'custom'

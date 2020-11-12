@@ -1,13 +1,13 @@
 import { Node } from '@baklavajs/core';
-import { Layers, Nodes } from '@/nodes/model/Types';
+import { ModelNodes } from '@/nodes/model/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 
 export enum SoftmaxOptions {
   Dim = 'Dim'
 }
 export default class Softmax extends Node {
-  type = Nodes.Softmax;
-  name = Nodes.Softmax;
+  type = ModelNodes.Softmax;
+  name = ModelNodes.Softmax;
 
   constructor() {
     super();

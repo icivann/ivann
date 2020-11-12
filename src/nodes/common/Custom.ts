@@ -1,15 +1,15 @@
 import { Node } from '@baklavajs/core';
-import { Nodes } from '@/nodes/model/Types';
 import { INodeState } from '@baklavajs/core/dist/baklavajs-core/types/state.d';
 import ParsedFunction from '@/app/parser/ParsedFunction';
+import { CommonNodes } from '@/nodes/common/Types';
 
 // TODO CORE-58 Change InlineCode Option to use state.parsedFunction
 export enum CustomOptions {
   InlineCode = 'Inline Code',
 }
 export default class Custom extends Node {
-  type = Nodes.Custom;
-  name: string = Nodes.Custom;
+  type = CommonNodes.Custom;
+  name: string = CommonNodes.Custom;
 
   private inputNames: string[] = [];
 
@@ -48,7 +48,7 @@ export default class Custom extends Node {
   private updateNode() {
     const parsedFunction = this.getParsedFunction();
     if (!parsedFunction) {
-      this.name = Nodes.Custom;
+      this.name = CommonNodes.Custom;
       this.removeAllInputs();
       this.removeOutput();
     } else {
