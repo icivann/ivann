@@ -1,5 +1,9 @@
 export enum Padding {Valid, Same}
 
+export enum PaddingMode {
+  zeros = 'zeros', reflect = 'reflect', replicate = 'replicate', circular = 'circular'
+}
+
 export type Initializer = CustomInitializer | BuiltinInitializer
 
 export enum BuiltinInitializer {
