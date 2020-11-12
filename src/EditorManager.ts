@@ -1,6 +1,5 @@
 import ModelCanvas from '@/components/canvas/ModelCanvas';
 import DataCanvas from '@/components/canvas/DataCanvas';
-import TrainCanvas from '@/components/canvas/TrainCanvas';
 import OverviewCanvas from '@/components/canvas/OverviewCanvas';
 import { ViewPlugin } from '@baklavajs/plugin-renderer-vue';
 import Vector from '@/baklava/options/Vector.vue';
@@ -19,7 +18,6 @@ export default class EditorManager {
   private overview: OverviewCanvas = new OverviewCanvas();
   private model: ModelCanvas = new ModelCanvas();
   private data: DataCanvas = new DataCanvas();
-  private train: TrainCanvas = new TrainCanvas();
 
   private view: ViewPlugin = new ViewPlugin();
 
@@ -35,9 +33,6 @@ export default class EditorManager {
   }
   get dataCanvas(): DataCanvas {
     return this.data;
-  }
-  get trainCanvas(): TrainCanvas {
-    return this.train;
   }
 
   get viewPlugin(): ViewPlugin {

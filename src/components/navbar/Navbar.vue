@@ -49,26 +49,6 @@
       />
     </div>
 
-    <div class="py-1 px-2">
-      <hr/>
-    </div>
-
-    <!-- Train -->
-    <div
-      class="train tab-button"
-      :class="isSelected(editorType.TRAIN)"
-      @mouseover="displayNavbarContextualMenu(editorType.TRAIN)"
-      @mouseleave="hideNavbarContextualMenu()"
-    >
-      <i class="fas fa-cogs tab-icon"/>
-      <NavbarContextualMenu
-        class="navbar-contextual-menu"
-        v-if="isTrainContextualMenuOpen"
-        :editors="trainEditors"
-        :editor-type="editorType.TRAIN"
-      />
-    </div>
-
     <!-- Code Vault -->
     <div class="flex-grow-1"/>
     <div
@@ -93,7 +73,6 @@ import NavbarContextualMenu from '@/components/navbar/NavbarContextualMenu.vue';
   computed: mapGetters([
     'modelEditors',
     'dataEditors',
-    'trainEditors',
     'inCodeVault',
   ]),
   methods: mapMutations(['switchEditor', 'enterCodeVault']),
@@ -102,7 +81,6 @@ export default class Navbar extends Vue {
   private editorType = EditorType;
   private isModelContextualMenuOpen = false;
   private isDataContextualMenuOpen = false;
-  private isTrainContextualMenuOpen = false;
   @Getter('currEditorType') currEditorType!: EditorType;
   @Getter('inCodeVault') inCodeVault!: boolean;
 
@@ -118,9 +96,6 @@ export default class Navbar extends Vue {
       case EditorType.DATA:
         this.isDataContextualMenuOpen = true;
         break;
-      case EditorType.TRAIN:
-        this.isTrainContextualMenuOpen = true;
-        break;
       default:
         break;
     }
@@ -129,7 +104,6 @@ export default class Navbar extends Vue {
   private hideNavbarContextualMenu(): void {
     this.isModelContextualMenuOpen = false;
     this.isDataContextualMenuOpen = false;
-    this.isTrainContextualMenuOpen = false;
   }
 }
 
