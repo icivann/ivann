@@ -11,7 +11,7 @@ class ParsedFunction {
   }
 
   public toString(): string {
-    return `${this.signature()}:${this.body}`;
+    return `${this.signature()}:\n${this.body}`;
   }
 }
 
