@@ -90,6 +90,7 @@ export default class Navbar extends Vue {
   @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
   @Mutation('enterCodeVault') enterCodeVault!: () => void;
   @Mutation('unlinkNode') unlinkNode!: () => void;
+  @Mutation('closeFiles') closeFiles!: () => void;
 
   private switchOverviewEditor() {
     // Save currEditorModel before switching as periodic save may not have captured last changes
@@ -128,6 +129,7 @@ export default class Navbar extends Vue {
 
   private clickCodeVault() {
     this.unlinkNode();
+    this.closeFiles();
     this.enterCodeVault();
   }
 }

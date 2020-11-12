@@ -170,7 +170,7 @@ export default class FunctionsTab extends Vue {
       if (parsed instanceof Error) {
         console.error(parsed);
       } else {
-        const file = { filename: files[0].name, functions: parsed };
+        const file = { filename: files[0].name, functions: parsed, open: false };
         this.addFile(file);
         this.saveToCookies(file);
       }
@@ -186,7 +186,7 @@ export default class FunctionsTab extends Vue {
     );
     if (name === null) return;
 
-    const file = { filename: `${name}.py`, functions: [] };
+    const file = { filename: `${name}.py`, functions: [], open: true };
     this.addFile(file);
     this.saveToCookies(file);
   }
