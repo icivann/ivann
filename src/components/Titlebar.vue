@@ -181,9 +181,4 @@ export default class Titlebar extends Vue {
       cursor: pointer;
     }
   }
-  &:hover {
-    background-color: #2c2c2c;
-    cursor: pointer;
-  }
-}
 </style>

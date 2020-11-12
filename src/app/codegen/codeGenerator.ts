@@ -26,8 +26,11 @@ const imports = [
   'from torchvision import transforms',
 ].join('\n');
 
-function getNodeName(node: GraphNode, nodeNames: Map<GraphNode, string>, nodeTypeCounters:
-                    Map<string, number>): string {
+function getNodeName(
+  node: GraphNode,
+  nodeNames: Map<GraphNode, string>,
+  nodeTypeCounters: Map<string, number>,
+): string {
   if (nodeNames.has(node)) {
     // TODO: linting complains about nodeNames.get possibly being undefined
     // when I've already checked with nodeNames.has
