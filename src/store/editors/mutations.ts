@@ -9,7 +9,6 @@ import { randomUuid, UUID } from '@/app/util';
 import Model from '@/nodes/overview/Model';
 import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
 import { getEditorIOs } from '@/store/editors/utils';
-import Custom from '@/nodes/model/custom/Custom';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
@@ -164,6 +163,7 @@ const editorMutations: MutationTree<EditorsState> = {
 
     state.currEditorType = EditorType.OVERVIEW;
     state.currEditorIndex = 0;
+    state.inCodeVault = false;
   },
   updateNodeInOverview(state, currEditor: EditorModel) {
     // Loop through nodes in currEditor and find differences

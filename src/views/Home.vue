@@ -1,9 +1,9 @@
 <template>
   <div class="home container-fluid d-flex flex-column">
-    <Titlebar />
+    <Titlebar/>
     <div class="row flex-grow-1">
       <div class="navbar-col">
-        <Navbar />
+        <Navbar/>
       </div>
       <div class="col d-flex flex-column p-0">
         <Editor v-show="!inCodeVault"/>
@@ -49,7 +49,9 @@ export default class Home extends Vue {
       const modelEditors = saveWithNames.modelEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
       const dataEditors = saveWithNames.dataEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
       const trainEditors = saveWithNames.trainEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
-      this.loadEditors(new Save(overviewEditor, modelEditors, dataEditors, trainEditors));
+      this.loadEditors({
+        overviewEditor, modelEditors, dataEditors, trainEditors,
+      });
       // We reset the view to set the panning and scaling on the current view.
       EditorManager.getInstance().resetView();
     }
