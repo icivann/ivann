@@ -1,0 +1,6 @@
+torch.nn.Softmin(dim: Optional[T] = None)
+
+torch.nn.Transformer(d_model: int = 512, nhead: int = 8, num_encoder_layers: int = 6, num_decoder_layers: int = 6, dim_feedforward: int = 2048, dropout: float = 0.1, activation: str = 'relu', custom_encoder: Optional[Any] = None, custom_decoder: Optional[Any] = None)
+
+torch.nn.Linear(in_features: int, out_features: int, bias: bool = True)
+torch.nn.Bilinear(in1_features: int, in2_features: int, out_features: int, bias: bool = True)

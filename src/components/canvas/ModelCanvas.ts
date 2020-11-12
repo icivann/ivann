@@ -1,27 +1,44 @@
 import AbstractCanvas from '@/components/canvas/AbstractCanvas';
 import { Editor } from '@baklavajs/core';
 import { Layers, Nodes } from '@/nodes/model/Types';
-import Dense from '@/nodes/model/linear/Dense';
-import MaxPool2D from '@/nodes/model/pool/MaxPool2D';
-import Dropout from '@/nodes/model/regularization/Dropout';
-import Flatten from '@/nodes/model/reshape/Flatten';
+
+import Conv1d from '@/nodes/model/Conv1d';
+import Conv2d from '@/nodes/model/Conv2d';
+import Conv3d from '@/nodes/model/Conv3d';
 import Custom from '@/nodes/model/custom/Custom';
-import Conv1D from '@/nodes/model/conv/Conv1D';
-import Conv2D from '@/nodes/model/conv/Conv2D';
-import Conv3D from '@/nodes/model/conv/Conv3D';
-import InModel from '@/nodes/model/InModel';
 import OutModel from '@/nodes/model/OutModel';
 import Concat from '@/nodes/model/operations/Concat';
+import InModel from '@/nodes/model/InModel';
+import Convtranspose1d from '@/nodes/model/Convtranspose1d';
+import Convtranspose2d from '@/nodes/model/Convtranspose2d';
+import Convtranspose3d from '@/nodes/model/Convtranspose3d';
+import Maxpool1d from '@/nodes/model/Maxpool1d';
+import Maxpool2d from '@/nodes/model/Maxpool2d';
+import Maxpool3d from '@/nodes/model/Maxpool3d';
+import Dropout from '@/nodes/model/Dropout';
+import Dropout2d from '@/nodes/model/Dropout2d';
+import Dropout3d from '@/nodes/model/Dropout3d';
+import ReLU from '@/nodes/model/Relu';
 
 export default class ModelCanvas extends AbstractCanvas {
   public registerNodes(editor: Editor): void {
-    editor.registerNodeType(Nodes.Dense, Dense, Layers.Linear);
-    editor.registerNodeType(Nodes.Conv1D, Conv1D, Layers.Conv);
-    editor.registerNodeType(Nodes.Conv2D, Conv2D, Layers.Conv);
-    editor.registerNodeType(Nodes.Conv3D, Conv3D, Layers.Conv);
-    editor.registerNodeType(Nodes.MaxPool2D, MaxPool2D, Layers.Pool);
-    editor.registerNodeType(Nodes.Dropout, Dropout, Layers.Regularization);
-    editor.registerNodeType(Nodes.Flatten, Flatten, Layers.Reshape);
+    editor.registerNodeType(Nodes.Conv1d, Conv1d, Layers.Conv);
+    editor.registerNodeType(Nodes.Conv2d, Conv2d, Layers.Conv);
+    editor.registerNodeType(Nodes.Conv3d, Conv3d, Layers.Conv);
+    editor.registerNodeType(Nodes.ConvTranspose1d, Convtranspose1d, Layers.Conv);
+    editor.registerNodeType(Nodes.ConvTranspose2d, Convtranspose2d, Layers.Conv);
+    editor.registerNodeType(Nodes.ConvTranspose3d, Convtranspose3d, Layers.Conv);
+
+    editor.registerNodeType(Nodes.MaxPool1d, Maxpool1d, Layers.Pool);
+    editor.registerNodeType(Nodes.MaxPool2d, Maxpool2d, Layers.Pool);
+    editor.registerNodeType(Nodes.MaxPool3d, Maxpool3d, Layers.Pool);
+
+    editor.registerNodeType(Nodes.Dropout, Dropout, Layers.Dropout);
+    editor.registerNodeType(Nodes.Dropout2d, Dropout2d, Layers.Dropout);
+    editor.registerNodeType(Nodes.Dropout3d, Dropout3d, Layers.Dropout);
+
+    editor.registerNodeType(Nodes.Relu, ReLU, Layers.Activation);
+
     editor.registerNodeType(Nodes.Custom, Custom, Layers.Custom);
     editor.registerNodeType(Nodes.InModel, InModel, Layers.IO);
     editor.registerNodeType(Nodes.OutModel, OutModel, Layers.IO);
