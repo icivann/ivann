@@ -27,9 +27,9 @@ const codeVaultMutations: MutationTree<CodeVaultState> = {
   deleteFile(state, filename: string) {
     state.files = state.files.filter((file) => file.filename !== filename);
   },
-  setFile(state, { filename, funcs }: { filename: string; funcs: ParsedFunction[] }) {
-    for (const file of state.files) {
-      if (file.filename === filename) file.functions = funcs;
+  setFile(state, file: ParsedFile) {
+    for (const stateFile of state.files) {
+      if (stateFile.filename === file.filename) stateFile.functions = file.functions;
     }
   },
   addFunc(state, { filename, func }: { filename: string; func: ParsedFunction }) {
