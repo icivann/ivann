@@ -94,8 +94,6 @@ function generateData(graph: Graph, dataName: string): string {
   len.push(`${indent}${indent}return len(self.${inputNames[0]})`);
 
   const getitem: string[] = [`${indent}df __getitem__(self, idx):`];
-  getitem.push(`${indent}${indent}if torch.is_tensor(idx):`);
-  getitem.push(`${indent}${indent}${indent}idx = idx.tolist()`);
 
   const transforms: string[][] = [];
 

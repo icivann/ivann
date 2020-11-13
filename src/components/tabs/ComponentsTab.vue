@@ -22,6 +22,16 @@
         />
       </ButtonGrid>
     </ExpandablePanel>
+    <ExpandablePanel name="Train">
+      <ButtonGrid>
+        <AddNodeButton node="TrainClassifier" name="Train Classifier"/>
+      </ButtonGrid>
+    </ExpandablePanel>
+    <ExpandablePanel name="Optimizer">
+      <ButtonGrid>
+        <AddNodeButton node="Adadelta" name="Adadelta"/>
+      </ButtonGrid>
+    </ExpandablePanel>
     <ExpandablePanel name="Custom">
       <ButtonGrid>
         <AddNodeButton node="Custom" name="Custom"/>

@@ -17,10 +17,10 @@ export default class Adadelta extends Node {
   constructor() {
     super();
 
-    this.addOption(AdadeltaOptions.lr, TypeOptions.SliderOption);
-    this.addOption(AdadeltaOptions.rho, TypeOptions.SliderOption);
-    this.addOption(AdadeltaOptions.eps, TypeOptions.SliderOption);
-    this.addOption(AdadeltaOptions.weightDecay, TypeOptions.SliderOption);
+    this.addOption(AdadeltaOptions.lr, TypeOptions.SliderOption, 1);
+    this.addOption(AdadeltaOptions.rho, TypeOptions.SliderOption, 0.9);
+    this.addOption(AdadeltaOptions.eps, TypeOptions.SliderOption, 1e-06);
+    this.addOption(AdadeltaOptions.weightDecay, TypeOptions.SliderOption, 0);
 
     this.addInputInterface(AdadeltaOptions.Params);
     this.addOutputInterface('output');
