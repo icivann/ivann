@@ -25,6 +25,7 @@ import UIButton from '@/components/buttons/UIButton.vue';
 import parse from '@/app/parser/parser';
 import ParsedFunction from '@/app/parser/ParsedFunction';
 import { Result } from '@/app/util';
+import { ParsedFile } from '@/store/codeVault/types';
 
 @Component({
   components: {
@@ -36,8 +37,7 @@ import { Result } from '@/app/util';
 export default class IdeTab extends Vue {
   @Prop({ required: true }) readonly filename!: string;
 
-  @Mutation('setFile') setFile!:
-    ({ filename, funcs }: { filename: string; funcs: ParsedFunction[] }) => void;
+  @Mutation('setFile') setFile!: (file: ParsedFile) => void;
   @Mutation('closeFile') closeFile!: (filename: string) => void;
   @Mutation('leaveCodeVault') leaveCodeVault!: () => void;
   @Mutation('linkNode') linkNode!: (node?: Custom) => void;
@@ -60,8 +60,10 @@ export default class IdeTab extends Vue {
   private save() {
     if (this.editor) {
       if (!(this.parsedFile instanceof Error) && this.parsedFile) {
-        this.setFile({ filename: this.filename, funcs: this.parsedFile });
+        const file = { filename: this.filename, functions: this.parsedFile, open: false };
+        this.setFile(file);
         this.closeFile(this.filename);
+        this.$cookies.set(`unsaved-file-${this.filename}`, file);
       } else {
         window.alert('Cannot save file with errors.');
       }
