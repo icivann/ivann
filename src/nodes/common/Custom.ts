@@ -5,7 +5,8 @@ import { CommonNodes } from '@/nodes/common/Types';
 
 // TODO CORE-58 Change InlineCode Option to use state.parsedFunction
 export enum CustomOptions {
-  InlineCode = 'Inline Code',
+  SelectFunction = 'Select Function',
+  Code = 'Code'
 }
 export default class Custom extends Node {
   type = CommonNodes.Custom;
@@ -15,7 +16,7 @@ export default class Custom extends Node {
 
   constructor() {
     super();
-    this.addOption('Select Function', 'CodeVaultButtonOption', undefined, undefined, { customNode: this });
+    this.addOption(CustomOptions.SelectFunction, 'CodeVaultButtonOption', undefined, undefined, { customNode: this });
   }
 
   public load(state: INodeState) {

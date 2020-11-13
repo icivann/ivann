@@ -1,17 +1,18 @@
-import { CustomOptions } from '@/nodes/model/custom/Custom';
 import parse from '@/app/parser/parser';
+import { CustomOptions } from '@/nodes/common/Custom';
+import { nodeName } from '@/app/ir/irCommon';
 
 class Custom {
-  public readonly name = 'custom'
   constructor(
+    public readonly name: string,
     public readonly code: string,
   ) {
   }
 
   static build(options: Map<string, any>): Custom {
-    // TODO CORE-58 Change InlineCode Option to use state.parsedFunction
     return new Custom(
-      options.get(CustomOptions.InlineCode).text,
+      options.get(nodeName),
+      options.get(CustomOptions.Code),
     );
   }
 

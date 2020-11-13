@@ -4,6 +4,8 @@ import { ModelNode } from '@/app/ir/mainNodes';
 import { nodeBuilder } from '@/nodes/model/nodeBuilderMap';
 import GraphNode from '@/app/ir/GraphNode';
 import { UUID } from '@/app/util';
+import { CommonNodes } from '@/nodes/common/Types';
+import { CustomOptions } from '@/nodes/common/Custom';
 
 function traverseOptions(options: Array<[string, any]>): Map<string, any> {
   const constrMap: Map<string, any> = new Map<string, any>();
@@ -17,12 +19,16 @@ function toGraphNode(inode: INodeState): ModelNode {
   const fromMap = nodeBuilder.get(inode.type);
 
   if (fromMap === undefined) {
-    // TODO: throw exception?
     throw new Error(`${inode.type} is not mapped.`);
   }
 
-  inode.options.push(['name', inode.name]);
   const options = traverseOptions(inode.options);
+  if (inode.type === CommonNodes.Custom) {
+    options.set(CustomOptions.Code, (inode.state.parsedFunction)?.toString());
+    options.delete(CustomOptions.SelectFunction);
+  }
+
+  options.set('name', inode.name);
   return fromMap!(options);
 }
 
