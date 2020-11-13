@@ -1,6 +1,7 @@
 <template>
   <div>
     <ExpandablePanel name="Models">
+      <div class="msg" v-show="modelEditors.length === 0">No Models Created</div>
       <ButtonGrid>
         <AddNodeButton
           v-for="editor in modelEditors"
@@ -12,6 +13,7 @@
       </ButtonGrid>
     </ExpandablePanel>
     <ExpandablePanel name="Datasets">
+      <div class="msg" v-show="dataEditors.length === 0">No Datasets Created</div>
       <ButtonGrid>
         <AddNodeButton
           v-for="editor in dataEditors"
@@ -50,3 +52,16 @@ export default class ComponentsTab extends Vue {
   private overviewNodes = OverviewNodes;
 }
 </script>
+
+<style scoped>
+  .msg {
+    text-align: center;
+    background: var(--background);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    margin-top: 5px;
+    border-color: var(--grey);
+    font-size: smaller;
+  }
+</style>
