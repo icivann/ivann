@@ -93,7 +93,7 @@ function generateData(graph: Graph, dataName: string): string {
   const len: string[] = [`${indent}def __len__(self):`];
   len.push(`${indent}${indent}return len(self.${inputNames[0]})`);
 
-  const getitem: string[] = [`${indent}df __getitem__(self, idx):`];
+  const getitem: string[] = [`${indent}def __getitem__(self, idx):`];
 
   const transforms: string[][] = [];
 
