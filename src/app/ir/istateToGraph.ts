@@ -24,7 +24,7 @@ function toGraphNode(inode: INodeState): ModelNode {
 
   const options = traverseOptions(inode.options);
   if (inode.type === CommonNodes.Custom) {
-    options.set(CustomOptions.Code, (inode.state.parsedFunction).toString());
+    options.set(CustomOptions.Code, (inode.state.parsedFunction)?.toString());
     options.delete(CustomOptions.SelectFunction);
   }
 
