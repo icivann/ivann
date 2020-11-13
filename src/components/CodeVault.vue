@@ -13,7 +13,7 @@
         :key="file.filename"
         :name="file.filename"
         :padded="false">
-        <IdeTab :filename="file.filename" @switchToFunctions="close"/>
+        <IdeTab :filename="file.filename" @closeTab="close"/>
       </Tab>
     </Tabs>
   </div>
