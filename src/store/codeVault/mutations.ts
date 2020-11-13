@@ -16,6 +16,7 @@ const codeVaultMutations: MutationTree<CodeVaultState> = {
           /* JSON parses functions to an interface, not to the ParsedFunction object. */
           (func) => new ParsedFunction(func.name, func.body, func.args),
         ),
+        open: false,
       });
     }
     state.files = newFiles;
@@ -25,6 +26,11 @@ const codeVaultMutations: MutationTree<CodeVaultState> = {
   },
   deleteFile(state, filename: string) {
     state.files = state.files.filter((file) => file.filename !== filename);
+  },
+  setFile(state, { filename, funcs }: { filename: string; funcs: ParsedFunction[] }) {
+    for (const file of state.files) {
+      if (file.filename === filename) file.functions = funcs;
+    }
   },
   addFunc(state, { filename, func }: { filename: string; func: ParsedFunction }) {
     state.files = state.files.map((file) => {
@@ -47,6 +53,14 @@ const codeVaultMutations: MutationTree<CodeVaultState> = {
   },
   unlinkNode(state) {
     state.nodeTriggeringCodeVault = undefined;
+  },
+  closeFiles(state) {
+    state.files = state.files.map((file) => ({ ...file, open: false }));
+  },
+  closeFile(state, filename: string) {
+    for (const file of state.files) {
+      if (file.filename === filename) file.open = false;
+    }
   },
 };
 

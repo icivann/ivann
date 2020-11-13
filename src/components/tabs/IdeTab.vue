@@ -13,13 +13,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import Tabs from '@/components/tabs/Tabs.vue';
 import Tab from '@/components/tabs/Tab.vue';
 import Ace from 'brace';
 import 'brace/mode/python';
 import '@/assets/ivann-theme';
-import { Getter, Mutation } from 'vuex-class';
+import { Mutation } from 'vuex-class';
 import Custom from '@/nodes/common/Custom';
 import UIButton from '@/components/buttons/UIButton.vue';
 import parse from '@/app/parser/parser';
@@ -34,23 +34,15 @@ import { Result } from '@/app/util';
   },
 })
 export default class IdeTab extends Vue {
-  @Getter('nodeTriggeringCodeVault') nodeTriggeringCodeVault?: Custom;
-  @Getter('inCodeVault') inCodeVault!: boolean;
+  @Prop({ required: true }) readonly filename!: string;
+
+  @Mutation('setFile') setFile!:
+    ({ filename, funcs }: { filename: string; funcs: ParsedFunction[] }) => void;
+  @Mutation('closeFile') closeFile!: (filename: string) => void;
   @Mutation('leaveCodeVault') leaveCodeVault!: () => void;
   @Mutation('linkNode') linkNode!: (node?: Custom) => void;
   private editor?: Ace.Editor;
-
-  private parsedFunction?: Result<ParsedFunction>;
-
-  /**
-   * Watches the rendering of the CodeVault in order to update code.
-   */
-  @Watch('inCodeVault')
-  private onInCodeVaultChanged(inCodeVault: boolean) {
-    if (inCodeVault && this.editor) {
-      this.updateCode();
-    }
-  }
+  private parsedFile?: Result<ParsedFunction[]>;
 
   mounted() {
     this.editor = Ace.edit('ace');
@@ -63,23 +55,21 @@ export default class IdeTab extends Vue {
     });
     this.editor.$blockScrolling = Infinity; // Get rid unnecessary Console info
     this.editor.on('change', this.onEditorChange);
-
-    this.updateCode();
   }
 
   private save() {
-    if (this.nodeTriggeringCodeVault && this.editor) {
-      if (!(this.parsedFunction instanceof Error)) {
-        this.nodeTriggeringCodeVault.setParsedFunction(this.parsedFunction);
-        this.leaveCodeVault();
+    if (this.editor) {
+      if (!(this.parsedFile instanceof Error) && this.parsedFile) {
+        this.setFile({ filename: this.filename, funcs: this.parsedFile });
+        this.closeFile(this.filename);
       } else {
-        window.alert('Cannot save function with errors.');
+        window.alert('Cannot save file with errors.');
       }
     }
   }
 
   private cancel() {
-    this.leaveCodeVault();
+    this.closeFile(this.filename);
     this.linkNode(undefined); // Unlink node.
   }
 
@@ -91,14 +81,11 @@ export default class IdeTab extends Vue {
       const code = this.editor.getValue();
       const functionsOrError = parse(code);
       if (!(functionsOrError instanceof Error)) {
-        if (functionsOrError.length > 0) {
-          this.editor.getSession().clearAnnotations();
-          [this.parsedFunction] = functionsOrError;
-        }
+        this.editor.getSession().clearAnnotations();
       } else {
         this.showError(functionsOrError);
-        this.parsedFunction = functionsOrError;
       }
+      this.parsedFile = functionsOrError;
     }
   }
 
@@ -110,23 +97,6 @@ export default class IdeTab extends Vue {
         text: error.message,
         type: 'error',
       }]);
-    }
-  }
-  /**
-   * If the CodeVault was entered from a Custom Node, update code.
-   * Else, empties the editor.
-   */
-  private updateCode() {
-    if (this.editor) {
-      if (this.nodeTriggeringCodeVault) {
-        const parsedFunction = this.nodeTriggeringCodeVault.getParsedFunction();
-        if (parsedFunction) {
-          this.editor.setValue(parsedFunction.toString());
-        }
-      } else {
-        this.editor.setValue('');
-      }
-      this.editor.clearSelection();
     }
   }
 }

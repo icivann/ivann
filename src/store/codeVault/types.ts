@@ -4,6 +4,7 @@ import Custom from '@/nodes/common/Custom';
 export interface ParsedFile {
   filename: string;
   functions: ParsedFunction[];
+  open: boolean;
 }
 
 export interface CodeVaultState {

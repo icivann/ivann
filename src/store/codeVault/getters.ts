@@ -4,6 +4,7 @@ import { CodeVaultState, FilenamesList } from '@/store/codeVault/types';
 
 const codeVaultGetters: GetterTree<CodeVaultState, RootState> = {
   files: (state) => state.files,
+  openFiles: (state) => state.files.filter((file) => file.open),
   filenames: (state) => {
     const names: Set<string> = new Set();
     state.files.forEach((file) => names.add(file.filename));
