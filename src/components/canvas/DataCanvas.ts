@@ -12,15 +12,6 @@ import Grayscale from '@/nodes/data/Grayscale';
 export default class DataCanvas extends AbstractCanvas {
   public nodeList = [
     {
-      category: DataCategories.Custom,
-      nodes: [
-        {
-          name: CommonNodes.Custom,
-          node: Custom,
-        },
-      ],
-    },
-    {
       category: DataCategories.IO,
       nodes: [
         {
@@ -43,6 +34,15 @@ export default class DataCanvas extends AbstractCanvas {
         {
           name: DataNodes.Grayscale,
           node: Grayscale,
+        },
+      ],
+    },
+    {
+      category: DataCategories.Custom,
+      nodes: [
+        {
+          name: CommonNodes.Custom,
+          node: Custom,
         },
       ],
     },

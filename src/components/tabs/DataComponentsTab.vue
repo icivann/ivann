@@ -1,20 +1,18 @@
 <template>
   <div>
-    <ExpandablePanel name="Custom">
+    <ExpandablePanel :name="ioLabel">
       <ButtonGrid>
-        <AddNodeButton node="Custom" name="Custom"/>
+        <AddNodeButton :node="ioNodes.nodes[0].name" name="Input" :names="editorIONames"/>
+        <AddNodeButton :node="ioNodes.nodes[1].name" name="Output"/>
       </ButtonGrid>
     </ExpandablePanel>
-    <ExpandablePanel name="I/O">
+    <ExpandablePanel v-for="(category) in dataNodes.slice(1)" :key="category.category"
+                     :name="category.category">
       <ButtonGrid>
-        <AddNodeButton node="InData" name="InData"/>
-        <AddNodeButton node="OutData" name="OutData"/>
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel name="Transform">
-      <ButtonGrid>
-        <AddNodeButton node="ToTensor" name="ToTensor"/>
-        <AddNodeButton node="Grayscale" name="Grayscale"/>
+        <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
+                       :node="node.name"
+                       :name="node.name"
+        />
       </ButtonGrid>
     </ExpandablePanel>
   </div>
@@ -25,6 +23,9 @@ import { Component, Vue } from 'vue-property-decorator';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
+import EditorManager from '@/EditorManager';
+import { DataCategories } from '@/nodes/data/Types';
+import { mapGetters } from 'vuex';
 
 @Component({
   components: {
@@ -32,7 +33,11 @@ import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
     AddNodeButton,
     ButtonGrid,
   },
+  computed: mapGetters(['editorIONames']),
 })
 export default class DataComponentsTab extends Vue {
+  private dataNodes = EditorManager.getInstance().dataCanvas.nodeList;
+  private ioNodes = this.dataNodes[0];
+  private ioLabel = DataCategories.IO;
 }
 </script>

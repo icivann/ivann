@@ -1,13 +1,17 @@
 <template>
-  <div class="layers-tab">
-    <ExpandablePanel v-for="(category) in modelNodes" :key="category.category"
+  <div>
+    <ExpandablePanel :name="ioLabel">
+      <ButtonGrid>
+        <AddNodeButton :node="ioNodes.nodes[0].name" name="Input" :names="editorIONames"/>
+        <AddNodeButton :node="ioNodes.nodes[1].name" name="Output" :names="editorIONames"/>
+      </ButtonGrid>
+    </ExpandablePanel>
+    <ExpandablePanel v-for="(category) in modelNodes.slice(1)" :key="category.category"
                      :name="category.category">
       <ButtonGrid>
         <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
                        :node="node.name"
                        :name="node.name"
-                       :names="node.name === 'InModel' || node.name === 'OutModel'
-                        ? editorIONames : undefined"
         />
       </ButtonGrid>
     </ExpandablePanel>
@@ -21,6 +25,7 @@ import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
 import { mapGetters } from 'vuex';
 import EditorManager from '@/EditorManager';
+import { ModelCategories } from '@/nodes/model/Types';
 
 @Component({
   components: {
@@ -32,5 +37,7 @@ import EditorManager from '@/EditorManager';
 })
 export default class LayersTab extends Vue {
   private modelNodes = EditorManager.getInstance().modelCanvas.nodeList;
+  private ioNodes = this.modelNodes[0];
+  private ioLabel = ModelCategories.IO;
 }
 </script>

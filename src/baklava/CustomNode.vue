@@ -115,12 +115,13 @@ import { Getter } from 'vuex-class';
 import { Severity } from '@/app/ir/checking/severity';
 import { OverviewNodes } from '@/nodes/overview/Types';
 import { CommonNodes } from '@/nodes/common/Types';
+import { DataNodes } from '@/nodes/data/Types';
 
 @Component({
   components: { ArrowButton },
 })
 export default class CustomNode extends Components.Node {
-  @Getter('errorsMap') errorsMap!: Map<string, IrError[]>
+  @Getter('errorsMap') errorsMap!: Map<string, IrError[]>;
   private shouldShowOptions = false;
 
   contextMenu = {
@@ -130,12 +131,14 @@ export default class CustomNode extends Components.Node {
     items: this.getContextualMenuItems(),
   };
 
-  private currentErrors: IrError[] = []
+  private currentErrors: IrError[] = [];
+
   get messages(): string | undefined {
     return this.currentErrors.length !== 0
       ? this.currentErrors.map((e) => e.formattedMessage).reduce((prev, curr) => `${prev}\n${curr}`)
       : undefined;
   }
+
   get severity(): Severity[] {
     const index = (s: Severity) => Object.keys(Severity).indexOf(s);
     return this.currentErrors.map((e) => e.severity).sort((a, b) => index(a) - index(b));
@@ -188,15 +191,38 @@ export default class CustomNode extends Components.Node {
       case ModelNodes.Conv1d:
       case ModelNodes.Conv2d:
       case ModelNodes.Conv3d:
+      case ModelNodes.ConvTranspose1d:
+      case ModelNodes.ConvTranspose2d:
+      case ModelNodes.ConvTranspose3d:
+      case OverviewNodes.ModelNode:
+      case DataNodes.ToTensor:
+      case DataNodes.Grayscale:
         return { background: 'var(--blue)' };
+      case ModelNodes.MaxPool1d:
       case ModelNodes.MaxPool2d:
+      case ModelNodes.MaxPool3d:
         return { background: 'var(--red)' };
       case ModelNodes.Dropout:
+      case ModelNodes.Dropout2d:
+      case ModelNodes.Dropout3d:
+      case OverviewNodes.DataNode:
         return { background: 'var(--pink)' };
-      case ModelNodes.Flatten:
+      case ModelNodes.Relu:
+      case ModelNodes.Softmax:
+      case ModelNodes.Softmin:
         return { background: 'var(--green)' };
-      case CommonNodes.Custom:
+      case ModelNodes.InModel:
+      case ModelNodes.OutModel:
+      case DataNodes.InData:
+      case DataNodes.OutData:
         return { background: 'var(--purple)' };
+      case ModelNodes.Linear:
+      case ModelNodes.Bilinear:
+        return { background: 'var(--mustard)' };
+      case ModelNodes.Transformer:
+        return { background: 'var(--seafoam)' };
+      case CommonNodes.Custom:
+        return { background: 'var(--foreground)', color: 'var(--dark-grey)' };
       default:
         return { background: 'var(--black)' };
     }
