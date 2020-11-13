@@ -56,14 +56,15 @@ export default class UIButton extends Vue {
 }
 
 .disabled {
-  background: var(--grey);
+  background: #A0A0A0;
+  cursor: default;
 
   &:hover {
-    background: var(--grey);
+    background: #A0A0A0;
   }
 
   &:active {
-    background: var(--grey);
+    background: #A0A0A0;
   }
 }
 </style>
