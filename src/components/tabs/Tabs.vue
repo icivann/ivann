@@ -14,19 +14,35 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import {
+  Component, Prop, Vue, Watch,
+} from 'vue-property-decorator';
 import Tab from '@/components/tabs/Tab.vue';
 
 @Component
 export default class Tabs extends Vue {
+  @Prop() selectedTabIndex?: number;
   private tabs = this.$children as [Tab];
   private selected = 0;
 
+  @Watch('selectedTabIndex')
+  private onTabSelectChange(newVal: number, oldVal: number) {
+    if (newVal !== oldVal) {
+      this.tabs[newVal].setVisible(true);
+      this.selected = newVal;
+      if (oldVal < this.tabs.length) this.tabs[oldVal].setVisible(false);
+    }
+  }
+
   private selectTab(given: number) {
-    this.selected = given;
-    this.tabs.forEach((tab, index) => {
-      tab.setVisible(index === given);
-    });
+    if (this.selectedTabIndex === undefined) {
+      this.selected = given;
+      this.tabs.forEach((tab, index) => {
+        tab.setVisible(index === given);
+      });
+    } else {
+      this.$emit('changeTab', given);
+    }
   }
 
   mounted() {

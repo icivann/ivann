@@ -64,6 +64,7 @@ export default class IdeTab extends Vue {
         this.setFile(file);
         this.closeFile(this.filename);
         this.$cookies.set(`unsaved-file-${this.filename}`, file);
+        this.$emit('switchToFunctions');
       } else {
         window.alert('Cannot save file with errors.');
       }
@@ -72,6 +73,7 @@ export default class IdeTab extends Vue {
 
   private cancel() {
     this.closeFile(this.filename);
+    this.$emit('switchToFunctions');
     this.linkNode(undefined); // Unlink node.
   }
 
