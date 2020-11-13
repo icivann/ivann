@@ -1,6 +1,6 @@
 <template>
   <div class="button-grid">
-    <slot>Add your buttons here.</slot>
+    <slot/>
   </div>
 </template>
 
