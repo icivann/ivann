@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import GraphNode from '@/app/ir/GraphNode';
-import { ModelLayerNode, TrainNode } from '@/app/ir/mainNodes';
+import { ModelLayerNode } from '@/app/ir/mainNodes';
 import InModel from '@/app/ir/InModel';
 
 import OutModel from '@/app/ir/OutModel';
@@ -181,10 +181,8 @@ function generateModel(graph: Graph, name: string): string {
 function generateFunctions(graph: Graph): string {
   const customNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Custom);
   // TODO: expand to other training nodes (and custom train)
-  const trainNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-  instanceof TrainClassifier);
 
-  if (customNodes.length === 0 && trainNodes.length === 0) {
+  if (customNodes.length === 0) {
     return '';
   }
 
@@ -195,12 +193,6 @@ function generateFunctions(graph: Graph): string {
     }
   });
 
-  trainNodes.forEach((node) => {
-    if (node.mlNode instanceof TrainClassifier) {
-      funcs.push(node.mlNode.initCode());
-    }
-  });
-
   return funcs.join('\n\n');
 }
 
@@ -208,7 +200,7 @@ export function generateModelCode(graph: Graph, name: string): string {
   const funcs = generateFunctions(graph);
   const model = generateModel(graph, name);
 
-  const result = [imports];
+  const result = [];
 
   if (funcs.length > 0) {
     result.push(funcs);
@@ -248,22 +240,31 @@ function generateTrainingPipeline(node: GraphNode, graph: Graph): string[] {
 function generateOverview(graph: Graph): string {
   let main = ['def main():'];
 
-  // resetting the naming counters for each new graph
-  const nodeNames = new Map<GraphNode, string>();
-  const nodeTypeCounters = new Map<string, number>();
-
   const trainNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
   instanceof TrainClassifier);
 
-  //  train(model, train_data, )
+  const funcs: string[] = [];
+
   trainNodes.forEach((node) => {
-    main = main.concat(generateTrainingPipeline(node, graph));
+    if (node.mlNode instanceof TrainClassifier) {
+      funcs.push(node.mlNode.initCode());
+    }
   });
+
+  // Create functions for training
 
   // const main = [header, body.join(`\n${indent}`)];
   const entry = `if __name__ == '__main__':\n${indent}main()`;
 
-  return [main.join(`\n${indent}`), entry].join('\n\n');
+  if (trainNodes.length === 0) {
+    main.push(`${indent}${indent}pass`);
+  } else {
+    trainNodes.forEach((node) => {
+      main = main.concat(generateTrainingPipeline(node, graph));
+    });
+  }
+
+  return [funcs, main.join(`\n${indent}`), entry].join('\n\n');
 }
 
 export function generateOverviewCode(
@@ -278,15 +279,16 @@ export function generateOverviewCode(
 
   const overview = generateOverview(graph);
 
-  const data = dataEditors.map((editor) => generateData(editor[0], editor[1])).join('\n\n');
+  const datasets = dataEditors.map((editor) => generateData(editor[0], editor[1])).join('\n\n');
   // console.log(overview);
 
-  const result = [imports, data];
+  const result = [imports];
 
   if (funcs.length > 0) {
     result.push(funcs);
   }
 
+  result.push(datasets);
   result.push(models);
 
   result.push(overview);

@@ -21,12 +21,6 @@ describe('codegen', () => {
     actual = removeBlankLines(actual);
 
     let expected = `
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
-from torchvision import transforms
-
 class Model(nn.Module):
 
   def __init__(self):
@@ -51,12 +45,6 @@ class Model(nn.Module):
     actual = removeBlankLines(actual);
 
     let expected = `
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
-from torchvision import transforms
-
 class Model(nn.Module):
 
   def __init__(self):
@@ -81,12 +69,6 @@ class Model(nn.Module):
     actual = removeBlankLines(actual);
 
     let expected = `
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
-from torchvision import transforms
-
 class Model(nn.Module):
 
   def __init__(self):
@@ -112,12 +94,6 @@ class Model(nn.Module):
     actual = removeBlankLines(actual);
 
     let expected = `
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
-from torchvision import transforms
-
 class Model(nn.Module):
 
   def __init__(self):
@@ -146,12 +122,6 @@ class Model(nn.Module):
     actual = removeBlankLines(actual);
 
     let expected = `
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
-from torchvision import transforms
-
 class Model(nn.Module):
 
   def __init__(self):
@@ -186,12 +156,6 @@ class Model(nn.Module):
     actual = removeBlankLines(actual);
 
     let expected = `
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
-from torchvision import transforms
-
 class Model(nn.Module):
 
   def __init__(self):
