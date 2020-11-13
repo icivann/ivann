@@ -47,7 +47,8 @@ import {
 import istateToGraph from '@/app/ir/istateToGraph';
 import { ParsedFile } from '@/store/codeVault/types';
 import EditorType from '@/EditorType';
-import { generateModelCode, generateOverviewCode } from '@/app/codegen/codeGenerator';
+import { generateModelCode, generateOverviewCode } from '@/app/codegen/overviewGenerator';
+import generateDataCode from '@/app/codegen/dataGenerator';
 import Graph from '@/app/ir/Graph';
 
 @Component
@@ -81,8 +82,13 @@ export default class Titlebar extends Vue {
       generatedCode = generateOverviewCode(graph, models, data);
     } else if (this.currEditorType === EditorType.MODEL) {
       generatedCode = generateModelCode(graph, name);
+    } else if (this.currEditorType === EditorType.DATA) {
+      generatedCode = generateDataCode(graph, name);
     }
-    downloadPython('main', generatedCode);
+
+    console.log(generatedCode);
+
+    // downloadPython('main', generatedCode);
   }
 
   // Trigger click of input tag for uploading file

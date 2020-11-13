@@ -1,27 +1,11 @@
-/* eslint-disable no-param-reassign */
 import GraphNode from '@/app/ir/GraphNode';
-import { ModelLayerNode, TrainNode } from '@/app/ir/mainNodes';
-import InModel from '@/app/ir/InModel';
-
-import OutModel from '@/app/ir/OutModel';
-import Graph from '@/app/ir/Graph';
-import Concat from '@/app/ir/Concat';
-import Custom from '@/app/ir/Custom';
-import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
-import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
-import Model from '@/app/ir/model/model';
-
 import { indent, getNodeType } from '@/app/codegen/common';
-
-import generateData from '@/app/codegen/dataGenerator';
-
-const imports = [
-  'import torch',
-  'import torch.nn as nn',
-  'import torch.nn.functional as F',
-  'from torch.utils.data import Dataset, DataLoader',
-  'from torchvision import transforms',
-].join('\n');
+import Graph from '@/app/ir/Graph';
+import InModel from '@/nodes/model/InModel';
+import OutModel from '@/nodes/model/OutModel';
+import Custom from '@/app/ir/Custom';
+import Concat from '@/app/ir/Concat';
+import { ModelLayerNode } from '@/app/ir/mainNodes';
 
 function getNodeName(
   node: GraphNode,
@@ -64,6 +48,7 @@ function generateModelGraphCode(
 
   // TODO: check here for other branching nodes e.g. Concat
   if (node.mlNode instanceof InModel) {
+    // eslint-disable-next-line
     incomingBranch = incomingBranch !== 0 ? incomingBranch + 1 : incomingBranch;
     code.push(`${getBranchVar(incomingBranch)} = ${nodeName}`);
   } else if (node.mlNode instanceof OutModel) {
@@ -84,6 +69,7 @@ function generateModelGraphCode(
 
     readyConnections.push(branch);
     const params = readyConnections.map((branch) => getBranchVar(branch));
+    // eslint-disable-next-line
     branch += 1;
 
     code.push(`${getBranchVar(branch)} = ${node.mlNode.callCode(params, '')}`);
@@ -178,120 +164,4 @@ function generateModel(graph: Graph, name: string): string {
   return [header, initMethod, forwardMethod].join('\n\n');
 }
 
-function generateFunctions(graph: Graph): string {
-  const customNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Custom);
-  // TODO: expand to other training nodes (and custom train)
-  const trainNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-  instanceof TrainClassifier);
-
-  if (customNodes.length === 0 && trainNodes.length === 0) {
-    return '';
-  }
-
-  const funcs: string[] = [];
-  customNodes.forEach((node) => {
-    if (node.mlNode instanceof Custom) {
-      funcs.push(node.mlNode.code);
-    }
-  });
-
-  trainNodes.forEach((node) => {
-    if (node.mlNode instanceof TrainClassifier) {
-      funcs.push(node.mlNode.initCode());
-    }
-  });
-
-  return funcs.join('\n\n');
-}
-
-export function generateModelCode(graph: Graph, name: string): string {
-  const funcs = generateFunctions(graph);
-  const model = generateModel(graph, name);
-
-  const result = [imports];
-
-  if (funcs.length > 0) {
-    result.push(funcs);
-  }
-
-  result.push(model);
-
-  return result.join('\n\n');
-}
-
-function generateTrainingPipeline(node: GraphNode, graph: Graph): string[] {
-  // traverse each incoming connection backwards and link up
-
-  const trainNode = node.mlNode as TrainClassifier;
-
-  // const incomingNodes = graph.prevNodesFrom(node);
-  const optimizer = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-  instanceof Adadelta)[0].mlNode as Adadelta;
-
-  const model = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-  instanceof Model)[0].mlNode as Model;
-
-  const body = [];
-
-  const device = `"${trainNode.Device}"`;
-  body.push(`device = ${device}`);
-  const modelName = `${model.name}_model`;
-  body.push(`${modelName} = ${model.name}().to(device)`);
-  body.push(`optimizer = ${optimizer.initCode(`${modelName}.parameters()`)}`);
-  // (model, train_loader, test_loader, optimizer, device, epoch
-  body.push(trainNode.callCode([modelName, 'None', 'None', 'optimizer', device,
-    trainNode.Epochs.toString()]));
-
-  return body;
-}
-
-function generateOverview(graph: Graph): string {
-  let main = ['def main():'];
-
-  // resetting the naming counters for each new graph
-  const nodeNames = new Map<GraphNode, string>();
-  const nodeTypeCounters = new Map<string, number>();
-
-  const trainNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-  instanceof TrainClassifier);
-
-  //  train(model, train_data, )
-  trainNodes.forEach((node) => {
-    main = main.concat(generateTrainingPipeline(node, graph));
-  });
-
-  // const main = [header, body.join(`\n${indent}`)];
-  const entry = `if __name__ == '__main__':\n${indent}main()`;
-
-  return [main.join(`\n${indent}`), entry].join('\n\n');
-}
-
-export function generateOverviewCode(
-  graph: Graph,
-  modelEditors: [Graph, string][],
-  dataEditors: [Graph, string][],
-): string {
-  // TODO: beware of duplicate custom functions
-  const funcs = generateFunctions(graph);
-
-  const models = modelEditors.map((editor) => generateModelCode(editor[0], editor[1])).join('\n\n');
-
-  const overview = generateOverview(graph);
-
-  const data = dataEditors.map((editor) => generateData(editor[0], editor[1])).join('\n\n');
-  // console.log(overview);
-
-  const result = [imports, data];
-
-  if (funcs.length > 0) {
-    result.push(funcs);
-  }
-
-  result.push(models);
-
-  result.push(overview);
-
-  return result.join('\n\n');
-}
-
-export default generateOverviewCode;
+export default generateModel;

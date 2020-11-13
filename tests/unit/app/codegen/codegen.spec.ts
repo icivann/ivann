@@ -1,6 +1,5 @@
-import generateCode, { generateModelCode } from '@/app/codegen/codeGenerator';
+import generateCode, { generateModelCode } from '@/app/codegen/overviewGenerator';
 import istateToGraph from '@/app/ir/istateToGraph';
-import conv2d from '@/app/ir/model/conv2d';
 
 function removeBlankLines(x: string): string {
   return x.trim();
