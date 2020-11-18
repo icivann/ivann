@@ -6,7 +6,6 @@ import codeVaultMutations from '@/store/codeVault/mutations';
 
 export const codeVaultState: CodeVaultState = {
   files: [],
-  nodeTriggeringCodeVault: undefined,
 };
 
 export const codeVault: Module<CodeVaultState, RootState> = {
