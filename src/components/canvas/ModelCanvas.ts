@@ -17,8 +17,6 @@ import Dropout from '@/nodes/model/Dropout';
 import Dropout2d from '@/nodes/model/Dropout2d';
 import Dropout3d from '@/nodes/model/Dropout3d';
 import ReLU from '@/nodes/model/Relu';
-import { CommonNodes } from '@/nodes/common/Types';
-import Custom from '@/nodes/common/Custom';
 import Transformer from '@/nodes/model/Transformer';
 import Softmin from '@/nodes/model/Softmin';
 import Softmax from '@/nodes/model/Softmax';
@@ -109,15 +107,6 @@ export default class ModelCanvas extends AbstractCanvas {
         {
           name: ModelNodes.Relu,
           node: ReLU,
-        },
-      ],
-    },
-    {
-      category: ModelCategories.Custom,
-      nodes: [
-        {
-          name: CommonNodes.Custom,
-          node: Custom,
         },
       ],
     },
