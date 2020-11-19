@@ -1,7 +1,6 @@
 import { MutationTree } from 'vuex';
 import { CodeVaultState, ParsedFile } from '@/store/codeVault/types';
 import ParsedFunction from '@/app/parser/ParsedFunction';
-import Custom from '@/nodes/common/Custom';
 
 const codeVaultMutations: MutationTree<CodeVaultState> = {
   resetState(state) {

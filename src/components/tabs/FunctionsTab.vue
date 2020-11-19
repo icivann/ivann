@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex h-100">
+
     <div id="left" class="panel">
       <div class="d-flex">
         <div>
@@ -24,45 +25,43 @@
           @click="selectFile(index)"
         >
           <div v-if="getFunctions(index).length === 0">(empty)</div>
-          <div v-else>
-            <div v-for="(func, index) of getFunctions(index)" :key="index">
-              {{ func.signature() }}
-            </div>
+          <div v-else v-for="(func, index) of getFunctions(index)" :key="index">
+            {{ func.signature() }}
           </div>
         </FileFuncButton>
       </div>
     </div>
+
     <div id="right" class="panel">
       <div class="button-list">
-        <div v-if="getFunctions(selectedFile).length === 0" class="text-center">
-          {{ selectedFile === -1 ? 'Select a file.' : 'No functions defined!' }}
-        </div>
-        <FileFuncButton
-          v-for="(func, index) of getFunctions(selectedFile)"
-          :header="`def ${func.name}`"
-          :key="index"
-          :selected="selectedFunction === index"
-          @click="selectFunction(index)"
-        >
-          {{
-            func.toString()
-              .slice(0, 100) + (func.toString().length > 100 ? '...' : '')
-          }}
+        <FileFuncButton :disableHover="true">
+          <div v-if="this.selectedFile === -1" class="text-center">
+            No File Selected
+          </div>
+          <div
+            v-else
+            class="pre-formatted"
+            v-for="(func) of getFunctions(selectedFile)"
+            :key="func.name"
+            v-text="`${func.toString()}\n`"
+          />
         </FileFuncButton>
       </div>
       <div class="confirm-button">
         <UIButton
-          text="Cancel"
-          @click="cancelClick"
+          text="Delete"
+          @click="deleteFile"
+          :disabled="this.selectedFile === -1"
         />
         <UIButton
-          text="Confirm"
+          text="Edit"
           :primary="true"
-          @click="confirmClick"
-          :disabled="selectedFunction === -1"
+          @click="editFile"
+          :disabled="this.selectedFile === -1"
         />
       </div>
     </div>
+
   </div>
 </template>
 
@@ -88,7 +87,6 @@ import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
   },
 })
 export default class FunctionsTab extends Vue {
-  @Mutation('leaveCodeVault') leaveCodeVault!: () => void;
   @Getter('filenames') filenames!: Set<string>;
   @Getter('file') file!: (filename: string) => ParsedFile | undefined;
   @Getter('files') files!: ParsedFile[];
@@ -96,19 +94,9 @@ export default class FunctionsTab extends Vue {
   @Getter('filenamesList') filenamesList!: FilenamesList;
 
   private selectedFile = -1;
-  private selectedFunction = -1;
 
   private selectFile(index: number) {
     this.selectedFile = index;
-    this.selectedFunction = -1;
-  }
-
-  private selectFunction(index: number) {
-    if (index === this.selectedFunction) {
-      this.selectedFunction = -1;
-    } else {
-      this.selectedFunction = index;
-    }
   }
 
   private getFunctions(index: number): ParsedFunction[] {
@@ -165,12 +153,12 @@ export default class FunctionsTab extends Vue {
     this.saveToCookies(file);
   }
 
-  private confirmClick() {
-    console.log(`Clicked with selected file ${this.selectedFile} and function ${this.selectedFunction}`);
+  private deleteFile() {
+    console.log(`Clicked delete with selected file ${this.selectedFile}`);
   }
 
-  private cancelClick() {
-    this.leaveCodeVault();
+  private editFile() {
+    console.log(`Clicked edit selected file ${this.selectedFile}`);
   }
 
   private saveToCookies(file: ParsedFile) {
@@ -211,5 +199,9 @@ export default class FunctionsTab extends Vue {
 
   .button {
     margin-right: 1em;
+  }
+
+  .pre-formatted {
+    white-space: pre;
   }
 </style>
