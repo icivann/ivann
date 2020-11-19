@@ -89,7 +89,6 @@ export default class Navbar extends Vue {
   @Mutation('switchEditor') switch!: (arg0: { editorType: EditorType; index: number }) => void;
   @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
   @Mutation('enterCodeVault') enterCodeVault!: () => void;
-  @Mutation('unlinkNode') unlinkNode!: () => void;
   @Mutation('closeFiles') closeFiles!: () => void;
 
   private switchOverviewEditor() {
@@ -128,7 +127,6 @@ export default class Navbar extends Vue {
   }
 
   private clickCodeVault() {
-    this.unlinkNode();
     this.closeFiles();
     this.enterCodeVault();
   }

@@ -48,12 +48,6 @@ const codeVaultMutations: MutationTree<CodeVaultState> = {
       return file;
     });
   },
-  linkNode(state, node?: Custom) {
-    state.nodeTriggeringCodeVault = node;
-  },
-  unlinkNode(state) {
-    state.nodeTriggeringCodeVault = undefined;
-  },
   closeFiles(state) {
     state.files = state.files.map((file) => ({ ...file, open: false }));
   },

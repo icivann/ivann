@@ -34,11 +34,6 @@
         <AddNodeButton node="Adadelta" name="Adadelta"/>
       </ButtonGrid>
     </ExpandablePanel>
-    <ExpandablePanel name="Custom">
-      <ButtonGrid>
-        <AddNodeButton node="Custom" name="Custom"/>
-      </ButtonGrid>
-    </ExpandablePanel>
   </div>
 </template>
 

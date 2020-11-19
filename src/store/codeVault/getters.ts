@@ -11,7 +11,6 @@ const codeVaultGetters: GetterTree<CodeVaultState, RootState> = {
     return names;
   },
   file: (state) => (filename: string) => state.files.find((file) => file.filename === filename),
-  nodeTriggeringCodeVault: (state) => state.nodeTriggeringCodeVault,
   fileIndexFromFilename: (state) => (filename: string) => state
     .files.findIndex((file) => file.filename === filename),
   functionIndexFromFunctionName: (state) => (fileIndex: number, functionName: string) => state

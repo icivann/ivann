@@ -4,18 +4,24 @@
       <Tab name="Components">
         <ComponentsTab/>
       </Tab>
+      <Tab name="Custom">
+        <CustomTab/>
+      </Tab>
     </Tabs>
     <Tabs v-show="currEditorType === editorType.MODEL">
       <Tab name="Layers">
         <LayersTab/>
       </Tab>
-      <Tab name="Search">
-        <SearchTab/>
+      <Tab name="Custom">
+        <CustomTab/>
       </Tab>
     </Tabs>
     <Tabs v-show="currEditorType === editorType.DATA">
       <Tab name="Data Components">
         <DataComponentsTab/>
+      </Tab>
+      <Tab name="Custom">
+        <CustomTab/>
       </Tab>
     </Tabs>
   </div>
@@ -26,7 +32,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import Tabs from '@/components/tabs/Tabs.vue';
 import Tab from '@/components/tabs/Tab.vue';
 import LayersTab from '@/components/tabs/LayersTab.vue';
-import SearchTab from '@/components/tabs/SearchTab.vue';
+import CustomTab from '@/components/tabs/CustomTab.vue';
 import EditorType from '@/EditorType';
 import ComponentsTab from '@/components/tabs/ComponentsTab.vue';
 import { mapGetters } from 'vuex';
@@ -36,7 +42,7 @@ import DataComponentsTab from '@/components/tabs/DataComponentsTab.vue';
   components: {
     DataComponentsTab,
     ComponentsTab,
-    SearchTab,
+    CustomTab,
     LayersTab,
     Tab,
     Tabs,

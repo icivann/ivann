@@ -1,7 +1,4 @@
 import AbstractCanvas from '@/components/canvas/AbstractCanvas';
-import { CommonNodes } from '@/nodes/common/Types';
-import Custom from '@/nodes/common/Custom';
-
 import { DataCategories, DataNodes } from '@/nodes/data/Types';
 
 import InData from '@/nodes/data/InData';
@@ -34,15 +31,6 @@ export default class DataCanvas extends AbstractCanvas {
         {
           name: DataNodes.Grayscale,
           node: Grayscale,
-        },
-      ],
-    },
-    {
-      category: DataCategories.Custom,
-      nodes: [
-        {
-          name: CommonNodes.Custom,
-          node: Custom,
         },
       ],
     },

@@ -9,7 +9,6 @@ export interface ParsedFile {
 
 export interface CodeVaultState {
   files: ParsedFile[];
-  nodeTriggeringCodeVault?: Custom;
 }
 
 export interface FilenamesList {

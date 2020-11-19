@@ -40,7 +40,6 @@ export default class IdeTab extends Vue {
   @Mutation('setFile') setFile!: (file: ParsedFile) => void;
   @Mutation('closeFile') closeFile!: (filename: string) => void;
   @Mutation('leaveCodeVault') leaveCodeVault!: () => void;
-  @Mutation('linkNode') linkNode!: (node?: Custom) => void;
   private editor?: Ace.Editor;
   private parsedFile?: Result<ParsedFunction[]>;
 
@@ -74,7 +73,6 @@ export default class IdeTab extends Vue {
   private cancel() {
     this.closeFile(this.filename);
     this.$emit('closeTab');
-    this.linkNode(undefined); // Unlink node.
   }
 
   /**

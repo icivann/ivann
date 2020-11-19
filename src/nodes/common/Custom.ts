@@ -5,18 +5,20 @@ import { CommonNodes } from '@/nodes/common/Types';
 
 // TODO CORE-58 Change InlineCode Option to use state.parsedFunction
 export enum CustomOptions {
-  SelectFunction = 'Select Function',
   Code = 'Code'
 }
 export default class Custom extends Node {
   type = CommonNodes.Custom;
-  name: string = CommonNodes.Custom; // de
+  name: string = CommonNodes.Custom;
 
   private inputNames: string[] = [];
 
-  constructor() {
+  constructor(parsedFunction?: ParsedFunction) {
     super();
-    this.addOption(CustomOptions.SelectFunction, 'CodeVaultButtonOption', undefined, undefined, { customNode: this });
+    if (parsedFunction) {
+      this.state.parsedFunction = parsedFunction;
+      this.updateNode();
+    }
   }
 
   public load(state: INodeState) {
