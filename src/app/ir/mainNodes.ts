@@ -19,6 +19,9 @@ import InData from './data/InData';
 import OutData from './data/OutData';
 import ToTensor from './data/ToTensor';
 import Grayscale from './data/Grayscale';
+import LoadCsv from './data/LoadCsv';
+import LoadImages from './data/LoadImages';
+import LoadCustom from './data/LoadCustom';
 
 // MODEL NODES
 export type MlNode = ModelNode | TrainNode | DataNode | OptimizerNode
@@ -34,9 +37,11 @@ export type Operations = Concat
 export type ModelNode = ModelLayerNode | InModel | OutModel | Custom | Operations
 
 // DATA NODES
-export type DataNode = InData | OutData | DataTransform
+export type DataNode = InData | OutData | DataTransform | DataLoad
 
 export type DataTransform = ToTensor | Grayscale
+
+export type DataLoad = LoadCsv | LoadImages | LoadCustom
 
 // TRAIN NODES
 export type OptimizerNode = Adadelta

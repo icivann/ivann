@@ -5,6 +5,9 @@ import InData from '@/nodes/data/InData';
 import OutData from '@/nodes/data/OutData';
 import ToTensor from '@/nodes/data/ToTensor';
 import Grayscale from '@/nodes/data/Grayscale';
+import LoadCsv from '@/nodes/data/LoadCsv';
+import LoadImages from '@/nodes/data/LoadImages';
+import LoadCustom from '@/nodes/data/LoadCustom';
 
 export default class DataCanvas extends AbstractCanvas {
   public nodeList = [
@@ -31,6 +34,23 @@ export default class DataCanvas extends AbstractCanvas {
         {
           name: DataNodes.Grayscale,
           node: Grayscale,
+        },
+      ],
+    },
+    {
+      category: DataCategories.Loading,
+      nodes: [
+        {
+          name: DataNodes.LoadCsv,
+          node: LoadCsv,
+        },
+        {
+          name: DataNodes.LoadImages,
+          node: LoadImages,
+        },
+        {
+          name: DataNodes.LoadCustom,
+          node: LoadCustom,
         },
       ],
     },

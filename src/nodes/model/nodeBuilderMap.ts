@@ -30,6 +30,9 @@ import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import Model from '@/app/ir/model/model';
 import Data from '@/app/ir/data/Data';
+import LoadCsv from '@/app/ir/data/LoadCsv';
+import LoadImages from '@/app/ir/data/LoadImages';
+import LoadCustom from '@/app/ir/data/LoadCustom';
 
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
@@ -64,6 +67,9 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['Grayscale', Grayscale.build],
   ['Transformer', Transformer.build],
   ['DataNode', Data.build],
+  ['LoadCsv', LoadCsv.build],
+  ['LoadImages', LoadImages.build],
+  ['LoadCustom', LoadCustom.build],
   // Optimizers
   ['Adadelta', Adadelta.build],
   // Training
