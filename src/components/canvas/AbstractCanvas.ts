@@ -4,14 +4,16 @@ import { NodeConstructor } from '@baklavajs/core/dist/baklavajs-core/types/index
 import { CommonNodes } from '@/nodes/common/Types';
 import Custom from '@/nodes/common/Custom';
 
-export default abstract class AbstractCanvas {
-  public abstract nodeList: {
-    category: string;
-    nodes: {
-      name: string;
-      node: NodeConstructor;
-    }[];
+export interface NodeListItem {
+  category: string;
+  nodes: {
+    name: string;
+    node: NodeConstructor;
   }[];
+}
+
+export default abstract class AbstractCanvas {
+  public abstract nodeList: NodeListItem[];
 
   protected option: OptionPlugin = new OptionPlugin();
 
