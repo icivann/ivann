@@ -1,6 +1,6 @@
 import { NodeListItem } from '@/components/canvas/AbstractCanvas';
 
-interface SearchNode {
+export interface SearchNode {
   name: string;
   displayName: string;
   options?: unknown;
@@ -13,16 +13,36 @@ export interface SearchItem {
 }
 
 export function convertToSearch(list: NodeListItem[]): SearchItem[] {
-  const searchItems: SearchItem[] = [];
-  for (const listItem of list) {
-    const nodes: SearchNode[] = [];
-    for (const node of listItem.nodes) {
-      nodes.push({ name: node.name, displayName: node.name });
+  return list.map((listItem) => {
+    const nodes = listItem.nodes.map((node) => ({ ...node, displayName: node.name }));
+    return { category: listItem.category, nodes };
+  });
+}
+
+export function modify(list: SearchItem[], category: string, name: string, newValue: SearchNode) {
+  return list.map((searchItem) => {
+    if (searchItem.category === category) {
+      return {
+        category,
+        nodes: searchItem.nodes.map((node) => {
+          if (node.name === name) {
+            return newValue;
+          }
+          return node;
+        }),
+      };
     }
-    searchItems.push({
-      category: listItem.category,
-      nodes,
-    });
+    return searchItem;
+  });
+}
+
+export function search(list: SearchItem[], searchString: string) {
+  const search = searchString.toLowerCase();
+  const result: SearchItem[] = [];
+  for (const category of list) {
+    const nodes = category.nodes.filter((node) => node
+      .displayName.toLowerCase().includes(search));
+    if (nodes.length > 0) result.push({ category: category.category, nodes });
   }
-  return searchItems;
+  return result;
 }

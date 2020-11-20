@@ -1,18 +1,15 @@
 <template>
   <div>
     <SearchBar class="mb-2" @value-change="searchString"/>
-    <ExpandablePanel :name="ioLabel" v-show="showIo">
+    <ExpandablePanel v-for="(category) in displayNodes" :key="category.category"
+                     :name="category.category" :inital-open="searching">
       <ButtonGrid>
-        <AddNodeButton :node="ioNodes.nodes[0].name" name="Input" :names="editorIONames"/>
-        <AddNodeButton :node="ioNodes.nodes[1].name" name="Output" :names="editorIONames"/>
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel v-for="(category) in modelNodes.slice(1)" :key="category.category"
-                     :name="category.category">
-      <ButtonGrid>
-        <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
-                       :node="node.name"
-                       :name="node.name"
+        <AddNodeButton
+          v-for="(node) in category.nodes" :key="node.name"
+          :node="node.name"
+          :name="node.displayName"
+          :names="node.names"
+          :options="node.options"
         />
       </ButtonGrid>
     </ExpandablePanel>
@@ -24,10 +21,13 @@ import { Component, Vue } from 'vue-property-decorator';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
-import { mapGetters } from 'vuex';
 import EditorManager from '@/EditorManager';
-import { ModelCategories } from '@/nodes/model/Types';
+import { ModelCategories, ModelNodes } from '@/nodes/model/Types';
 import SearchBar from '@/components/SearchBar.vue';
+import {
+  convertToSearch, modify, search, SearchItem,
+} from '@/components/SearchUtils';
+import { Getter } from 'vuex-class';
 
 @Component({
   components: {
@@ -36,19 +36,35 @@ import SearchBar from '@/components/SearchBar.vue';
     AddNodeButton,
     ButtonGrid,
   },
-  computed: mapGetters(['editorIONames']),
 })
 export default class LayersTab extends Vue {
-  private modelNodes = EditorManager.getInstance().modelCanvas.nodeList;
-  private ioNodes = this.modelNodes[0];
-  private ioLabel = ModelCategories.IO;
+  private modelNodes = convertToSearch(EditorManager.getInstance().modelCanvas.nodeList);
+  private displayNodes: SearchItem[] = [];
+  private searching = false;
+  @Getter('editorIONames') editorIONames!: Set<string>;
 
-  private showIo = true;
+  created() {
+    this.modelNodes = modify(this.modelNodes, ModelCategories.IO, ModelNodes.InModel, {
+      name: ModelNodes.InModel,
+      displayName: 'Input',
+      names: this.editorIONames,
+    });
+    this.modelNodes = modify(this.modelNodes, ModelCategories.IO, ModelNodes.OutModel, {
+      name: ModelNodes.OutModel,
+      displayName: 'Output',
+      names: this.editorIONames,
+    });
+
+    this.displayNodes = this.modelNodes;
+  }
 
   private searchString(searchString: string) {
-    const lowercase = searchString.toLowerCase();
-    this.showIo = 'input'.includes(lowercase) || 'output'.includes(lowercase);
-    console.log(searchString);
+    if (searchString === '') {
+      this.displayNodes = this.modelNodes;
+      this.searching = false;
+    }
+    this.displayNodes = search(this.modelNodes, searchString);
+    this.searching = true;
   }
 }
 </script>

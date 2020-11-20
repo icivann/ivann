@@ -13,8 +13,9 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class ExpandablePanel extends Vue {
   @Prop({ required: true }) readonly name!: string
+  @Prop() readonly initalOpen?: boolean | undefined;
 
-  private open = false;
+  private open = this.initalOpen !== undefined && this.initalOpen;
 
   private toggleOpen() {
     this.open = !this.open;

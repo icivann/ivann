@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" class="tab" :class="padded && 'padded'">
+  <div v-show="visible" class="tab" :class="padded && 'padded'">
     <slot/>
   </div>
 </template>
