@@ -1,13 +1,9 @@
 <template>
-  <div class="h-100">
+  <div class="editor">
     <div id="ace"/>
-    <div class="save-banner">
-      <div>
-        <UIButton text="Cancel" @click="cancel"/>
-      </div>
-      <div>
-        <UIButton text="Save Changes" :primary="true" @click="save"/>
-      </div>
+    <div class="confirm-button">
+      <UIButton text="Close" @click="close"/>
+      <UIButton text="Save Changes" :primary="true" @click="save"/>
     </div>
   </div>
 </template>
@@ -19,7 +15,7 @@ import Tab from '@/components/tabs/Tab.vue';
 import Ace from 'brace';
 import 'brace/mode/python';
 import '@/assets/ivann-theme';
-import { Mutation } from 'vuex-class';
+import { Getter, Mutation } from 'vuex-class';
 import Custom from '@/nodes/common/Custom';
 import UIButton from '@/components/buttons/UIButton.vue';
 import parse from '@/app/parser/parser';
@@ -37,6 +33,7 @@ import { ParsedFile } from '@/store/codeVault/types';
 export default class IdeTab extends Vue {
   @Prop({ required: true }) readonly filename!: string;
 
+  @Getter('file') file!: (filename: string) => ParsedFile;
   @Mutation('setFile') setFile!: (file: ParsedFile) => void;
   @Mutation('closeFile') closeFile!: (filename: string) => void;
   @Mutation('leaveCodeVault') leaveCodeVault!: () => void;
@@ -54,9 +51,13 @@ export default class IdeTab extends Vue {
     });
     this.editor.$blockScrolling = Infinity; // Get rid unnecessary Console info
     this.editor.on('change', this.onEditorChange);
+
+    // Initialise file with current functions that it contains
+    this.editor.setValue(this.file(this.filename).functions.join('\n'));
   }
 
   private save() {
+    // TODO: Compare new file with prev file and update / delete nodes accordingly
     if (this.editor) {
       if (!(this.parsedFile instanceof Error) && this.parsedFile) {
         const file = { filename: this.filename, functions: this.parsedFile, open: false };
@@ -70,7 +71,7 @@ export default class IdeTab extends Vue {
     }
   }
 
-  private cancel() {
+  private close() {
     this.closeFile(this.filename);
     this.$emit('closeTab');
   }
@@ -105,22 +106,27 @@ export default class IdeTab extends Vue {
 </script>
 
 <style scoped>
-.save-banner {
-  border-top: 1px solid var(--grey);
-  background: var(--background);
-  height: 3em;
-  display: flex;
-  padding-left: calc(100% - 15.5em);
-}
 .button {
-  margin-top: 14px;
   margin-right: 1rem;
 }
+
+.editor {
+  margin-bottom: 1em;
+  height: calc(100% - 2.5em);
+}
+
 #ace {
   border-top: 1px solid var(--grey);
-  height: calc(100% - 3em);
+  height: calc(100%);
   font-size: 1em;
   font-family: monospace;
   font-weight: lighter;
+}
+
+.confirm-button {
+  display: flex;
+  float: right;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 }
 </style>

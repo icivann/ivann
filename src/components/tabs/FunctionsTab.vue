@@ -18,14 +18,18 @@
       </div>
       <div class="button-list">
         <FileFuncButton
-          v-for="(file, index) of files"
+          v-for="(file) of files"
           :header="`${file.filename} (${file.functions.length})`"
-          :key="index"
-          :selected="selectedFile === index"
-          @click="selectFile(index)"
+          :key="file.filename"
+          :selected="selectedFile === file.filename"
+          @click="selectFile(file.filename)"
         >
-          <div v-if="getFunctions(index).length === 0">(empty)</div>
-          <div v-else v-for="(func, index) of getFunctions(index)" :key="index">
+          <div v-if="getFunctions(file.filename).length === 0">(empty)</div>
+          <div
+            v-else
+            v-for="(func, index) of getFunctions(file.filename)"
+            :key="index"
+          >
             {{ func.signature() }}
           </div>
         </FileFuncButton>
@@ -33,31 +37,30 @@
     </div>
 
     <div id="right" class="panel">
+<!--      TODO: STYLE LIKE IDE-->
       <div class="button-list">
-        <FileFuncButton :disableHover="true">
-          <div v-if="this.selectedFile === -1" class="text-center">
-            No File Selected
-          </div>
-          <div
-            v-else
-            class="pre-formatted"
-            v-for="(func) of getFunctions(selectedFile)"
-            :key="func.name"
-            v-text="`${func.toString()}\n`"
-          />
-        </FileFuncButton>
+        <div v-if="selectedFile === null" class="text-center">
+          No File Selected
+        </div>
+        <div
+          v-else
+          class="pre-formatted"
+          v-for="(func) of getFunctions(this.selectedFile)"
+          :key="func.name"
+          v-text="`${func.toString()}\n`"
+        />
       </div>
       <div class="confirm-button">
         <UIButton
           text="Delete"
           @click="deleteFile"
-          :disabled="this.selectedFile === -1"
+          :disabled="selectedFile === null"
         />
         <UIButton
           text="Edit"
           :primary="true"
           @click="editFile"
-          :disabled="this.selectedFile === -1"
+          :disabled="selectedFile === null"
         />
       </div>
     </div>
@@ -77,6 +80,7 @@ import { Getter, Mutation } from 'vuex-class';
 import { FilenamesList, ParsedFile } from '@/store/codeVault/types';
 import { uniqueTextInput } from '@/inputs/prompt';
 import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
+import { mapGetters } from 'vuex';
 
 @Component({
   components: {
@@ -85,24 +89,24 @@ import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
     Tabs,
     UIButton,
   },
+  computed: mapGetters(['files']),
 })
 export default class FunctionsTab extends Vue {
   @Getter('filenames') filenames!: Set<string>;
-  @Getter('file') file!: (filename: string) => ParsedFile | undefined;
-  @Getter('files') files!: ParsedFile[];
+  @Getter('file') file!: (filename: string) => ParsedFile;
   @Mutation('addFile') addFile!: (file: ParsedFile) => void;
+  @Mutation('deleteFile') delFile!: (filename: string) => void;
+  @Mutation('openFile') openFile!: (filename: string) => void;
   @Getter('filenamesList') filenamesList!: FilenamesList;
 
-  private selectedFile = -1;
+  private selectedFile: string | null = null;
 
-  private selectFile(index: number) {
-    this.selectedFile = index;
+  private selectFile(filename: string) {
+    this.selectedFile = filename;
   }
 
-  private getFunctions(index: number): ParsedFunction[] {
-    const fileList = this.files;
-    if (index >= 0 && index < fileList.length) return fileList[index].functions;
-    return [];
+  private getFunctions(filename: string | null): ParsedFunction[] {
+    return filename !== null ? this.file(filename).functions : [];
   }
 
   // Trigger click of input tag for uploading file
@@ -154,11 +158,18 @@ export default class FunctionsTab extends Vue {
   }
 
   private deleteFile() {
-    console.log(`Clicked delete with selected file ${this.selectedFile}`);
+    // TODO: Ran through nodes using function and remove nodes
+    if (this.selectedFile !== null) {
+      const filename = this.selectedFile;
+      this.selectedFile = null;
+      this.delFile(filename);
+    }
   }
 
   private editFile() {
-    console.log(`Clicked edit selected file ${this.selectedFile}`);
+    if (this.selectedFile !== null) {
+      this.openFile(this.selectedFile);
+    }
   }
 
   private saveToCookies(file: ParsedFile) {
@@ -194,6 +205,7 @@ export default class FunctionsTab extends Vue {
   .confirm-button {
     display: flex;
     float: right;
+    padding-top: 0.5em;
     padding-bottom: 0.5em;
   }
 

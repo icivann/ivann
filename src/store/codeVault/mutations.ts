@@ -47,6 +47,11 @@ const codeVaultMutations: MutationTree<CodeVaultState> = {
       return file;
     });
   },
+  openFile(state, filename: string) {
+    for (const file of state.files) {
+      if (file.filename === filename) file.open = true;
+    }
+  },
   closeFiles(state) {
     state.files = state.files.map((file) => ({ ...file, open: false }));
   },
