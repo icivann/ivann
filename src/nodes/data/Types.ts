@@ -1,10 +1,10 @@
-export const enum DataCategories {
+export enum DataCategories {
   Custom = 'Custom',
   IO = 'I/O',
   Transform = 'Transform',
 }
 
-export const enum DataNodes {
+export enum DataNodes {
   InData = 'InData',
   OutData = 'OutData',
   ToTensor = 'ToTensor',
