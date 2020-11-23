@@ -33,7 +33,7 @@
     </ExpandablePanel>
     <ExpandablePanel
       :name="overviewCategories.Train"
-      v-show="searchString === '' || shouldRender('Train Classifier')"
+      v-show="shouldRender('Train Classifier')"
     >
       <ButtonGrid>
         <AddNodeButton :node="overviewNodes.TrainClassifier" name="Train Classifier"/>
@@ -41,7 +41,7 @@
     </ExpandablePanel>
     <ExpandablePanel
       :name="overviewCategories.Optimizer"
-      v-show="searchString === '' || shouldRender(overviewNodes.Adadelta)"
+      v-show="shouldRender(overviewNodes.Adadelta)"
     >
       <ButtonGrid>
         <AddNodeButton :node="overviewNodes.Adadelta" :name="overviewNodes.Adadelta"/>

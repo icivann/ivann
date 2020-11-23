@@ -22,22 +22,12 @@ import Softmin from '@/nodes/model/Softmin';
 import Softmax from '@/nodes/model/Softmax';
 import Bilinear from '@/nodes/model/Bilinear';
 import Linear from '@/nodes/model/Linear';
+import { Editor } from '@baklavajs/core';
+import { CommonNodes } from '@/nodes/common/Types';
+import Custom from '@/nodes/common/Custom';
 
 export default class ModelCanvas extends AbstractCanvas {
   public nodeList = [
-    {
-      category: ModelCategories.IO,
-      nodes: [
-        {
-          name: ModelNodes.InModel,
-          node: InModel,
-        },
-        {
-          name: ModelNodes.OutModel,
-          node: OutModel,
-        },
-      ],
-    },
     {
       category: ModelCategories.Conv,
       nodes: [
@@ -155,4 +145,10 @@ export default class ModelCanvas extends AbstractCanvas {
       ],
     },
   ];
+
+  public registerNodes(editor: Editor) {
+    super.registerNodes(editor);
+    editor.registerNodeType(ModelNodes.InModel, InModel);
+    editor.registerNodeType(ModelNodes.OutModel, OutModel);
+  }
 }
