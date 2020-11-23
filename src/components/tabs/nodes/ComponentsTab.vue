@@ -1,5 +1,5 @@
 <template>
-  <NodesTab :searchItems="componentsTab.searchItems"/>
+  <NodesTab :searchItems="searchItems"/>
 </template>
 
 <script lang="ts">
@@ -8,29 +8,58 @@ import {
 } from 'vue-property-decorator';
 import { EditorModel } from '@/store/editors/types';
 import { Getter } from 'vuex-class';
-import ComponentsNodesTab from '@/components/tabs/nodes/ComponentsNodesTab';
+import { SearchItem } from '@/components/SearchUtils';
+import { OverviewCategories, OverviewNodes } from '@/nodes/overview/Types';
 import NodesTab from './NodesTab.vue';
 
 @Component({
   components: { NodesTab },
 })
 export default class ComponentsTab extends Vue {
-  private componentsTab!: ComponentsNodesTab;
+  private searchItems!: SearchItem[];
   @Getter('modelEditors') modelEditors!: EditorModel[];
   @Getter('dataEditors') dataEditors!: EditorModel[];
 
   created() {
-    this.componentsTab = new ComponentsNodesTab(this.modelEditors, this.dataEditors);
+    this.searchItems = [
+      { category: OverviewCategories.Model, nodes: [] },
+      { category: OverviewCategories.Data, nodes: [] },
+      {
+        category: OverviewCategories.Train,
+        nodes: [{
+          name: OverviewNodes.TrainClassifier,
+          displayName: 'Train Classifier',
+        }],
+      },
+      {
+        category: OverviewCategories.Optimizer,
+        nodes: [{
+          name: OverviewNodes.Adadelta,
+          displayName: OverviewNodes.Adadelta,
+        }],
+      },
+    ];
+    this.updateModelEditors(this.modelEditors);
+    this.updateDataEditors(this.dataEditors);
   }
 
   @Watch('modelEditors')
   private updateModelEditors(newModels: EditorModel[]) {
-    this.componentsTab.updateModelEditors(newModels);
+    this.updateEditors(newModels, 0, OverviewNodes.ModelNode);
   }
 
   @Watch('dataEditors')
   private updateDataEditors(newModels: EditorModel[]) {
-    this.componentsTab.updateDataEditors(newModels);
+    this.updateEditors(newModels, 1, OverviewNodes.DataNode);
+  }
+
+  private updateEditors(editors: EditorModel[], category: number, type: string): void {
+    this.searchItems[category].nodes = editors
+      .map((model) => ({
+        name: type,
+        displayName: model.name,
+        options: model,
+      }));
   }
 }
 </script>

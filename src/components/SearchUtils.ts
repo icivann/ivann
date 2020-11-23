@@ -4,7 +4,6 @@ export interface SearchNode {
   name: string;
   displayName: string;
   options?: unknown;
-  names?: Set<string>;
 }
 
 export interface SearchItem {

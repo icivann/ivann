@@ -21,7 +21,6 @@ export const editorState: EditorsState = {
   dataEditors: [],
   inCodeVault: false,
   errorsMap: new Map(),
-  ioNames: new Set<string>(),
 };
 
 export const editors: Module<EditorsState, RootState> = {

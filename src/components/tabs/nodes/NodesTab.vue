@@ -5,11 +5,13 @@
                      :name="category.category">
       <ButtonGrid>
         <AddNodeButton
-          v-for="(node) in category.nodes" :key="node.displayName"
+          v-for="(node) in category.nodes"
+          :key="node.displayName + node.options"
           :node="node.name"
           :name="node.displayName"
           :options="node.options"
-          :names="node.names"
+          :names="node.displayName === 'Input' || node.name === 'Output' ?
+          editorIONames : undefined"
         />
       </ButtonGrid>
     </ExpandablePanel>
@@ -25,7 +27,7 @@ import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
 import SearchBar from '@/components/SearchBar.vue';
 import { search, SearchItem } from '@/components/SearchUtils';
-import AbstractNodesTab from '@/components/tabs/nodes/AbstractNodesTab';
+import { Getter } from 'vuex-class';
 
 @Component({
   components: {
@@ -37,25 +39,24 @@ import AbstractNodesTab from '@/components/tabs/nodes/AbstractNodesTab';
 })
 export default class NodesTab extends Vue {
   @Prop({ required: true }) searchItems!: SearchItem[];
-  private enabledNodes: SearchItem[] = [];
   private renderedNodes: SearchItem[] = [];
-
-  @Watch('searchItems', { deep: true })
-  private changeNodesTab(newItems: SearchItem[]) {
-    this.enabledNodes = newItems;
-  }
+  @Getter('editorIONames') editorIONames!: Set<string>;
+  //
+  // @Watch('searchItems', { deep: true })
+  // private changeNodesTab(newItems: SearchItem[]) {
+  //   this.renderedNodes = newItems;
+  // }
 
   created() {
-    this.enabledNodes = this.searchItems;
-    this.renderedNodes = this.enabledNodes;
+    this.renderedNodes = this.searchItems;
   }
 
   private searchString(searchString: string) {
     if (searchString === '') {
-      this.renderedNodes = this.enabledNodes;
+      this.renderedNodes = this.searchItems;
       return;
     }
-    this.renderedNodes = search(this.enabledNodes, searchString);
+    this.renderedNodes = search(this.searchItems, searchString);
   }
 }
 </script>

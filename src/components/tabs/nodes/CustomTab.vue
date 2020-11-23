@@ -7,7 +7,7 @@
     >
       Click Here to Add Custom Functions
     </div>
-    <NodesTab v-else :searchItems="customNodeTab.searchItems"/>
+    <NodesTab v-else :searchItems="searchItems"/>
   </div>
 </template>
 
@@ -18,8 +18,9 @@ import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
 import { Getter, Mutation } from 'vuex-class';
 import NodesTab from '@/components/tabs/nodes/NodesTab.vue';
-import CustomNodesTab from '@/components/tabs/nodes/CustomNodesTab';
 import { ParsedFile } from '@/store/codeVault/types';
+import { SearchItem } from '@/components/SearchUtils';
+import { CommonNodes } from '@/nodes/common/Types';
 
 @Component({
   components: {
@@ -30,19 +31,26 @@ import { ParsedFile } from '@/store/codeVault/types';
   },
 })
 export default class CustomTab extends Vue {
-  private customNodeTab!: CustomNodesTab;
-
+  private searchItems!: SearchItem[];
   @Mutation('enterCodeVault') enterCodeVault!: () => void;
   @Mutation('closeFiles') closeFiles!: () => void;
   @Getter('files') files!: ParsedFile[];
 
   created() {
-    this.customNodeTab = new CustomNodesTab(this.files);
+    this.updateFiles(this.files);
   }
 
   @Watch('files')
-  private updateFiles(newFiles: ParsedFile[]) {
-    this.customNodeTab.updateFiles(newFiles);
+  private updateFiles(files: ParsedFile[]) {
+    console.log('Updated');
+    this.searchItems = files.map((file) => ({
+      category: file.filename,
+      nodes: file.functions.map((func) => ({
+        name: CommonNodes.Custom,
+        displayName: func.name,
+        options: func,
+      })),
+    }));
   }
 
   private clickCodeVault() {

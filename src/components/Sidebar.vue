@@ -10,7 +10,7 @@
     </Tabs>
     <Tabs v-show="currEditorType === editorType.MODEL">
       <Tab name="Layers">
-        <NodesTab :searchItems="layersTab.searchItems"/>
+        <LayerTab/>
       </Tab>
       <Tab name="Custom">
         <CustomTab/>
@@ -18,7 +18,7 @@
     </Tabs>
     <Tabs v-show="currEditorType === editorType.DATA">
       <Tab name="Data Components">
-        <NodesTab :searchItems="dataComponentsTab.searchItems"/>
+        <DataTab/>
       </Tab>
       <Tab name="Custom">
         <CustomTab/>
@@ -35,13 +35,14 @@ import CustomTab from '@/components/tabs/nodes/CustomTab.vue';
 import EditorType from '@/EditorType';
 import { mapGetters } from 'vuex';
 import NodesTab from '@/components/tabs/nodes/NodesTab.vue';
-import LayersTab from '@/components/tabs/nodes/LayersTab';
-import { Getter } from 'vuex-class';
-import DataComponentsTab from '@/components/tabs/nodes/DataComponentsTab';
 import ComponentsTab from '@/components/tabs/nodes/ComponentsTab.vue';
+import LayerTab from '@/components/tabs/nodes/LayerTab.vue';
+import DataTab from '@/components/tabs/nodes/DataTab.vue';
 
 @Component({
   components: {
+    DataTab,
+    LayerTab,
     ComponentsTab,
     CustomTab,
     NodesTab,
@@ -51,16 +52,7 @@ import ComponentsTab from '@/components/tabs/nodes/ComponentsTab.vue';
   computed: mapGetters(['currEditorType']),
 })
 export default class Sidebar extends Vue {
-  @Getter('editorIONames') editorIONames!: Set<string>;
   private editorType = EditorType;
-  private layersTab!: LayersTab;
-  private dataComponentsTab!: DataComponentsTab;
-
-  created() {
-    /* Initialise here, otherwise getters are called after constructors. */
-    this.layersTab = new LayersTab(this.editorIONames);
-    this.dataComponentsTab = new DataComponentsTab(this.editorIONames);
-  }
 }
 </script>
 
