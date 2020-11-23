@@ -10,7 +10,7 @@
     </Tabs>
     <Tabs v-show="currEditorType === editorType.MODEL">
       <Tab name="Layers">
-        <LayersTab/>
+        <NodesTab :nodes-tab="layersTab"/>
       </Tab>
       <Tab name="Custom">
         <CustomTab/>
@@ -18,7 +18,7 @@
     </Tabs>
     <Tabs v-show="currEditorType === editorType.DATA">
       <Tab name="Data Components">
-        <DataComponentsTab/>
+        <NodesTab :nodes-tab="dataComponentsTab"/>
       </Tab>
       <Tab name="Custom">
         <CustomTab/>
@@ -31,26 +31,36 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Tabs from '@/components/tabs/Tabs.vue';
 import Tab from '@/components/tabs/Tab.vue';
-import LayersTab from '@/components/tabs/LayersTab.vue';
-import CustomTab from '@/components/tabs/CustomTab.vue';
+import CustomTab from '@/components/tabs/nodes/CustomTab.vue';
 import EditorType from '@/EditorType';
-import ComponentsTab from '@/components/tabs/ComponentsTab.vue';
 import { mapGetters } from 'vuex';
-import DataComponentsTab from '@/components/tabs/DataComponentsTab.vue';
+import NodesTab from '@/components/tabs/nodes/NodesTab.vue';
+import LayersTab from '@/components/tabs/nodes/LayersTab';
+import { Getter } from 'vuex-class';
+import DataComponentsTab from '@/components/tabs/nodes/DataComponentsTab';
+import ComponentsTab from '@/components/tabs/nodes/ComponentsTab.vue';
 
 @Component({
   components: {
-    DataComponentsTab,
     ComponentsTab,
     CustomTab,
-    LayersTab,
+    NodesTab,
     Tab,
     Tabs,
   },
   computed: mapGetters(['currEditorType']),
 })
 export default class Sidebar extends Vue {
+  @Getter('editorIONames') editorIONames!: Set<string>;
   private editorType = EditorType;
+  private layersTab!: LayersTab;
+  private dataComponentsTab!: DataComponentsTab;
+
+  created() {
+    /* Initialise here, otherwise getters are called after constructors. */
+    this.layersTab = new LayersTab(this.editorIONames);
+    this.dataComponentsTab = new DataComponentsTab(this.editorIONames);
+  }
 }
 </script>
 
