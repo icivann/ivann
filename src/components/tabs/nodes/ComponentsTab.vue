@@ -1,5 +1,5 @@
 <template>
-  <NodesTab :nodes-tab="componentsTab"/>
+  <NodesTab :searchItems="componentsTab.searchItems"/>
 </template>
 
 <script lang="ts">

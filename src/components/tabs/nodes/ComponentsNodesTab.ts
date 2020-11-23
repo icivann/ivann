@@ -7,11 +7,11 @@ export default class ComponentsNodesTab extends AbstractNodesTab {
   private static readonly MODEL_CATEGORY = 0;
   private static readonly DATA_CATEGORY = 1;
 
-  private readonly items: SearchItem[];
+  public readonly searchItems: SearchItem[];
 
   public constructor(modelEditors: EditorModel[], dataEditors: EditorModel[]) {
     super();
-    this.items = [
+    this.searchItems = [
       { category: OverviewCategories.Model, nodes: [] },
       { category: OverviewCategories.Data, nodes: [] },
       {
@@ -33,10 +33,6 @@ export default class ComponentsNodesTab extends AbstractNodesTab {
     this.updateDataEditors(dataEditors);
   }
 
-  public get searchItems(): SearchItem[] {
-    return this.items;
-  }
-
   public updateModelEditors(modelEditors: EditorModel[]): void {
     this.updateEditors(modelEditors, ComponentsNodesTab.MODEL_CATEGORY, OverviewNodes.ModelNode);
   }
@@ -46,7 +42,7 @@ export default class ComponentsNodesTab extends AbstractNodesTab {
   }
 
   private updateEditors(editors: EditorModel[], category: number, type: string): void {
-    this.items[category].nodes = editors
+    this.searchItems[category].nodes = editors
       .map((model) => ({
         name: type,
         displayName: model.name,

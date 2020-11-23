@@ -7,7 +7,7 @@
     >
       Click Here to Add Custom Functions
     </div>
-    <NodesTab v-else :nodes-tab="customNodeTab"/>
+    <NodesTab v-else :searchItems="customNodeTab.searchItems"/>
   </div>
 </template>
 
@@ -42,7 +42,6 @@ export default class CustomTab extends Vue {
 
   @Watch('files')
   private updateFiles(newFiles: ParsedFile[]) {
-    console.log('change');
     this.customNodeTab.updateFiles(newFiles);
   }
 

@@ -21,4 +21,5 @@ export interface EditorsState extends EditorModels {
   editorNames: Set<string>;
   inCodeVault: boolean;
   errorsMap: Map<string, IrError[]>;
+  ioNames: Set<string>;
 }

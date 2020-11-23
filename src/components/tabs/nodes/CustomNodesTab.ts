@@ -4,15 +4,11 @@ import { ParsedFile } from '@/store/codeVault/types';
 import { CommonNodes } from '@/nodes/common/Types';
 
 export default class CustomNodesTab extends AbstractNodesTab {
-  private items: SearchItem[] = [];
+  public readonly searchItems: SearchItem[] = [];
 
   public constructor(files: ParsedFile[]) {
     super();
     this.updateFiles(files);
-  }
-
-  public get searchItems(): SearchItem[] {
-    return this.items;
   }
 
   public updateFiles(files: ParsedFile[]): void {
@@ -26,6 +22,6 @@ export default class CustomNodesTab extends AbstractNodesTab {
     }));
 
     // TODO: Find a way to use searchItems getter instead of array reference
-    this.items.splice(0, this.items.length, ...mapped);
+    this.searchItems.splice(0, this.searchItems.length, ...mapped);
   }
 }

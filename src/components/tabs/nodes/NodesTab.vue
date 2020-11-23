@@ -36,18 +36,17 @@ import AbstractNodesTab from '@/components/tabs/nodes/AbstractNodesTab';
   },
 })
 export default class NodesTab extends Vue {
-  @Prop({ required: true }) nodesTab!: AbstractNodesTab;
+  @Prop({ required: true }) searchItems!: SearchItem[];
   private enabledNodes: SearchItem[] = [];
   private renderedNodes: SearchItem[] = [];
 
-  @Watch('nodesTab')
-  private changeNodesTab(newTab: AbstractNodesTab) {
-    console.log(`NumberOfFiles: ${newTab.searchItems.length}`);
-    this.enabledNodes = newTab.searchItems;
+  @Watch('searchItems', { deep: true })
+  private changeNodesTab(newItems: SearchItem[]) {
+    this.enabledNodes = newItems;
   }
 
   created() {
-    this.enabledNodes = this.nodesTab.searchItems;
+    this.enabledNodes = this.searchItems;
     this.renderedNodes = this.enabledNodes;
   }
 

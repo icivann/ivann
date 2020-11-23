@@ -10,7 +10,7 @@
     </Tabs>
     <Tabs v-show="currEditorType === editorType.MODEL">
       <Tab name="Layers">
-        <NodesTab :nodes-tab="layersTab"/>
+        <NodesTab :searchItems="layersTab.searchItems"/>
       </Tab>
       <Tab name="Custom">
         <CustomTab/>
@@ -18,7 +18,7 @@
     </Tabs>
     <Tabs v-show="currEditorType === editorType.DATA">
       <Tab name="Data Components">
-        <NodesTab :nodes-tab="dataComponentsTab"/>
+        <NodesTab :searchItems="dataComponentsTab.searchItems"/>
       </Tab>
       <Tab name="Custom">
         <CustomTab/>
