@@ -16,7 +16,6 @@ import Ace from 'brace';
 import 'brace/mode/python';
 import '@/assets/ivann-theme';
 import { Getter, Mutation } from 'vuex-class';
-import Custom from '@/nodes/common/Custom';
 import UIButton from '@/components/buttons/UIButton.vue';
 import parse from '@/app/parser/parser';
 import ParsedFunction from '@/app/parser/ParsedFunction';
@@ -57,13 +56,23 @@ export default class IdeTab extends Vue {
   }
 
   private save() {
-    // TODO: Compare new file with prev file and update / delete nodes accordingly
     if (this.editor) {
       if (!(this.parsedFile instanceof Error) && this.parsedFile) {
-        const file = { filename: this.filename, functions: this.parsedFile, open: false };
+        const funcs = this.parsedFile as ParsedFunction[];
+
+        // Compare old file and new file, checking differences
+        // TODO
+
+        // Run through editors using function that have been changed and update corresponding nodes
+        // TODO
+
+        // Override file in codevault and save
+        const file = { filename: this.filename, functions: funcs, open: false };
         this.setFile(file);
-        this.closeFile(this.filename);
         this.$cookies.set(`unsaved-file-${this.filename}`, file);
+
+        // Close tab and switch to 'Functions' tab
+        this.closeFile(this.filename);
         this.$emit('closeTab');
       } else {
         window.alert('Cannot save file with errors.');
@@ -82,7 +91,7 @@ export default class IdeTab extends Vue {
   private onEditorChange() {
     if (this.editor) {
       const code = this.editor.getValue();
-      const functionsOrError = parse(code);
+      const functionsOrError = parse(code, this.filename);
       if (!(functionsOrError instanceof Error)) {
         this.editor.getSession().clearAnnotations();
       } else {

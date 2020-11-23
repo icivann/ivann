@@ -35,7 +35,12 @@ export default class Custom extends Node {
     const { parsedFunction } = savedState ? savedState.state : this.state;
     if (parsedFunction) {
       // Conversion is necessary because Baklava State saves as generic `any`.
-      return new ParsedFunction(parsedFunction.name, parsedFunction.body, parsedFunction.args);
+      return new ParsedFunction(
+        parsedFunction.name,
+        parsedFunction.body,
+        parsedFunction.args,
+        parsedFunction.filename,
+      );
     }
     return undefined;
   }

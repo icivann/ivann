@@ -94,10 +94,11 @@ import { mapGetters } from 'vuex';
 export default class FunctionsTab extends Vue {
   @Getter('filenames') filenames!: Set<string>;
   @Getter('file') file!: (filename: string) => ParsedFile;
+  @Getter('filenamesList') filenamesList!: FilenamesList;
   @Mutation('addFile') addFile!: (file: ParsedFile) => void;
   @Mutation('deleteFile') delFile!: (filename: string) => void;
   @Mutation('openFile') openFile!: (filename: string) => void;
-  @Getter('filenamesList') filenamesList!: FilenamesList;
+  @Mutation('deleteNodes') deleteNodes!: (functions: ParsedFunction[]) => void;
 
   private selectedFile: string | null = null;
 
@@ -132,7 +133,7 @@ export default class FunctionsTab extends Vue {
       }
 
       // Parse file - report any errors
-      const parsed: Result<ParsedFunction[]> = parse(event.target.result as string);
+      const parsed: Result<ParsedFunction[]> = parse(event.target.result as string, filename);
       if (parsed instanceof Error) {
         console.error(parsed);
       } else {
@@ -158,9 +159,15 @@ export default class FunctionsTab extends Vue {
   }
 
   private deleteFile() {
-    // TODO: Ran through nodes using function and remove nodes
     if (this.selectedFile !== null) {
       const filename = this.selectedFile;
+
+      // Run through editors using function in deleted file and remove corresponding nodes
+      // TODO: Add warning confirming nodes will be deleted?
+      const { functions } = this.file(filename);
+      this.deleteNodes(functions);
+
+      // Delete file from codevault
       this.selectedFile = null;
       this.delFile(filename);
     }
