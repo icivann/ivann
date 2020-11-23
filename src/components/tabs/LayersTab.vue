@@ -2,7 +2,8 @@
   <div>
     <SearchBar class="mb-2" @value-change="searchString"/>
     <ExpandablePanel v-for="(category) in displayNodes" :key="category.category"
-                     :name="category.category" :inital-open="searching">
+                     :name="category.category">
+<!--                     :name="category.category" :inital-open="searching">-->
       <ButtonGrid>
         <AddNodeButton
           v-for="(node) in category.nodes" :key="node.name"
@@ -62,6 +63,7 @@ export default class LayersTab extends Vue {
     if (searchString === '') {
       this.displayNodes = this.modelNodes;
       this.searching = false;
+      return;
     }
     this.displayNodes = search(this.modelNodes, searchString);
     this.searching = true;

@@ -1,60 +1,97 @@
 <template>
   <div>
-    <ExpandablePanel name="Models">
-      <div class="msg" v-show="modelEditors.length === 0">No Models Created</div>
+    <SearchBar class="mb-2" @value-change="searchString"/>
+    <ExpandablePanel v-for="(category) in renderedNodes" :key="category.category"
+                     :name="category.category">
       <ButtonGrid>
         <AddNodeButton
-          v-for="editor in modelEditors"
-          :node="overviewNodes.ModelNode"
-          :options="editor"
-          :key="editor.name"
-          :name="editor.name"
+          v-for="(node) in category.nodes" :key="node.displayName"
+          :node="node.name"
+          :name="node.displayName"
+          :names="node.names"
+          :options="node.options"
         />
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel name="Datasets">
-      <div class="msg" v-show="dataEditors.length === 0">No Datasets Created</div>
-      <ButtonGrid>
-        <AddNodeButton
-          v-for="editor in dataEditors"
-          :node="overviewNodes.DataNode"
-          :options="editor"
-          :key="editor.name"
-          :name="editor.name"
-        />
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel name="Train">
-      <ButtonGrid>
-        <AddNodeButton node="TrainClassifier" name="Train Classifier"/>
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel name="Optimizer">
-      <ButtonGrid>
-        <AddNodeButton node="Adadelta" name="Adadelta"/>
       </ButtonGrid>
     </ExpandablePanel>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
-import { mapGetters } from 'vuex';
-import { OverviewNodes } from '@/nodes/overview/Types';
+import { OverviewCategories, OverviewNodes } from '@/nodes/overview/Types';
+import SearchBar from '@/components/SearchBar.vue';
+import { search, SearchItem } from '@/components/SearchUtils';
+import { EditorModel } from '@/store/editors/types';
+import { Getter } from 'vuex-class';
 
 @Component({
   components: {
     ExpandablePanel,
     AddNodeButton,
     ButtonGrid,
+    SearchBar,
   },
-  computed: mapGetters(['modelEditors', 'dataEditors']),
 })
 export default class ComponentsTab extends Vue {
-  private overviewNodes = OverviewNodes;
+  private enabledNodes: SearchItem[] = [];
+  private renderedNodes: SearchItem[] = [];
+  @Getter('modelEditors') modelEditors!: EditorModel[];
+  @Getter('dataEditors') dataEditors!: EditorModel[];
+
+  @Watch('modelEditors')
+  private updateModelEditors(newModels: EditorModel[]) {
+    this.enabledNodes[0].nodes = newModels
+      .map((model) => ({
+        name: OverviewNodes.ModelNode,
+        displayName: model.name,
+        options: model,
+      }));
+  }
+
+  @Watch('dataEditors')
+  private updateDataEditors(newModels: EditorModel[]) {
+    this.enabledNodes[1].nodes = newModels
+      .map((model) => ({
+        name: OverviewNodes.ModelNode,
+        displayName: model.name,
+        options: model,
+      }));
+  }
+
+  created() {
+    this.enabledNodes = [
+      { category: OverviewCategories.Model, nodes: [] },
+      { category: OverviewCategories.Data, nodes: [] },
+      {
+        category: OverviewCategories.Train,
+        nodes: [{
+          name: OverviewNodes.TrainClassifier,
+          displayName: 'Train Classifier',
+        }],
+      },
+      {
+        category: OverviewCategories.Optimizer,
+        nodes: [{
+          name: OverviewNodes.Adadelta,
+          displayName: OverviewNodes.Adadelta,
+        }],
+      },
+    ];
+    this.updateModelEditors(this.modelEditors);
+    this.updateDataEditors(this.dataEditors);
+    this.renderedNodes = this.enabledNodes;
+  }
+
+  private searchString(searchString: string) {
+    if (searchString === '') {
+      this.renderedNodes = this.enabledNodes;
+      return;
+    }
+    this.renderedNodes = search(this.enabledNodes, searchString);
+  }
 }
 </script>
 

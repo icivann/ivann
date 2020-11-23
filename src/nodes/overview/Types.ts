@@ -1,7 +1,6 @@
 export const enum OverviewCategories {
-  Model = 'Model',
-  Data = 'Data',
-  Custom = 'Custom',
+  Model = 'Models',
+  Data = 'Datasets',
   Train = 'Train',
   Optimizer = 'Optimizer',
 }

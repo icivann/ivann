@@ -1,13 +1,13 @@
 <template>
-  <div class="button-grid">
-    <slot/>
+  <div :class="!this.$slots.default ? 'text-center': 'button-grid'">
+    <slot>Empty</slot>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-@Component({})
+@Component
 export default class ButtonGrid extends Vue {
 }
 </script>

@@ -12,6 +12,8 @@ export default class Model extends Node {
   constructor(model?: EditorModel) {
     super();
     if (model) {
+      console.log(model.name);
+      console.log(model.editor.nodes.length);
       this.name = model.name;
       const { inputs, outputs } = getEditorIOs(model);
       this.updateIO({ added: inputs, removed: [] }, { added: outputs, removed: [] });
