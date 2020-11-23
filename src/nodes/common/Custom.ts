@@ -22,8 +22,8 @@ export default class Custom extends Node {
   }
 
   public load(state: INodeState) {
+    this.updateNode(state);
     super.load(state);
-    this.updateNode();
   }
 
   public setParsedFunction(parsedFunction?: ParsedFunction) {
@@ -31,9 +31,9 @@ export default class Custom extends Node {
     this.updateNode();
   }
 
-  public getParsedFunction(): (ParsedFunction | undefined) {
-    const { parsedFunction } = this.state;
-    if (this.state.parsedFunction) {
+  public getParsedFunction(savedState?: INodeState): (ParsedFunction | undefined) {
+    const { parsedFunction } = savedState ? savedState.state : this.state;
+    if (parsedFunction) {
       // Conversion is necessary because Baklava State saves as generic `any`.
       return new ParsedFunction(parsedFunction.name, parsedFunction.body, parsedFunction.args);
     }
@@ -48,8 +48,8 @@ export default class Custom extends Node {
     return this.state.parsedFileName;
   }
 
-  private updateNode() {
-    const parsedFunction = this.getParsedFunction();
+  private updateNode(savedState?: INodeState) {
+    const parsedFunction = this.getParsedFunction(savedState);
     if (!parsedFunction) {
       this.name = CommonNodes.Custom;
       this.removeAllInputs();
