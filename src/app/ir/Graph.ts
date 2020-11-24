@@ -38,6 +38,11 @@ export default class Graph {
       .flatMap((n) => Array.from(n.inputInterfaces.values())
         .map((i) => [i.id, n] as [string, GraphNode])),
   )
+  public readonly nodesByOutputInterface: Map<string, GraphNode> = new Map(
+    this.nodesAsArray
+      .flatMap((n) => Array.from(n.outputInterfaces.values())
+        .map((i) => [i.id, n] as [string, GraphNode])),
+  )
 
   public readonly nodesFromNode: Map<GraphNode, GraphNode[]> = new Map(
     this.nodesAsArray
@@ -54,7 +59,7 @@ export default class Graph {
       .map((sourceNode) => {
         const nodes = Array.from(sourceNode.inputInterfaces.values())
           .flatMap((i) => this.outToInConnections.get(i.id)!
-            .map((c) => this.nodesByInputInterface.get(c.id)!));
+            .map((c) => this.nodesByOutputInterface.get(c.id)!));
         return [sourceNode.uniqueId.id, nodes];
       }),
   )
