@@ -21,6 +21,7 @@ import parse from '@/app/parser/parser';
 import ParsedFunction from '@/app/parser/ParsedFunction';
 import { Result } from '@/app/util';
 import { ParsedFile } from '@/store/codeVault/types';
+import { FuncDiff, funcsDiff } from '@/store/editors/utils';
 
 @Component({
   components: {
@@ -36,6 +37,8 @@ export default class IdeTab extends Vue {
   @Mutation('setFile') setFile!: (file: ParsedFile) => void;
   @Mutation('closeFile') closeFile!: (filename: string) => void;
   @Mutation('leaveCodeVault') leaveCodeVault!: () => void;
+  @Mutation('editNodes') editNodes!: (diff: FuncDiff) => void;
+
   private editor?: Ace.Editor;
   private parsedFile?: Result<ParsedFunction[]>;
 
@@ -58,16 +61,18 @@ export default class IdeTab extends Vue {
   private save() {
     if (this.editor) {
       if (!(this.parsedFile instanceof Error) && this.parsedFile) {
-        const funcs = this.parsedFile as ParsedFunction[];
+        const oldFuncs = this.file(this.filename).functions;
+        const newFuncs = this.parsedFile as ParsedFunction[];
 
-        // Compare old file and new file, checking differences
-        // TODO
+        // Compare old file and new file, finding differences
+        const diff: FuncDiff = funcsDiff(oldFuncs, newFuncs);
+        // TODO: FE-103 Warning depending on diff
 
         // Run through editors using function that have been changed and update corresponding nodes
-        // TODO
+        this.editNodes(diff);
 
         // Override file in codevault and save
-        const file = { filename: this.filename, functions: funcs, open: false };
+        const file = { filename: this.filename, functions: newFuncs, open: false };
         this.setFile(file);
         this.$cookies.set(`unsaved-file-${this.filename}`, file);
 

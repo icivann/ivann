@@ -8,7 +8,12 @@ import { loadEditors, Save } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
 import Model from '@/nodes/overview/Model';
 import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
-import { deleteNodesFromEditor, getEditorIOs } from '@/store/editors/utils';
+import {
+  deleteNodesFromEditor,
+  editNodesFromEditor,
+  FuncDiff,
+  getEditorIOs,
+} from '@/store/editors/utils';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
@@ -183,6 +188,11 @@ const editorMutations: MutationTree<EditorsState> = {
     deleteNodesFromEditor(state.overviewEditor, functions);
     state.modelEditors.forEach((editor) => deleteNodesFromEditor(editor, functions));
     state.dataEditors.forEach((editor) => deleteNodesFromEditor(editor, functions));
+  },
+  editNodes(state, diff: FuncDiff) {
+    editNodesFromEditor(state.overviewEditor, diff);
+    state.modelEditors.forEach((editor) => editNodesFromEditor(editor, diff));
+    state.dataEditors.forEach((editor) => editNodesFromEditor(editor, diff));
   },
 };
 
