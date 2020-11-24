@@ -81,7 +81,7 @@ export default class ComponentsTab extends Vue {
 
   private get renderedModelEditors() {
     return this.modelEditors
-      .filter((editor) => editor.name.toLowerCase().includes(this.searchString.toLowerCase()));
+      .filter((editor) => this.shouldRender(editor.name));
   }
 
   private get renderedDataEditors() {

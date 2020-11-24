@@ -1,5 +1,6 @@
 <template>
   <div class="d-flex h-100">
+
     <div id="left" class="panel">
       <div class="d-flex">
         <div>
@@ -17,52 +18,53 @@
       </div>
       <div class="button-list">
         <FileFuncButton
-          v-for="(file, index) of files"
+          v-for="(file) of files"
           :header="`${file.filename} (${file.functions.length})`"
-          :key="index"
-          :selected="selectedFile === index"
-          @click="selectFile(index)"
+          :key="file.filename"
+          :selected="selectedFile === file.filename"
+          @click="selectFile(file.filename)"
         >
-          <div v-if="getFunctions(index).length === 0">(empty)</div>
-          <div v-else>
-            <div v-for="(func, index) of getFunctions(index)" :key="index">
-              {{ func.signature() }}
-            </div>
+          <div v-if="getFunctions(file.filename).length === 0">(empty)</div>
+          <div
+            v-else
+            v-for="(func, index) of getFunctions(file.filename)"
+            :key="index"
+          >
+            {{ func.signature() }}
           </div>
         </FileFuncButton>
       </div>
     </div>
+
     <div id="right" class="panel">
+<!--      TODO: STYLE LIKE IDE-->
       <div class="button-list">
-        <div v-if="getFunctions(selectedFile).length === 0" class="text-center">
-          {{ selectedFile === -1 ? 'Select a file.' : 'No functions defined!' }}
+        <div v-if="selectedFile === null" class="text-center">
+          No File Selected
         </div>
-        <FileFuncButton
-          v-for="(func, index) of getFunctions(selectedFile)"
-          :header="`def ${func.name}`"
-          :key="index"
-          :selected="selectedFunction === index"
-          @click="selectFunction(index)"
-        >
-          {{
-            func.toString()
-              .slice(0, 100) + (func.toString().length > 100 ? '...' : '')
-          }}
-        </FileFuncButton>
+        <div
+          v-else
+          class="pre-formatted"
+          v-for="(func) of getFunctions(this.selectedFile)"
+          :key="func.name"
+          v-text="`${func.toString()}\n`"
+        />
       </div>
       <div class="confirm-button">
         <UIButton
-          text="Cancel"
-          @click="cancelClick"
+          text="Delete"
+          @click="deleteFile"
+          :disabled="selectedFile === null"
         />
         <UIButton
-          text="Confirm"
+          text="Edit"
           :primary="true"
-          @click="confirmClick"
-          :disabled="selectedFunction === -1"
+          @click="editFile"
+          :disabled="selectedFile === null"
         />
       </div>
     </div>
+
   </div>
 </template>
 
@@ -78,6 +80,7 @@ import { Getter, Mutation } from 'vuex-class';
 import { FilenamesList, ParsedFile } from '@/store/codeVault/types';
 import { uniqueTextInput } from '@/inputs/prompt';
 import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
+import { mapGetters } from 'vuex';
 
 @Component({
   components: {
@@ -86,35 +89,25 @@ import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
     Tabs,
     UIButton,
   },
+  computed: mapGetters(['files']),
 })
 export default class FunctionsTab extends Vue {
-  @Mutation('leaveCodeVault') leaveCodeVault!: () => void;
   @Getter('filenames') filenames!: Set<string>;
-  @Getter('file') file!: (filename: string) => ParsedFile | undefined;
-  @Getter('files') files!: ParsedFile[];
-  @Mutation('addFile') addFile!: (file: ParsedFile) => void;
+  @Getter('file') file!: (filename: string) => ParsedFile;
   @Getter('filenamesList') filenamesList!: FilenamesList;
+  @Mutation('addFile') addFile!: (file: ParsedFile) => void;
+  @Mutation('deleteFile') delFile!: (filename: string) => void;
+  @Mutation('openFile') openFile!: (filename: string) => void;
+  @Mutation('deleteNodes') deleteNodes!: (functions: ParsedFunction[]) => void;
 
-  private selectedFile = -1;
-  private selectedFunction = -1;
+  private selectedFile: string | null = null;
 
-  private selectFile(index: number) {
-    this.selectedFile = index;
-    this.selectedFunction = -1;
+  private selectFile(filename: string) {
+    this.selectedFile = filename;
   }
 
-  private selectFunction(index: number) {
-    if (index === this.selectedFunction) {
-      this.selectedFunction = -1;
-    } else {
-      this.selectedFunction = index;
-    }
-  }
-
-  private getFunctions(index: number): ParsedFunction[] {
-    const fileList = this.files;
-    if (index >= 0 && index < fileList.length) return fileList[index].functions;
-    return [];
+  private getFunctions(filename: string | null): ParsedFunction[] {
+    return filename !== null ? this.file(filename).functions : [];
   }
 
   // Trigger click of input tag for uploading file
@@ -140,7 +133,7 @@ export default class FunctionsTab extends Vue {
       }
 
       // Parse file - report any errors
-      const parsed: Result<ParsedFunction[]> = parse(event.target.result as string);
+      const parsed: Result<ParsedFunction[]> = parse(event.target.result as string, filename);
       if (parsed instanceof Error) {
         console.error(parsed);
       } else {
@@ -165,12 +158,25 @@ export default class FunctionsTab extends Vue {
     this.saveToCookies(file);
   }
 
-  private confirmClick() {
-    console.log(`Clicked with selected file ${this.selectedFile} and function ${this.selectedFunction}`);
+  private deleteFile() {
+    if (this.selectedFile !== null) {
+      const filename = this.selectedFile;
+
+      // Run through editors using function in deleted file and remove corresponding nodes
+      // TODO: Add warning confirming nodes will be deleted?
+      const { functions } = this.file(filename);
+      this.deleteNodes(functions);
+
+      // Delete file from codevault
+      this.selectedFile = null;
+      this.delFile(filename);
+    }
   }
 
-  private cancelClick() {
-    this.leaveCodeVault();
+  private editFile() {
+    if (this.selectedFile !== null) {
+      this.openFile(this.selectedFile);
+    }
   }
 
   private saveToCookies(file: ParsedFile) {
@@ -206,10 +212,15 @@ export default class FunctionsTab extends Vue {
   .confirm-button {
     display: flex;
     float: right;
+    padding-top: 0.5em;
     padding-bottom: 0.5em;
   }
 
   .button {
     margin-right: 1em;
+  }
+
+  .pre-formatted {
+    white-space: pre;
   }
 </style>

@@ -3,7 +3,7 @@
     <div
       class="msg"
       v-if="files.length === 0"
-      @click="clickCodeVault"
+      @click="enterCodeVault"
     >
       Click Here to Add Custom Functions
     </div>
@@ -52,11 +52,6 @@ export default class CustomTab extends Vue {
   @Mutation('enterCodeVault') enterCodeVault!: () => void;
   @Mutation('closeFiles') closeFiles!: () => void;
   @Getter('files') files!: ParsedFile[];
-
-  private clickCodeVault() {
-    this.closeFiles();
-    this.enterCodeVault();
-  }
 
   private search(search: string) {
     this.searchString = search;
