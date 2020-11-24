@@ -1,7 +1,7 @@
 <template>
-  <div class="checkbox" :class="checked !== uncheckedValue && 'checked'" @click="clicked">
-    <span v-if="checked === checkedValue" class="tick">✓</span>
-    <span v-else-if="checked === halfCheckedValue" class="dash">-</span>
+  <div class="checkbox" :class="checked !== checkboxValue.UNCHECKED && 'checked'" @click="clicked">
+    <span v-if="checked === checkboxValue.CHECKED" class="tick">✓</span>
+    <span v-else-if="checked === checkboxValue.HALFCHECKED" class="dash">-</span>
   </div>
 </template>
 
@@ -13,9 +13,13 @@ import CheckboxValue from '@/baklava/CheckboxValue';
 export default class CheckboxInput extends Vue {
   @Prop({ required: true }) checked!: CheckboxValue;
 
-  private checkedValue = CheckboxValue.CHECKED;
-  private halfCheckedValue = CheckboxValue.HALFCHECKED;
-  private uncheckedValue = CheckboxValue.UNCHECKED;
+  private checkboxValue = CheckboxValue;
+
+  created() {
+    if (this.checked === null) {
+      this.$emit('value-change', CheckboxValue.CHECKED);
+    }
+  }
 
   private clicked() {
     const newValue: CheckboxValue = this.checked === CheckboxValue.UNCHECKED
@@ -59,12 +63,12 @@ export default class CheckboxInput extends Vue {
   }
 
   .tick {
-    left: 0.15rem;
-    top: -0.15rem;
+    left: 0.13rem;
+    top: -0.1rem;
   }
 
   .dash {
     left: 0.3rem;
-    top: -0.25rem;
+    top: -0.15rem;
   }
 </style>

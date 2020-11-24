@@ -50,6 +50,7 @@ export default class DropdownInput extends Vue {
     background: #ececec;
     border-radius: 2px;
     color: #303030;
+    height: 1rem;
   }
 
   .button:hover {
@@ -57,7 +58,7 @@ export default class DropdownInput extends Vue {
   }
 
   .icon {
-    padding: 0 0.3em 0.2em 0.1em;
+    padding: 0 0.3em 0.2em 0.4em;
   }
 
   .dropdown-container {

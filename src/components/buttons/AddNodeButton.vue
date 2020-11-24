@@ -34,7 +34,7 @@ export default class AddNodeButton extends Vue {
     let factor = (this.name.length - 10) / 3;
     if (factor > 0) {
       if (factor > 3) factor = 3;
-      this.fontSize -= 0.15 * factor;
+      this.fontSize -= 0.18 * factor;
     }
   }
 
