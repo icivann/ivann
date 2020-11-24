@@ -1,15 +1,13 @@
 <template>
-  <div class="titlebar row py-2">
-    <div class="col text-left">
+  <div class="titlebar">
+    <div class="logo">
       <img class="img-fluid titlebar-logo mr-2" src="@/assets/images/nn_logo.png" alt="IVANN"/>
       <span class="text">IVANN</span>
     </div>
-    <div class="col text-center">
-      <span class="text">
-        MNIST-Demo
-      </span>
-    </div>
-    <div class="col text-right">
+    <div class="buttons">
+      <a class="icon-button" href="https://github.com/icivann/ivann" target="_blank">
+        <i class="titlebar-icon fab fa-github fa-lg mx-2"/>
+      </a>
       <span class="icon-button" @click="codegen">
         <i class="titlebar-icon fas fa-code fa-lg mx-2"/>
       </span>
@@ -149,8 +147,9 @@ export default class Titlebar extends Vue {
   .titlebar {
     height: 2.5rem;
     background-color: var(--background-alt);
-
-    border-bottom: 0.08rem solid var(--grey);
+    border-bottom: 1px solid var(--grey);
+    margin-right: -15px;
+    margin-left: -15px;
   }
 
   .titlebar-logo {
@@ -167,17 +166,24 @@ export default class Titlebar extends Vue {
 
   .icon-button {
     background-color: var(--background-alt);
-    width: 5rem;
-    height: 5rem;
-    margin-left: 0.15rem;
-    margin-right: 0.15rem;
+    margin: 0.15rem;
     padding: 0.3rem 0.1rem;
-    position: relative;
-    top: 0;
 
     &:hover {
       background-color: #2c2c2c;
       cursor: pointer;
     }
+  }
+
+  .buttons {
+    float: right;
+    display: flex;
+  }
+
+  .logo {
+    margin-top: 0.4rem;
+    margin-left: 0.5rem;
+    float: left;
+    user-select: none;
   }
 </style>
