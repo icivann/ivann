@@ -1,6 +1,6 @@
 <template>
-  <div class="button-grid">
-    <slot/>
+  <div :class="!this.$slots.default ? 'text-center': 'button-grid'">
+    <slot>Empty</slot>
   </div>
 </template>
 

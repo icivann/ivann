@@ -28,6 +28,7 @@ export default class SearchBar extends Vue {
   border-radius: 6px;
   transition-duration: 0.1s;
   position: relative;
+  margin-bottom: 0.75rem;
 }
 .box:hover {
   background: #e0e0e0;
