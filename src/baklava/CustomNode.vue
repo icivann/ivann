@@ -20,6 +20,7 @@
            id="arrow-button"
            :initialUp="true"
            v-on:arrow-button-clicked="toggleShouldShowOptions"
+           v-show="data.options.size > 0"
          />
       </span>
       <input
@@ -243,7 +244,7 @@ export default class CustomNode extends Components.Node {
   }
 
   .node {
-    /*font-family: Roboto, serif;*/
+    font-family: Roboto, serif;
     font-size: 14px;
     &:hover {
       box-shadow: 0 0 0 0.35px var(--blue);
