@@ -1,10 +1,14 @@
 <template>
   <div>
-    <ExpandablePanel name="Models">
+    <SearchBar @value-change="search"/>
+    <ExpandablePanel
+      :name="overviewCategories.Model"
+      v-show="searchString === '' || renderedModelEditors.length > 0"
+    >
       <div class="msg" v-show="modelEditors.length === 0">No Models Created</div>
-      <ButtonGrid>
+      <ButtonGrid v-show="modelEditors.length > 0">
         <AddNodeButton
-          v-for="editor in modelEditors"
+          v-for="editor in renderedModelEditors"
           :node="overviewNodes.ModelNode"
           :options="editor"
           :key="editor.name"
@@ -12,11 +16,14 @@
         />
       </ButtonGrid>
     </ExpandablePanel>
-    <ExpandablePanel name="Datasets">
+    <ExpandablePanel
+      :name="overviewCategories.Data"
+      v-show="searchString === '' || renderedDataEditors.length > 0"
+    >
       <div class="msg" v-show="dataEditors.length === 0">No Datasets Created</div>
-      <ButtonGrid>
+      <ButtonGrid v-show="dataEditors.length > 0">
         <AddNodeButton
-          v-for="editor in dataEditors"
+          v-for="editor in renderedDataEditors"
           :node="overviewNodes.DataNode"
           :options="editor"
           :key="editor.name"
@@ -24,14 +31,20 @@
         />
       </ButtonGrid>
     </ExpandablePanel>
-    <ExpandablePanel name="Train">
+    <ExpandablePanel
+      :name="overviewCategories.Train"
+      v-show="shouldRender('Train Classifier')"
+    >
       <ButtonGrid>
-        <AddNodeButton node="TrainClassifier" name="Train Classifier"/>
+        <AddNodeButton :node="overviewNodes.TrainClassifier" name="Train Classifier"/>
       </ButtonGrid>
     </ExpandablePanel>
-    <ExpandablePanel name="Optimizer">
+    <ExpandablePanel
+      :name="overviewCategories.Optimizer"
+      v-show="shouldRender(overviewNodes.Adadelta)"
+    >
       <ButtonGrid>
-        <AddNodeButton node="Adadelta" name="Adadelta"/>
+        <AddNodeButton :node="overviewNodes.Adadelta" :name="overviewNodes.Adadelta"/>
       </ButtonGrid>
     </ExpandablePanel>
   </div>
@@ -42,19 +55,43 @@ import { Component, Vue } from 'vue-property-decorator';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
-import { mapGetters } from 'vuex';
-import { OverviewNodes } from '@/nodes/overview/Types';
+import { OverviewCategories, OverviewNodes } from '@/nodes/overview/Types';
+import SearchBar from '@/SearchBar.vue';
+import { Getter } from 'vuex-class';
+import { EditorModel } from '@/store/editors/types';
 
 @Component({
   components: {
+    SearchBar,
     ExpandablePanel,
     AddNodeButton,
     ButtonGrid,
   },
-  computed: mapGetters(['modelEditors', 'dataEditors']),
 })
 export default class ComponentsTab extends Vue {
-  private overviewNodes = OverviewNodes;
+  private readonly overviewNodes = OverviewNodes;
+  private readonly overviewCategories = OverviewCategories;
+  private searchString = '';
+  @Getter('modelEditors') modelEditors!: EditorModel[];
+  @Getter('dataEditors') dataEditors!: EditorModel[];
+
+  private search(search: string) {
+    this.searchString = search;
+  }
+
+  private get renderedModelEditors() {
+    return this.modelEditors
+      .filter((editor) => this.shouldRender(editor.name));
+  }
+
+  private get renderedDataEditors() {
+    return this.dataEditors
+      .filter((editor) => this.shouldRender(editor.name));
+  }
+
+  private shouldRender(button: string) {
+    return button.toLowerCase().includes(this.searchString.toLowerCase());
+  }
 }
 </script>
 

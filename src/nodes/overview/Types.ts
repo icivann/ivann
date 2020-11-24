@@ -1,4 +1,4 @@
-export const enum OverviewCategories {
+export enum OverviewCategories {
   Model = 'Model',
   Data = 'Data',
   Custom = 'Custom',
