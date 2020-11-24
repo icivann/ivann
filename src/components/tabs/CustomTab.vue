@@ -3,7 +3,7 @@
     <div
       class="msg"
       v-if="files.length === 0"
-      @click="clickCodeVault"
+      @click="enterCodeVault"
     >
       Click Here to Add Custom Functions
     </div>
@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
@@ -41,17 +41,10 @@ import { Mutation } from 'vuex-class';
     ButtonGrid,
   },
   computed: mapGetters(['files']),
+  methods: mapMutations(['enterCodeVault']),
 })
 export default class CustomTab extends Vue {
   private customNode: string = CommonNodes.Custom;
-
-  @Mutation('enterCodeVault') enterCodeVault!: () => void;
-  @Mutation('closeFiles') closeFiles!: () => void;
-
-  private clickCodeVault() {
-    this.closeFiles();
-    this.enterCodeVault();
-  }
 }
 </script>
 

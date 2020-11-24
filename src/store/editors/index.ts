@@ -3,7 +3,6 @@ import { randomUuid } from '@/app/util';
 import { RootState } from '@/store/types';
 import EditorType from '@/EditorType';
 import newEditor from '@/baklava/Utils';
-import IrError from '@/app/ir/checking/irError';
 import editorGetters from './getters';
 import editorMutations from './mutations';
 import { EditorsState } from './types';

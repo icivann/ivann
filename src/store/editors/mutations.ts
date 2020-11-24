@@ -8,7 +8,7 @@ import { loadEditors, Save } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
 import Model from '@/nodes/overview/Model';
 import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
-import { getEditorIOs } from '@/store/editors/utils';
+import { deleteNodesFromEditor, getEditorIOs } from '@/store/editors/utils';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
@@ -178,6 +178,11 @@ const editorMutations: MutationTree<EditorsState> = {
   },
   setErrorsMap(state, errorsMap) {
     state.errorsMap = errorsMap;
+  },
+  deleteNodes(state, functions) {
+    deleteNodesFromEditor(state.overviewEditor, functions);
+    state.modelEditors.forEach((editor) => deleteNodesFromEditor(editor, functions));
+    state.dataEditors.forEach((editor) => deleteNodesFromEditor(editor, functions));
   },
 };
 

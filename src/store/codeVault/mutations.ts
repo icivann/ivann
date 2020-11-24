@@ -1,7 +1,6 @@
 import { MutationTree } from 'vuex';
 import { CodeVaultState, ParsedFile } from '@/store/codeVault/types';
 import ParsedFunction from '@/app/parser/ParsedFunction';
-import Custom from '@/nodes/common/Custom';
 
 const codeVaultMutations: MutationTree<CodeVaultState> = {
   resetState(state) {
@@ -14,7 +13,7 @@ const codeVaultMutations: MutationTree<CodeVaultState> = {
         filename: file.filename,
         functions: file.functions.map(
           /* JSON parses functions to an interface, not to the ParsedFunction object. */
-          (func) => new ParsedFunction(func.name, func.body, func.args),
+          (func) => new ParsedFunction(func.name, func.body, func.args, func.filename),
         ),
         open: false,
       });
@@ -47,6 +46,11 @@ const codeVaultMutations: MutationTree<CodeVaultState> = {
       }
       return file;
     });
+  },
+  openFile(state, filename: string) {
+    for (const file of state.files) {
+      if (file.filename === filename) file.open = true;
+    }
   },
   closeFiles(state) {
     state.files = state.files.map((file) => ({ ...file, open: false }));
