@@ -1,6 +1,8 @@
 import istateToGraph from '@/app/ir/istateToGraph';
 import InModel from '@/app/ir/InModel';
 import Conv2D from '@/app/ir/model/conv2d';
+import OutModel from '@/app/ir/OutModel';
+import Dropout from '@/app/ir/model/dropout';
 
 describe('Graph', () => {
   const graph1 = '{"nodes":[{"type":"InModel","id":"node_16039892032880","name":"InModel","options":[],"state":{},"interfaces":[["Output",{"id":"ni_16039892032881","value":null}]],"position":{"x":21,"y":234},"width":200,"twoColumn":false},{"type":"Conv2d","id":"node_16039892157612","name":"Conv2d","options":[["In channels",0],["Out channels",0],["Kernel size",[0,0]],["Stride",[1,1]],["Padding",[0,0]],["Dilation",[1,1]],["Groups",1],["Bias",1],["Padding mode","zeros"]],"state":{},"interfaces":[["Input",{"id":"ni_16039892157623","value":null}],["Output",{"id":"ni_16039892157624","value":null}]],"position":{"x":312,"y":230},"width":200,"twoColumn":false},{"type":"MaxPool2d","id":"node_16039892316758","name":"MaxPool2d","options":[["Kernel size",[0,0]],["Stride",[0,0]],["Padding",[0,0]],["Dilation",[1,1]],["Return indices",null],["Ceil mode",null]],"state":{},"interfaces":[["Input",{"id":"ni_16039892316759","value":null}],["Output",{"id":"ni_160398923167510","value":null}]],"position":{"x":331,"y":479},"width":200,"twoColumn":false},{"type":"OutModel","id":"node_160398924063014","name":"OutModel","options":[],"state":{},"interfaces":[["Input",{"id":"ni_160398924063015","value":null}]],"position":{"x":608,"y":437},"width":200,"twoColumn":false}],"connections":[{"id":"16039892205757","from":"ni_16039892032881","to":"ni_16039892157623"},{"id":"160398923656513","from":"ni_16039892157624","to":"ni_16039892316759"},{"id":"160398961820424","from":"ni_160398923167510","to":"ni_160398924063015"}],"panning":{"x":0,"y":0},"scaling":1}';
@@ -23,5 +25,15 @@ describe('Graph', () => {
     expect(second.mlNode).toBeInstanceOf(Conv2D);
     expect(second.outputInterfaces.size).toBe(1);
     expect(graph.nextNodesFrom(second).length).toBeGreaterThan(1);
+  });
+
+  const inputToDropoutToOutput = '{"nodes":[{"type":"InModel","id":"node_16062528273010","name":"i","options":[],"state":{},"interfaces":[["Output",{"id":"ni_16062528273011","value":null}]],"position":{"x":299,"y":180},"width":200,"twoColumn":false},{"type":"OutModel","id":"node_16062528318402","name":"o","options":[],"state":{},"interfaces":[["Input",{"id":"ni_16062528318413","value":null}]],"position":{"x":601,"y":380},"width":200,"twoColumn":false},{"type":"Dropout","id":"node_16062528364104","name":"Dropout","options":[["P",0.5],["Inplace",null]],"state":{},"interfaces":[["Input",{"id":"ni_16062528364105","value":null}],["Output",{"id":"ni_16062528364106","value":null}]],"position":{"x":518,"y":197},"width":200,"twoColumn":false}],"connections":[{"id":"16062528382759","from":"ni_16062528273011","to":"ni_16062528364105"},{"id":"160625284102312","from":"ni_16062528364106","to":"ni_16062528318413"}],"panning":{"x":0,"y":0},"scaling":1}';
+  it('prevNodesFrom', () => {
+    const graph = istateToGraph(JSON.parse(inputToDropoutToOutput));
+    const last = graph.nodesAsArray.filter((n) => n.mlNode instanceof OutModel)[0];
+    const prevArray = graph.prevNodesFrom(last);
+    expect(prevArray.length).toBe(1);
+    const prev = prevArray[0];
+    expect(prev.mlNode).toBeInstanceOf(Dropout);
   });
 });
