@@ -8,8 +8,9 @@ import { loadEditors, Save } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
 import Model from '@/nodes/overview/Model';
 import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
-import { editNodes, FuncDiff, getEditorIOs } from '@/store/editors/utils';
+import { getEditorIOs } from '@/store/editors/utils';
 import ParsedFunction from '@/app/parser/ParsedFunction';
+import { editNodes, FuncDiff } from '@/store/ManageCodevault';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
