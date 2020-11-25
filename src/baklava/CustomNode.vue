@@ -18,7 +18,7 @@
         {{ data.name }}
          <ArrowButton
            id="arrow-button"
-           :initialUp="true"
+           :initialUp="false"
            v-on:arrow-button-clicked="toggleShouldShowOptions"
            v-show="data.options.size > 0"
          />
@@ -123,7 +123,7 @@ import { DataNodes } from '@/nodes/data/Types';
 })
 export default class CustomNode extends Components.Node {
   @Getter('errorsMap') errorsMap!: Map<string, IrError[]>;
-  private shouldShowOptions = false;
+  private shouldShowOptions = true;
 
   contextMenu = {
     show: false,
