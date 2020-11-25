@@ -43,7 +43,7 @@ import {
   SaveWithNames,
 } from '@/file/EditorAsJson';
 import istateToGraph from '@/app/ir/istateToGraph';
-import { ParsedFile } from '@/store/codeVault/types';
+import { FilenamesList, ParsedFile } from '@/store/codeVault/types';
 import EditorType from '@/EditorType';
 import { generateModelCode, generateOverviewCode } from '@/app/codegen/codeGenerator';
 import Graph from '@/app/ir/Graph';
@@ -59,6 +59,8 @@ export default class Titlebar extends Vue {
   @Mutation('loadEditors') loadEditors!: (save: Save) => void;
   @Mutation('loadFiles') loadFiles!: (files: ParsedFile[]) => void;
   @Mutation('resetState') resetState!: () => void;
+  @Getter('filenamesList') filenamesList!: FilenamesList;
+  @Getter('file') file!: (filename: string) => ParsedFile;
 
   private codegen() {
     let generatedCode = '';
@@ -98,13 +100,40 @@ export default class Titlebar extends Vue {
     fr.onload = (event) => {
       if (!event.target) return;
 
-      // Load all editors using parsed file and set cookies
+      // Load all editors using parsed file and set Local Storage.
       const parsed = JSON.parse(event.target.result as string);
       this.loadEditors(parsed.editors);
       this.loadFiles(parsed.files);
-      this.$cookies.keys().forEach((key) => this.$cookies.remove(key));
-      this.$cookies.set('unsaved-project', this.saveWithNames);
-      // TODO: FE-65 Set cookies for all editors
+
+      // Clear except `cookie:accepted`
+      const cookieAccepted = localStorage.get('cookie:accepted');
+      localStorage.clear();
+      localStorage.setItem('cookie:accepted', cookieAccepted);
+
+      // Save new project to Local Storage
+      const { saveWithNames } = this;
+      localStorage.setItem('unsaved-project', JSON.stringify(saveWithNames));
+      localStorage.setItem('unsaved-editor-Overview', JSON.stringify(saveEditor(this.overviewEditor)));
+      saveWithNames.modelEditors.forEach((name) => {
+        const modelEditor = this.editorModels.modelEditors.find((editor) => editor.name === name);
+        if (modelEditor) {
+          localStorage.setItem(`unsaved-editor-${name}`, JSON.stringify(saveEditor(modelEditor)));
+        }
+      });
+      saveWithNames.dataEditors.forEach((name) => {
+        const dataEditor = this.editorModels.dataEditors.find((editor) => editor.name === name);
+        if (dataEditor) {
+          localStorage.setItem(`unsaved-editor-${name}`, JSON.stringify(saveEditor(dataEditor)));
+        }
+      });
+
+      // Save Code Vault
+      const { filenamesList } = this;
+      localStorage.setItem('unsaved-code-vault', JSON.stringify(filenamesList));
+      const files = filenamesList.filenames.map((filename: string) => JSON.parse(localStorage.getItem(`unsaved-file-${filename}`)!));
+      filenamesList.filenames.forEach((filename) => {
+        localStorage.setItem(`unsaved-file-${filename}`, JSON.stringify(this.file(filename)));
+      });
     };
 
     // Trigger the file to be read
@@ -135,9 +164,13 @@ export default class Titlebar extends Vue {
     if (window.confirm('Are you sure you want to create a new project? '
       + 'All unsaved progress will be lost.')) {
       this.resetState();
-      this.$cookies.keys().forEach((key) => this.$cookies.remove(key));
-      this.$cookies.set('unsaved-project', this.saveWithNames);
-      this.$cookies.set('unsaved-editor-Overview', saveEditor(this.editorModels.overviewEditor));
+      // Clear except `cookie:accepted`
+      const cookieAccepted = localStorage.get('cookie:accepted');
+      localStorage.clear();
+      localStorage.setItem('cookie:accepted', cookieAccepted);
+
+      localStorage.setItem('unsaved-project', JSON.stringify(this.saveWithNames));
+      localStorage.setItem('unsaved-editor-Overview', JSON.stringify(saveEditor(this.editorModels.overviewEditor)));
     }
   }
 }

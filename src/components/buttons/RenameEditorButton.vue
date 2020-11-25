@@ -32,13 +32,13 @@ export default class RenameEditorButton extends Vue {
 
       // Re-save overview to get new node name
       const overviewEditorSave = saveEditor(this.overviewEditor);
-      this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
+      localStorage.setItem('unsaved-editor-Overview', JSON.stringify(overviewEditorSave));
 
-      // Replace cookie with updated name
+      // Replace Local Storage with updated name
       const saved: EditorSave = saveEditor(this.getEditor(this.editorType, this.index));
-      this.$cookies.set(`unsaved-editor-${name}`, saved);
-      this.$cookies.set('unsaved-project', this.saveWithNames);
-      this.$cookies.remove(`unsaved-editor-${this.oldName}`);
+      localStorage.setItem(`unsaved-editor-${name}`, JSON.stringify(saved));
+      localStorage.setItem('unsaved-project', JSON.stringify(this.saveWithNames));
+      localStorage.removeItem(`unsaved-editor-${this.oldName}`);
     }
   }
 }

@@ -139,7 +139,7 @@ export default class FunctionsTab extends Vue {
       } else {
         const file = { filename: files[0].name, functions: parsed, open: false };
         this.addFile(file);
-        this.saveToCookies(file);
+        this.saveToLocalStorage(file);
       }
     };
 
@@ -155,7 +155,7 @@ export default class FunctionsTab extends Vue {
 
     const file = { filename: `${name}.py`, functions: [], open: true };
     this.addFile(file);
-    this.saveToCookies(file);
+    this.saveToLocalStorage(file);
   }
 
   private deleteFile() {
@@ -179,9 +179,9 @@ export default class FunctionsTab extends Vue {
     }
   }
 
-  private saveToCookies(file: ParsedFile) {
-    this.$cookies.set('unsaved-code-vault', this.filenamesList);
-    this.$cookies.set(`unsaved-file-${file.filename}`, file);
+  private saveToLocalStorage(file: ParsedFile) {
+    localStorage.setItem('unsaved-code-vault', JSON.stringify(this.filenamesList));
+    localStorage.setItem(`unsaved-file-${file.filename}`, JSON.stringify(file));
   }
 }
 </script>

@@ -74,7 +74,7 @@ export default class IdeTab extends Vue {
         // Override file in codevault and save
         const file = { filename: this.filename, functions: newFuncs, open: false };
         this.setFile(file);
-        this.$cookies.set(`unsaved-file-${this.filename}`, file);
+        localStorage.setItem(`unsaved-file-${this.filename}`, JSON.stringify(file));
 
         // Close tab and switch to 'Functions' tab
         this.closeFile(this.filename);
