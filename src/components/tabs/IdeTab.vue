@@ -21,7 +21,7 @@ import parse from '@/app/parser/parser';
 import ParsedFunction from '@/app/parser/ParsedFunction';
 import { Result } from '@/app/util';
 import { ParsedFile } from '@/store/codeVault/types';
-import { FuncDiff, funcsDiff } from '@/store/editors/utils';
+import { FuncDiff, funcsDiff } from '@/store/ManageCodevault';
 
 @Component({
   components: {
