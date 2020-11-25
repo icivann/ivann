@@ -61,7 +61,9 @@ export default class Custom extends Node {
     } else {
       this.name = parsedFunction.name;
       this.setInputs(parsedFunction.args);
-      this.addOutput();
+      if (parsedFunction.containsReturn()) {
+        this.addOutput();
+      }
     }
   }
 
