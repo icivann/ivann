@@ -68,8 +68,8 @@ export default class NavbarContextualMenu extends Vue {
 
     const oldEditorSaved: EditorSave = saveEditor(this.currEditorModel);
     const overviewEditorSave: EditorSave = saveEditor(this.overviewEditor);
-    this.$cookies.set(`unsaved-editor-${this.currEditorModel.name}`, oldEditorSaved);
-    this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
+    localStorage.setItem(`unsaved-editor-${this.currEditorModel.name}`, JSON.stringify(oldEditorSaved));
+    localStorage.setItem('unsaved-editor-Overview', JSON.stringify(overviewEditorSave));
 
     this.switch({ editorType, index });
   }

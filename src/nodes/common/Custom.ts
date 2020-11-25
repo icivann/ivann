@@ -28,7 +28,14 @@ export default class Custom extends Node {
 
   public setParsedFunction(parsedFunction?: ParsedFunction) {
     this.state.parsedFunction = parsedFunction;
-    this.updateNode();
+  }
+
+  public addInput(name: string): void {
+    this.addInputInterface(name);
+  }
+
+  public remInteface(name: string): void {
+    this.removeInterface(name);
   }
 
   public getParsedFunction(savedState?: INodeState): (ParsedFunction | undefined) {
@@ -43,14 +50,6 @@ export default class Custom extends Node {
       );
     }
     return undefined;
-  }
-
-  public setParsedFileName(parsedFileName?: string) {
-    this.state.parsedFileName = parsedFileName;
-  }
-
-  public getParsedFileName(): (string | undefined) {
-    return this.state.parsedFileName;
   }
 
   private updateNode(savedState?: INodeState) {

@@ -24,7 +24,7 @@ import { Save, saveEditor, SaveWithNames } from '@/file/EditorAsJson';
 import EditorManager from '@/EditorManager';
 import { EditorModel } from '@/store/editors/types';
 import CodeVault from '@/components/CodeVault.vue';
-import { ParsedFile } from '@/store/codeVault/types';
+import { FilenamesList, ParsedFile } from '@/store/codeVault/types';
 
 @Component({
   components: {
@@ -45,11 +45,11 @@ export default class Home extends Vue {
 
   created() {
     // Auto-loading
-    if (this.$cookies.isKey('unsaved-project')) {
-      const saveWithNames: SaveWithNames = this.$cookies.get('unsaved-project');
-      const overviewEditor = this.$cookies.get('unsaved-editor-Overview');
-      const modelEditors = saveWithNames.modelEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
-      const dataEditors = saveWithNames.dataEditors.map((name) => this.$cookies.get(`unsaved-editor-${name}`));
+    if (localStorage.getItem('unsaved-project')) {
+      const saveWithNames: SaveWithNames = JSON.parse(localStorage.getItem('unsaved-project')!);
+      const overviewEditor = JSON.parse(localStorage.getItem('unsaved-editor-Overview')!);
+      const modelEditors = saveWithNames.modelEditors.map((name) => JSON.parse(localStorage.getItem(`unsaved-editor-${name}`)!));
+      const dataEditors = saveWithNames.dataEditors.map((name) => JSON.parse(localStorage.getItem(`unsaved-editor-${name}`)!));
       this.loadEditors({
         overviewEditor, modelEditors, dataEditors,
       });
@@ -57,9 +57,9 @@ export default class Home extends Vue {
       EditorManager.getInstance().resetView();
 
       // Auto-Load Code Vault
-      if (this.$cookies.isKey('unsaved-code-vault')) {
-        const filenamesList = this.$cookies.get('unsaved-code-vault');
-        const files = filenamesList.filenames.map((filename: string) => this.$cookies.get(`unsaved-file-${filename}`));
+      if (localStorage.getItem('unsaved-code-vault')) {
+        const filenamesList: FilenamesList = JSON.parse(localStorage.getItem('unsaved-code-vault')!);
+        const files = filenamesList.filenames.map((filename: string) => JSON.parse(localStorage.getItem(`unsaved-file-${filename}`)!));
         this.loadFiles(files);
       }
     }
@@ -73,9 +73,9 @@ export default class Home extends Vue {
       const currEditorSave = saveEditor(this.currEditorModel);
       const overviewEditorSave = saveEditor(this.overviewEditor);
 
-      this.$cookies.set('unsaved-project', this.saveWithNames);
-      this.$cookies.set(`unsaved-editor-${this.currEditorModel.name}`, currEditorSave);
-      this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
+      localStorage.setItem('unsaved-project', JSON.stringify(this.saveWithNames));
+      localStorage.setItem(`unsaved-editor-${this.currEditorModel.name}`, JSON.stringify(currEditorSave));
+      localStorage.setItem('unsaved-editor-Overview', JSON.stringify(overviewEditorSave));
     }, 5000);
   }
 }

@@ -25,11 +25,11 @@ export default class DeleteEditorButton extends Vue {
 
     // Re-save overview after nodes may have been removed
     const overviewEditorSave = saveEditor(this.overviewEditor);
-    this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
+    localStorage.setItem('unsaved-editor-Overview', JSON.stringify(overviewEditorSave));
 
-    // Remove deleted editor from saved cookies
-    this.$cookies.remove(`unsaved-editor-${this.name}`);
-    this.$cookies.set('unsaved-project', this.saveWithNames);
+    // Remove deleted editor from Local Storage.
+    localStorage.removeItem(`unsaved-editor-${this.name}`);
+    localStorage.setItem('unsaved-project', JSON.stringify(this.saveWithNames));
   }
 }
 </script>
