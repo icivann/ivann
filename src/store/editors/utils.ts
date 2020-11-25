@@ -83,21 +83,7 @@ export function funcsDiff(
   return { deleted, changed };
 }
 
-export function deleteNodesFromEditor(editorModel: EditorModel, funcs: ParsedFunction[]) {
-  const { editor } = editorModel;
-  const { nodes } = editor;
-
-  // Have to loop through copy of nodes, otherwise by removing node, we modify array of nodes st
-  // we don't remove duplicate custom nodes
-  for (const node of nodes.slice()) {
-    if (node instanceof Custom) {
-      const func = (node as Custom).getParsedFunction() as ParsedFunction;
-      if (funcs.some((f) => f.equals(func))) editor.removeNode(node);
-    }
-  }
-}
-
-export function editNodesFromEditor(editorModel: EditorModel, diff: FuncDiff) {
+export function editNodes(editorModel: EditorModel, diff: FuncDiff) {
   const { editor } = editorModel;
   const { nodes } = editor;
 
