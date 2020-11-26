@@ -244,7 +244,7 @@ export default class CustomNode extends Components.Node {
   }
 
   .node {
-    font-family: Roboto, serif;
+    font-family: Roboto, sans-serif;
     font-size: 14px;
     &:hover {
       box-shadow: 0 0 0 0.35px var(--blue);

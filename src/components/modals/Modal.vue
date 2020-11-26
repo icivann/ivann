@@ -1,5 +1,5 @@
 <template>
-  <div class="ivann-modal" v-if="value" @click="$emit('input', false)">
+  <div class="ivann-modal" v-if="value" @click="close">
     <div class="modal-window" @click.stop>
       <div v-if="header !== undefined" class="header">{{ header }}</div>
       <slot/>
@@ -13,7 +13,12 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class Modal extends Vue {
   @Prop({ required: true }) value!: boolean;
+  @Prop({ default: true }) closeable!: boolean;
   @Prop() header?: string;
+
+  private close() {
+    if (this.closeable) this.$emit('input', false);
+  }
 }
 </script>
 
@@ -34,7 +39,7 @@ export default class Modal extends Vue {
   background-color: var(--background);
   padding: 0.75rem;
   border: 1px var(--grey) solid;
-  width: 20%;
+  width: 300px;
   border-radius: 6px;
   user-select: none;
 }
