@@ -54,7 +54,7 @@
     <div
       class="build tab-button"
       :class="inCodeVault && 'selected'"
-      @click="clickCodeVault"
+      @click="enterCodeVault"
     >
       <i class="fab fa-python tab-icon"/>
     </div>
@@ -64,7 +64,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import EditorType from '@/EditorType';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import { Getter, Mutation } from 'vuex-class';
 import NavbarContextualMenu from '@/components/navbar/NavbarContextualMenu.vue';
 import { EditorSave, saveEditor } from '@/file/EditorAsJson';
@@ -77,6 +77,7 @@ import { EditorModel } from '@/store/editors/types';
     'dataEditors',
     'inCodeVault',
   ]),
+  methods: mapMutations(['enterCodeVault']),
 })
 export default class Navbar extends Vue {
   private editorType = EditorType;
@@ -88,8 +89,6 @@ export default class Navbar extends Vue {
   @Getter('inCodeVault') inCodeVault!: boolean;
   @Mutation('switchEditor') switch!: (arg0: { editorType: EditorType; index: number }) => void;
   @Mutation('updateNodeInOverview') readonly updateNodeInOverview!: (cEditor: EditorModel) => void;
-  @Mutation('enterCodeVault') enterCodeVault!: () => void;
-  @Mutation('closeFiles') closeFiles!: () => void;
 
   private switchOverviewEditor() {
     // Save currEditorModel before switching as periodic save may not have captured last changes
@@ -98,8 +97,8 @@ export default class Navbar extends Vue {
 
     const oldEditorSaved: EditorSave = saveEditor(this.currEditorModel);
     const overviewEditorSave: EditorSave = saveEditor(this.overviewEditor);
-    this.$cookies.set(`unsaved-editor-${this.currEditorModel.name}`, oldEditorSaved);
-    this.$cookies.set('unsaved-editor-Overview', overviewEditorSave);
+    localStorage.setItem(`unsaved-editor-${this.currEditorModel.name}`, JSON.stringify(oldEditorSaved));
+    localStorage.setItem('unsaved-editor-Overview', JSON.stringify(overviewEditorSave));
 
     this.switch({ editorType: EditorType.OVERVIEW, index: 0 });
   }
@@ -124,11 +123,6 @@ export default class Navbar extends Vue {
   private hideNavbarContextualMenu(): void {
     this.isModelContextualMenuOpen = false;
     this.isDataContextualMenuOpen = false;
-  }
-
-  private clickCodeVault() {
-    this.closeFiles();
-    this.enterCodeVault();
   }
 }
 

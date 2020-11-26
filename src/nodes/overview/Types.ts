@@ -1,4 +1,4 @@
-export const enum OverviewCategories {
+export enum OverviewCategories {
   Model = 'Model',
   Data = 'Data',
   Custom = 'Custom',
@@ -11,4 +11,5 @@ export enum OverviewNodes {
   DataNode = 'DataNode',
   TrainClassifier = 'TrainClassifier',
   Adadelta = 'Adadelta',
+  Custom = 'Custom',
 }

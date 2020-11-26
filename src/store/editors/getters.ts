@@ -5,6 +5,7 @@ import EditorType from '@/EditorType';
 import { ModelNodes } from '@/nodes/model/Types';
 import { SaveWithNames } from '@/file/EditorAsJson';
 import { DataNodes } from '@/nodes/data/Types';
+import { FuncDiff, usedNodes } from '@/store/ManageCodevault';
 
 const editorGetters: GetterTree<EditorsState, RootState> = {
   currEditorType: (state) => state.currEditorType,
@@ -62,6 +63,13 @@ const editorGetters: GetterTree<EditorsState, RootState> = {
   }),
   inCodeVault: (state) => state.inCodeVault,
   errorsMap: (state) => state.errorsMap,
+  usedNodes: (state) => (diff: FuncDiff) => {
+    const used = [];
+    used.push(usedNodes(state.overviewEditor, diff));
+    state.modelEditors.forEach((editor) => used.push(usedNodes(editor, diff)));
+    state.dataEditors.forEach((editor) => used.push(usedNodes(editor, diff)));
+    return used.filter((use) => use.deleted.length > 0 || use.changed.length > 0);
+  },
 };
 
 export default editorGetters;

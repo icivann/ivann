@@ -53,7 +53,7 @@ function parseFunctionSignature(line: string): FunctionSignature | null {
   );
 }
 
-function parse(str: string): Result<ParsedFunction[]> {
+function parse(str: string, filename?: string): Result<ParsedFunction[]> {
   const indentation = getIndentation(str);
 
   // If we failed to get the indentation level
@@ -88,6 +88,7 @@ function parse(str: string): Result<ParsedFunction[]> {
           currentSignature!.name,
           currentBody!,
           currentSignature!.args,
+          filename,
         ));
 
         isParsingFunction = false;

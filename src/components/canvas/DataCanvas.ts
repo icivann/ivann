@@ -6,18 +6,10 @@ import ToTensor from '@/nodes/data/ToTensor';
 import Grayscale from '@/nodes/data/Grayscale';
 import LoadCsv from '@/nodes/data/LoadCsv';
 import LoadImages from '@/nodes/data/LoadImages';
+import { Editor } from '@baklavajs/core';
 
 export default class DataCanvas extends AbstractCanvas {
   public nodeList = [
-    {
-      category: DataCategories.IO,
-      nodes: [
-        {
-          name: DataNodes.OutData,
-          node: OutData,
-        },
-      ],
-    },
     {
       category: DataCategories.Transform,
       nodes: [
@@ -45,4 +37,9 @@ export default class DataCanvas extends AbstractCanvas {
       ],
     },
   ];
+
+  public registerNodes(editor: Editor) {
+    super.registerNodes(editor);
+    editor.registerNodeType(DataNodes.OutData, OutData);
+  }
 }

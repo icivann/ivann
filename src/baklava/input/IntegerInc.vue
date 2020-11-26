@@ -84,6 +84,7 @@ export default class IntegerInc extends Vue {
     border-radius: 2px;
     color: #303030;
     display: flex;
+    height: 1rem;
   }
 
   .buttons {

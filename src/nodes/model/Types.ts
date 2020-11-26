@@ -1,4 +1,4 @@
-export const enum ModelCategories {
+export enum ModelCategories {
   Linear = 'Linear',
   Conv = 'Convolution',
   Pool = 'Pooling',
@@ -13,7 +13,7 @@ export const enum ModelCategories {
   NonLinearActivation = 'Non-Linear Activation'
 }
 
-export const enum ModelNodes {
+export enum ModelNodes {
   Conv1d = 'Conv1d',
   Conv2d = 'Conv2d',
   Conv3d = 'Conv3d',

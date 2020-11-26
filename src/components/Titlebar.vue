@@ -1,16 +1,14 @@
 <template>
-  <div class="titlebar row py-2">
-    <div class="col text-left">
+  <div class="titlebar">
+    <div class="logo">
       <img class="img-fluid titlebar-logo mr-2" src="@/assets/images/nn_logo.png" alt="IVANN"/>
       <span class="text">IVANN</span>
     </div>
-    <div class="col text-center">
-      <span class="text">
-        MNIST-Demo
-      </span>
-    </div>
-    <div class="col text-right">
-      <span class="icon-button" @click="codegen">
+    <div class="buttons">
+      <a class="icon-button" href="https://github.com/icivann/ivann" target="_blank" title="GitHub">
+        <i class="titlebar-icon fab fa-github fa-lg mx-2"/>
+      </a>
+      <span class="icon-button" @click="codegen" title="Generate Code">
         <i class="titlebar-icon fas fa-code fa-lg mx-2"/>
       </span>
       <input
@@ -19,13 +17,13 @@
         style="display: none"
         @change="load"
       >
-      <span class="icon-button" @click="uploadFile">
+      <span class="icon-button" @click="uploadFile" title="Load Project">
         <i class="titlebar-icon fas fa-folder-open fa-lg mx-2"/>
       </span>
-      <span class="icon-button" @click="save">
+      <span class="icon-button" @click="save" title="Save Project">
         <i class="titlebar-icon fas fa-save fa-lg mx-2"/>
       </span>
-      <span class="icon-button" @click="newProject">
+      <span class="icon-button" @click="newProject" title="New Project">
         <i class="titlebar-icon fas fa-file fa-lg mx-2"/>
       </span>
     </div>
@@ -45,7 +43,7 @@ import {
   SaveWithNames,
 } from '@/file/EditorAsJson';
 import istateToGraph from '@/app/ir/istateToGraph';
-import { ParsedFile } from '@/store/codeVault/types';
+import { FilenamesList, ParsedFile } from '@/store/codeVault/types';
 import EditorType from '@/EditorType';
 import { generateModelCode, generateOverviewCode } from '@/app/codegen/codeGenerator';
 import Graph from '@/app/ir/Graph';
@@ -61,6 +59,8 @@ export default class Titlebar extends Vue {
   @Mutation('loadEditors') loadEditors!: (save: Save) => void;
   @Mutation('loadFiles') loadFiles!: (files: ParsedFile[]) => void;
   @Mutation('resetState') resetState!: () => void;
+  @Getter('filenamesList') filenamesList!: FilenamesList;
+  @Getter('file') file!: (filename: string) => ParsedFile;
 
   private codegen() {
     let generatedCode = '';
@@ -100,13 +100,40 @@ export default class Titlebar extends Vue {
     fr.onload = (event) => {
       if (!event.target) return;
 
-      // Load all editors using parsed file and set cookies
+      // Load all editors using parsed file and set Local Storage.
       const parsed = JSON.parse(event.target.result as string);
       this.loadEditors(parsed.editors);
       this.loadFiles(parsed.files);
-      this.$cookies.keys().forEach((key) => this.$cookies.remove(key));
-      this.$cookies.set('unsaved-project', this.saveWithNames);
-      // TODO: FE-65 Set cookies for all editors
+
+      // Clear except `cookie:accepted`
+      const cookieAccepted = localStorage.get('cookie:accepted');
+      localStorage.clear();
+      localStorage.setItem('cookie:accepted', cookieAccepted);
+
+      // Save new project to Local Storage
+      const { saveWithNames } = this;
+      localStorage.setItem('unsaved-project', JSON.stringify(saveWithNames));
+      localStorage.setItem('unsaved-editor-Overview', JSON.stringify(saveEditor(this.overviewEditor)));
+      saveWithNames.modelEditors.forEach((name) => {
+        const modelEditor = this.editorModels.modelEditors.find((editor) => editor.name === name);
+        if (modelEditor) {
+          localStorage.setItem(`unsaved-editor-${name}`, JSON.stringify(saveEditor(modelEditor)));
+        }
+      });
+      saveWithNames.dataEditors.forEach((name) => {
+        const dataEditor = this.editorModels.dataEditors.find((editor) => editor.name === name);
+        if (dataEditor) {
+          localStorage.setItem(`unsaved-editor-${name}`, JSON.stringify(saveEditor(dataEditor)));
+        }
+      });
+
+      // Save Code Vault
+      const { filenamesList } = this;
+      localStorage.setItem('unsaved-code-vault', JSON.stringify(filenamesList));
+      const files = filenamesList.filenames.map((filename: string) => JSON.parse(localStorage.getItem(`unsaved-file-${filename}`)!));
+      filenamesList.filenames.forEach((filename) => {
+        localStorage.setItem(`unsaved-file-${filename}`, JSON.stringify(this.file(filename)));
+      });
     };
 
     // Trigger the file to be read
@@ -137,9 +164,13 @@ export default class Titlebar extends Vue {
     if (window.confirm('Are you sure you want to create a new project? '
       + 'All unsaved progress will be lost.')) {
       this.resetState();
-      this.$cookies.keys().forEach((key) => this.$cookies.remove(key));
-      this.$cookies.set('unsaved-project', this.saveWithNames);
-      this.$cookies.set('unsaved-editor-Overview', saveEditor(this.editorModels.overviewEditor));
+      // Clear except `cookie:accepted`
+      const cookieAccepted = localStorage.get('cookie:accepted');
+      localStorage.clear();
+      localStorage.setItem('cookie:accepted', cookieAccepted);
+
+      localStorage.setItem('unsaved-project', JSON.stringify(this.saveWithNames));
+      localStorage.setItem('unsaved-editor-Overview', JSON.stringify(saveEditor(this.editorModels.overviewEditor)));
     }
   }
 }
@@ -149,8 +180,9 @@ export default class Titlebar extends Vue {
   .titlebar {
     height: 2.5rem;
     background-color: var(--background-alt);
-
-    border-bottom: 0.08rem solid var(--grey);
+    border-bottom: 1px solid var(--grey);
+    margin-right: -15px;
+    margin-left: -15px;
   }
 
   .titlebar-logo {
@@ -167,17 +199,24 @@ export default class Titlebar extends Vue {
 
   .icon-button {
     background-color: var(--background-alt);
-    width: 5rem;
-    height: 5rem;
-    margin-left: 0.15rem;
-    margin-right: 0.15rem;
+    margin: 0.15rem;
     padding: 0.3rem 0.1rem;
-    position: relative;
-    top: 0;
 
     &:hover {
       background-color: #2c2c2c;
       cursor: pointer;
     }
+  }
+
+  .buttons {
+    float: right;
+    display: flex;
+  }
+
+  .logo {
+    margin-top: 0.4rem;
+    margin-left: 0.5rem;
+    float: left;
+    user-select: none;
   }
 </style>

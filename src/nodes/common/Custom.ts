@@ -22,34 +22,38 @@ export default class Custom extends Node {
   }
 
   public load(state: INodeState) {
+    this.updateNode(state);
     super.load(state);
-    this.updateNode();
   }
 
   public setParsedFunction(parsedFunction?: ParsedFunction) {
     this.state.parsedFunction = parsedFunction;
-    this.updateNode();
   }
 
-  public getParsedFunction(): (ParsedFunction | undefined) {
-    const { parsedFunction } = this.state;
-    if (this.state.parsedFunction) {
+  public addInput(name: string): void {
+    this.addInputInterface(name);
+  }
+
+  public remInteface(name: string): void {
+    this.removeInterface(name);
+  }
+
+  public getParsedFunction(savedState?: INodeState): (ParsedFunction | undefined) {
+    const { parsedFunction } = savedState ? savedState.state : this.state;
+    if (parsedFunction) {
       // Conversion is necessary because Baklava State saves as generic `any`.
-      return new ParsedFunction(parsedFunction.name, parsedFunction.body, parsedFunction.args);
+      return new ParsedFunction(
+        parsedFunction.name,
+        parsedFunction.body,
+        parsedFunction.args,
+        parsedFunction.filename,
+      );
     }
     return undefined;
   }
 
-  public setParsedFileName(parsedFileName?: string) {
-    this.state.parsedFileName = parsedFileName;
-  }
-
-  public getParsedFileName(): (string | undefined) {
-    return this.state.parsedFileName;
-  }
-
-  private updateNode() {
-    const parsedFunction = this.getParsedFunction();
+  private updateNode(savedState?: INodeState) {
+    const parsedFunction = this.getParsedFunction(savedState);
     if (!parsedFunction) {
       this.name = CommonNodes.Custom;
       this.removeAllInputs();
@@ -57,7 +61,9 @@ export default class Custom extends Node {
     } else {
       this.name = parsedFunction.name;
       this.setInputs(parsedFunction.args);
-      this.addOutput();
+      if (parsedFunction.containsReturn()) {
+        this.addOutput();
+      }
     }
   }
 
@@ -76,11 +82,11 @@ export default class Custom extends Node {
     this.inputNames = [];
   }
 
-  private addOutput() {
+  public addOutput() {
     this.addOutputInterface('Output');
   }
 
-  private removeOutput() {
+  public removeOutput() {
     if (this.interfaces.has('Output')) {
       this.removeInterface('Output');
     }

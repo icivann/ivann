@@ -1,6 +1,14 @@
 <template>
-  <div class="func-button" :class="selected && 'selected'" @click="$emit('click')">
-    <div class="header">{{ header }}</div>
+  <div
+    class="func-button"
+    :class="selected && 'selected'"
+    @click="$emit('click')"
+  >
+    <div
+      class="header"
+      v-if="header !== undefined"
+      v-text="header"
+    />
     <div class="body">
       <slot/>
     </div>
@@ -12,7 +20,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class FileFuncButton extends Vue {
-  @Prop({ required: true }) readonly header!: string;
+  @Prop({ required: false }) readonly header?: string;
   @Prop({ default: false }) readonly selected?: boolean;
 }
 </script>

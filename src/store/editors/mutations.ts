@@ -9,6 +9,8 @@ import { randomUuid, UUID } from '@/app/util';
 import Model from '@/nodes/overview/Model';
 import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
 import { getEditorIOs } from '@/store/editors/utils';
+import ParsedFunction from '@/app/parser/ParsedFunction';
+import { editNodes, FuncDiff } from '@/store/ManageCodevault';
 
 const editorMutations: MutationTree<EditorsState> = {
   switchEditor(state, { editorType, index }) {
@@ -178,6 +180,16 @@ const editorMutations: MutationTree<EditorsState> = {
   },
   setErrorsMap(state, errorsMap) {
     state.errorsMap = errorsMap;
+  },
+  deleteNodes(state, funcs: ParsedFunction[]) {
+    editNodes(state.overviewEditor, { deleted: funcs, changed: [] });
+    state.modelEditors.forEach((editor) => editNodes(editor, { deleted: funcs, changed: [] }));
+    state.dataEditors.forEach((editor) => editNodes(editor, { deleted: funcs, changed: [] }));
+  },
+  editNodes(state, diff: FuncDiff) {
+    editNodes(state.overviewEditor, diff);
+    state.modelEditors.forEach((editor) => editNodes(editor, diff));
+    state.dataEditors.forEach((editor) => editNodes(editor, diff));
   },
 };
 
