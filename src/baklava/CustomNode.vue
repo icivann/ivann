@@ -21,6 +21,7 @@
            :initialUp="false"
            v-on:arrow-button-clicked="toggleShouldShowOptions"
            v-show="data.options.size > 0"
+           :blackStroke="data.type === customNode"
          />
       </span>
       <input
@@ -133,6 +134,8 @@ export default class CustomNode extends Components.Node {
   };
 
   private currentErrors: IrError[] = [];
+
+  private customNode = CommonNodes.Custom;
 
   get messages(): string | undefined {
     return this.currentErrors.length !== 0

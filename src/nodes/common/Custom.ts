@@ -61,7 +61,9 @@ export default class Custom extends Node {
     } else {
       this.name = parsedFunction.name;
       this.setInputs(parsedFunction.args);
-      this.addOutput();
+      if (parsedFunction.containsReturn()) {
+        this.addOutput();
+      }
     }
   }
 
@@ -80,11 +82,11 @@ export default class Custom extends Node {
     this.inputNames = [];
   }
 
-  private addOutput() {
+  public addOutput() {
     this.addOutputInterface('Output');
   }
 
-  private removeOutput() {
+  public removeOutput() {
     if (this.interfaces.has('Output')) {
       this.removeInterface('Output');
     }
