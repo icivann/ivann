@@ -4,6 +4,7 @@ export enum OverviewCategories {
   Custom = 'Custom',
   Train = 'Train',
   Optimizer = 'Optimizer',
+  Loss = 'Loss',
 }
 
 export enum OverviewNodes {
@@ -11,4 +12,5 @@ export enum OverviewNodes {
   DataNode = 'DataNode',
   TrainClassifier = 'TrainClassifier',
   Adadelta = 'Adadelta',
+  Nllloss = 'NLLLoss',
 }

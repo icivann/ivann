@@ -2,6 +2,7 @@ import Custom from '@/app/ir/Custom';
 
 import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
+import NLLLoss from '@/app/ir/overview/loss/nllloss';
 import InModel from './InModel';
 import OutModel from './OutModel';
 import Concat from './Concat';
@@ -40,5 +41,7 @@ export type DataTransform = ToTensor | Grayscale
 
 // TRAIN NODES
 export type OptimizerNode = Adadelta
+
+export type LossNode = NLLLoss
 
 export type TrainNode = TrainClassifier
