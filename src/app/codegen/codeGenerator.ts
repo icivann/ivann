@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import GraphNode from '@/app/ir/GraphNode';
-import { ModelLayerNode } from '@/app/ir/mainNodes';
+import { ModelLayerNode, OverviewNode } from '@/app/ir/mainNodes';
 import InModel from '@/app/ir/InModel';
 
 import OutModel from '@/app/ir/OutModel';
@@ -211,29 +211,62 @@ export function generateModelCode(graph: Graph, name: string): string {
   return result.join('\n\n');
 }
 
+function generateOverviewGraphCode(
+  node: GraphNode,
+  graph: Graph,
+  nodeNames: Map<GraphNode, string>,
+  nodeTypeCounters: Map<string, number>,
+): [string[], string] {
+  const prevNodes = graph.prevNodesFrom(node);
+  let code: string[] = [];
+  const params: string[] = [];
+
+  prevNodes.forEach((prevNode) => {
+    const [prevCode, prevName] = generateOverviewGraphCode(prevNode, graph, nodeNames,
+      nodeTypeCounters);
+    params.push(prevName);
+    code = code.concat(prevCode);
+  });
+
+  const name = getNodeName(node, nodeNames, nodeTypeCounters);
+  if ((node.mlNode as OverviewNode).initCode !== undefined) {
+    // check if node is a TrainNode
+    if (node.mlNode instanceof TrainClassifier) {
+      code.push(`${(node.mlNode as OverviewNode).initCode(params)}`);
+    } else {
+      code.push(`${name} = ${(node.mlNode as OverviewNode).initCode(params)}`);
+    }
+  }
+  return [code, name];
+}
+
 function generateTrainingPipeline(node: GraphNode, graph: Graph): string[] {
   // traverse each incoming connection backwards and link up
-
   const trainNode = node.mlNode as TrainClassifier;
+
+  console.log(graph.prevNodesFrom(node));
 
   // const incomingNodes = graph.prevNodesFrom(node);
   const optimizer = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-  instanceof Adadelta)[0].mlNode as Adadelta;
+    instanceof Adadelta)[0].mlNode as Adadelta;
 
   const model = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-  instanceof Model)[0].mlNode as Model;
+    instanceof Model)[0].mlNode as Model;
 
-  const body = [];
+  let body = [];
 
   const device = `"${trainNode.Device}"`;
   body.push(`device = ${device}`);
-  const modelName = `${model.name}_model`;
-  body.push(`${modelName} = ${model.name}().to(device)`);
-  body.push(`optimizer = ${optimizer.initCode(`${modelName}.parameters()`)}`);
+  const nodeNames = new Map<GraphNode, string>();
+  const nodeTypeCounters = new Map<string, number>();
+  const [nodeCode, nodeName] = generateOverviewGraphCode(node, graph, nodeNames, nodeTypeCounters);
+  body = body.concat(nodeCode);
+  // const modelName = `${model.name}_model`;
+  // body.push(`${modelName} = ${model.name}().to(device)`);
+  // body.push(`optimizer = ${optimizer.initCode(`${modelName}.parameters()`)}`);
   // (model, train_loader, test_loader, optimizer, device, epoch
-  body.push(trainNode.callCode([modelName, 'None', 'None', 'optimizer', device,
-    trainNode.Epochs.toString()]));
-
+  // body.push(trainNode.initCode([modelName, 'None', 'None', 'optimizer', device,
+  //   trainNode.Epochs.toString()]));
   return body;
 }
 
@@ -241,13 +274,13 @@ function generateOverview(graph: Graph): string {
   let main = ['def main():'];
 
   const trainNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-  instanceof TrainClassifier);
+    instanceof TrainClassifier);
 
   const funcs: string[] = [];
 
   trainNodes.forEach((node) => {
     if (node.mlNode instanceof TrainClassifier) {
-      funcs.push(node.mlNode.initCode());
+      funcs.push(node.mlNode.defCode());
     }
   });
 
@@ -278,6 +311,7 @@ export function generateOverviewCode(
   const models = modelEditors.map((editor) => generateModelCode(editor[0], editor[1])).join('\n\n');
 
   const overview = generateOverview(graph);
+  console.log('overview main:\n', overview);
 
   const datasets = dataEditors.map((editor) => generateData(editor[0], editor[1])).join('\n\n');
   // console.log(overview);

@@ -21,9 +21,9 @@ export default class TrainClassifier {
     );
   }
 
-  public initCode(): string {
+  public defCode(): string {
     return `
-def train_classifier(model, train_loader, test_loader, optimizer, device, epoch, log_interval=${this.LogInterval}):
+def train_classifier(model, train_loader, test_loader, optimizer, loss, device, epoch, log_interval=${this.LogInterval}):
   def train():
     model.train()
     running_loss = 0
@@ -60,7 +60,7 @@ def train_classifier(model, train_loader, test_loader, optimizer, device, epoch,
 `.trim();
   }
 
-  public callCode(params: string[]): string {
-    return `train_classifier(${params.join(', ')})`;
+  public initCode(params: string[]): string {
+    return `train_classifier(${params.join(', ')}, device="${this.Device}", epoch=${this.Epochs}, log_interval=${this.LogInterval})`;
   }
 }

@@ -25,4 +25,8 @@ export default class Adadelta extends Node {
     // this.addInputInterface(AdadeltaOptions.Params);
     this.addOutputInterface('output');
   }
+
+  public initCode(params: string[]): string {
+    return `torch.optim.Adadelta(${params[0]}.parameters(), lr=1, rho=0.9, eps=0.000001, weight_decay=0)`;
+  }
 }

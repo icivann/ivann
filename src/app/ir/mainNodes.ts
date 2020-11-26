@@ -3,6 +3,7 @@ import Custom from '@/app/ir/Custom';
 import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import NLLLoss from '@/app/ir/overview/loss/nllloss';
+import Model from '@/app/ir/model/model';
 import InModel from './InModel';
 import OutModel from './OutModel';
 import Concat from './Concat';
@@ -21,9 +22,8 @@ import OutData from './data/OutData';
 import ToTensor from './data/ToTensor';
 import Grayscale from './data/Grayscale';
 
+export type MlNode = ModelNode | OverviewNode | DataNode
 // MODEL NODES
-export type MlNode = ModelNode | TrainNode | DataNode | OptimizerNode
-
 export type Conv = Conv1d | Conv2d | Conv3d | ConvTranspose1d | ConvTranspose2d | ConvTranspose3d
 
 export type MaxPool = MaxPool1d | MaxPool2d | MaxPool3d
@@ -33,6 +33,9 @@ export type ModelLayerNode = Conv | MaxPool
 export type Operations = Concat
 
 export type ModelNode = ModelLayerNode | InModel | OutModel | Custom | Operations
+
+// OVERVIEW NODES
+export type OverviewNode = TrainNode | OptimizerNode | LossNode | Model
 
 // DATA NODES
 export type DataNode = InData | OutData | DataTransform
