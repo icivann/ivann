@@ -4,27 +4,10 @@ import { OverviewCategories, OverviewNodes } from '@/nodes/overview/Types';
 import TrainClassifier from '@/nodes/overview/train/TrainClassifier';
 import Adadelta from '@/nodes/overview/optimizers/Adadelta';
 import { Data } from '@/nodes/overview/Data';
+import { Editor } from '@baklavajs/core';
 
 export default class OverviewCanvas extends AbstractCanvas {
   nodeList = [
-    {
-      category: OverviewCategories.Model,
-      nodes: [
-        {
-          name: OverviewNodes.ModelNode,
-          node: Model,
-        },
-      ],
-    },
-    {
-      category: OverviewCategories.Data,
-      nodes: [
-        {
-          name: OverviewNodes.DataNode,
-          node: Data,
-        },
-      ],
-    },
     {
       category: OverviewCategories.Train,
       nodes: [
@@ -44,4 +27,10 @@ export default class OverviewCanvas extends AbstractCanvas {
       ],
     },
   ];
+
+  public registerNodes(editor: Editor) {
+    super.registerNodes(editor);
+    editor.registerNodeType(OverviewNodes.ModelNode, Model);
+    editor.registerNodeType(OverviewNodes.DataNode, Data);
+  }
 }

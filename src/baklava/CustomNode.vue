@@ -202,6 +202,7 @@ export default class CustomNode extends Components.Node {
       case ModelNodes.MaxPool1d:
       case ModelNodes.MaxPool2d:
       case ModelNodes.MaxPool3d:
+      case OverviewNodes.Adadelta:
         return { background: 'var(--red)' };
       case ModelNodes.Dropout:
       case ModelNodes.Dropout2d:
@@ -216,6 +217,7 @@ export default class CustomNode extends Components.Node {
       case ModelNodes.OutModel:
       case DataNodes.InData:
       case DataNodes.OutData:
+      case OverviewNodes.TrainClassifier:
         return { background: 'var(--purple)' };
       case ModelNodes.Linear:
       case ModelNodes.Bilinear:
