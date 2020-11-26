@@ -82,11 +82,11 @@ export default class Custom extends Node {
     this.inputNames = [];
   }
 
-  private addOutput() {
+  public addOutput() {
     this.addOutputInterface('Output');
   }
 
-  private removeOutput() {
+  public removeOutput() {
     if (this.interfaces.has('Output')) {
       this.removeInterface('Output');
     }
