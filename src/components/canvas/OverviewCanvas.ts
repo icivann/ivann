@@ -7,6 +7,7 @@ import { Data } from '@/nodes/overview/Data';
 import { Editor } from '@baklavajs/core';
 import OverviewCustom from '@/nodes/overview/OverviewCustom';
 import NLLLoss from '@/nodes/overview/loss/Nllloss';
+import { CommonNodes } from '@/nodes/common/Types';
 
 export default class OverviewCanvas extends AbstractCanvas {
   nodeList = [
@@ -40,6 +41,7 @@ export default class OverviewCanvas extends AbstractCanvas {
   ];
 
   customNodeType = OverviewCustom;
+  customNodeName = OverviewNodes.OverviewCustom;
 
   public registerNodes(editor: Editor) {
     super.registerNodes(editor);

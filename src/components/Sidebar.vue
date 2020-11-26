@@ -5,7 +5,7 @@
         <ComponentsTab/>
       </Tab>
       <Tab name="Custom">
-        <CustomTab/>
+        <CustomTab :custom-node="overviewCustomNode" />
       </Tab>
     </Tabs>
     <Tabs v-show="currEditorType === editorType.MODEL">
@@ -37,6 +37,7 @@ import EditorType from '@/EditorType';
 import ComponentsTab from '@/components/tabs/ComponentsTab.vue';
 import { mapGetters } from 'vuex';
 import DataComponentsTab from '@/components/tabs/DataComponentsTab.vue';
+import { OverviewNodes } from '@/nodes/overview/Types';
 
 @Component({
   components: {
@@ -51,6 +52,7 @@ import DataComponentsTab from '@/components/tabs/DataComponentsTab.vue';
 })
 export default class Sidebar extends Vue {
   private editorType = EditorType;
+  private overviewCustomNode = OverviewNodes.OverviewCustom;
 }
 </script>
 

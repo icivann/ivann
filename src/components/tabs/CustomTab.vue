@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
@@ -36,6 +36,7 @@ import { CommonNodes } from '@/nodes/common/Types';
 import { Getter, Mutation } from 'vuex-class';
 import SearchBar from '@/SearchBar.vue';
 import { ParsedFile } from '@/store/codeVault/types';
+import { OverviewNodes } from '@/nodes/overview/Types';
 
 @Component({
   components: {
@@ -46,7 +47,7 @@ import { ParsedFile } from '@/store/codeVault/types';
   },
 })
 export default class CustomTab extends Vue {
-  private customNode: string = CommonNodes.Custom;
+  @Prop({ default: CommonNodes.Custom }) customNode: string = OverviewNodes.OverviewCustom;
   private searchString = '';
 
   @Mutation('enterCodeVault') enterCodeVault!: () => void;
