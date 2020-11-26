@@ -15,7 +15,7 @@ class LoadImages {
   public initCode(name: string): string[] {
     const path = `${name}_path`;
     return [
-      `self.${name} = [os.path.join(${path}, file) for file in listdir(${path}) if os.path.isfile(os.path.join(${path}, file))]`,
+      `self.${name} = [os.path.join(${path}, file) for file in os.listdir(${path}) if os.path.isfile(os.path.join(${path}, file))]`,
     ];
   }
 

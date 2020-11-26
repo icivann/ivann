@@ -213,7 +213,6 @@ export default class CustomNode extends Components.Node {
         return { background: 'var(--green)' };
       case ModelNodes.InModel:
       case ModelNodes.OutModel:
-      case DataNodes.InData:
       case DataNodes.OutData:
         return { background: 'var(--purple)' };
       case ModelNodes.Linear:

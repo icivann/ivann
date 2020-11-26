@@ -6,11 +6,9 @@ export const enum DataCategories {
 }
 
 export const enum DataNodes {
-  InData = 'InData',
   OutData = 'OutData',
   ToTensor = 'ToTensor',
   Grayscale = 'Grayscale',
   LoadImages = 'LoadImages',
   LoadCsv = 'LoadCsv',
-  LoadCustom = 'LoadCustom',
 }

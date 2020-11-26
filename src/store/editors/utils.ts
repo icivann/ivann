@@ -9,7 +9,6 @@ export function getEditorIOs(editorModel: EditorModel): { inputs: string[]; outp
     switch (node.type) {
       case DataNodes.LoadCsv:
       case DataNodes.LoadImages:
-      case DataNodes.LoadCustom:
       case ModelNodes.InModel:
         inputs.push(node.name);
         break;

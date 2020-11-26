@@ -2,8 +2,7 @@
   <div>
     <ExpandablePanel :name="ioLabel">
       <ButtonGrid>
-        <AddNodeButton :node="ioNodes.nodes[0].name" name="Input" :names="editorIONames"/>
-        <AddNodeButton :node="ioNodes.nodes[1].name" name="Output"/>
+        <AddNodeButton :node="ioNodes.nodes[0].name" name="Output"/>
       </ButtonGrid>
     </ExpandablePanel>
     <ExpandablePanel v-for="(category) in dataNodes.slice(1)" :key="category.category"

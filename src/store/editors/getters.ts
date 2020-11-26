@@ -49,8 +49,7 @@ const editorGetters: GetterTree<EditorsState, RootState> = {
     const names: Set<string> = new Set<string>();
     for (const node of getters.currEditorModel.editor.nodes) {
       if (node.type === ModelNodes.InModel
-        || node.type === ModelNodes.OutModel
-        || node.type === DataNodes.InData) {
+        || node.type === ModelNodes.OutModel) {
         names.add(node.name);
       }
     }
