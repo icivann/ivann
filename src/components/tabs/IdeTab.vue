@@ -71,17 +71,19 @@ export default class IdeTab extends Vue {
 
         const used = this.usedNodes(diff);
 
-        // Warn user of effect of edit
-        let warning = 'Are you sure you want to edit this file? All unsaved changes will be lost.';
-        if (used.length > 0) warning = warning.concat(`\n\nWe found ${used.length} editors using this file's functions:`);
-        for (const use of used) {
-          warning = warning.concat(`\nIn editor "${use.name}"`);
-          if (use.deleted.length > 0) warning = warning.concat(` - [${use.deleted}] will be deleted`);
-          if (use.changed.length > 0) warning = warning.concat(` - [${use.changed}] will be modified`);
-        }
+        // Warn user of effect of edit if causes change to editors
+        if (diff.deleted.length > 0 || diff.changed.length > 0) {
+          let warning = 'Are you sure you want to edit this file? All unsaved changes will be lost.';
+          if (used.length > 0) warning = warning.concat(`\n\nWe found ${used.length} editors using this file's functions:`);
+          for (const use of used) {
+            warning = warning.concat(`\nIn editor "${use.name}"`);
+            if (use.deleted.length > 0) warning = warning.concat(` - [${use.deleted}] will be deleted`);
+            if (use.changed.length > 0) warning = warning.concat(` - [${use.changed}] will be modified`);
+          }
 
-        // STOP if user cancels
-        if (!window.confirm(warning)) return;
+          // STOP if user cancels
+          if (!window.confirm(warning)) return;
+        }
 
         // Run through editors using function that have been changed and update corresponding nodes
         this.editNodes(diff);
