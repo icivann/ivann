@@ -5,6 +5,7 @@ import TrainClassifier from '@/nodes/overview/train/TrainClassifier';
 import Adadelta from '@/nodes/overview/optimizers/Adadelta';
 import { Data } from '@/nodes/overview/Data';
 import { Editor } from '@baklavajs/core';
+import NLLLoss from '@/nodes/overview/loss/Nllloss';
 
 export default class OverviewCanvas extends AbstractCanvas {
   nodeList = [
@@ -23,6 +24,15 @@ export default class OverviewCanvas extends AbstractCanvas {
         {
           name: OverviewNodes.Adadelta,
           node: Adadelta,
+        },
+      ],
+    },
+    {
+      category: OverviewCategories.Loss,
+      nodes: [
+        {
+          name: OverviewNodes.Nllloss,
+          node: NLLLoss,
         },
       ],
     },

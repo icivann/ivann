@@ -13,7 +13,6 @@ export default class NLLLoss extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
     this.addOutputInterface('Output');
   }
 }
