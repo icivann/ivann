@@ -5,6 +5,7 @@ import TrainClassifier from '@/nodes/overview/train/TrainClassifier';
 import Adadelta from '@/nodes/overview/optimizers/Adadelta';
 import { Data } from '@/nodes/overview/Data';
 import { Editor } from '@baklavajs/core';
+import OverviewCustom from '@/nodes/overview/OverviewCustom';
 import NLLLoss from '@/nodes/overview/loss/Nllloss';
 
 export default class OverviewCanvas extends AbstractCanvas {
@@ -37,6 +38,8 @@ export default class OverviewCanvas extends AbstractCanvas {
       ],
     },
   ];
+
+  customNodeType = OverviewCustom;
 
   public registerNodes(editor: Editor) {
     super.registerNodes(editor);
