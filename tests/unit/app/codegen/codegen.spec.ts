@@ -172,106 +172,133 @@ class Model(nn.Module):
     expect(actual).toBe(expected);
   });
 
-//  TODO: we changed the way we do custom nodes so the tests need to be updated
-//
-//   it('generates code for custom nodes with a two parameters', () => {
-//     const iState = JSON.parse(
-//  TODO: add graph json
-//
-//     );
-//     const graph = istateToGraph(iState);
-//     // TODO: create the graph to test code generation
-//     let actual = generateCode(graph);
-//     actual = removeBlankLines(actual);
-//
-//     let expected = `
-// import torch
-// import torch.nn as nn
-// import torch.nn.functional as F
-//
-// def customFunc(arg1):
-//   pass
-//
-// class Model(nn.Module):
-//
-//   def __init__(self):
-//     self.conv2d_1 = ${conv2dDefGenerated}
-//
-//   def forward(self, input_1):
-//     x = input_1
-//     x = self.conv2d_1(x)
-//     x_1 = customFunc(x)
-//     return x_1`.trim();
-//     expected = removeBlankLines(expected);
-//
-//     expect(actual).toBe(expected);
-//   });
-//
-//   it('generates code for custom nodes with a two parameters', () => {
-//     const iState = JSON.parse(
-//  TODO: add graph json
-//
-//     );
-//     const graph = istateToGraph(iState);
-//     // TODO: create the graph to test code generation
-//     let actual = generateCode(graph);
-//     actual = removeBlankLines(actual);
-//
-//     let expected = `
-// import torch
-// import torch.nn as nn
-// import torch.nn.functional as F
-//
-// def customFunc(arg1):
-//   pass
-//
-// class Model(nn.Module):
-//
-//   def __init__(self):
-//     self.conv2d_1 = nn.Conv2d(16, 32, 2,2)
-//
-//   def forward(self, input_1):
-//     x = input_1
-//     x = self.conv2d_1(x)
-//     x_1 = customFunc(x)
-//     return x_1`.trim();
-//     expected = removeBlankLines(expected);
-//
-//     expect(actual).toBe(expected);
-//   });
-//
-//   it('generates code for custom nodes with a two parameters', () => {
-//     const iState = JSON.parse(
-//  TODO: add graph json
-//
-//     );
-//     const graph = istateToGraph(iState);
-//     // TODO: create the graph to test code generation
-//     let actual = generateCode(graph);
-//     actual = removeBlankLines(actual);
-//
-//     let expected = `
-// import torch
-// import torch.nn as nn
-// import torch.nn.functional as F
-//
-// def customFunc(arg1, arg2):
-//   pass
-//
-// class Model(nn.Module):
-//
-//   def __init__(self):
-//     self.conv2d_1 = nn.Conv2d(16, 32, 2,2)
-//     self.conv2d_2 = nn.Conv2d(16, 32, 2,2)
-//
-//   def forward(self, input_1):
-//     x = input_1
-//     x_1 = self.conv2d_1(x)
-//     x_2 = self.conv2d_2(x)
-//     x_3 = customFunc(x_1, x_2)
-//     return x_3`.trim();
-//     expected = removeBlankLines(expected);
-//
-//     expect(actual).toBe(expected);
-//   });
+  //  TODO: we changed the way we do custom nodes so the tests need to be updated
+  //
+  //   it('generates code for custom nodes with a two parameters', () => {
+  //     const iState = JSON.parse(
+  //  TODO: add graph json
+  //
+  //     );
+  //     const graph = istateToGraph(iState);
+  //     // TODO: create the graph to test code generation
+  //     let actual = generateCode(graph);
+  //     actual = removeBlankLines(actual);
+  //
+  //     let expected = `
+  // import torch
+  // import torch.nn as nn
+  // import torch.nn.functional as F
+  //
+  // def customFunc(arg1):
+  //   pass
+  //
+  // class Model(nn.Module):
+  //
+  //   def __init__(self):
+  //     self.conv2d_1 = ${conv2dDefGenerated}
+  //
+  //   def forward(self, input_1):
+  //     x = input_1
+  //     x = self.conv2d_1(x)
+  //     x_1 = customFunc(x)
+  //     return x_1`.trim();
+  //     expected = removeBlankLines(expected);
+  //
+  //     expect(actual).toBe(expected);
+  //   });
+  //
+  //   it('generates code for custom nodes with a two parameters', () => {
+  //     const iState = JSON.parse(
+  //  TODO: add graph json
+  //
+  //     );
+  //     const graph = istateToGraph(iState);
+  //     // TODO: create the graph to test code generation
+  //     let actual = generateCode(graph);
+  //     actual = removeBlankLines(actual);
+  //
+  //     let expected = `
+  // import torch
+  // import torch.nn as nn
+  // import torch.nn.functional as F
+  //
+  // def customFunc(arg1):
+  //   pass
+  //
+  // class Model(nn.Module):
+  //
+  //   def __init__(self):
+  //     self.conv2d_1 = nn.Conv2d(16, 32, 2,2)
+  //
+  //   def forward(self, input_1):
+  //     x = input_1
+  //     x = self.conv2d_1(x)
+  //     x_1 = customFunc(x)
+  //     return x_1`.trim();
+  //     expected = removeBlankLines(expected);
+  //
+  //     expect(actual).toBe(expected);
+  //   });
+  //
+  //   it('generates code for custom nodes with a two parameters', () => {
+  //     const iState = JSON.parse(
+  //  TODO: add graph json
+  //
+  //     );
+  //     const graph = istateToGraph(iState);
+  //     // TODO: create the graph to test code generation
+  //     let actual = generateCode(graph);
+  //     actual = removeBlankLines(actual);
+  //
+  //     let expected = `
+  // import torch
+  // import torch.nn as nn
+  // import torch.nn.functional as F
+  //
+  // def customFunc(arg1, arg2):
+  //   pass
+  //
+  // class Model(nn.Module):
+  //
+  //   def __init__(self):
+  //     self.conv2d_1 = nn.Conv2d(16, 32, 2,2)
+  //     self.conv2d_2 = nn.Conv2d(16, 32, 2,2)
+  //
+  //   def forward(self, input_1):
+  //     x = input_1
+  //     x_1 = self.conv2d_1(x)
+  //     x_2 = self.conv2d_2(x)
+  //     x_3 = customFunc(x_1, x_2)
+  //     return x_3`.trim();
+  //     expected = removeBlankLines(expected);
+  //
+  //     expect(actual).toBe(expected);
+  //   });
+});
+
+describe('overview codegen', () => {
+  it('simplest overview, single data, model and optimizer connected to train classifier', () => {
+    const iState = JSON.parse('{"nodes":[{"type":"ModelNode","id":"node_16063125263357","name":"myModel","options":[],"state":{},"interfaces":[["myInput",{"isInput":true,"id":"ni_16063125263358","value":null}],["myOutput",{"isInput":false,"id":"ni_16063125263359","value":null}]],"position":{"x":308,"y":39},"width":200,"twoColumn":false},{"type":"DataNode","id":"node_160631258709624","name":"myData","options":[],"state":{},"interfaces":[["Output",{"id":"ni_160631258709625","value":null}],["Labels",{"id":"ni_160631258709626","value":null}]],"position":{"x":30,"y":179},"width":200,"twoColumn":false},{"type":"TrainClassifier","id":"node_160631260012131","name":"TrainClassifier","options":[["LossFunction","cross_entropy"],["Epochs",10],["Device","cpu"],["Log Interval",0]],"state":{},"interfaces":[["Predictions",{"id":"ni_160631260012132","value":null}],["Labels",{"id":"ni_160631260012133","value":null}],["Optimizer",{"id":"ni_160631260012134","value":null}]],"position":{"x":658,"y":115},"width":200,"twoColumn":false},{"type":"Adadelta","id":"node_160631260731238","name":"Adadelta","options":[["lr",1],["rho",0.9],["eps",0.000001],["weightDecay",0]],"state":{},"interfaces":[["output",{"id":"ni_160631260731239","value":null}]],"position":{"x":277,"y":384},"width":200,"twoColumn":false}],"connections":[{"id":"160631259775530","from":"ni_160631258709625","to":"ni_16063125263358"},{"id":"160631260400237","from":"ni_16063125263359","to":"ni_160631260012132"},{"id":"160631261214545","from":"ni_160631258709626","to":"ni_160631260012133"},{"id":"160631286789448","from":"ni_160631260731239","to":"ni_160631260012134"}],"panning":{"x":0,"y":0},"scaling":1}');
+    const graph = istateToGraph(iState);
+    // TODO: create the graph to test code generation
+    let actual = generateModelCode(graph, 'Model');
+    actual = removeBlankLines(actual);
+
+    let expected = `
+class Model(nn.Module):
+
+  def __init__(self):
+    super(Model, self).__init__()
+    self.conv2d_1 = ${conv2dDefGenerated}
+    self.maxpool2d_1 = ${maxpool2dDefGenerated}
+
+  def forward(self, input_1):
+    x = input_1
+    x = self.conv2d_1(x)
+    x = self.maxpool2d_1(x)
+    return x`.trim();
+    expected = removeBlankLines(expected);
+
+    expect(actual).toBe(expected);
+  });
 });

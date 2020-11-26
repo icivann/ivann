@@ -38,8 +38,10 @@ export default class TrainClassifier extends Node {
       });
     this.addOption(TrainClassifierOptions.LogInterval, TypeOptions.IntOption, 0);
 
-    this.addInputInterface('Predictions');
-    this.addInputInterface('Labels');
+    this.addInputInterface('Model');
+    this.addInputInterface('Train Data');
+    this.addInputInterface('Test Data');
     this.addInputInterface('Optimizer');
+    this.addInputInterface('Loss');
   }
 }
