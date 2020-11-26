@@ -14,6 +14,7 @@ import Model from '@/app/ir/model/model';
 import { indent, getNodeType } from '@/app/codegen/common';
 
 import generateData from '@/app/codegen/dataGenerator';
+import OverviewCustom from '@/app/ir/overview/OverviewCustom';
 
 const imports = [
   'import torch',
@@ -242,9 +243,8 @@ function generateOverviewGraphCode(
 
 function generateTrainingPipeline(node: GraphNode, graph: Graph): string[] {
   // traverse each incoming connection backwards and link up
-  const trainNode = node.mlNode as TrainClassifier;
-
   console.log(graph.prevNodesFrom(node));
+  const trainNode = node.mlNode as TrainClassifier;
 
   // const incomingNodes = graph.prevNodesFrom(node);
   const optimizer = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
@@ -270,17 +270,28 @@ function generateTrainingPipeline(node: GraphNode, graph: Graph): string[] {
   return body;
 }
 
+function isNodeTrainer(node: GraphNode): boolean {
+  console.log(JSON.stringify(node));
+  return node.mlNode instanceof TrainClassifier
+    || (node.mlNode instanceof OverviewCustom && node.mlNode.trainer);
+}
+
 function generateOverview(graph: Graph): string {
   let main = ['def main():'];
 
-  const trainNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-    instanceof TrainClassifier);
+  const trainNodes = graph.nodesAsArray.filter(isNodeTrainer);
+
+  console.log('trainnodes length', trainNodes.length);
 
   const funcs: string[] = [];
 
   trainNodes.forEach((node) => {
     if (node.mlNode instanceof TrainClassifier) {
       funcs.push(node.mlNode.defCode());
+    } else if (node.mlNode instanceof OverviewCustom) {
+      console.log('2HEREEEEEEEEEEEEEEEEEEEEE');
+      console.log(node.mlNode.code);
+      funcs.push(node.mlNode.code);
     }
   });
 
@@ -311,7 +322,6 @@ export function generateOverviewCode(
   const models = modelEditors.map((editor) => generateModelCode(editor[0], editor[1])).join('\n\n');
 
   const overview = generateOverview(graph);
-  console.log('overview main:\n', overview);
 
   const datasets = dataEditors.map((editor) => generateData(editor[0], editor[1])).join('\n\n');
   // console.log(overview);

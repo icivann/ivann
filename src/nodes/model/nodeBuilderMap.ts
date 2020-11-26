@@ -31,6 +31,7 @@ import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import Model from '@/app/ir/model/model';
 import Data from '@/app/ir/data/Data';
 import NLLLoss from '@/app/ir/overview/loss/nllloss';
+import OverviewCustom from '@/app/ir/overview/OverviewCustom';
 
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
@@ -65,6 +66,8 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['Grayscale', Grayscale.build],
   ['Transformer', Transformer.build],
   ['DataNode', Data.build],
+  // OVERVIEW
+  ['OverviewCustom', OverviewCustom.build as (r: Options) => MlNode],
   // Optimizers
   ['Adadelta', Adadelta.build],
   // Loss

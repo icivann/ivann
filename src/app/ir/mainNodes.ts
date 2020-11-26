@@ -35,7 +35,7 @@ export type Operations = Concat
 export type ModelNode = ModelLayerNode | InModel | OutModel | Custom | Operations
 
 // OVERVIEW NODES
-export type OverviewNode = TrainNode | OptimizerNode | LossNode | Model
+export type OverviewNode = TrainNode | OptimizerNode | LossNode
 
 // DATA NODES
 export type DataNode = InData | OutData | DataTransform
