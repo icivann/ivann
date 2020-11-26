@@ -21,15 +21,18 @@ export default class DeleteEditorButton extends Vue {
   @Mutation('deleteEditor') delete!: (arg0: { editorType: EditorType; index: number }) => void;
 
   private deleteEditor() {
-    this.delete({ editorType: this.editorType, index: this.index });
+    if (window.confirm('Are you sure you want to delete this editor? '
+      + 'All unsaved progress will be lost.')) {
+      this.delete({ editorType: this.editorType, index: this.index });
 
-    // Re-save overview after nodes may have been removed
-    const overviewEditorSave = saveEditor(this.overviewEditor);
-    localStorage.setItem('unsaved-editor-Overview', JSON.stringify(overviewEditorSave));
+      // Re-save overview after nodes may have been removed
+      const overviewEditorSave = saveEditor(this.overviewEditor);
+      localStorage.setItem('unsaved-editor-Overview', JSON.stringify(overviewEditorSave));
 
-    // Remove deleted editor from Local Storage.
-    localStorage.removeItem(`unsaved-editor-${this.name}`);
-    localStorage.setItem('unsaved-project', JSON.stringify(this.saveWithNames));
+      // Remove deleted editor from Local Storage.
+      localStorage.removeItem(`unsaved-editor-${this.name}`);
+      localStorage.setItem('unsaved-project', JSON.stringify(this.saveWithNames));
+    }
   }
 }
 </script>
