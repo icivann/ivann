@@ -170,6 +170,7 @@ export default class FunctionsTab extends Vue {
       // Delete file from codevault
       this.selectedFile = null;
       this.delFile(filename);
+      this.deleteFromLocalStorage(filename);
     }
   }
 
@@ -182,6 +183,11 @@ export default class FunctionsTab extends Vue {
   private saveToLocalStorage(file: ParsedFile) {
     localStorage.setItem('unsaved-code-vault', JSON.stringify(this.filenamesList));
     localStorage.setItem(`unsaved-file-${file.filename}`, JSON.stringify(file));
+  }
+
+  private deleteFromLocalStorage(filename: string) {
+    localStorage.setItem('unsaved-code-vault', JSON.stringify(this.filenamesList));
+    localStorage.removeItem(`unsaved-file-${filename}`);
   }
 }
 </script>
