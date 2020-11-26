@@ -22,16 +22,20 @@ import CheckboxField from '@/components/CheckboxField.vue';
 })
 export default class CheckboxList extends Vue {
   @Prop({ required: true }) label!: string;
-  @Prop() children?: [string];
+  @Prop({ required: true }) children!: [string];
+
   private parentChecked = CheckboxValue.CHECKED;
   private checkedChildren: Array<CheckboxValue> = [];
 
   private change(newVal: CheckboxValue) {
     this.parentChecked = newVal;
+    this.$emit('input', this.children?.filter(
+      (_, index) => this.checkedChildren[index] === CheckboxValue.CHECKED,
+    ));
   }
 
   private parentChange(newVal: CheckboxValue) {
-    this.parentChecked = newVal;
+    this.change(newVal);
     for (let i = 0; i < this.checkedChildren.length; i += 1) {
       this.$set(this.checkedChildren, i, newVal);
     }
@@ -39,14 +43,13 @@ export default class CheckboxList extends Vue {
 
   private childChange(index: number, newVal: CheckboxValue) {
     this.$set(this.checkedChildren, index, newVal);
-    this.parentChecked = this.checkedChildren.every((v) => newVal === v)
-      ? newVal : CheckboxValue.HALFCHECKED;
+    this.change(this.checkedChildren.every((v) => newVal === v)
+      ? newVal : CheckboxValue.HALFCHECKED);
   }
 
   created() {
-    if (this.children) {
-      this.checkedChildren = new Array(this.children.length).fill(CheckboxValue.CHECKED);
-    }
+    this.checkedChildren = new Array(this.children.length).fill(CheckboxValue.CHECKED);
+    this.change(CheckboxValue.CHECKED);
   }
 }
 </script>
