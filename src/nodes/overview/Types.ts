@@ -11,4 +11,5 @@ export enum OverviewNodes {
   DataNode = 'DataNode',
   TrainClassifier = 'TrainClassifier',
   Adadelta = 'Adadelta',
+  Custom = 'Custom',
 }

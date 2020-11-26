@@ -13,6 +13,8 @@ export default abstract class AbstractCanvas {
     }[];
   }[];
 
+  public customNodeType = Custom;
+
   protected option: OptionPlugin = new OptionPlugin();
 
   public get optionPlugin(): OptionPlugin {
@@ -25,6 +27,6 @@ export default abstract class AbstractCanvas {
         editor.registerNodeType(name, node, category);
       });
     });
-    editor.registerNodeType(CommonNodes.Custom, Custom);
+    editor.registerNodeType(CommonNodes.Custom, this.customNodeType);
   }
 }
