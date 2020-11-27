@@ -108,7 +108,9 @@ export default class Titlebar extends Vue {
       // Clear except `cookie:accepted`
       const cookieAccepted = localStorage.getItem('cookie:accepted');
       localStorage.clear();
-      localStorage.setItem('cookie:accepted', cookieAccepted);
+      if (cookieAccepted) {
+        localStorage.setItem('cookie:accepted', cookieAccepted);
+      }
 
       // Save new project to Local Storage
       const { saveWithNames } = this;
@@ -167,7 +169,9 @@ export default class Titlebar extends Vue {
       // Clear except `cookie:accepted`
       const cookieAccepted = localStorage.getItem('cookie:accepted');
       localStorage.clear();
-      localStorage.setItem('cookie:accepted', cookieAccepted);
+      if (cookieAccepted) {
+        localStorage.setItem('cookie:accepted', cookieAccepted);
+      }
 
       localStorage.setItem('unsaved-project', JSON.stringify(this.saveWithNames));
       localStorage.setItem('unsaved-editor-Overview', JSON.stringify(saveEditor(this.editorModels.overviewEditor)));
