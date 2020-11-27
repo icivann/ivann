@@ -21,6 +21,7 @@ import Linear from '@/app/ir/model/linear';
 import Bilinear from '@/app/ir/model/bilinear';
 import Softmin from '@/app/ir/model/softmin';
 import Softmax from '@/app/ir/model/softmax';
+import Flatten from '@/app/ir/model/flatten';
 
 import ToTensor from '@/app/ir/data/ToTensor';
 import Grayscale from '@/app/ir/data/Grayscale';
@@ -60,6 +61,7 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['Bilinear', Bilinear.build],
   ['Softmin', Softmin.build],
   ['Softmax', Softmax.build],
+  ['Flatten', Flatten.build],
   // Data
   ['OutData', OutData.build],
   ['ToTensor', ToTensor.build],

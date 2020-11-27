@@ -8,6 +8,7 @@ import OverviewCustom from '@/app/ir/overview/OverviewCustom';
 import InModel from './InModel';
 import OutModel from './OutModel';
 import Concat from './Concat';
+import Flatten from './model/flatten';
 import Conv2d from './model/conv2d';
 import Conv1d from './model/conv1d';
 import Conv3d from './model/conv3d';
@@ -33,7 +34,7 @@ export type MaxPool = MaxPool1d | MaxPool2d | MaxPool3d
 
 export type ModelLayerNode = Conv | MaxPool
 
-export type Operations = Concat
+export type Operations = Concat | Flatten
 
 export type ModelNode = ModelLayerNode | InModel | OutModel | Custom | Operations
 

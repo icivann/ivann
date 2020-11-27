@@ -35,5 +35,5 @@ export enum ModelNodes {
   Bilinear = 'Bilinear',
   Linear = 'Linear',
   Softmin = 'Softmin',
-  Transformer = 'Transformer'
+  Transformer = 'Transformer',
 }
