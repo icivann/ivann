@@ -19,7 +19,11 @@ class OverviewCustom {
     );
   }
 
-  public callCode(params: string[], name: string): string {
+  public initCode(): string {
+    return this.code;
+  }
+
+  public callCode(params: string[]): string {
     const parsedFuncs = parse(this.code);
 
     if (parsedFuncs instanceof Error) {

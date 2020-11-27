@@ -4,6 +4,7 @@ import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import NLLLoss from '@/app/ir/overview/loss/nllloss';
 import Model from '@/app/ir/model/model';
+import OverviewCustom from '@/app/ir/overview/OverviewCustom';
 import InModel from './InModel';
 import OutModel from './OutModel';
 import Concat from './Concat';
@@ -35,7 +36,9 @@ export type Operations = Concat
 export type ModelNode = ModelLayerNode | InModel | OutModel | Custom | Operations
 
 // OVERVIEW NODES
-export type OverviewNode = TrainNode | OptimizerNode | LossNode
+export type OverviewNode = OverviewCallableNode | OptimizerNode | LossNode | OverviewCustom
+// callables have initCode and a callCode methods
+export type OverviewCallableNode = TrainNode | OverviewCustom
 
 // DATA NODES
 export type DataNode = InData | OutData | DataTransform

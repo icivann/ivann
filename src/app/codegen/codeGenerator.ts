@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import GraphNode from '@/app/ir/GraphNode';
-import { ModelLayerNode, OverviewNode } from '@/app/ir/mainNodes';
+import { ModelLayerNode, OverviewCallableNode, OverviewNode } from '@/app/ir/mainNodes';
 import InModel from '@/app/ir/InModel';
 
 import OutModel from '@/app/ir/OutModel';
@@ -212,6 +212,12 @@ export function generateModelCode(graph: Graph, name: string): string {
   return result.join('\n\n');
 }
 
+function isNodeTrainer(node: GraphNode): boolean {
+  console.log(JSON.stringify(node));
+  return node.mlNode instanceof TrainClassifier
+    || (node.mlNode instanceof OverviewCustom && node.mlNode.trainer);
+}
+
 function generateOverviewGraphCode(
   node: GraphNode,
   graph: Graph,
@@ -230,13 +236,11 @@ function generateOverviewGraphCode(
   });
 
   const name = getNodeName(node, nodeNames, nodeTypeCounters);
-  if ((node.mlNode as OverviewNode).initCode !== undefined) {
-    // check if node is a TrainNode
-    if (node.mlNode instanceof TrainClassifier) {
-      code.push(`${(node.mlNode as OverviewNode).initCode(params)}`);
-    } else {
-      code.push(`${name} = ${(node.mlNode as OverviewNode).initCode(params)}`);
-    }
+
+  if (isNodeTrainer(node)) {
+    code.push(`${(node.mlNode as OverviewCallableNode).callCode(params)}`);
+  } else if ((node.mlNode as OverviewNode).initCode !== undefined) {
+    code.push(`${name} = ${(node.mlNode as OverviewNode).initCode(params)}`);
   }
   return [code, name];
 }
@@ -253,10 +257,8 @@ function generateTrainingPipeline(node: GraphNode, graph: Graph): string[] {
   const model = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
     instanceof Model)[0].mlNode as Model;
 
-  let body = [];
+  let body: string[] = [];
 
-  const device = `"${trainNode.Device}"`;
-  body.push(`device = ${device}`);
   const nodeNames = new Map<GraphNode, string>();
   const nodeTypeCounters = new Map<string, number>();
   const [nodeCode, nodeName] = generateOverviewGraphCode(node, graph, nodeNames, nodeTypeCounters);
@@ -270,12 +272,6 @@ function generateTrainingPipeline(node: GraphNode, graph: Graph): string[] {
   return body;
 }
 
-function isNodeTrainer(node: GraphNode): boolean {
-  console.log(JSON.stringify(node));
-  return node.mlNode instanceof TrainClassifier
-    || (node.mlNode instanceof OverviewCustom && node.mlNode.trainer);
-}
-
 function generateOverview(graph: Graph): string {
   let main = ['def main():'];
 
@@ -286,13 +282,7 @@ function generateOverview(graph: Graph): string {
   const funcs: string[] = [];
 
   trainNodes.forEach((node) => {
-    if (node.mlNode instanceof TrainClassifier) {
-      funcs.push(node.mlNode.defCode());
-    } else if (node.mlNode instanceof OverviewCustom) {
-      console.log('2HEREEEEEEEEEEEEEEEEEEEEE');
-      console.log(node.mlNode.code);
-      funcs.push(node.mlNode.code);
-    }
+    funcs.push((node.mlNode as OverviewCallableNode).initCode());
   });
 
   // Create functions for training
@@ -324,7 +314,6 @@ export function generateOverviewCode(
   const overview = generateOverview(graph);
 
   const datasets = dataEditors.map((editor) => generateData(editor[0], editor[1])).join('\n\n');
-  // console.log(overview);
 
   const result = [imports];
 
