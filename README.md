@@ -1,4 +1,4 @@
-# ivann
+# Ivann
 
 [![Build Status](https://travis-ci.com/icivann/ivann.svg?branch=master)](https://travis-ci.com/icivann/ivann)
 
@@ -6,30 +6,31 @@
 
 It is aimed at researchers who wish to see the bigger picture by visualising the flow behind their models. You can build through the UI by hand (Ivann aims to have the same feature set as PyTorch) and then modify the generated Python code, or build with a mixture of handwritten and generated code.
 
-## Project setup
-```
+## What can I make with ivann?
+
+Ivann is engineered to build neural networks. You will find
+we put extra effort in building your typical CNN.
+
+But we also put a lot of effort in basically supporting all
+of PyTorch, and we allow for 'inlining' python code in an otherwise fully
+UI-oriented developing experience. So it is up to you: you can either stick
+to using PyTorch's layers, or make your own basic building blocks and use
+them as bricks in your model. We have found that a match and mix of both works best.
+
+
+## Building ivann locally
+#### Setup dependencies
+```bash
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
+#### Produce production artifacts
 ```
 npm run build
 ```
 
-### Run your unit tests
+#### Test
 ```
 npm run test:unit
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
