@@ -13,6 +13,6 @@ export default class NLLLoss {
   }
 
   public initCode(params: string[]): string {
-    return 'NLLLoss()';
+    return 'nn.NLLLoss()';
   }
 }
