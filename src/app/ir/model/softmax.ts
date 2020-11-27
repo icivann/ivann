@@ -3,8 +3,8 @@ import { nodeName } from '@/app/ir/irCommon';
 
 export default class Softmax {
   constructor(
-  public readonly name: string,
-  public readonly dim: [bigint],
+    public readonly name: string,
+    public readonly dim: [bigint],
   ) {
   }
 
@@ -16,6 +16,6 @@ export default class Softmax {
   }
 
   public initCode(): string {
-    return `Softmax(dim=, ${this.dim})`;
+    return `Softmax(dim=${this.dim})`;
   }
 }

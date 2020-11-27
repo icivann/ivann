@@ -6,6 +6,7 @@ import InModel from '@/app/ir/InModel';
 import OutModel from '@/app/ir/OutModel';
 import Graph from '@/app/ir/Graph';
 import Concat from '@/app/ir/Concat';
+import Flatten from '@/app/ir/model/flatten';
 import Custom from '@/app/ir/Custom';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
@@ -73,7 +74,9 @@ function generateModelGraphCode(
     code.push(`${getBranchVar(incomingBranch)} = ${nodeName}`);
   } else if (node.mlNode instanceof OutModel) {
     outputs.add(getBranchVar(incomingBranch));
-  } else if (node.mlNode instanceof Concat || node.mlNode instanceof Custom) {
+  } else if (node.mlNode instanceof Concat
+    || node.mlNode instanceof Flatten
+    || node.mlNode instanceof Custom) {
     // TODO: test this
     const readyConnections: number[] = branchesMap.get(node) ?? [];
     if (readyConnections.length !== node.inputInterfaces.size - 1) {
