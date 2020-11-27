@@ -15,7 +15,8 @@ export default class Bilinear extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+    this.addInputInterface('Input1');
+    this.addInputInterface('Input2');
     this.addOutputInterface('Output');
     this.addOption(BilinearOptions.In1Features, TypeOptions.IntOption, 0);
     this.addOption(BilinearOptions.In2Features, TypeOptions.IntOption, 0);
