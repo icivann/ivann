@@ -23,6 +23,7 @@ import ToTensor from './data/ToTensor';
 import Grayscale from './data/Grayscale';
 import LoadCsv from './data/LoadCsv';
 import LoadImages from './data/LoadImages';
+import Data from './overview/data/Data';
 
 export type MlNode = ModelNode | OverviewNode | DataNode
 // MODEL NODES
@@ -37,7 +38,7 @@ export type Operations = Concat
 export type ModelNode = ModelLayerNode | InModel | OutModel | Custom | Operations
 
 // OVERVIEW NODES
-export type OverviewNode = OverviewCallableNode | OptimizerNode | LossNode | Model
+export type OverviewNode = OverviewCallableNode | OptimizerNode | LossNode | Model | Data
 // callables have initCode and a callCode methods
 export type OverviewCallableNode = TrainNode | OverviewCustom
 

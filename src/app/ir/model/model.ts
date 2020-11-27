@@ -12,8 +12,8 @@ class Model {
     );
   }
 
-  public initCode(params: string[]): string {
-    return `${this.name}()`;
+  public initCode(params: string[]): string[] {
+    return [`${this.name}()`];
   }
 }
 

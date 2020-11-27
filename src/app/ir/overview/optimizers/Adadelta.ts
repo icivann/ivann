@@ -21,11 +21,11 @@ export default class Adadelta {
     );
   }
 
-  public initCode(params: string[]): string {
-    return `torch.optim.Adadelta(${params[0]}.parameters(), lr=${this.lr}, rho=${this.rho}, eps=${this.eps}, weight_decay=${this.weight_decay})`;
+  public initCode(params: string[]): string[] {
+    return [`torch.optim.Adadelta(${params[0]}.parameters(), lr=${this.lr}, rho=${this.rho}, eps=${this.eps}, weight_decay=${this.weight_decay})`];
   }
 
-  public callCode(params: string[], name: string): string {
-    return `${name}(${params.join(', ')})`;
+  public callCode(params: string[], name: string): string[] {
+    return [`${name}(${params.join(', ')})`];
   }
 }

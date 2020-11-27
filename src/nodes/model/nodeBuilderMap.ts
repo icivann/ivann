@@ -28,7 +28,7 @@ import OutData from '@/app/ir/data/OutData';
 import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import Model from '@/app/ir/model/model';
-import Data from '@/app/ir/data/Data';
+import Data from '@/app/ir/overview/data/Data';
 import LoadCsv from '@/app/ir/data/LoadCsv';
 import LoadImages from '@/app/ir/data/LoadImages';
 import NLLLoss from '@/app/ir/overview/loss/nllloss';
