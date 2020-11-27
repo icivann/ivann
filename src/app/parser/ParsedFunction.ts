@@ -26,6 +26,10 @@ class ParsedFunction {
 
     return this.name === other.name && this.body === other.body && this.filename === other.filename;
   }
+
+  public containsReturn(): boolean {
+    return this.body.includes('return');
+  }
 }
 
 export default ParsedFunction;

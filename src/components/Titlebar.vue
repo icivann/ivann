@@ -5,10 +5,10 @@
       <span class="text">IVANN</span>
     </div>
     <div class="buttons">
-      <a class="icon-button" href="https://github.com/icivann/ivann" target="_blank">
+      <a class="icon-button" href="https://github.com/icivann/ivann" target="_blank" title="GitHub">
         <i class="titlebar-icon fab fa-github fa-lg mx-2"/>
       </a>
-      <span class="icon-button" @click="codegen">
+      <span class="icon-button" @click="codegen" title="Generate Code">
         <i class="titlebar-icon fas fa-code fa-lg mx-2"/>
       </span>
       <input
@@ -17,13 +17,13 @@
         style="display: none"
         @change="load"
       >
-      <span class="icon-button" @click="uploadFile">
+      <span class="icon-button" @click="uploadFile" title="Load Project">
         <i class="titlebar-icon fas fa-folder-open fa-lg mx-2"/>
       </span>
-      <span class="icon-button" @click="save">
+      <span class="icon-button" @click="save" title="Save Project">
         <i class="titlebar-icon fas fa-save fa-lg mx-2"/>
       </span>
-      <span class="icon-button" @click="newProject">
+      <span class="icon-button" @click="newProject" title="New Project">
         <i class="titlebar-icon fas fa-file fa-lg mx-2"/>
       </span>
     </div>
@@ -106,9 +106,11 @@ export default class Titlebar extends Vue {
       this.loadFiles(parsed.files);
 
       // Clear except `cookie:accepted`
-      const cookieAccepted = localStorage.get('cookie:accepted');
+      const cookieAccepted = localStorage.getItem('cookie:accepted');
       localStorage.clear();
-      localStorage.setItem('cookie:accepted', cookieAccepted);
+      if (cookieAccepted) {
+        localStorage.setItem('cookie:accepted', cookieAccepted);
+      }
 
       // Save new project to Local Storage
       const { saveWithNames } = this;
@@ -165,9 +167,11 @@ export default class Titlebar extends Vue {
       + 'All unsaved progress will be lost.')) {
       this.resetState();
       // Clear except `cookie:accepted`
-      const cookieAccepted = localStorage.get('cookie:accepted');
+      const cookieAccepted = localStorage.getItem('cookie:accepted');
       localStorage.clear();
-      localStorage.setItem('cookie:accepted', cookieAccepted);
+      if (cookieAccepted) {
+        localStorage.setItem('cookie:accepted', cookieAccepted);
+      }
 
       localStorage.setItem('unsaved-project', JSON.stringify(this.saveWithNames));
       localStorage.setItem('unsaved-editor-Overview', JSON.stringify(saveEditor(this.editorModels.overviewEditor)));

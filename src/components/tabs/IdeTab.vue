@@ -34,6 +34,8 @@ export default class IdeTab extends Vue {
   @Prop({ required: true }) readonly filename!: string;
 
   @Getter('file') file!: (filename: string) => ParsedFile;
+  @Getter('usedNodes') usedNodes!:
+    (diff: FuncDiff) => { name: string; deleted: string[]; changed: string[] }[];
   @Mutation('setFile') setFile!: (file: ParsedFile) => void;
   @Mutation('closeFile') closeFile!: (filename: string) => void;
   @Mutation('leaveCodeVault') leaveCodeVault!: () => void;
@@ -66,7 +68,22 @@ export default class IdeTab extends Vue {
 
         // Compare old file and new file, finding differences
         const diff: FuncDiff = funcsDiff(oldFuncs, newFuncs);
-        // TODO: FE-103 Warning depending on diff
+
+        const used = this.usedNodes(diff);
+
+        // Warn user of effect of edit if causes change to editors
+        if (diff.deleted.length > 0 || diff.changed.length > 0) {
+          let warning = 'Are you sure you want to edit this file? All unsaved changes will be lost.';
+          if (used.length > 0) warning = warning.concat(`\n\nWe found ${used.length} editors using this file's functions:`);
+          for (const use of used) {
+            warning = warning.concat(`\nIn editor "${use.name}"`);
+            if (use.deleted.length > 0) warning = warning.concat(` - [${use.deleted}] will be deleted`);
+            if (use.changed.length > 0) warning = warning.concat(` - [${use.changed}] will be modified`);
+          }
+
+          // STOP if user cancels
+          if (!window.confirm(warning)) return;
+        }
 
         // Run through editors using function that have been changed and update corresponding nodes
         this.editNodes(diff);

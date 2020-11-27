@@ -31,20 +31,13 @@
         />
       </ButtonGrid>
     </ExpandablePanel>
-    <ExpandablePanel
-      :name="overviewCategories.Train"
-      v-show="shouldRender('Train Classifier')"
-    >
+    <ExpandablePanel v-for="(category) in renderedNodes" :key="category.category"
+                     :name="category.category" v-show="category.nodes.length > 0">
       <ButtonGrid>
-        <AddNodeButton :node="overviewNodes.TrainClassifier" name="Train Classifier"/>
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel
-      :name="overviewCategories.Optimizer"
-      v-show="shouldRender(overviewNodes.Adadelta)"
-    >
-      <ButtonGrid>
-        <AddNodeButton :node="overviewNodes.Adadelta" :name="overviewNodes.Adadelta"/>
+        <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
+                       :node="node.name"
+                       :name="node.name"
+        />
       </ButtonGrid>
     </ExpandablePanel>
   </div>
@@ -59,6 +52,7 @@ import { OverviewCategories, OverviewNodes } from '@/nodes/overview/Types';
 import SearchBar from '@/SearchBar.vue';
 import { Getter } from 'vuex-class';
 import { EditorModel } from '@/store/editors/types';
+import EditorManager from '@/EditorManager';
 
 @Component({
   components: {
@@ -71,6 +65,7 @@ import { EditorModel } from '@/store/editors/types';
 export default class ComponentsTab extends Vue {
   private readonly overviewNodes = OverviewNodes;
   private readonly overviewCategories = OverviewCategories;
+  private nodeList = EditorManager.getInstance().overviewCanvas.nodeList;
   private searchString = '';
   @Getter('modelEditors') modelEditors!: EditorModel[];
   @Getter('dataEditors') dataEditors!: EditorModel[];
@@ -87,6 +82,13 @@ export default class ComponentsTab extends Vue {
   private get renderedDataEditors() {
     return this.dataEditors
       .filter((editor) => this.shouldRender(editor.name));
+  }
+
+  private get renderedNodes() {
+    return this.nodeList.map((section) => ({
+      category: section.category,
+      nodes: section.nodes.filter((node) => this.shouldRender(node.name)),
+    }));
   }
 
   private shouldRender(button: string) {

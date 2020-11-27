@@ -1,10 +1,11 @@
 import AbstractCanvas from '@/components/canvas/AbstractCanvas';
 import { DataCategories, DataNodes } from '@/nodes/data/Types';
 
-import InData from '@/nodes/data/InData';
 import OutData from '@/nodes/data/OutData';
 import ToTensor from '@/nodes/data/ToTensor';
 import Grayscale from '@/nodes/data/Grayscale';
+import LoadCsv from '@/nodes/data/LoadCsv';
+import LoadImages from '@/nodes/data/LoadImages';
 import { Editor } from '@baklavajs/core';
 
 export default class DataCanvas extends AbstractCanvas {
@@ -22,11 +23,23 @@ export default class DataCanvas extends AbstractCanvas {
         },
       ],
     },
+    {
+      category: DataCategories.Loading,
+      nodes: [
+        {
+          name: DataNodes.LoadCsv,
+          node: LoadCsv,
+        },
+        {
+          name: DataNodes.LoadImages,
+          node: LoadImages,
+        },
+      ],
+    },
   ];
 
   public registerNodes(editor: Editor) {
     super.registerNodes(editor);
-    editor.registerNodeType(DataNodes.InData, InData);
     editor.registerNodeType(DataNodes.OutData, OutData);
   }
 }

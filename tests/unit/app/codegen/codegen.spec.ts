@@ -12,7 +12,7 @@ const conv2dDef = '{"nodes":[{"type":"I/O","id":"node_16039892032880","name":"In
 const conv2dDefGenerated = 'nn.Conv2d(in_channels=0, out_channels=0, kernel_size=(0,0), stride=(1,1), padding=(0,0), dilation=(1,1), groups=1, bias=1, padding_mode=\'zeros\')';
 const maxpool2dDefGenerated = 'nn.MaxPool2d(kernel_size=(0,0), stride=(0,0), padding=(0,0), dilation=(1,1), return_indices=null, ceil_mode=null)';
 
-describe('codegen', () => {
+describe('model codegen', () => {
   it('renders props.msg when passed', () => {
     const iState = JSON.parse('{"nodes":[{"type":"InModel","id":"node_16051304291465","name":"input","options":[],"state":{},"interfaces":[["Output",{"id":"ni_16051304291466","value":null}]],"position":{"x":31,"y":162},"width":200,"twoColumn":false},{"type":"Conv2d","id":"node_16051304343277","name":"Conv2d","options":[["In channels",0],["Out channels",0],["Kernel size",[0,0]],["Stride",[1,1]],["Padding",[0,0]],["Dilation",[1,1]],["Groups",1],["Bias",1],["Padding mode","zeros"]],"state":{},"interfaces":[["Input",{"id":"ni_16051304343278","value":null}],["Output",{"id":"ni_16051304343279","value":null}]],"position":{"x":245,"y":150},"width":200,"twoColumn":false},{"type":"OutModel","id":"node_160513044748219","name":"output","options":[],"state":{},"interfaces":[["Input",{"id":"ni_160513044748320","value":null}]],"position":{"x":704,"y":147},"width":200,"twoColumn":false},{"type":"MaxPool2d","id":"node_160513148090922","name":"MaxPool2d","options":[["Kernel size",[0,0]],["Stride",[0,0]],["Padding",[0,0]],["Dilation",[1,1]],["Return indices",null],["Ceil mode",null]],"state":{},"interfaces":[["Input",{"id":"ni_160513148090923","value":null}],["Output",{"id":"ni_160513148090924","value":null}]],"position":{"x":454,"y":163},"width":200,"twoColumn":false}],"connections":[{"id":"160513123339511","from":"ni_16051304291466","to":"ni_16051304343278"},{"id":"160513148489227","from":"ni_16051304343279","to":"ni_160513148090923"},{"id":"160513148671330","from":"ni_160513148090924","to":"ni_160513044748320"}],"panning":{"x":0,"y":0},"scaling":1}');
     const graph = istateToGraph(iState);
@@ -24,6 +24,7 @@ describe('codegen', () => {
 class Model(nn.Module):
 
   def __init__(self):
+    super(Model, self).__init__()
     self.conv2d_1 = ${conv2dDefGenerated}
     self.maxpool2d_1 = ${maxpool2dDefGenerated}
 
@@ -48,6 +49,7 @@ class Model(nn.Module):
 class Model(nn.Module):
 
   def __init__(self):
+    super(Model, self).__init__()
     self.conv2dname_1 = ${conv2dDefGenerated}
     self.maxpool2d_1 = ${maxpool2dDefGenerated}
 
@@ -72,6 +74,7 @@ class Model(nn.Module):
 class Model(nn.Module):
 
   def __init__(self):
+    super(Model, self).__init__()
     self.conv2d_1 = ${conv2dDefGenerated}
     self.maxpool2d_1 = ${maxpool2dDefGenerated}
 
@@ -97,6 +100,7 @@ class Model(nn.Module):
 class Model(nn.Module):
 
   def __init__(self):
+    super(Model, self).__init__()
     self.conv2d_1 = ${conv2dDefGenerated}
     self.conv2d_2 = ${conv2dDefGenerated}
     self.conv2d_3 = ${conv2dDefGenerated}
@@ -125,6 +129,7 @@ class Model(nn.Module):
 class Model(nn.Module):
 
   def __init__(self):
+    super(Model, self).__init__()
     self.conv2d_2 = ${conv2dDefGenerated}
     self.conv2d_3 = ${conv2dDefGenerated}
     self.maxpool2d_1 = ${maxpool2dDefGenerated}
@@ -159,6 +164,7 @@ class Model(nn.Module):
 class Model(nn.Module):
 
   def __init__(self):
+    super(Model, self).__init__()
     self.conv2d_1 = ${conv2dDefGenerated}
     self.maxpool2d_1 = ${maxpool2dDefGenerated}
 
@@ -171,107 +177,4 @@ class Model(nn.Module):
 
     expect(actual).toBe(expected);
   });
-
-//  TODO: we changed the way we do custom nodes so the tests need to be updated
-//
-//   it('generates code for custom nodes with a two parameters', () => {
-//     const iState = JSON.parse(
-//  TODO: add graph json
-//
-//     );
-//     const graph = istateToGraph(iState);
-//     // TODO: create the graph to test code generation
-//     let actual = generateCode(graph);
-//     actual = removeBlankLines(actual);
-//
-//     let expected = `
-// import torch
-// import torch.nn as nn
-// import torch.nn.functional as F
-//
-// def customFunc(arg1):
-//   pass
-//
-// class Model(nn.Module):
-//
-//   def __init__(self):
-//     self.conv2d_1 = ${conv2dDefGenerated}
-//
-//   def forward(self, input_1):
-//     x = input_1
-//     x = self.conv2d_1(x)
-//     x_1 = customFunc(x)
-//     return x_1`.trim();
-//     expected = removeBlankLines(expected);
-//
-//     expect(actual).toBe(expected);
-//   });
-//
-//   it('generates code for custom nodes with a two parameters', () => {
-//     const iState = JSON.parse(
-//  TODO: add graph json
-//
-//     );
-//     const graph = istateToGraph(iState);
-//     // TODO: create the graph to test code generation
-//     let actual = generateCode(graph);
-//     actual = removeBlankLines(actual);
-//
-//     let expected = `
-// import torch
-// import torch.nn as nn
-// import torch.nn.functional as F
-//
-// def customFunc(arg1):
-//   pass
-//
-// class Model(nn.Module):
-//
-//   def __init__(self):
-//     self.conv2d_1 = nn.Conv2d(16, 32, 2,2)
-//
-//   def forward(self, input_1):
-//     x = input_1
-//     x = self.conv2d_1(x)
-//     x_1 = customFunc(x)
-//     return x_1`.trim();
-//     expected = removeBlankLines(expected);
-//
-//     expect(actual).toBe(expected);
-//   });
-//
-//   it('generates code for custom nodes with a two parameters', () => {
-//     const iState = JSON.parse(
-//  TODO: add graph json
-//
-//     );
-//     const graph = istateToGraph(iState);
-//     // TODO: create the graph to test code generation
-//     let actual = generateCode(graph);
-//     actual = removeBlankLines(actual);
-//
-//     let expected = `
-// import torch
-// import torch.nn as nn
-// import torch.nn.functional as F
-//
-// def customFunc(arg1, arg2):
-//   pass
-//
-// class Model(nn.Module):
-//
-//   def __init__(self):
-//     self.conv2d_1 = nn.Conv2d(16, 32, 2,2)
-//     self.conv2d_2 = nn.Conv2d(16, 32, 2,2)
-//
-//   def forward(self, input_1):
-//     x = input_1
-//     x_1 = self.conv2d_1(x)
-//     x_2 = self.conv2d_2(x)
-//     x_3 = customFunc(x_1, x_2)
-//     return x_3`.trim();
-//     expected = removeBlankLines(expected);
-//
-//     expect(actual).toBe(expected);
-//   });
 });
