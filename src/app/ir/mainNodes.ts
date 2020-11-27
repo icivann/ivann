@@ -37,7 +37,7 @@ export type Operations = Concat
 export type ModelNode = ModelLayerNode | InModel | OutModel | Custom | Operations
 
 // OVERVIEW NODES
-export type OverviewNode = OverviewCallableNode | OptimizerNode | LossNode | OverviewCustom
+export type OverviewNode = OverviewCallableNode | OptimizerNode | LossNode | Model
 // callables have initCode and a callCode methods
 export type OverviewCallableNode = TrainNode | OverviewCustom
 

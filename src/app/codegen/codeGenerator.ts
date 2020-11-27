@@ -250,27 +250,11 @@ function generateOverviewGraphCode(
 
 function generateTrainingPipeline(node: GraphNode, graph: Graph): string[] {
   // traverse each incoming connection backwards and link up
-  const trainNode = node.mlNode as TrainClassifier;
-
-  // const incomingNodes = graph.prevNodesFrom(node);
-  const optimizer = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-    instanceof Adadelta)[0].mlNode as Adadelta;
-
-  const model = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-    instanceof Model)[0].mlNode as Model;
-
   let body: string[] = [];
-
   const nodeNames = new Map<GraphNode, string>();
   const nodeTypeCounters = new Map<string, number>();
   const [nodeCode, nodeName] = generateOverviewGraphCode(node, graph, nodeNames, nodeTypeCounters);
   body = body.concat(nodeCode);
-  // const modelName = `${model.name}_model`;
-  // body.push(`${modelName} = ${model.name}().to(device)`);
-  // body.push(`optimizer = ${optimizer.initCode(`${modelName}.parameters()`)}`);
-  // (model, train_loader, test_loader, optimizer, device, epoch
-  // body.push(trainNode.initCode([modelName, 'None', 'None', 'optimizer', device,
-  //   trainNode.Epochs.toString()]));
   return body;
 }
 
