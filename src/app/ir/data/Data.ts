@@ -28,6 +28,11 @@ class Data {
       options.get(DataOptions.BatchSize),
     );
   }
+
+  public initCode(params: string[]): string {
+    // TOOD: needs data loader and input params to constructor of dataset
+    return `${this.name}()`;
+  }
 }
 
 export default Data;
