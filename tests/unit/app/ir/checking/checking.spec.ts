@@ -4,6 +4,7 @@ import Graph from '@/app/ir/Graph';
 import IrError from '@/app/ir/checking/irError';
 import Conv2d from '@/app/ir/model/conv2d';
 import Conv1d from '@/app/ir/model/conv1d';
+import Linear from '@/app/ir/model/linear';
 
 function expectError(graph: Graph, should: (err: IrError) => void) {
   const errors = check(graph);
@@ -40,6 +41,20 @@ describe('type checking', () => {
       expect(err.offenders.length).toBe(2);
       expect(err.offenders).toContain(conv1d);
       expect(err.offenders).toContain(conv2d);
+    });
+  });
+
+  it('bad linear layers\' features report errors', () => {
+    const graph = istateToGraph(
+      JSON.parse('{"nodes":[{"type":"Linear","id":"node_16064076698330","name":"Linear","options":[["In features",2],["Out features",0],["Bias",1]],"state":{},"interfaces":[["Input",{"id":"ni_16064076698331","value":null}],["Output",{"id":"ni_16064076698332","value":null}]],"position":{"x":271,"y":93},"width":200,"twoColumn":false},{"type":"Linear","id":"node_16064076710283","name":"Linear","options":[["In features",4],["Out features",0],["Bias",1]],"state":{},"interfaces":[["Input",{"id":"ni_16064076710284","value":null}],["Output",{"id":"ni_16064076710285","value":null}]],"position":{"x":551,"y":88},"width":200,"twoColumn":false},{"type":"InModel","id":"node_16064077189139","name":"i","options":[],"state":{},"interfaces":[["Output",{"id":"ni_160640771891310","value":null}]],"position":{"x":30,"y":221},"width":200,"twoColumn":false},{"type":"OutModel","id":"node_160640772095011","name":"o","options":[],"state":{},"interfaces":[["Input",{"id":"ni_160640772095012","value":null}]],"position":{"x":803,"y":153},"width":200,"twoColumn":false}],"connections":[{"id":"160640772450116","from":"ni_160640771891310","to":"ni_16064076698331"},{"id":"160640772980719","from":"ni_16064076698332","to":"ni_16064076710284"},{"id":"160640773190522","from":"ni_16064076710285","to":"ni_160640772095012"}],"panning":{"x":0,"y":0},"scaling":1}'),
+    );
+    const linearNodes = graph.nodesAsArray.filter((n) => n.mlNode instanceof Linear);
+    const linear1 = linearNodes[0];
+    const linear2 = linearNodes[1];
+    expectError(graph, (err) => {
+      expect(err.offenders.length).toBe(2);
+      expect(err.offenders).toContain(linear1);
+      expect(err.offenders).toContain(linear2);
     });
   });
 });
