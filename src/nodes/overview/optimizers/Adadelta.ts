@@ -22,7 +22,7 @@ export default class Adadelta extends Node {
     this.addOption(AdadeltaOptions.eps, TypeOptions.SliderOption, 1e-06);
     this.addOption(AdadeltaOptions.weightDecay, TypeOptions.SliderOption, 0);
 
-    // this.addInputInterface(AdadeltaOptions.Params);
+    this.addInputInterface('model');
     this.addOutputInterface('output');
   }
 
