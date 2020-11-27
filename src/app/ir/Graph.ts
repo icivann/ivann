@@ -72,6 +72,17 @@ export default class Graph {
     return this.nodesPreviousOfNode.get(source.uniqueId.id)!;
   }
 
+  prevNodeFrom(source: GraphNode, iName: string): GraphNode | undefined {
+    const prev = source.inputInterfaces.get(iName);
+    const prevs = prev === undefined
+      ? undefined
+      : this.outToInConnections.get(prev.id)?.map((c) => this.nodesByOutputInterface.get(c.id)!
+      );
+    return prevs === undefined
+      ? undefined
+      : prevs![0];
+  }
+
   nextNodeFrom(source: GraphNode, iName: string): GraphNode[] | undefined {
     const next = source.outputInterfaces.get(iName);
     return next === undefined
