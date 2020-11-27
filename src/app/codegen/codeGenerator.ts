@@ -238,11 +238,11 @@ function generateOverviewGraphCode(
     code = code.concat(prevCode);
   });
 
+  const isNewNode = !nodeNames.has(node);
   const name = getNodeName(node, nodeNames, nodeTypeCounters);
-
   if (isNodeTrainer(node)) {
     code.push(`${(node.mlNode as OverviewCallableNode).callCode(params)}`);
-  } else if ((node.mlNode as OverviewNode).initCode !== undefined) {
+  } else if (isNewNode && (node.mlNode as OverviewNode).initCode !== undefined) {
     code.push(`${name} = ${(node.mlNode as OverviewNode).initCode(params)}`);
   }
   return [code, name];
