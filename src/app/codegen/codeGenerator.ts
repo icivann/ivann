@@ -178,7 +178,7 @@ function generateModel(graph: Graph, name: string): string {
       nodeDefinitions.push(`self.${getNodeName(n, nodeNames, nodeTypeCounters)} = nn.${(n.mlNode as ModelLayerNode).initCode()}`);
     }
   });
-  const init = [`${indent}def __init__(self):`].concat(nodeDefinitions);
+  const init = [`${indent}def __init__(self):`, `super(${name}, self).__init__()`].concat(nodeDefinitions);
   forward.push(`return ${[...outputs].join(', ')}`);
   const forwardMethod = forward.join(`\n${indent}${indent}`);
   const initMethod = init.join(`\n${indent}${indent}`);
