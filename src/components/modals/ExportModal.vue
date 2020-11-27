@@ -1,6 +1,8 @@
 <template>
   <div>
     Export the selected elements
+    <CheckboxField :checked="overviewSelected" label="Overview"
+                   @value-change="overviewSelected = $event"/>
     <CheckboxList label="Models" :children="modelEditors.map((child) => child.name)"
                   v-show="modelEditors.length > 0" v-model="selectedModels"/>
     <CheckboxList label="Datasets" :children="dataEditors.map((child) => child.name)"
@@ -28,9 +30,16 @@ import Graph from '@/app/ir/Graph';
 import Modal from '@/components/modals/Modal.vue';
 import { Getter } from 'vuex-class';
 import { EditorModel, EditorModels } from '@/store/editors/types';
+import CheckboxValue from '@/baklava/CheckboxValue';
+import CheckboxField from '@/components/CheckboxField.vue';
 
 @Component({
-  components: { CheckboxList, UIButton, Modal },
+  components: {
+    CheckboxField,
+    CheckboxList,
+    UIButton,
+    Modal,
+  },
   computed: mapGetters(['modelEditors', 'dataEditors', 'files']),
 })
 export default class ExportModal extends Vue {
@@ -41,6 +50,7 @@ export default class ExportModal extends Vue {
   private selectedModels: Array<string> = [];
   private selectedData: Array<string> = [];
   private selectedFiles: Array<string> = [];
+  private overviewSelected: CheckboxValue = CheckboxValue.CHECKED;
 
   private closeModal() {
     this.$parent.$emit('input', false);
@@ -50,6 +60,7 @@ export default class ExportModal extends Vue {
     console.log(`Models to be exported: ${this.selectedModels}`);
     console.log(`Data to be exported: ${this.selectedData}`);
     console.log(`Files to be exported: ${this.selectedFiles}`);
+    console.log(`Should export Overview?: ${this.overviewSelected === CheckboxValue.CHECKED}`);
 
     // TODO: Should actually use selected stuff
     let generatedCode = '';
