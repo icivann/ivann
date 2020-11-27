@@ -21,6 +21,19 @@ export enum BuiltinRegularizer {
   None
 }
 
+export enum Reduction{
+  None ='none', Mean = 'mean', Sum = 'sum'
+}
+export function getReduction(str: string): Reduction {
+  return Reduction[str as keyof typeof Reduction];
+}
+export enum Mode{
+  None ='none', Mean = 'mean', Sum = 'sum'
+}
+export function getMode(str: string): Mode {
+  return Mode[str as keyof typeof Mode];
+}
+
 export type ActivationF = BuiltinActivationF
 
 export enum Activation {
