@@ -106,6 +106,13 @@ import InstanceNorm3d from '@/nodes/model/Instancenorm3d';
 import LocalResponseNorm from '@/nodes/model/Localresponsenorm';
 import TransformerEncoderLayer from '@/nodes/model/Transformerencoderlayer';
 import TransformerDecoderLayer from '@/nodes/model/Transformerdecoderlayer';
+import RNNBase from '@/nodes/model/Rnnbase';
+import RNN from '@/nodes/model/Rnn';
+import LSTM from '@/nodes/model/Lstm';
+import GRU from '@/nodes/model/Gru';
+import RNNCell from '@/nodes/model/Rnncell';
+import LSTMCell from '@/nodes/model/Lstmcell';
+import GRUCell from '@/nodes/model/Grucell';
 
 export default class ModelCanvas extends AbstractCanvas {
   public nodeList = [
@@ -531,6 +538,47 @@ export default class ModelCanvas extends AbstractCanvas {
           name: ModelNodes.LocalResponseNorm,
           node: LocalResponseNorm,
         },
+      ],
+    },
+    {
+      category: ModelCategories.RecurrentLayers,
+      nodes: [
+
+        {
+          name: ModelNodes.RNNBase,
+          node: RNNBase,
+        },
+
+        {
+          name: ModelNodes.RNN,
+          node: RNN,
+        },
+
+        {
+          name: ModelNodes.LSTM,
+          node: LSTM,
+        },
+
+        {
+          name: ModelNodes.GRU,
+          node: GRU,
+        },
+
+        {
+          name: ModelNodes.RNNCell,
+          node: RNNCell,
+        },
+
+        {
+          name: ModelNodes.LSTMCell,
+          node: LSTMCell,
+        },
+
+        {
+          name: ModelNodes.GRUCell,
+          node: GRUCell,
+        },
+
       ],
     },
     {

@@ -1,4 +1,5 @@
 export enum ModelCategories {
+  RecurrentLayers = 'Recurrent Layers',
   Normalization = 'Normalisation',
   DistanceFunctions = 'Distance Functions',
   LossFunctions = 'Loss Functions',
@@ -128,4 +129,12 @@ export enum ModelNodes {
 
   TransformerEncoderLayer = 'TransformerEncoderLayer',
   TransformerDecoderLayer = 'TransformerDecoderLayer',
+
+  RNNBase = 'RNNBase',
+  RNN = 'RNN',
+  LSTM = 'LSTM',
+  GRU = 'GRU',
+  RNNCell = 'RNNCell',
+  LSTMCell = 'LSTMCell',
+  GRUCell = 'GRUCell',
 }

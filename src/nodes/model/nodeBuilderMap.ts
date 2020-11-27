@@ -115,7 +115,13 @@ import TransformerEncoderLayer from '@/app/ir/model/transformerencoderlayer';
 import TransformerDecoderLayer from '@/app/ir/model/transformerdecoderlayer';
 import LoadCsv from '@/app/ir/data/LoadCsv';
 import LoadImages from '@/app/ir/data/LoadImages';
-
+import RNNBase from '@/app/ir/model/rnnbase';
+import RNN from '@/app/ir/model/rnn';
+import LSTM from '@/app/ir/model/lstm';
+import GRU from '@/app/ir/model/gru';
+import RNNCell from '@/app/ir/model/rnncell';
+import LSTMCell from '@/app/ir/model/lstmcell';
+import GRUCell from '@/app/ir/model/grucell';
 
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
@@ -243,5 +249,13 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['InstanceNorm2d', InstanceNorm2d.build],
   ['InstanceNorm3d', InstanceNorm3d.build],
   ['LocalResponseNorm', LocalResponseNorm.build],
+
+  ['RNNBase', RNNBase.build],
+  ['RNN', RNN.build],
+  ['LSTM', LSTM.build],
+  ['GRU', GRU.build],
+  ['RNNCell', RNNCell.build],
+  ['LSTMCell', LSTMCell.build],
+  ['GRUCell', GRUCell.build],
 
 ]);

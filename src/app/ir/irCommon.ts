@@ -46,6 +46,11 @@ export function getRegularizer(str: string): Regularizer {
   return BuiltinRegularizer[str as keyof typeof BuiltinRegularizer];
 }
 
+export enum Nonlinearity { Relu ='relu', Tanh = 'tanh'}
+export function getNonlinearity(str: string): Nonlinearity {
+  return Nonlinearity[str as keyof typeof Nonlinearity];
+}
+
 export function getInitializer(str: string): Initializer {
   return BuiltinInitializer[str as keyof typeof BuiltinInitializer];
 }
