@@ -22,7 +22,6 @@ import Bilinear from '@/app/ir/model/bilinear';
 import Softmin from '@/app/ir/model/softmin';
 import Softmax from '@/app/ir/model/softmax';
 
-import InData from '@/app/ir/data/InData';
 import ToTensor from '@/app/ir/data/ToTensor';
 import Grayscale from '@/app/ir/data/Grayscale';
 import OutData from '@/app/ir/data/OutData';
@@ -30,6 +29,8 @@ import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import Model from '@/app/ir/model/model';
 import Data from '@/app/ir/data/Data';
+import LoadCsv from '@/app/ir/data/LoadCsv';
+import LoadImages from '@/app/ir/data/LoadImages';
 import NLLLoss from '@/app/ir/overview/loss/nllloss';
 import OverviewCustom from '@/app/ir/overview/OverviewCustom';
 
@@ -60,12 +61,13 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['Softmin', Softmin.build],
   ['Softmax', Softmax.build],
   // Data
-  ['InData', InData.build],
   ['OutData', OutData.build],
   ['ToTensor', ToTensor.build],
   ['Grayscale', Grayscale.build],
   ['Transformer', Transformer.build],
   ['DataNode', Data.build],
+  ['LoadCsv', LoadCsv.build],
+  ['LoadImages', LoadImages.build],
   // OVERVIEW
   ['OverviewCustom', OverviewCustom.build as (r: Options) => MlNode],
   // Optimizers

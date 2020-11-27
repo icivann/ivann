@@ -18,10 +18,11 @@ import MaxPool1d from './model/maxpool1d';
 import MaxPool2d from './model/maxpool2d';
 import MaxPool3d from './model/maxpool3d';
 
-import InData from './data/InData';
 import OutData from './data/OutData';
 import ToTensor from './data/ToTensor';
 import Grayscale from './data/Grayscale';
+import LoadCsv from './data/LoadCsv';
+import LoadImages from './data/LoadImages';
 
 export type MlNode = ModelNode | OverviewNode | DataNode
 // MODEL NODES
@@ -41,9 +42,11 @@ export type OverviewNode = OverviewCallableNode | OptimizerNode | LossNode | Ove
 export type OverviewCallableNode = TrainNode | OverviewCustom
 
 // DATA NODES
-export type DataNode = InData | OutData | DataTransform
+export type DataNode = OutData | DataTransform | DataLoad
 
 export type DataTransform = ToTensor | Grayscale
+
+export type DataLoad = LoadCsv | LoadImages
 
 // TRAIN NODES
 export type OptimizerNode = Adadelta

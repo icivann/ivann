@@ -22,6 +22,10 @@ const imports = [
   'import torch.nn.functional as F',
   'from torch.utils.data import Dataset, DataLoader',
   'from torchvision import transforms',
+  'import pandas as pd',
+  'import numpy as np',
+  'import os',
+  'from PIL import Image',
 ].join('\n');
 
 function getNodeName(
