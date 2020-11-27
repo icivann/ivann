@@ -27,6 +27,7 @@ boolean_ = {
 }
 IR_map = boolean_
 
+
 def parse_options(string):
   string = re.sub('(Union\[T,( )*Tuple\[([A-Z, .]*\]\]))', 'Union', string)
 
@@ -46,9 +47,12 @@ def parse_options(string):
     default_value = rest[1] if len(rest) > 1 else None
     x_type = rest[0]
 
-    # print(name, x_type, default_value)
+
     ret[name] = (x_type, default_value)
     name = x_split[0]
+
+  if not split:
+    return ret
 
   x_split = split[-1]
   x_split = x_split.replace(" ", "")
@@ -56,7 +60,7 @@ def parse_options(string):
   default_value = rest[1] if len(rest) > 1 else None
   x_type = rest[0]
 
-  # print(name, x_type, default_value)
+
   ret[name] = (x_type, default_value)
 
   return ret
@@ -74,22 +78,41 @@ def parse(x):
   return class_name, parameter_map
 
 
-def create_baklava(class_name, option_map: dict, dimensions):
+def create_baklava(class_name, option_map: dict, dim):
   f_path = os.path.join(baklava_folder, f"{class_name.capitalize()}.ts")
   baklava_file = open(f_path, "w")
 
-  option_enums_header = f"export enum {class_name.capitalize()}Options {{"
+  option_enums_header = f"export enum {class_name}Options {{"
   option_enums_values = []
   options_add = []
   for k, v in option_map.items():
     option_name = k.capitalize()
+    option_name = ''.join(map(lambda s: s.strip().capitalize(), option_name.split('_')))
     enumValue = k.replace("_", " ").capitalize()
     option_enums_values.append(f"{option_name} = '{enumValue}'")
 
     option_type, default_value = v
+    option_type = re.sub('\[(.*?)\]', '[T]', option_type)
     option_type = type_map[option_type]
-    default_value = default_value if default_value else '//TODO: Add default value'
-    default_value = 'CheckboxValue.CHECKED' if default_value == 'True' else default_value
+
+    if default_value == 'None':
+      # todo: check here: none
+      default_value = '0'
+
+    default_value = default_value if default_value else 0
+
+    if default_value == 'True':
+      default_value = 'CheckboxValue.CHECKED'
+    elif default_value == 'False':
+      default_value = 'CheckboxValue.UNCHECKED'
+
+    elif len(dim)>0:
+      default_value_vector = '['
+      for i in range(dimensions[0] - 1):
+        default_value_vector += f'{default_value}, '
+      default_value_vector += f'{default_value}'
+      default_value_vector += ']'
+      default_value = default_value_vector
 
     option_add = f"""this.addOption({class_name}Options.{option_name}, TypeOptions.{option_type}, {default_value});"""
     options_add.append(option_add)
@@ -99,16 +122,16 @@ def create_baklava(class_name, option_map: dict, dimensions):
   option_enums = f"{option_enums_header}\n  {option_enums_values}\n}}"
   # option_enums = "\n".join(option_enums)
 
-  print("options enums\n\n", option_enums)
 
   contents = f"""import {{ Node }} from '@baklavajs/core';
-import {{ Layers, Nodes }} from '@/nodes/model/Types';
+import {{ ModelNodes }} from '@/nodes/model/Types';
 import {{ TypeOptions }} from '@/nodes/model/BaklavaDisplayTypeOptions';
+import CheckboxValue from '@/baklava/CheckboxValue';
 
 {option_enums}
 export default class {class_name} extends Node {{
-  type = Nodes.{class_name.capitalize()};
-  name = Nodes.{class_name.capitalize()};
+  type = ModelNodes.{class_name};
+  name = ModelNodes.{class_name};
 
 constructor() {{
 super();
@@ -128,37 +151,41 @@ def create_ir_node(class_name, option_map: dict, dimensions):
 
   fields = []
   build = []
-  pythonCode =[]
+  pythonCode = []
+  enum_import = 'nodeName'
 
   fields.append("public readonly name: string,")
-  build.append("options.get(nodeName),")
+  build.append("\n  options.get(nodeName),")
   for k, v in option_map.items():
-    field_name = k.lower()
+    field_name = k
+    field_name = ''.join(map(lambda s: s.strip().capitalize(), field_name.split('_')))
     option_type, default_value = v
+    option_type = re.sub('\[(.*?)\]', '[T]', option_type)
     option_type = IR_map[option_type]
 
-    if option_type =="enum":
-      option_type = field_name.capitalize()
-      buildLine = f"get{field_name.capitalize()}(options.get({class_name}Options.{field_name.capitalize()}))"
+    if option_type == "enum":
+      enum_import += f', {field_name}, get{field_name}'
+      option_type = field_name
+      buildLine = f"get{field_name.capitalize()}(options.get({class_name}Options.{field_name})),"
     elif option_type == "bool":
       continue
     elif option_type == "[T]":
-      dim = dimensions[0]-1 if len(dimensions)>0 else 0
+      dim = dimensions[0] - 1 if len(dimensions) > 0 else 0
       buildLine = "["
       option_type = "["
-      for i in range (dim):
-        buildLine+= f"  options.get({class_name}Options.{field_name.capitalize()})[{i}], "
-        option_type+= "bigint, "
-      buildLine+= f"options.get({class_name}Options.{field_name.capitalize()})[{dim}]], "
-      option_type+= "bigint]"
+      for i in range(dim):
+        buildLine += f"  options.get({class_name}Options.{field_name})[{i}], "
+        option_type += "bigint, "
+      buildLine += f"options.get({class_name}Options.{field_name})[{dim}]], "
+      option_type += "bigint]"
     else:
-      buildLine= f"options.get({class_name}Options.{field_name.capitalize()}),"
+      buildLine = f"options.get({class_name}Options.{field_name}),"
 
     fields.append(f"public readonly {field_name}: {option_type},")
     build.append(buildLine)
     pythonCode.append(f"{field_name}=")
 
-    if len(dimensions)>0 and dimensions[0] > 1:
+    if len(dimensions) > 0 and dimensions[0] > 1:
       pythonCode.append(f"(${{this.{field_name}}})")
     elif option_type == "str":
       pythonCode.append(f"'${{this.{field_name}}}'")
@@ -169,8 +196,8 @@ def create_ir_node(class_name, option_map: dict, dimensions):
   build = "\n  ".join(build)
   pythonCode = ", ".join(pythonCode)
 
-  contents = f"""import {{ {class_name}Options }} from '@/nodes/model/{class_name}Baklava';
-import {{ nodeName }} from '@/app/ir/irCommon';
+  contents = f"""import {{ {class_name}Options }} from '@/nodes/model/{class_name.capitalize()}';
+import {{ {enum_import} }} from '@/app/ir/irCommon';
 
 export default class {class_name} {{
 constructor(
@@ -194,23 +221,54 @@ static build(options: Map<string, any>): {class_name} {{
   ir_file.write(contents)
 
 
+def create_node_reg(class_name):
+
+  content = f"""
+      {{ 
+        name: ModelNodes.{class_name},
+        node: {class_name},
+      }},
+  """
+  with open("node_reg.txt", "a") as myfile:
+    myfile.write(content)
+
+def create_mode_node_type(class_name):
+
+  content = f"""
+        {class_name} = '{class_name}',"""
+  with open("node_modelNode_type.txt", "a") as myfile:
+    myfile.write(content)
+
+
+def create_mapping(class_name):
+
+  content = f"""
+    ['{class_name}', {class_name}.build],"""
+  with open("node_mapping.txt", "a") as myfile:
+    myfile.write(content)
+
 if __name__ == "__main__":
 
   f_path = os.path.join("Nodes.txt")
   documentation = open(f_path, "r")
   documentation = documentation.read()
   nodes = documentation.split("\n")
-  print(len(nodes))
 
-  for i in range (len(nodes)):
+
+  for i in range(len(nodes)):
     if nodes[i] == "":
       continue
     class_name, options_map = parse(nodes[i])
-    print(i, class_name)
 
     dimensions = re.findall(r'\d+', class_name)
     dimensions = list(map(int, dimensions))
 
-    print(dimensions)
     create_baklava(class_name, options_map, dimensions)
     create_ir_node(class_name, options_map, dimensions)
+
+    create_node_reg(class_name)
+    create_mode_node_type(class_name)
+    create_mapping(class_name)
+
+
+    print(class_name)
