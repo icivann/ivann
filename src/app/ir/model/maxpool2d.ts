@@ -26,7 +26,7 @@ export default class MaxPool2d {
   }
 
   public initCode(): string {
-    return `MaxPool2d(kernel_size=(${this.kernel_size}), stride=(${this.stride}), padding=(${this.padding}), dilation=(${this.dilation}), return_indices=${this.return_indices}, ceil_mode=${this.ceil_mode})`;
+    return `MaxPool2d(kernel_size=(${this.kernel_size}), stride=(${this.stride}), padding=(${this.padding}), dilation=(${this.dilation}), return_indices=${this.return_indices})`;
   }
 
   public callCode(params: string[], name: string): string {
