@@ -23,6 +23,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-restricted-syntax': 'off',
     'no-shadow': 'off',
+    'max-len': 'off',
   },
   overrides: [
     {
