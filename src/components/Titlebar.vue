@@ -106,7 +106,7 @@ export default class Titlebar extends Vue {
       this.loadFiles(parsed.files);
 
       // Clear except `cookie:accepted`
-      const cookieAccepted = localStorage.get('cookie:accepted');
+      const cookieAccepted = localStorage.getItem('cookie:accepted');
       localStorage.clear();
       localStorage.setItem('cookie:accepted', cookieAccepted);
 
@@ -165,7 +165,7 @@ export default class Titlebar extends Vue {
       + 'All unsaved progress will be lost.')) {
       this.resetState();
       // Clear except `cookie:accepted`
-      const cookieAccepted = localStorage.get('cookie:accepted');
+      const cookieAccepted = localStorage.getItem('cookie:accepted');
       localStorage.clear();
       localStorage.setItem('cookie:accepted', cookieAccepted);
 
