@@ -241,9 +241,9 @@ function generateOverviewGraphCode(
   const isNewNode = !nodeNames.has(node);
   const name = getNodeName(node, nodeNames, nodeTypeCounters);
   if (isNodeTrainer(node)) {
-    code.push(`${(node.mlNode as OverviewCallableNode).callCode(params)}`);
+    code = code.concat(`${(node.mlNode as OverviewCallableNode).callCode(params)}`);
   } else if (isNewNode && (node.mlNode as OverviewNode).initCode !== undefined) {
-    code.push(`${name} = ${(node.mlNode as OverviewNode).initCode(params)}`);
+    code = code.concat(`${name} = ${(node.mlNode as OverviewNode).initCode(params)}`);
   }
   return [code, name];
 }
@@ -263,10 +263,10 @@ function generateOverview(graph: Graph): string {
 
   const trainNodes = graph.nodesAsArray.filter(isNodeTrainer);
 
-  const funcs: string[] = [];
+  let funcs: string[] = [];
 
   trainNodes.forEach((node) => {
-    funcs.push((node.mlNode as OverviewCallableNode).initCode());
+    funcs = funcs.concat((node.mlNode as OverviewCallableNode).initCode());
   });
 
   // Create functions for training

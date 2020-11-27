@@ -21,8 +21,8 @@ export default class TrainClassifier {
     );
   }
 
-  public initCode(): string {
-    return `
+  public initCode(): string[] {
+    return [`
 def train_classifier(model, train_loader, test_loader, optimizer, loss, device, epoch, log_interval=${this.LogInterval}):
   def train():
     model.train()
@@ -57,10 +57,10 @@ def train_classifier(model, train_loader, test_loader, optimizer, loss, device, 
   for epoch in range(${this.Epochs}):
     train()
     test()
-`.trim();
+`.trim()];
   }
 
-  public callCode(params: string[]): string {
-    return `train_classifier(${params.join(', ')}, device="${this.Device}", epoch=${this.Epochs}, log_interval=${this.LogInterval})`;
+  public callCode(params: string[]): string[] {
+    return [`train_classifier(${params.join(', ')}, device="${this.Device}", epoch=${this.Epochs}, log_interval=${this.LogInterval})`];
   }
 }

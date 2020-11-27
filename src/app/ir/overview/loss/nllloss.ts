@@ -12,7 +12,7 @@ export default class NLLLoss {
     );
   }
 
-  public initCode(params: string[]): string {
-    return 'nn.NLLLoss()';
+  public initCode(params: string[]): string[] {
+    return ['nn.NLLLoss()'];
   }
 }
