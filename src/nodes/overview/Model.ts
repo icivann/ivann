@@ -31,8 +31,9 @@ export default class Model extends Node {
   }
 
   public updateIO(inputChange: NodeIOChange, outputChange: NodeIOChange) {
-    for (const inputAdded of inputChange.added) this.addInputInterface(inputAdded);
-    for (const inputRemoved of inputChange.removed) this.removeInterface(inputRemoved);
+    // TODO: DECIDE WHAT WE SHOULD DO WITH INPUTS
+    // for (const inputAdded of inputChange.added) this.addInputInterface(inputAdded);
+    // for (const inputRemoved of inputChange.removed) this.removeInterface(inputRemoved);
     for (const outputAdded of outputChange.added) this.addOutputInterface(outputAdded);
     for (const outputRemoved of outputChange.removed) this.removeInterface(outputRemoved);
   }
