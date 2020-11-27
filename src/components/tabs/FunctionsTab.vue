@@ -37,18 +37,18 @@
     </div>
 
     <div id="right" class="panel">
-<!--      TODO: STYLE LIKE IDE-->
       <div class="button-list">
         <div v-if="selectedFile === null" class="text-center">
           No File Selected
         </div>
-        <div
-          v-else
-          class="pre-formatted"
-          v-for="(func) of getFunctions(this.selectedFile)"
-          :key="func.name"
-          v-text="`${func.toString()}\n`"
-        />
+        <div class="code-preview" v-else>
+          <div
+            class="function-preview"
+            v-for="(func) of getFunctions(this.selectedFile)"
+            :key="func.name"
+            v-text="`${func.toString()}\n`"
+          />
+        </div>
       </div>
       <div class="confirm-button">
         <UIButton
@@ -240,7 +240,15 @@ export default class FunctionsTab extends Vue {
     margin-right: 1em;
   }
 
-  .pre-formatted {
+  .code-preview {
     white-space: pre;
+    font-size: smaller;
+    font-family: monospace;
+    font-weight: lighter;
+    background-color: var(--editor-grey);
+    padding-left: 1rem;
+    padding-top: 1rem;
+    border: 1px var(--grey) solid;
+    border-radius: 6px;
   }
 </style>
