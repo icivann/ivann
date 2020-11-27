@@ -16,13 +16,96 @@ import Maxpool3d from '@/nodes/model/Maxpool3d';
 import Dropout from '@/nodes/model/Dropout';
 import Dropout2d from '@/nodes/model/Dropout2d';
 import Dropout3d from '@/nodes/model/Dropout3d';
-import ReLU from '@/nodes/model/Relu';
 import Transformer from '@/nodes/model/Transformer';
 import Softmin from '@/nodes/model/Softmin';
 import Softmax from '@/nodes/model/Softmax';
 import Bilinear from '@/nodes/model/Bilinear';
 import Linear from '@/nodes/model/Linear';
 import { Editor } from '@baklavajs/core';
+import Embedding from '@/nodes/model/Embedding';
+import TripletMarginLoss from '@/nodes/model/Tripletmarginloss';
+import MultiMarginLoss from '@/nodes/model/Multimarginloss';
+import CosineEmbeddingLoss from '@/nodes/model/Cosineembeddingloss';
+import MultiLabelSoftMarginLoss from '@/nodes/model/Multilabelsoftmarginloss';
+import SmoothL1Loss from '@/nodes/model/Smoothl1loss';
+import MultiLabelMarginLoss from '@/nodes/model/Multilabelmarginloss';
+import HingeEmbeddingLoss from '@/nodes/model/Hingeembeddingloss';
+import MarginRankingLoss from '@/nodes/model/Marginrankingloss';
+import BCEWithLogitsLoss from '@/nodes/model/Bcewithlogitsloss';
+import BCELoss from '@/nodes/model/Bceloss';
+import KLDivLoss from '@/nodes/model/Kldivloss';
+import PoissonNLLLoss from '@/nodes/model/Poissonnllloss';
+import NLLLoss from '@/nodes/model/Nllloss';
+import CTCLoss from '@/nodes/model/Ctcloss';
+import CrossEntropyLoss from '@/nodes/model/Crossentropyloss';
+import MSELoss from '@/nodes/model/Mseloss';
+import L1Loss from '@/nodes/model/L1loss';
+import Unfold from '@/nodes/model/Unfold';
+import Fold from '@/nodes/model/Fold';
+import MaxUnpool1d from '@/nodes/model/Maxunpool1d';
+import MaxUnpool2d from '@/nodes/model/Maxunpool2d';
+import MaxUnpool3d from '@/nodes/model/Maxunpool3d';
+import AvgPool1d from '@/nodes/model/Avgpool1d';
+import AvgPool2d from '@/nodes/model/Avgpool2d';
+import AvgPool3d from '@/nodes/model/Avgpool3d';
+import FractionalMaxPool2d from '@/nodes/model/Fractionalmaxpool2d';
+import LPPool1d from '@/nodes/model/Lppool1d';
+import LPPool2d from '@/nodes/model/Lppool2d';
+import AdaptiveMaxPool1d from '@/nodes/model/Adaptivemaxpool1d';
+import AdaptiveMaxPool2d from '@/nodes/model/Adaptivemaxpool2d';
+import AdaptiveMaxPool3d from '@/nodes/model/Adaptivemaxpool3d';
+import AdaptiveAvgPool1d from '@/nodes/model/Adaptiveavgpool1d';
+import AdaptiveAvgPool3d from '@/nodes/model/Adaptiveavgpool3d';
+import AdaptiveAvgPool2d from '@/nodes/model/Adaptiveavgpool2d';
+import AlphaDropout from '@/nodes/model/Alphadropout';
+import CosineSimilarity from '@/nodes/model/Cosinesimilarity';
+import PairwiseDistance from '@/nodes/model/Pairwisedistance';
+import ReflectionPad1d from '@/nodes/model/Reflectionpad1d';
+import ReflectionPad2d from '@/nodes/model/Reflectionpad2d';
+import ReplicationPad1d from '@/nodes/model/Replicationpad1d';
+import ReplicationPad2d from '@/nodes/model/Replicationpad2d';
+import ReplicationPad3d from '@/nodes/model/Replicationpad3d';
+import ZeroPad2d from '@/nodes/model/Zeropad2d';
+import ConstantPad1d from '@/nodes/model/Constantpad1d';
+import ConstantPad2d from '@/nodes/model/Constantpad2d';
+import ConstantPad3d from '@/nodes/model/Constantpad3d';
+import ELU from '@/nodes/model/Elu';
+import Hardshrink from '@/nodes/model/Hardshrink';
+import Hardsigmoid from '@/nodes/model/Hardsigmoid';
+import Hardtanh from '@/nodes/model/Hardtanh';
+import Hardswish from '@/nodes/model/Hardswish';
+import LeakyReLU from '@/nodes/model/Leakyrelu';
+import MultiheadAttention from '@/nodes/model/Multiheadattention';
+import PReLU from '@/nodes/model/Prelu';
+import ReLU6 from '@/nodes/model/Relu6';
+import RReLU from '@/nodes/model/Rrelu';
+import SELU from '@/nodes/model/Selu';
+import CELU from '@/nodes/model/Celu';
+import GELU from '@/nodes/model/Gelu';
+import Sigmoid from '@/nodes/model/Sigmoid';
+import SiLU from '@/nodes/model/Silu';
+import Softplus from '@/nodes/model/Softplus';
+import Softshrink from '@/nodes/model/Softshrink';
+import Softsign from '@/nodes/model/Softsign';
+import Tanh from '@/nodes/model/Tanh';
+import LogSigmoid from '@/nodes/model/Logsigmoid';
+import Tanhshrink from '@/nodes/model/Tanhshrink';
+import Threshold from '@/nodes/model/Threshold';
+import ReLU from '@/nodes/model/Relu';
+import LogSoftmax from '@/nodes/model/Logsoftmax';
+import Softmax2d from '@/nodes/model/Softmax2d';
+import AdaptiveLogSoftmaxWithLoss from '@/nodes/model/Adaptivelogsoftmaxwithloss';
+import BatchNorm1d from '@/nodes/model/Batchnorm1d';
+import BatchNorm2d from '@/nodes/model/Batchnorm2d';
+import BatchNorm3d from '@/nodes/model/Batchnorm3d';
+import GroupNorm from '@/nodes/model/Groupnorm';
+import SyncBatchNorm from '@/nodes/model/Syncbatchnorm';
+import InstanceNorm1d from '@/nodes/model/Instancenorm1d';
+import InstanceNorm2d from '@/nodes/model/Instancenorm2d';
+import InstanceNorm3d from '@/nodes/model/Instancenorm3d';
+import LocalResponseNorm from '@/nodes/model/Localresponsenorm';
+import TransformerEncoderLayer from '@/nodes/model/Transformerencoderlayer';
+import TransformerDecoderLayer from '@/nodes/model/Transformerdecoderlayer';
 
 export default class ModelCanvas extends AbstractCanvas {
   public nodeList = [
@@ -53,6 +136,15 @@ export default class ModelCanvas extends AbstractCanvas {
           name: ModelNodes.ConvTranspose3d,
           node: Convtranspose3d,
         },
+        {
+          name: ModelNodes.Unfold,
+          node: Unfold,
+        },
+
+        {
+          name: ModelNodes.Fold,
+          node: Fold,
+        },
       ],
     },
     {
@@ -70,8 +162,134 @@ export default class ModelCanvas extends AbstractCanvas {
           name: ModelNodes.MaxPool3d,
           node: Maxpool3d,
         },
+        {
+          name: ModelNodes.MaxUnpool1d,
+          node: MaxUnpool1d,
+        },
+
+        {
+          name: ModelNodes.MaxUnpool2d,
+          node: MaxUnpool2d,
+        },
+
+        {
+          name: ModelNodes.MaxUnpool3d,
+          node: MaxUnpool3d,
+        },
+
+        {
+          name: ModelNodes.AvgPool1d,
+          node: AvgPool1d,
+        },
+
+        {
+          name: ModelNodes.AvgPool2d,
+          node: AvgPool2d,
+        },
+
+        {
+          name: ModelNodes.AvgPool3d,
+          node: AvgPool3d,
+        },
+
+        {
+          name: ModelNodes.FractionalMaxPool2d,
+          node: FractionalMaxPool2d,
+        },
+
+        {
+          name: ModelNodes.LPPool1d,
+          node: LPPool1d,
+        },
+
+        {
+          name: ModelNodes.LPPool2d,
+          node: LPPool2d,
+        },
+
+        {
+          name: ModelNodes.AdaptiveMaxPool1d,
+          node: AdaptiveMaxPool1d,
+        },
+
+        {
+          name: ModelNodes.AdaptiveMaxPool2d,
+          node: AdaptiveMaxPool2d,
+        },
+
+        {
+          name: ModelNodes.AdaptiveMaxPool3d,
+          node: AdaptiveMaxPool3d,
+        },
+
+        {
+          name: ModelNodes.AdaptiveAvgPool1d,
+          node: AdaptiveAvgPool1d,
+        },
+
+        {
+          name: ModelNodes.AdaptiveAvgPool2d,
+          node: AdaptiveAvgPool2d,
+        },
+
+        {
+          name: ModelNodes.AdaptiveAvgPool3d,
+          node: AdaptiveAvgPool3d,
+        },
       ],
     },
+    {
+      category: ModelCategories.Padding,
+      nodes: [
+
+        {
+          name: ModelNodes.ReflectionPad1d,
+          node: ReflectionPad1d,
+        },
+
+        {
+          name: ModelNodes.ReflectionPad2d,
+          node: ReflectionPad2d,
+        },
+
+        {
+          name: ModelNodes.ReplicationPad1d,
+          node: ReplicationPad1d,
+        },
+
+        {
+          name: ModelNodes.ReplicationPad2d,
+          node: ReplicationPad2d,
+        },
+
+        {
+          name: ModelNodes.ReplicationPad3d,
+          node: ReplicationPad3d,
+        },
+
+        {
+          name: ModelNodes.ZeroPad2d,
+          node: ZeroPad2d,
+        },
+
+        {
+          name: ModelNodes.ConstantPad1d,
+          node: ConstantPad1d,
+        },
+
+        {
+          name: ModelNodes.ConstantPad2d,
+          node: ConstantPad2d,
+        },
+
+        {
+          name: ModelNodes.ConstantPad3d,
+          node: ConstantPad3d,
+        },
+
+      ],
+    },
+
     {
       category: ModelCategories.Dropout,
       nodes: [
@@ -87,15 +305,131 @@ export default class ModelCanvas extends AbstractCanvas {
           name: ModelNodes.Dropout3d,
           node: Dropout3d,
         },
+        {
+          name: ModelNodes.AlphaDropout,
+          node: AlphaDropout,
+        },
       ],
     },
     {
       category: ModelCategories.Activation,
       nodes: [
+
+        {
+          name: ModelNodes.ELU,
+          node: ELU,
+        },
+
+        {
+          name: ModelNodes.Hardshrink,
+          node: Hardshrink,
+        },
+
+        {
+          name: ModelNodes.Hardsigmoid,
+          node: Hardsigmoid,
+        },
+
+        {
+          name: ModelNodes.Hardtanh,
+          node: Hardtanh,
+        },
+
+        {
+          name: ModelNodes.Hardswish,
+          node: Hardswish,
+        },
+
+        {
+          name: ModelNodes.LeakyReLU,
+          node: LeakyReLU,
+        },
+
+        {
+          name: ModelNodes.MultiheadAttention,
+          node: MultiheadAttention,
+        },
+
+        {
+          name: ModelNodes.PReLU,
+          node: PReLU,
+        },
+
         {
           name: ModelNodes.Relu,
           node: ReLU,
         },
+
+        {
+          name: ModelNodes.ReLU6,
+          node: ReLU6,
+        },
+
+        {
+          name: ModelNodes.RReLU,
+          node: RReLU,
+        },
+
+        {
+          name: ModelNodes.SELU,
+          node: SELU,
+        },
+
+        {
+          name: ModelNodes.CELU,
+          node: CELU,
+        },
+
+        {
+          name: ModelNodes.GELU,
+          node: GELU,
+        },
+
+        {
+          name: ModelNodes.Sigmoid,
+          node: Sigmoid,
+        },
+
+        {
+          name: ModelNodes.SiLU,
+          node: SiLU,
+        },
+
+        {
+          name: ModelNodes.Softplus,
+          node: Softplus,
+        },
+
+        {
+          name: ModelNodes.Softshrink,
+          node: Softshrink,
+        },
+
+        {
+          name: ModelNodes.Softsign,
+          node: Softsign,
+        },
+
+        {
+          name: ModelNodes.Tanh,
+          node: Tanh,
+        },
+
+        {
+          name: ModelNodes.LogSigmoid,
+          node: LogSigmoid,
+        },
+
+        {
+          name: ModelNodes.Tanhshrink,
+          node: Tanhshrink,
+        },
+
+        {
+          name: ModelNodes.Threshold,
+          node: Threshold,
+        },
+
       ],
     },
     {
@@ -121,15 +455,6 @@ export default class ModelCanvas extends AbstractCanvas {
       ],
     },
     {
-      category: ModelCategories.Transformer,
-      nodes: [
-        {
-          name: ModelNodes.Transformer,
-          node: Transformer,
-        },
-      ],
-    },
-    {
       category: ModelCategories.NonLinearActivation,
       nodes: [
         {
@@ -139,6 +464,203 @@ export default class ModelCanvas extends AbstractCanvas {
         {
           name: ModelNodes.Softmax,
           node: Softmax,
+        },
+        {
+          name: ModelNodes.LogSoftmax,
+          node: LogSoftmax,
+        },
+
+        {
+          name: ModelNodes.Softmax2d,
+          node: Softmax2d,
+        },
+
+        {
+          name: ModelNodes.AdaptiveLogSoftmaxWithLoss,
+          node: AdaptiveLogSoftmaxWithLoss,
+        },
+
+      ],
+    },
+
+    {
+      category: ModelCategories.Normalization,
+      nodes: [
+
+        {
+          name: ModelNodes.BatchNorm1d,
+          node: BatchNorm1d,
+        },
+
+        {
+          name: ModelNodes.BatchNorm2d,
+          node: BatchNorm2d,
+        },
+
+        {
+          name: ModelNodes.BatchNorm3d,
+          node: BatchNorm3d,
+        },
+
+        {
+          name: ModelNodes.GroupNorm,
+          node: GroupNorm,
+        },
+
+        {
+          name: ModelNodes.SyncBatchNorm,
+          node: SyncBatchNorm,
+        },
+
+        {
+          name: ModelNodes.InstanceNorm1d,
+          node: InstanceNorm1d,
+        },
+
+        {
+          name: ModelNodes.InstanceNorm2d,
+          node: InstanceNorm2d,
+        },
+
+        {
+          name: ModelNodes.InstanceNorm3d,
+          node: InstanceNorm3d,
+        },
+
+        {
+          name: ModelNodes.LocalResponseNorm,
+          node: LocalResponseNorm,
+        },
+      ],
+    },
+    {
+      category: ModelCategories.Transformer,
+      nodes: [
+        {
+          name: ModelNodes.Transformer,
+          node: Transformer,
+        },
+        {
+          name: ModelNodes.TransformerEncoderLayer,
+          node: TransformerEncoderLayer,
+        },
+
+        {
+          name: ModelNodes.TransformerDecoderLayer,
+          node: TransformerDecoderLayer,
+        },
+
+      ],
+    },
+
+    {
+      category: ModelCategories.LossFunctions,
+      nodes: [
+
+        {
+          name: ModelNodes.L1Loss,
+          node: L1Loss,
+        },
+
+        {
+          name: ModelNodes.MSELoss,
+          node: MSELoss,
+        },
+
+        {
+          name: ModelNodes.CrossEntropyLoss,
+          node: CrossEntropyLoss,
+        },
+
+        {
+          name: ModelNodes.CTCLoss,
+          node: CTCLoss,
+        },
+
+        {
+          name: ModelNodes.NLLLoss,
+          node: NLLLoss,
+        },
+
+        {
+          name: ModelNodes.PoissonNLLLoss,
+          node: PoissonNLLLoss,
+        },
+
+        {
+          name: ModelNodes.KLDivLoss,
+          node: KLDivLoss,
+        },
+
+        {
+          name: ModelNodes.BCELoss,
+          node: BCELoss,
+        },
+
+        {
+          name: ModelNodes.BCEWithLogitsLoss,
+          node: BCEWithLogitsLoss,
+        },
+
+        {
+          name: ModelNodes.MarginRankingLoss,
+          node: MarginRankingLoss,
+        },
+
+        {
+          name: ModelNodes.HingeEmbeddingLoss,
+          node: HingeEmbeddingLoss,
+        },
+
+        {
+          name: ModelNodes.MultiLabelMarginLoss,
+          node: MultiLabelMarginLoss,
+        },
+
+        {
+          name: ModelNodes.SmoothL1Loss,
+          node: SmoothL1Loss,
+        },
+
+        {
+          name: ModelNodes.MultiLabelSoftMarginLoss,
+          node: MultiLabelSoftMarginLoss,
+        },
+
+        {
+          name: ModelNodes.CosineEmbeddingLoss,
+          node: CosineEmbeddingLoss,
+        },
+
+        {
+          name: ModelNodes.MultiMarginLoss,
+          node: MultiMarginLoss,
+        },
+
+        {
+          name: ModelNodes.TripletMarginLoss,
+          node: TripletMarginLoss,
+        },
+
+        {
+          name: ModelNodes.Embedding,
+          node: Embedding,
+        },
+
+      ],
+    },
+
+    {
+      category: ModelCategories.DistanceFunctions,
+      nodes: [
+        {
+          name: ModelNodes.CosineSimilarity,
+          node: CosineSimilarity,
+        },
+
+        {
+          name: ModelNodes.PairwiseDistance,
+          node: PairwiseDistance,
         },
       ],
     },
