@@ -116,7 +116,6 @@ import TransformerDecoderLayer from '@/app/ir/model/transformerdecoderlayer';
 import LoadCsv from '@/app/ir/data/LoadCsv';
 import LoadImages from '@/app/ir/data/LoadImages';
 
-
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
 export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([

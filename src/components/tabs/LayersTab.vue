@@ -1,6 +1,13 @@
 <template>
   <div>
     <SearchBar @value-change="search"/>
+    <p class="information-text" v-if="searchString === ''">
+      We support all of the torch.nn layers from the PyTorch library.
+      For more information, check out the
+      <a href="https://pytorch.org/docs/stable/nn.html#" target="_blank">
+        official PyTorch documentation
+      </a>
+    </p>
     <ExpandablePanel
       :name="modelCategories.IO"
       v-show="shouldRender('Input') || shouldRender('Output')"
@@ -65,3 +72,10 @@ export default class LayersTab extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.information-text {
+  font-weight: 200;
+  font-size: 0.8rem;
+}
+</style>
