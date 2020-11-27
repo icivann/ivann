@@ -6,7 +6,7 @@
       For more information, check out the
       <a href="https://pytorch.org/docs/stable/nn.html#" target="_blank">
         official PyTorch documentation
-      </a>
+      </a>.
     </p>
     <ExpandablePanel
       :name="modelCategories.IO"
