@@ -3,5 +3,6 @@ export const enum TypeOptions {
     DropdownOption = 'DropdownOption',
     SliderOption = 'SliderOption',
     TickBoxOption = 'TickBoxOption',
-    VectorOption = 'VectorOption'
+    VectorOption = 'VectorOption',
+    TextAreaOption = 'TextAreaOption',
 }

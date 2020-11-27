@@ -18,9 +18,10 @@
         {{ data.name }}
          <ArrowButton
            id="arrow-button"
-           :initialUp="true"
+           :initialUp="false"
            v-on:arrow-button-clicked="toggleShouldShowOptions"
            v-show="data.options.size > 0"
+           :blackStroke="data.type === customNode"
          />
       </span>
       <input
@@ -123,7 +124,7 @@ import { DataNodes } from '@/nodes/data/Types';
 })
 export default class CustomNode extends Components.Node {
   @Getter('errorsMap') errorsMap!: Map<string, IrError[]>;
-  private shouldShowOptions = false;
+  private shouldShowOptions = true;
 
   contextMenu = {
     show: false,
@@ -133,6 +134,8 @@ export default class CustomNode extends Components.Node {
   };
 
   private currentErrors: IrError[] = [];
+
+  private customNode = CommonNodes.Custom;
 
   get messages(): string | undefined {
     return this.currentErrors.length !== 0
@@ -202,6 +205,7 @@ export default class CustomNode extends Components.Node {
       case ModelNodes.MaxPool1d:
       case ModelNodes.MaxPool2d:
       case ModelNodes.MaxPool3d:
+      case OverviewNodes.Adadelta:
         return { background: 'var(--red)' };
       case ModelNodes.Dropout:
       case ModelNodes.Dropout2d:
@@ -214,8 +218,8 @@ export default class CustomNode extends Components.Node {
         return { background: 'var(--green)' };
       case ModelNodes.InModel:
       case ModelNodes.OutModel:
-      case DataNodes.InData:
       case DataNodes.OutData:
+      case OverviewNodes.TrainClassifier:
         return { background: 'var(--purple)' };
       case ModelNodes.Linear:
       case ModelNodes.Bilinear:
