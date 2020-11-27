@@ -217,7 +217,6 @@ export function generateModelCode(graph: Graph, name: string): string {
 }
 
 function isNodeTrainer(node: GraphNode): boolean {
-  console.log(JSON.stringify(node));
   return node.mlNode instanceof TrainClassifier
     || (node.mlNode instanceof OverviewCustom && node.mlNode.trainer);
 }
@@ -251,7 +250,6 @@ function generateOverviewGraphCode(
 
 function generateTrainingPipeline(node: GraphNode, graph: Graph): string[] {
   // traverse each incoming connection backwards and link up
-  console.log(graph.prevNodesFrom(node));
   const trainNode = node.mlNode as TrainClassifier;
 
   // const incomingNodes = graph.prevNodesFrom(node);
@@ -280,8 +278,6 @@ function generateOverview(graph: Graph): string {
   let main = ['def main():'];
 
   const trainNodes = graph.nodesAsArray.filter(isNodeTrainer);
-
-  console.log('trainnodes length', trainNodes.length);
 
   const funcs: string[] = [];
 
