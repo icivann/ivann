@@ -13,6 +13,6 @@ export default class Flatten {
   }
 
   public callCode(params: string[], name: string): string {
-    return `torch.flatten(${params.join(', ')})`;
+    return `torch.flatten(${params.join(', ')}, 1)`;
   }
 }
