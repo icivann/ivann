@@ -6,8 +6,6 @@
       v-show="shouldRender('Input') || shouldRender('Output')"
     >
       <ButtonGrid>
-        <AddNodeButton :node="dataNodeTypes.InData" name="Input" :names="editorIONames"
-                       v-if="shouldRender('Input')"/>
         <AddNodeButton :node="dataNodeTypes.OutData" name="Output"
                        v-if="shouldRender('Output')"/>
       </ButtonGrid>

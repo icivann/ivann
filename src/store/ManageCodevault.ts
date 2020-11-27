@@ -9,6 +9,7 @@ export interface FuncDiff {
     oldFunc: ParsedFunction;
     newFunc: ParsedFunction;
     args: { deleted: string[]; added: string[] };
+    returnStatement: { removed: boolean; added: boolean };
   })[];
 }
 
@@ -35,6 +36,7 @@ export function funcsDiff(
     oldFunc: ParsedFunction;
     newFunc: ParsedFunction;
     args: { deleted: string[]; added: string[] };
+    returnStatement: { removed: boolean; added: boolean };
   })[] = [];
 
   oldFuncs.forEach((oldFunc) => {
@@ -53,10 +55,15 @@ export function funcsDiff(
 
       const deletedArgs: string[] = oldFunc.args.filter((arg) => !newFunc.args.includes(arg));
       const addedArgs: string[] = newFunc.args.filter((arg) => !oldFunc.args.includes(arg));
+
+      // Check if return was removed or added
+      const returnRemoved = oldFunc.containsReturn() && !newFunc.containsReturn();
+      const returnAdded = !oldFunc.containsReturn() && newFunc.containsReturn();
       changed.push({
         oldFunc,
         newFunc,
         args: { deleted: deletedArgs, added: addedArgs },
+        returnStatement: { removed: returnRemoved, added: returnAdded },
       });
     }
   });
@@ -91,6 +98,8 @@ export function editNodes(editorModel: EditorModel, diff: FuncDiff) {
         node.setParsedFunction(change.newFunc);
         change.args.added.forEach((arg) => node.addInput(arg));
         change.args.deleted.forEach((arg) => node.remInteface(arg));
+        if (change.returnStatement.added) node.addOutput();
+        if (change.returnStatement.removed) node.removeOutput();
       }
     }
   }
@@ -99,4 +108,26 @@ export function editNodes(editorModel: EditorModel, diff: FuncDiff) {
     const saved = saveEditor(editorModel);
     localStorage.setItem(`unsaved-editor-${name}`, JSON.stringify(saved));
   }
+}
+
+export function usedNodes(editorModel: EditorModel, diff: FuncDiff) {
+  const { name, editor } = editorModel;
+  const { nodes } = editor;
+
+  const deleted: string[] = [];
+  const changed: string[] = [];
+
+  for (const node of nodes) {
+    if (node instanceof Custom) {
+      const func = (node as Custom).getParsedFunction() as ParsedFunction;
+
+      if (diff.deleted.some((f) => f.equals(func))) deleted.push(func.name);
+
+      // Update node if changed
+      if (diff.changed.find((elem) => elem.oldFunc.name === func.name
+        && elem.oldFunc.filename === func.filename)) changed.push(func.name);
+    }
+  }
+
+  return { name, deleted, changed };
 }

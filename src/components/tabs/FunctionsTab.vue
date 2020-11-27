@@ -37,18 +37,18 @@
     </div>
 
     <div id="right" class="panel">
-<!--      TODO: STYLE LIKE IDE-->
       <div class="button-list">
         <div v-if="selectedFile === null" class="text-center">
           No File Selected
         </div>
-        <div
-          v-else
-          class="pre-formatted"
-          v-for="(func) of getFunctions(this.selectedFile)"
-          :key="func.name"
-          v-text="`${func.toString()}\n`"
-        />
+        <div class="code-preview" v-else>
+          <div
+            class="function-preview"
+            v-for="(func) of getFunctions(this.selectedFile)"
+            :key="func.name"
+            v-text="`${func.toString()}\n`"
+          />
+        </div>
       </div>
       <div class="confirm-button">
         <UIButton
@@ -81,6 +81,7 @@ import { FilenamesList, ParsedFile } from '@/store/codeVault/types';
 import { uniqueTextInput } from '@/inputs/prompt';
 import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
 import { mapGetters } from 'vuex';
+import { FuncDiff } from '@/store/ManageCodevault';
 
 @Component({
   components: {
@@ -95,6 +96,8 @@ export default class FunctionsTab extends Vue {
   @Getter('filenames') filenames!: Set<string>;
   @Getter('file') file!: (filename: string) => ParsedFile;
   @Getter('filenamesList') filenamesList!: FilenamesList;
+  @Getter('usedNodes') usedNodes!:
+    (diff: FuncDiff) => { name: string; deleted: string[]; changed: string[] }[];
   @Mutation('addFile') addFile!: (file: ParsedFile) => void;
   @Mutation('deleteFile') delFile!: (filename: string) => void;
   @Mutation('openFile') openFile!: (filename: string) => void;
@@ -159,19 +162,30 @@ export default class FunctionsTab extends Vue {
   }
 
   private deleteFile() {
-    if (this.selectedFile !== null) {
-      const filename = this.selectedFile;
+    if (this.selectedFile === null) return;
 
-      // Run through editors using function in deleted file and remove corresponding nodes
-      // TODO: Add warning confirming nodes will be deleted?
-      const { functions } = this.file(filename);
-      this.deleteNodes(functions);
+    const filename = this.selectedFile;
+    const { functions } = this.file(filename);
+    const used = this.usedNodes({ deleted: functions, changed: [] });
 
-      // Delete file from codevault
-      this.selectedFile = null;
-      this.delFile(filename);
-      this.deleteFromLocalStorage(filename);
+    // Warn user of effect of delete
+    let warning = 'Are you sure you want to delete this file? All unsaved progress will be lost.';
+    if (used.length > 0) warning = warning.concat(`\n\nWe found ${used.length} editors using this file's functions:`);
+    for (const use of used) {
+      warning = warning.concat(`\nIn editor "${use.name}"`);
+      if (use.deleted.length > 0) warning = warning.concat(` - [${use.deleted}] will be deleted`);
     }
+
+    // STOP if user cancels
+    if (!window.confirm(warning)) return;
+
+    // Run through editors using function in deleted file and remove corresponding nodes
+    this.deleteNodes(functions);
+
+    // Delete file from codevault
+    this.selectedFile = null;
+    this.delFile(filename);
+    this.deleteFromLocalStorage(filename);
   }
 
   private editFile() {
@@ -226,7 +240,15 @@ export default class FunctionsTab extends Vue {
     margin-right: 1em;
   }
 
-  .pre-formatted {
+  .code-preview {
     white-space: pre;
+    font-size: smaller;
+    font-family: monospace;
+    font-weight: lighter;
+    background-color: var(--editor-grey);
+    padding-left: 1rem;
+    padding-top: 1rem;
+    border: 1px var(--grey) solid;
+    border-radius: 6px;
   }
 </style>
