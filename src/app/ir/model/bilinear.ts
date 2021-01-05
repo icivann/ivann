@@ -22,6 +22,6 @@ export default class Bilinear {
   }
 
   public initCode(): string {
-    return `Bilinear(in1_features=, ${this.in1_features}, in2_features=, ${this.in2_features}, out_features=, ${this.out_features}, bias=, ${this.bias})`;
+    return `Bilinear(in1_features= ${this.in1_features}, in2_features= ${this.in2_features}, out_features= ${this.out_features}, bias= ${this.bias})`;
   }
 }

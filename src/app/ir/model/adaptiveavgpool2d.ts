@@ -17,6 +17,6 @@ export default class AdaptiveAvgPool2d {
   }
 
   public initCode(): string {
-    return `AdaptiveAvgPool2d(OutputSize=, (${this.OutputSize}))`;
+    return `AdaptiveAvgPool2d(OutputSize= (${this.OutputSize}))`;
   }
 }

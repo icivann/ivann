@@ -25,6 +25,6 @@ export default class Fold {
   }
 
   public initCode(): string {
-    return `Fold(OutputSize=, ${this.OutputSize}, KernelSize=, ${this.KernelSize}, Dilation=, ${this.Dilation}, Padding=, ${this.Padding}, Stride=, ${this.Stride})`;
+    return `Fold(OutputSize= ${this.OutputSize}, KernelSize= ${this.KernelSize}, Dilation= ${this.Dilation}, Padding= ${this.Padding}, Stride= ${this.Stride})`;
   }
 }

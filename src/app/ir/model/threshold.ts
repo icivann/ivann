@@ -21,6 +21,6 @@ export default class Threshold {
   }
 
   public initCode(): string {
-    return `Threshold(Threshold=, ${this.Threshold}, Value=, ${this.Value}, Inplace=, ${this.Inplace})`;
+    return `Threshold(Threshold= ${this.Threshold}, Value= ${this.Value}, Inplace= ${this.Inplace})`;
   }
 }

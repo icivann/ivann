@@ -20,6 +20,6 @@ export default class Linear {
   }
 
   public initCode(): string {
-    return `Linear(in_features=, ${this.in_features}, out_features=, ${this.out_features}, bias=, ${this.bias})`;
+    return `Linear(in_features= ${this.in_features}, out_features= ${this.out_features}, bias= ${this.bias})`;
   }
 }
