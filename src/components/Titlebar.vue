@@ -8,7 +8,7 @@
       <a class="icon-button" href="https://github.com/icivann/ivann" target="_blank" title="GitHub">
         <i class="titlebar-icon fab fa-github fa-lg mx-2"/>
       </a>
-      <span class="icon-button" @click="codegen" title="Generate Code">
+      <span class="icon-button" @click="codegen" title="Generate Code" data-v-step="export">
         <i class="titlebar-icon fas fa-code fa-lg mx-2"/>
       </span>
       <input
