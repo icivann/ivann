@@ -19,6 +19,6 @@ export default class PReLU {
   }
 
   public initCode(): string {
-    return `PReLU(NumParameters= ${this.NumParameters}, Init= ${this.Init})`;
+    return `PReLU(NumParameters=${this.NumParameters}, Init=${this.Init})`;
   }
 }

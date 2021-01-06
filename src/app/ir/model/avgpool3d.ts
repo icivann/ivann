@@ -25,6 +25,6 @@ export default class AvgPool3d {
   }
 
   public initCode(): string {
-    return `AvgPool3d(KernelSize= (${this.KernelSize}), Stride= (${this.Stride}), Padding= (${this.Padding}), CeilMode= (${this.CeilMode}), CountIncludePad= (${this.CountIncludePad}))`;
+    return `AvgPool3d(KernelSize=(${this.KernelSize}), Stride=(${this.Stride}), Padding=(${this.Padding}), CeilMode=(${this.CeilMode}), CountIncludePad=(${this.CountIncludePad}))`;
   }
 }

@@ -18,6 +18,6 @@ export default class ReflectionPad2d {
   }
 
   public initCode(): string {
-    return `ReflectionPad2d(Padding= (${this.Padding}))`;
+    return `ReflectionPad2d(Padding=(${this.Padding}))`;
   }
 }

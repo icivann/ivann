@@ -18,6 +18,6 @@ export default class ZeroPad2d {
   }
 
   public initCode(): string {
-    return `ZeroPad2d(Padding= (${this.Padding}))`;
+    return `ZeroPad2d(Padding=(${this.Padding}))`;
   }
 }

@@ -25,6 +25,6 @@ export default class TransformerEncoderLayer {
   }
 
   public initCode(): string {
-    return `TransformerEncoderLayer(DModel= ${this.DModel}, Nhead= ${this.Nhead}, DimFeedforward= ${this.DimFeedforward}, Dropout= ${this.Dropout}, Activation= ${this.Activation})`;
+    return `TransformerEncoderLayer(DModel=${this.DModel}, Nhead=${this.Nhead}, DimFeedforward=${this.DimFeedforward}, Dropout=${this.Dropout}, Activation=${this.Activation})`;
   }
 }

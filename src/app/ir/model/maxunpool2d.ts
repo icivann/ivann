@@ -21,6 +21,6 @@ export default class MaxUnpool2d {
   }
 
   public initCode(): string {
-    return `MaxUnpool2d(KernelSize= (${this.KernelSize}), Stride= (${this.Stride}), Padding= (${this.Padding}))`;
+    return `MaxUnpool2d(KernelSize=(${this.KernelSize}), Stride=(${this.Stride}), Padding=(${this.Padding}))`;
   }
 }

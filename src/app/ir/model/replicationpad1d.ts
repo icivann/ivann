@@ -17,6 +17,6 @@ export default class ReplicationPad1d {
   }
 
   public initCode(): string {
-    return `ReplicationPad1d(Padding= ${this.Padding})`;
+    return `ReplicationPad1d(Padding=${this.Padding})`;
   }
 }

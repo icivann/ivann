@@ -25,6 +25,6 @@ export default class InstanceNorm2d {
   }
 
   public initCode(): string {
-    return `InstanceNorm2d(NumFeatures= (${this.NumFeatures}), Eps= (${this.Eps}), Momentum= (${this.Momentum}), Affine= (${this.Affine}), TrackRunningStats= (${this.TrackRunningStats}))`;
+    return `InstanceNorm2d(NumFeatures=(${this.NumFeatures}), Eps=(${this.Eps}), Momentum=(${this.Momentum}), Affine=(${this.Affine}), TrackRunningStats=(${this.TrackRunningStats}))`;
   }
 }

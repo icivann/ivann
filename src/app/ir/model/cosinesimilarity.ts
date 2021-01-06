@@ -19,6 +19,6 @@ export default class CosineSimilarity {
   }
 
   public initCode(): string {
-    return `CosineSimilarity(Dim= ${this.Dim}, Eps= ${this.Eps})`;
+    return `CosineSimilarity(Dim=${this.Dim}, Eps=${this.Eps})`;
   }
 }

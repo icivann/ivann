@@ -25,6 +25,6 @@ export default class BatchNorm2d {
   }
 
   public initCode(): string {
-    return `BatchNorm2d(NumFeatures= (${this.NumFeatures}), Eps= (${this.Eps}), Momentum= (${this.Momentum}), Affine= (${this.Affine}), TrackRunningStats= (${this.TrackRunningStats}))`;
+    return `BatchNorm2d(NumFeatures=(${this.NumFeatures}), Eps=(${this.Eps}), Momentum=(${this.Momentum}), Affine=(${this.Affine}), TrackRunningStats=(${this.TrackRunningStats}))`;
   }
 }

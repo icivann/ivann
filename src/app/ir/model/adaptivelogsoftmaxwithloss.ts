@@ -23,6 +23,6 @@ export default class AdaptiveLogSoftmaxWithLoss {
   }
 
   public initCode(): string {
-    return `AdaptiveLogSoftmaxWithLoss(InFeatures= ${this.InFeatures}, NClasses= ${this.NClasses}, DivValue= ${this.DivValue}, HeadBias= ${this.HeadBias})`;
+    return `AdaptiveLogSoftmaxWithLoss(InFeatures=${this.InFeatures}, NClasses=${this.NClasses}, DivValue=${this.DivValue}, HeadBias=${this.HeadBias})`;
   }
 }
