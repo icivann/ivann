@@ -2,7 +2,7 @@
   <div id="app">
     <router-view/>
     <cookie-law theme="dark-lime"></cookie-law>
-    <v-tour name="tour" :steps="steps" :options="options"/>
+    <v-tour name="tour" :steps="steps" :options="options" :callbacks="callbacks"/>
   </div>
 </template>
 
@@ -95,12 +95,19 @@ import EditorType from '@/EditorType';
           },
         },
       ],
+      callbacks: {
+        onStop() {
+          localStorage.setItem('tour-done', 'true');
+        },
+      },
     };
   },
 })
 export default class App extends Vue {
   mounted() {
-    this.$tours.tour.start();
+    if (!localStorage.getItem('tour-done')) {
+      this.$tours.tour.start();
+    }
   }
 }
 </script>
