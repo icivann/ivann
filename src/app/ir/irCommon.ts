@@ -21,6 +21,19 @@ export enum BuiltinRegularizer {
   None
 }
 
+export enum Reduction{
+  None ='none', Mean = 'mean', Sum = 'sum'
+}
+export function getReduction(str: string): Reduction {
+  return Reduction[str as keyof typeof Reduction];
+}
+export enum Mode{
+  None ='none', Mean = 'mean', Sum = 'sum'
+}
+export function getMode(str: string): Mode {
+  return Mode[str as keyof typeof Mode];
+}
+
 export type ActivationF = BuiltinActivationF
 
 export enum Activation {
@@ -31,6 +44,11 @@ export enum BuiltinActivationF { None, Relu, Tanh, Sigmoid, Linear }
 
 export function getRegularizer(str: string): Regularizer {
   return BuiltinRegularizer[str as keyof typeof BuiltinRegularizer];
+}
+
+export enum Nonlinearity { Relu ='relu', Tanh = 'tanh'}
+export function getNonlinearity(str: string): Nonlinearity {
+  return Nonlinearity[str as keyof typeof Nonlinearity];
 }
 
 export function getInitializer(str: string): Initializer {
