@@ -105,7 +105,7 @@ export default class App extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss">
 #nav a {
   font-weight: bold;
   color: #2c3e50;
@@ -131,5 +131,14 @@ export default class App extends Vue {
 
 .Cookie__button:hover {
   background: #1B67E0 !important;
+}
+
+.v-tour > div[id^='v-step-'] {
+  background-color: var(--dark-grey);
+  filter: none;
+  border: solid 1px var(--foreground);
+  .v-step__arrow {
+    border: solid 1px var(--foreground);
+  }
 }
 </style>
