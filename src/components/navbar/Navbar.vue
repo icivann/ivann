@@ -5,6 +5,7 @@
       class="build tab-button"
       :class="isSelected(editorType.OVERVIEW)"
       @click="switchOverviewEditor"
+      data-v-step="overview"
     >
       <i class="fas fa-hammer tab-icon"/>
     </div>
@@ -19,6 +20,7 @@
       :class="isSelected(editorType.MODEL)"
       @mouseover="displayNavbarContextualMenu(editorType.MODEL)"
       @mouseleave="hideNavbarContextualMenu()"
+      data-v-step="welcome"
     >
       <img class="navbar-logo tab-icon" src="@/assets/images/nn_logo.png" alt="IVANN"/>
       <NavbarContextualMenu
@@ -39,6 +41,7 @@
       :class="isSelected(editorType.DATA)"
       @mouseover="displayNavbarContextualMenu(editorType.DATA)"
       @mouseleave="hideNavbarContextualMenu()"
+      data-v-step="data"
     >
       <i class="fas fa-database tab-icon"/>
       <NavbarContextualMenu
