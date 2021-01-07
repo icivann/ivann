@@ -122,6 +122,16 @@ import GRU from '@/app/ir/model/gru';
 import RNNCell from '@/app/ir/model/rnncell';
 import LSTMCell from '@/app/ir/model/lstmcell';
 import GRUCell from '@/app/ir/model/grucell';
+import Adamax from '@/app/ir/overview/optimizers/adamax';
+import SparseAdam from '@/app/ir/overview/optimizers/sparseadam';
+import AdamW from '@/app/ir/overview/optimizers/adamw';
+import LBFGS from '@/app/ir/overview/optimizers/lbfgs';
+import ASGD from '@/app/ir/overview/optimizers/asgd';
+import RMSprop from '@/app/ir/overview/optimizers/rmsprop';
+import Rprop from '@/app/ir/overview/optimizers/rprop';
+import SGD from '@/app/ir/overview/optimizers/sgd';
+import Adagrad from '@/app/ir/overview/optimizers/adagrad';
+import Adam from '@/app/ir/overview/optimizers/adam';
 
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
@@ -257,5 +267,16 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['RNNCell', RNNCell.build],
   ['LSTMCell', LSTMCell.build],
   ['GRUCell', GRUCell.build],
+
+  ['Adamax', Adamax.build],
+  ['SparseAdam', SparseAdam.build],
+  ['AdamW', AdamW.build],
+  ['Adam', Adam.build],
+  ['Adagrad', Adagrad.build],
+  ['ASGD', ASGD.build],
+  ['LBFGS', LBFGS.build],
+  ['RMSprop', RMSprop.build],
+  ['Rprop', Rprop.build],
+  ['SGD', SGD.build],
 
 ]);
