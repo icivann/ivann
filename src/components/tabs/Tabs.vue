@@ -62,25 +62,27 @@ export default class Tabs extends Vue {
   .tab-head {
     margin: 0.5em 1em 0;
     padding: 0.2em 1em;
-    border-bottom-style: none;
-    border-bottom: var(--blue);
+    border-bottom: solid var(--background) 1px;
     user-select: none;
     transition-duration: 0.1s;
   }
 
   .tab-head.selected {
     border-bottom-width: 4px;
-    border-bottom-style: solid;
     transition-duration: 0.1s;
+    border-bottom-color: var(--blue);
   }
 
   .tab-head:hover {
-    cursor: pointer;
     border-bottom-width: 1px;
-    border-bottom-style: solid;
+    border-bottom-color: var(--blue);
+    transition-duration: 0.1s;
+    cursor: pointer;
   }
 
   .tab-head.selected:hover {
+    transition-duration: 0.1s;
+    border-bottom-color: #1B67E0;
     border-bottom-width: 4px;
   }
 
