@@ -192,48 +192,48 @@ export default class Titlebar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-  .titlebar {
-    height: 2.5rem;
-    background-color: var(--background-alt);
-    border-bottom: 1px solid var(--grey);
-    margin-right: -15px;
-    margin-left: -15px;
-  }
+.titlebar {
+  height: 2.5rem;
+  background-color: var(--background-alt);
+  border-bottom: 1px solid var(--grey);
+  margin-right: -15px;
+  margin-left: -15px;
+}
 
-  .titlebar-logo {
-    height: 1.6rem;
-  }
+.titlebar-logo {
+  height: 1.6rem;
+}
 
-  .text {
-    position: relative;
-    top: 0.15rem;
-    color: var(--foreground);
-  }
+.text {
+  position: relative;
+  top: 0.15rem;
+  color: var(--foreground);
+}
 
-  .titlebar-icon {
-    color: var(--foreground);
-  }
+.titlebar-icon {
+  color: var(--foreground);
+}
 
-  .icon-button {
-    background-color: var(--background-alt);
-    margin: 0.15rem;
-    padding: 0.3rem 0.1rem;
+.icon-button {
+  background-color: var(--background-alt);
+  margin: 0.15rem;
+  padding: 0.3rem 0.1rem;
 
-    &:hover {
-      background-color: #2c2c2c;
-      cursor: pointer;
-    }
+  &:hover {
+    background-color: #2c2c2c;
+    cursor: pointer;
   }
+}
 
-  .buttons {
-    float: right;
-    display: flex;
-  }
+.buttons {
+  float: right;
+  display: flex;
+}
 
-  .logo {
-    margin-top: 0.4rem;
-    margin-left: 0.5rem;
-    float: left;
-    user-select: none;
-  }
+.logo {
+  margin-top: 0.4rem;
+  margin-left: 0.5rem;
+  float: left;
+  user-select: none;
+}
 </style>
