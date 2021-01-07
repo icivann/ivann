@@ -16,6 +16,6 @@ export default class Softmin {
   }
 
   public initCode(): string {
-    return `Softmin(dim=, ${this.dim})`;
+    return `Softmin(dim= ${this.dim})`;
   }
 }

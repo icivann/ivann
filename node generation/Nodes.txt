@@ -1,0 +1,7 @@
+torch.nn.RNNBase(mode: str, input_size: int, hidden_size: int, num_layers: int = 1, bias: bool = True, batch_first: bool = False, dropout: float = 0.0, bidirectional: bool = False)
+torch.nn.RNN(input_size :int = 0,hidden_size:int = 0, num_layers: int = 1, nonlinearity:str = 'tanh', bias :bool = True, batch_first:bool = False, dropout:float = 0.0, bidirectional :bool = False)
+torch.nn.LSTM(input_size :int = 0,hidden_size:int = 0, num_layers: int = 1,  bias :bool = True, batch_first:bool = False, dropout:float =0.0, bidirectional :bool = False)
+torch.nn.GRU(input_size :int = 0,hidden_size:int = 0, num_layers: int = 1, bias :bool = True, batch_first:bool = False, dropout:float= 0.0, bidirectional :bool = False)
+torch.nn.RNNCell(input_size: int = 0, hidden_size: int = 0, bias: bool = True, nonlinearity: str = 'tanh')
+torch.nn.LSTMCell(input_size: int = 0, hidden_size: int = 0, bias: bool = True)
+torch.nn.GRUCell(input_size: int = 0, hidden_size: int =0, bias: bool = True)

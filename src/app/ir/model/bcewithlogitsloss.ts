@@ -25,6 +25,6 @@ export default class BCEWithLogitsLoss {
   }
 
   public initCode(): string {
-    return `BCEWithLogitsLoss(Weight=, ${this.Weight}, SizeAverage=, ${this.SizeAverage}, Reduce=, ${this.Reduce}, Reduction=, ${this.Reduction}, PosWeight=, ${this.PosWeight})`;
+    return `BCEWithLogitsLoss(Weight=${this.Weight}, SizeAverage=${this.SizeAverage}, Reduce=${this.Reduce}, Reduction=${this.Reduction}, PosWeight=${this.PosWeight})`;
   }
 }

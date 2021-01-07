@@ -23,6 +23,6 @@ export default class HingeEmbeddingLoss {
   }
 
   public initCode(): string {
-    return `HingeEmbeddingLoss(Margin=, ${this.Margin}, SizeAverage=, ${this.SizeAverage}, Reduce=, ${this.Reduce}, Reduction=, ${this.Reduction})`;
+    return `HingeEmbeddingLoss(Margin= ${this.Margin}, SizeAverage= ${this.SizeAverage}, Reduce= ${this.Reduce}, Reduction= ${this.Reduction})`;
   }
 }
