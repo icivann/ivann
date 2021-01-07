@@ -4,7 +4,6 @@ import { nodeName } from '@/app/ir/irCommon';
 export default class TrainClassifier {
   constructor(
     public readonly name: string,
-    public readonly LossFunction: string,
     public readonly Epochs: number,
     public readonly Device: string,
     public readonly LogInterval: number,
@@ -14,7 +13,6 @@ export default class TrainClassifier {
   static build(options: Map<string, any>): TrainClassifier {
     return new TrainClassifier(
       options.get(nodeName),
-      options.get(TrainClassifierOptions.LossFunction),
       options.get(TrainClassifierOptions.Epochs),
       options.get(TrainClassifierOptions.Device),
       options.get(TrainClassifierOptions.LogInterval),
@@ -23,7 +21,7 @@ export default class TrainClassifier {
 
   public initCode(): string[] {
     return [`
-def train_classifier(model, train_loader, test_loader, optimizer, loss, device, epoch, log_interval=${this.LogInterval}):
+def train_classifier(model, train_loader, test_loader, optimizer, loss_f, device, epoch, log_interval=${this.LogInterval}):
   def train():
     model.train()
     running_loss = 0
@@ -31,7 +29,7 @@ def train_classifier(model, train_loader, test_loader, optimizer, loss, device, 
       data, target = data.to(device), target.to(device)
       optimizer.zero_grad()
       output = model(data)
-      loss = F.nll_loss(output, target)
+      loss = loss_f(output, target)
       loss.backward()
       optimizer.step()
       running_loss += loss.item()
