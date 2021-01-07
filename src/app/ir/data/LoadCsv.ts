@@ -18,7 +18,7 @@ class LoadCsv {
   public initCode(name: string): string[] {
     return [
       `self.${name} = pd.read_csv(${name}_path)`,
-      `self.${name} = np.asarray(self.${name}[:, ${this.column}])`,
+      `self.${name} = np.asarray(self.${name}.iloc[:, ${this.column}])`,
     ];
   }
 

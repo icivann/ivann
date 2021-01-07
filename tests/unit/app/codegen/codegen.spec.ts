@@ -10,7 +10,7 @@ const conv2dDef = '{"nodes":[{"type":"I/O","id":"node_16039892032880","name":"In
   + '"state":{},"interfaces":[["Input",{"id":"ni_16039892316759","value":null}],["Output",{"id":"ni_160398923167510","value":null}]],"position":{"x":331,"y":479},"width":200,"twoColumn":false},{"type":"I/O","id":"node_160398924063014","name":"OutModel","options":[],"state":{},"interfaces":[["Input",{"id":"ni_160398924063015","value":null}]],"position":{"x":608,"y":437},"width":200,"twoColumn":false}],"connections":[{"id":"16039892205757","from":"ni_16039892032881","to":"ni_16039892157623"},{"id":"160398923656513","from":"ni_16039892157624","to":"ni_16039892316759"},{"id":"160398961820424","from":"ni_160398923167510","to":"ni_160398924063015"}],"panning":{"x":0,"y":0},"scaling":1}';
 
 const conv2dDefGenerated = 'nn.Conv2d(in_channels=0, out_channels=0, kernel_size=(0,0), stride=(1,1), padding=(0,0), dilation=(1,1), groups=1, bias=1, padding_mode=\'zeros\')';
-const maxpool2dDefGenerated = 'nn.MaxPool2d(kernel_size=(0,0), stride=(0,0), padding=(0,0), dilation=(1,1), return_indices=null, ceil_mode=null)';
+const maxpool2dDefGenerated = 'nn.MaxPool2d(kernel_size=(0,0), stride=(0,0), padding=(0,0))';
 
 describe('model codegen', () => {
   it('renders props.msg when passed', () => {

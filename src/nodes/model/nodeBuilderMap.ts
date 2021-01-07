@@ -21,6 +21,7 @@ import Linear from '@/app/ir/model/linear';
 import Bilinear from '@/app/ir/model/bilinear';
 import Softmin from '@/app/ir/model/softmin';
 import Softmax from '@/app/ir/model/softmax';
+import Flatten from '@/app/ir/model/flatten';
 
 import ToTensor from '@/app/ir/data/ToTensor';
 import Grayscale from '@/app/ir/data/Grayscale';
@@ -28,7 +29,8 @@ import OutData from '@/app/ir/data/OutData';
 import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import Model from '@/app/ir/model/model';
-import Data from '@/app/ir/data/Data';
+import Data from '@/app/ir/overview/data/Data';
+import OverviewCustom from '@/app/ir/overview/OverviewCustom';
 
 import Unfold from '@/app/ir/model/unfold';
 import Fold from '@/app/ir/model/fold';
@@ -152,6 +154,7 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['Bilinear', Bilinear.build],
   ['Softmin', Softmin.build],
   ['Softmax', Softmax.build],
+  ['Flatten', Flatten.build],
   // Data
   ['OutData', OutData.build],
   ['ToTensor', ToTensor.build],
@@ -160,8 +163,12 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['DataNode', Data.build],
   ['LoadCsv', LoadCsv.build],
   ['LoadImages', LoadImages.build],
+  // OVERVIEW
+  ['OverviewCustom', OverviewCustom.build as (r: Options) => MlNode],
   // Optimizers
   ['Adadelta', Adadelta.build],
+  // Loss
+  ['NLLLoss', NLLLoss.build],
   // Training
   ['TrainClassifier', TrainClassifier.build],
   ['Unfold', Unfold.build],

@@ -26,7 +26,7 @@ export default class Conv2d extends Node {
     this.addOutputInterface('Output');
     this.addOption(Conv2dOptions.InChannels, TypeOptions.IntOption, 0);
     this.addOption(Conv2dOptions.OutChannels, TypeOptions.IntOption, 0);
-    this.addOption(Conv2dOptions.KernelSize, TypeOptions.VectorOption, [0, 0]);
+    this.addOption(Conv2dOptions.KernelSize, TypeOptions.VectorOption, [3, 3]);
     this.addOption(Conv2dOptions.Stride, TypeOptions.VectorOption, [1, 1]);
     this.addOption(Conv2dOptions.Padding, TypeOptions.VectorOption, [0, 0]);
     this.addOption(Conv2dOptions.Dilation, TypeOptions.VectorOption, [1, 1]);
