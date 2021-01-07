@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { ModelNodes } from '@/nodes/model/Types';
+import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
@@ -10,8 +10,8 @@ export enum CosineEmbeddingLossOptions {
   Reduction = 'Reduction'
 }
 export default class CosineEmbeddingLoss extends Node {
-  type = ModelNodes.CosineEmbeddingLoss;
-  name = ModelNodes.CosineEmbeddingLoss;
+  type = OverviewNodes.CosineEmbeddingLoss;
+  name = OverviewNodes.CosineEmbeddingLoss;
 
   constructor() {
     super();

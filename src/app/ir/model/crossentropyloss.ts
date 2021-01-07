@@ -1,4 +1,4 @@
-import { CrossEntropyLossOptions } from '@/nodes/model/Crossentropyloss';
+import { CrossEntropyLossOptions } from '@/nodes/overview/loss/Crossentropyloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class CrossEntropyLoss {

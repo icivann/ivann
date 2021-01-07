@@ -22,24 +22,6 @@ import Softmax from '@/nodes/model/Softmax';
 import Bilinear from '@/nodes/model/Bilinear';
 import Linear from '@/nodes/model/Linear';
 import { Editor } from '@baklavajs/core';
-import Embedding from '@/nodes/model/Embedding';
-import TripletMarginLoss from '@/nodes/model/Tripletmarginloss';
-import MultiMarginLoss from '@/nodes/model/Multimarginloss';
-import CosineEmbeddingLoss from '@/nodes/model/Cosineembeddingloss';
-import MultiLabelSoftMarginLoss from '@/nodes/model/Multilabelsoftmarginloss';
-import SmoothL1Loss from '@/nodes/model/Smoothl1loss';
-import MultiLabelMarginLoss from '@/nodes/model/Multilabelmarginloss';
-import HingeEmbeddingLoss from '@/nodes/model/Hingeembeddingloss';
-import MarginRankingLoss from '@/nodes/model/Marginrankingloss';
-import BCEWithLogitsLoss from '@/nodes/model/Bcewithlogitsloss';
-import BCELoss from '@/nodes/model/Bceloss';
-import KLDivLoss from '@/nodes/model/Kldivloss';
-import PoissonNLLLoss from '@/nodes/model/Poissonnllloss';
-import NLLLoss from '@/nodes/model/Nllloss';
-import CTCLoss from '@/nodes/model/Ctcloss';
-import CrossEntropyLoss from '@/nodes/model/Crossentropyloss';
-import MSELoss from '@/nodes/model/Mseloss';
-import L1Loss from '@/nodes/model/L1loss';
 import Unfold from '@/nodes/model/Unfold';
 import Fold from '@/nodes/model/Fold';
 import MaxUnpool1d from '@/nodes/model/Maxunpool1d';
@@ -113,6 +95,8 @@ import GRU from '@/nodes/model/Gru';
 import RNNCell from '@/nodes/model/Rnncell';
 import LSTMCell from '@/nodes/model/Lstmcell';
 import GRUCell from '@/nodes/model/Grucell';
+import EmbeddingBag from '@/nodes/model/Embeddingbag';
+import Embedding from '@/nodes/model/Embedding';
 
 export default class ModelCanvas extends AbstractCanvas {
   public nodeList = [
@@ -602,103 +586,6 @@ export default class ModelCanvas extends AbstractCanvas {
     },
 
     {
-      category: ModelCategories.LossFunctions,
-      nodes: [
-
-        {
-          name: ModelNodes.L1Loss,
-          node: L1Loss,
-        },
-
-        {
-          name: ModelNodes.MSELoss,
-          node: MSELoss,
-        },
-
-        {
-          name: ModelNodes.CrossEntropyLoss,
-          node: CrossEntropyLoss,
-        },
-
-        {
-          name: ModelNodes.CTCLoss,
-          node: CTCLoss,
-        },
-
-        {
-          name: ModelNodes.NLLLoss,
-          node: NLLLoss,
-        },
-
-        {
-          name: ModelNodes.PoissonNLLLoss,
-          node: PoissonNLLLoss,
-        },
-
-        {
-          name: ModelNodes.KLDivLoss,
-          node: KLDivLoss,
-        },
-
-        {
-          name: ModelNodes.BCELoss,
-          node: BCELoss,
-        },
-
-        {
-          name: ModelNodes.BCEWithLogitsLoss,
-          node: BCEWithLogitsLoss,
-        },
-
-        {
-          name: ModelNodes.MarginRankingLoss,
-          node: MarginRankingLoss,
-        },
-
-        {
-          name: ModelNodes.HingeEmbeddingLoss,
-          node: HingeEmbeddingLoss,
-        },
-
-        {
-          name: ModelNodes.MultiLabelMarginLoss,
-          node: MultiLabelMarginLoss,
-        },
-
-        {
-          name: ModelNodes.SmoothL1Loss,
-          node: SmoothL1Loss,
-        },
-
-        {
-          name: ModelNodes.MultiLabelSoftMarginLoss,
-          node: MultiLabelSoftMarginLoss,
-        },
-
-        {
-          name: ModelNodes.CosineEmbeddingLoss,
-          node: CosineEmbeddingLoss,
-        },
-
-        {
-          name: ModelNodes.MultiMarginLoss,
-          node: MultiMarginLoss,
-        },
-
-        {
-          name: ModelNodes.TripletMarginLoss,
-          node: TripletMarginLoss,
-        },
-
-        {
-          name: ModelNodes.Embedding,
-          node: Embedding,
-        },
-
-      ],
-    },
-
-    {
       category: ModelCategories.DistanceFunctions,
       nodes: [
         {
@@ -709,6 +596,21 @@ export default class ModelCanvas extends AbstractCanvas {
         {
           name: ModelNodes.PairwiseDistance,
           node: PairwiseDistance,
+        },
+      ],
+    },
+
+    {
+      category: ModelCategories.SparseLayers,
+      nodes: [
+        {
+          name: ModelNodes.Embedding,
+          node: Embedding,
+        },
+
+        {
+          name: ModelNodes.EmbeddingBag,
+          node: EmbeddingBag,
         },
       ],
     },

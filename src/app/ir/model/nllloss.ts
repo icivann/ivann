@@ -1,4 +1,4 @@
-import { NLLLossOptions } from '@/nodes/model/Nllloss';
+import { NLLLossOptions } from '@/nodes/overview/loss/Nllloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class NLLLoss {

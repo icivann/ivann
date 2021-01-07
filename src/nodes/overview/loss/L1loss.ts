@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { ModelNodes } from '@/nodes/model/Types';
+import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
@@ -9,8 +9,8 @@ export enum L1LossOptions {
   Reduction = 'Reduction'
 }
 export default class L1Loss extends Node {
-  type = ModelNodes.L1Loss;
-  name = ModelNodes.L1Loss;
+  type = OverviewNodes.L1Loss;
+  name = OverviewNodes.L1Loss;
 
   constructor() {
     super();

@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { ModelNodes } from '@/nodes/model/Types';
+import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
@@ -13,8 +13,8 @@ export enum TripletMarginLossOptions {
   Reduction = 'Reduction'
 }
 export default class TripletMarginLoss extends Node {
-  type = ModelNodes.TripletMarginLoss;
-  name = ModelNodes.TripletMarginLoss;
+  type = OverviewNodes.TripletMarginLoss;
+  name = OverviewNodes.TripletMarginLoss;
 
   constructor() {
     super();

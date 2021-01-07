@@ -1,4 +1,4 @@
-import { SmoothL1LossOptions } from '@/nodes/model/Smoothl1loss';
+import { SmoothL1LossOptions } from '@/nodes/overview/loss/Smoothl1loss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class SmoothL1Loss {

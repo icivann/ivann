@@ -1,4 +1,4 @@
-import { L1LossOptions } from '@/nodes/model/L1loss';
+import { L1LossOptions } from '@/nodes/overview/loss/L1loss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class L1Loss {
