@@ -8,7 +8,7 @@ export enum CustomOptions {
   Code = 'Code'
 }
 export default class Custom extends Node {
-  type = CommonNodes.Custom;
+  type: string = CommonNodes.Custom;
   name: string = CommonNodes.Custom;
 
   private inputNames: string[] = [];

@@ -27,7 +27,7 @@ export default class ConvTranspose1d extends Node {
     this.addOutputInterface('Output');
     this.addOption(ConvTranspose1dOptions.InChannels, TypeOptions.IntOption, 0);
     this.addOption(ConvTranspose1dOptions.OutChannels, TypeOptions.IntOption, 0);
-    this.addOption(ConvTranspose1dOptions.KernelSize, TypeOptions.VectorOption, [0]);
+    this.addOption(ConvTranspose1dOptions.KernelSize, TypeOptions.VectorOption, [3]);
     this.addOption(ConvTranspose1dOptions.Stride, TypeOptions.VectorOption, [1]);
     this.addOption(ConvTranspose1dOptions.Padding, TypeOptions.VectorOption, [0]);
     this.addOption(ConvTranspose1dOptions.OutputPadding, TypeOptions.VectorOption, [0]);
