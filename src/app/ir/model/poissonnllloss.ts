@@ -27,6 +27,6 @@ export default class PoissonNLLLoss {
   }
 
   public initCode(): string {
-    return `PoissonNLLLoss(LogInput=, ${this.LogInput}, Full=, ${this.Full}, SizeAverage=, ${this.SizeAverage}, Eps=, ${this.Eps}, Reduce=, ${this.Reduce}, Reduction=, ${this.Reduction})`;
+    return `PoissonNLLLoss(LogInput= ${this.LogInput}, Full= ${this.Full}, SizeAverage= ${this.SizeAverage}, Eps= ${this.Eps}, Reduce= ${this.Reduce}, Reduction= ${this.Reduction})`;
   }
 }

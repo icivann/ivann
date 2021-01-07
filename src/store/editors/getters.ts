@@ -4,7 +4,6 @@ import { EditorModels, EditorsState } from '@/store/editors/types';
 import EditorType from '@/EditorType';
 import { ModelNodes } from '@/nodes/model/Types';
 import { SaveWithNames } from '@/file/EditorAsJson';
-import { DataNodes } from '@/nodes/data/Types';
 import { FuncDiff, usedNodes } from '@/store/ManageCodevault';
 
 const editorGetters: GetterTree<EditorsState, RootState> = {

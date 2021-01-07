@@ -19,6 +19,6 @@ export default class AlphaDropout {
   }
 
   public initCode(): string {
-    return `AlphaDropout(P=, ${this.P}, Inplace=, ${this.Inplace})`;
+    return `AlphaDropout(P=${this.P}, Inplace=${this.Inplace})`;
   }
 }

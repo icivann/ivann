@@ -25,6 +25,6 @@ export default class InstanceNorm3d {
   }
 
   public initCode(): string {
-    return `InstanceNorm3d(NumFeatures=, (${this.NumFeatures}), Eps=, (${this.Eps}), Momentum=, (${this.Momentum}), Affine=, (${this.Affine}), TrackRunningStats=, (${this.TrackRunningStats}))`;
+    return `InstanceNorm3d(NumFeatures=(${this.NumFeatures}), Eps=(${this.Eps}), Momentum=(${this.Momentum}), Affine=(${this.Affine}), TrackRunningStats=(${this.TrackRunningStats}))`;
   }
 }

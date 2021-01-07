@@ -17,6 +17,6 @@ export default class Softshrink {
   }
 
   public initCode(): string {
-    return `Softshrink(Lambd=, ${this.Lambd})`;
+    return `Softshrink(Lambd=${this.Lambd})`;
   }
 }
