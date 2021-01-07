@@ -156,6 +156,12 @@ export default class Navbar extends Vue {
   .tab-button.selected {
     border-left-width: 4px;
     border-left-color: var(--blue);
+    transition-duration: 0.1s;
+  }
+
+  .tab-button.selected:hover {
+    border-left-color: #1B67E0;
+    transition-duration: 0.1s;
   }
 
   .tab-icon {
