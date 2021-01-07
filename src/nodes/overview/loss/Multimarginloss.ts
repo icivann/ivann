@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { ModelNodes } from '@/nodes/model/Types';
+import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
@@ -12,8 +12,8 @@ export enum MultiMarginLossOptions {
   Reduction = 'Reduction'
 }
 export default class MultiMarginLoss extends Node {
-  type = ModelNodes.MultiMarginLoss;
-  name = ModelNodes.MultiMarginLoss;
+  type = OverviewNodes.MultiMarginLoss;
+  name = OverviewNodes.MultiMarginLoss;
 
   constructor() {
     super();

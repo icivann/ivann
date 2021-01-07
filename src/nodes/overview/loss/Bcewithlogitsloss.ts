@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { ModelNodes } from '@/nodes/model/Types';
+import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
@@ -11,8 +11,8 @@ export enum BCEWithLogitsLossOptions {
   PosWeight = 'Pos weight'
 }
 export default class BCEWithLogitsLoss extends Node {
-  type = ModelNodes.BCEWithLogitsLoss;
-  name = ModelNodes.BCEWithLogitsLoss;
+  type = OverviewNodes.BCEWithLogitsLoss;
+  name = OverviewNodes.BCEWithLogitsLoss;
 
   constructor() {
     super();

@@ -47,7 +47,7 @@ import { OverviewNodes } from '@/nodes/overview/Types';
   },
 })
 export default class CustomTab extends Vue {
-  @Prop({ default: CommonNodes.Custom }) customNode: string = OverviewNodes.OverviewCustom;
+  @Prop({ default: CommonNodes.Custom }) customNode: string = OverviewNodes.Custom;
   private searchString = '';
 
   @Mutation('enterCodeVault') enterCodeVault!: () => void;

@@ -1,4 +1,4 @@
-import { BCELossOptions } from '@/nodes/model/Bceloss';
+import { BCELossOptions } from '@/nodes/overview/loss/Bceloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class BCELoss {

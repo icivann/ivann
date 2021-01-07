@@ -1,4 +1,4 @@
-import { PoissonNLLLossOptions } from '@/nodes/model/Poissonnllloss';
+import { PoissonNLLLossOptions } from '@/nodes/overview/loss/Poissonnllloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class PoissonNLLLoss {

@@ -1,4 +1,4 @@
-import { CTCLossOptions } from '@/nodes/model/Ctcloss';
+import { CTCLossOptions } from '@/nodes/overview/loss/Ctcloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class CTCLoss {

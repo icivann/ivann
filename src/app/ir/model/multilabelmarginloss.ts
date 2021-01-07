@@ -1,4 +1,4 @@
-import { MultiLabelMarginLossOptions } from '@/nodes/model/Multilabelmarginloss';
+import { MultiLabelMarginLossOptions } from '@/nodes/overview/loss/Multilabelmarginloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class MultiLabelMarginLoss {

@@ -1,4 +1,4 @@
-import { HingeEmbeddingLossOptions } from '@/nodes/model/Hingeembeddingloss';
+import { HingeEmbeddingLossOptions } from '@/nodes/overview/loss/Hingeembeddingloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class HingeEmbeddingLoss {

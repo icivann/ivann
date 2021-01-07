@@ -4,7 +4,7 @@ export enum OverviewCategories {
   Custom = 'Custom',
   Train = 'Train',
   Optimizer = 'Optimizer',
-  Loss = 'Loss',
+  LossFunctions = 'Loss'
 }
 
 export enum OverviewNodes {
@@ -12,6 +12,24 @@ export enum OverviewNodes {
   DataNode = 'DataNode',
   TrainClassifier = 'TrainClassifier',
   Adadelta = 'Adadelta',
-  OverviewCustom = 'OverviewCustom',
-  Nllloss = 'NLLLoss',
+  Custom = 'Custom',
+  // loss functions
+  NLLLoss= 'NLLLoss',
+  MultiMarginLoss = 'MultiMarginLoss',
+  MultiLabelSoftMarginLoss = 'MultiLabelSoftMarginLoss',
+  MultiLabelMarginLoss = 'MultiLabelMarginLoss',
+  MSELoss = 'MSELoss',
+  L1Loss= 'L1Loss',
+  KLDivLoss = 'KLDivLoss',
+  HingeEmbeddingLoss = 'HingeEmbeddingLoss',
+  EmbeddingBag = 'EmbeddingBag',
+  CTCLoss = 'CTCLoss',
+  CrossEntropyLoss = 'CrossEntropyLoss',
+  CosineEmbeddingLoss = 'CosineEmbeddingLoss',
+  BCEWithLogitsLoss = 'BCEWithLogitsLoss',
+  BCELoss = 'BCELoss',
+  MarginRankingLoss = 'MarginRankingLoss',
+  TripletMarginLoss = 'TripletMarginLoss',
+  SmoothL1Loss= 'SmoothL1Loss',
+  PoissonNLLLoss = 'PoissonNLLLoss',
 }

@@ -8,7 +8,7 @@ export enum OverviewCustomOptions {
   TRAINER = 'Trainer',
 }
 export default class OverviewCustom extends Custom {
-  type = OverviewNodes.OverviewCustom;
+  type = OverviewNodes.Custom;
 
   constructor(parsedFunction?: ParsedFunction) {
     super(parsedFunction);

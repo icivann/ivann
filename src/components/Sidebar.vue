@@ -52,7 +52,7 @@ import { OverviewNodes } from '@/nodes/overview/Types';
 })
 export default class Sidebar extends Vue {
   private editorType = EditorType;
-  private overviewCustomNode = OverviewNodes.OverviewCustom;
+  private overviewCustomNode = OverviewNodes.Custom;
 }
 </script>
 

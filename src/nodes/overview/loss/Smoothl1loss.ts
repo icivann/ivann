@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { ModelNodes } from '@/nodes/model/Types';
+import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
@@ -10,8 +10,8 @@ export enum SmoothL1LossOptions {
   Beta = 'Beta'
 }
 export default class SmoothL1Loss extends Node {
-  type = ModelNodes.SmoothL1Loss;
-  name = ModelNodes.SmoothL1Loss;
+  type = OverviewNodes.SmoothL1Loss;
+  name = OverviewNodes.SmoothL1Loss;
 
   constructor() {
     super();

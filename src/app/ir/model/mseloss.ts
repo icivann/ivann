@@ -1,4 +1,4 @@
-import { MSELossOptions } from '@/nodes/model/Mseloss';
+import { MSELossOptions } from '@/nodes/overview/loss/Mseloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class MSELoss {

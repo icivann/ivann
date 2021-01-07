@@ -1,4 +1,4 @@
-import { BCEWithLogitsLossOptions } from '@/nodes/model/Bcewithlogitsloss';
+import { BCEWithLogitsLossOptions } from '@/nodes/overview/loss/Bcewithlogitsloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class BCEWithLogitsLoss {

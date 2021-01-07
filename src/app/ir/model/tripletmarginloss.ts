@@ -1,4 +1,4 @@
-import { TripletMarginLossOptions } from '@/nodes/model/Tripletmarginloss';
+import { TripletMarginLossOptions } from '@/nodes/overview/loss/Tripletmarginloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class TripletMarginLoss {
