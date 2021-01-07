@@ -22,13 +22,15 @@ export enum BuiltinRegularizer {
 }
 
 export enum Reduction{
-  None ='none', Mean = 'mean', Sum = 'sum'
+  None = 'none', mean = 'mean', sum = 'sum'
 }
 export function getReduction(str: string): Reduction {
+  console.log(str);
+  console.log(Reduction[str as keyof typeof Reduction]);
   return Reduction[str as keyof typeof Reduction];
 }
 export enum Mode{
-  None ='none', Mean = 'mean', Sum = 'sum'
+  None = 'none', mean = 'mean', sum = 'sum'
 }
 export function getMode(str: string): Mode {
   return Mode[str as keyof typeof Mode];

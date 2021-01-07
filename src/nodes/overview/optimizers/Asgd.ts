@@ -16,7 +16,7 @@ export default class ASGD extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+    this.addInputInterface('Model');
     this.addOutputInterface('Output');
     this.addOption(ASGDOptions.Lr, TypeOptions.SliderOption, 0.01);
     this.addOption(ASGDOptions.Lambd, TypeOptions.SliderOption, 0.0001);

@@ -31,6 +31,6 @@ export default class Embedding {
   }
 
   public initCode(): string {
-    return `Embedding(NumEmbeddings=${this.NumEmbeddings}, EmbeddingDim=${this.EmbeddingDim}, PaddingIdx= ${this.PaddingIdx}, MaxNorm= ${this.MaxNorm}, NormType= ${this.NormType}, ScaleGradByFreq= ${this.ScaleGradByFreq}, Sparse= ${this.Sparse}, Weight= ${this.Weight})`;
+    return `Embedding(NumEmbeddings=${this.NumEmbeddings}, EmbeddingDim=${this.EmbeddingDim}, PaddingIdx= ${this.PaddingIdx}, MaxNorm= ${this.MaxNorm}, NormType= ${this.NormType}, ScaleGradByFreq= ${this.ScaleGradByFreq}, Sparse= ${this.Sparse}, weight= ${this.Weight})`;
   }
 }

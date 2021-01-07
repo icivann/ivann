@@ -16,7 +16,7 @@ export default class AdamW extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+    this.addInputInterface('Model');
     this.addOutputInterface('Output');
     this.addOption(AdamWOptions.Lr, TypeOptions.SliderOption, 0.001);
     this.addOption(AdamWOptions.Betas, TypeOptions.VectorOption, [0.9, 0.999]);

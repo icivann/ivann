@@ -20,7 +20,7 @@ export default class SparseAdam {
     );
   }
 
-  public initCode(): string {
-    return `SparseAdam(lr=${this.Lr}, betas=${this.Betas}, eps=${this.Eps})`;
+  public initCode(params: string): string[] {
+    return [`optim.SparseAdam(${params[0]}.parameters(), lr=${this.Lr}, betas=${this.Betas}, eps=${this.Eps})`];
   }
 }

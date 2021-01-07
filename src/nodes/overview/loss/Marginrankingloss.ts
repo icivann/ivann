@@ -2,6 +2,8 @@ import { Node } from '@baklavajs/core';
 import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
+import { valuesOf } from '@/app/util';
+import { Reduction } from '@/app/ir/irCommon';
 
 export enum MarginRankingLossOptions {
   Margin = 'Margin',
@@ -15,11 +17,11 @@ export default class MarginRankingLoss extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+
     this.addOutputInterface('Output');
     this.addOption(MarginRankingLossOptions.Margin, TypeOptions.SliderOption, 0.0);
     this.addOption(MarginRankingLossOptions.SizeAverage, TypeOptions.IntOption, 0);
     this.addOption(MarginRankingLossOptions.Reduce, TypeOptions.IntOption, 0);
-    this.addOption(MarginRankingLossOptions.Reduction, TypeOptions.DropdownOption, 'mean');
+    this.addOption(MarginRankingLossOptions.Reduction, TypeOptions.DropdownOption, 'mean', undefined, { items: valuesOf(Reduction) });
   }
 }

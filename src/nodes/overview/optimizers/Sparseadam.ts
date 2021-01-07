@@ -14,7 +14,7 @@ export default class SparseAdam extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+    this.addInputInterface('Model');
     this.addOutputInterface('Output');
     this.addOption(SparseAdamOptions.Lr, TypeOptions.SliderOption, 0.001);
     this.addOption(SparseAdamOptions.Betas, TypeOptions.VectorOption, [0.9, 0.999]);

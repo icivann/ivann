@@ -24,7 +24,7 @@ export default class ASGD {
     );
   }
 
-  public initCode(): string {
-    return `ASGD(lr=${this.Lr}, lambd=${this.Lambd}, alpha=${this.Alpha}, t0=${this.T0}, weight_decay=${this.WeightDecay})`;
+  public initCode(params: string): string[] {
+    return [`optim.ASGD(${params[0]}.parameters(), lr=${this.Lr}, lambd=${this.Lambd}, alpha=${this.Alpha}, t0=${this.T0}, weight_decay=${this.WeightDecay})`];
   }
 }

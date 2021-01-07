@@ -29,6 +29,6 @@ export default class GRU {
   }
 
   public initCode(): string {
-    return `GRU(InputSize= ${this.InputSize}, HiddenSize= ${this.HiddenSize}, NumLayers= ${this.NumLayers}, Bias= ${this.Bias}, BatchFirst= ${this.BatchFirst}, Dropout= ${this.Dropout}, Bidirectional= ${this.Bidirectional})`;
+    return `GRU(InputSize=${this.InputSize}, HiddenSize=${this.HiddenSize}, NumLayers=${this.NumLayers}, Bias=${this.Bias}, BatchFirst=${this.BatchFirst}, Dropout=${this.Dropout}, Bidirectional=${this.Bidirectional})`;
   }
 }

@@ -14,7 +14,7 @@ export default class Rprop extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+    this.addInputInterface('Model');
     this.addOutputInterface('Output');
     this.addOption(RpropOptions.Lr, TypeOptions.SliderOption, 0.01);
     this.addOption(RpropOptions.Etas, TypeOptions.VectorOption, [0.5, 1.2]);

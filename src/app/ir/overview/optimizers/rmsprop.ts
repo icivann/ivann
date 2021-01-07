@@ -26,7 +26,7 @@ export default class RMSprop {
     );
   }
 
-  public initCode(): string {
-    return `RMSprop(lr=${this.Lr}, alpha=${this.Alpha}, eps=${this.Eps}, weight_decay=${this.WeightDecay}, momentum=${this.Momentum}, centered=${this.Centered})`;
+  public initCode(params: string): string[] {
+    return [`optim.RMSprop(${params[0]}.parameters(), lr=${this.Lr}, alpha=${this.Alpha}, eps=${this.Eps}, weight_decay=${this.WeightDecay}, momentum=${this.Momentum}, centered=${this.Centered})`];
   }
 }

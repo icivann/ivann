@@ -16,6 +16,6 @@ export default class Softmax {
   }
 
   public initCode(): string {
-    return `Softmax(dim= ${this.dim})`;
+    return `Softmax(dim=${this.dim})`;
   }
 }

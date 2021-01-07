@@ -24,7 +24,7 @@ export default class Adagrad {
     );
   }
 
-  public initCode(): string {
-    return `Adagrad(lr=${this.Lr}, lr_decay=${this.LrDecay}, weight_decay=${this.WeightDecay}, initial_accumulator_value=${this.InitialAccumulatorValue}, eps=${this.Eps})`;
+  public initCode(params: string): string[] {
+    return [`optim.Adagrad(${params[0]}.parameters(), lr=${this.Lr}, lr_decay=${this.LrDecay}, weight_decay=${this.WeightDecay}, initial_accumulator_value=${this.InitialAccumulatorValue}, eps=${this.Eps})`];
   }
 }

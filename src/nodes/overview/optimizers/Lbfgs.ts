@@ -17,7 +17,7 @@ export default class LBFGS extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+    this.addInputInterface('Model');
     this.addOutputInterface('Output');
     this.addOption(LBFGSOptions.Lr, TypeOptions.SliderOption, 1);
     this.addOption(LBFGSOptions.MaxIter, TypeOptions.IntOption, 20);

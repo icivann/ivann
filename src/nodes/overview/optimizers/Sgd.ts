@@ -16,7 +16,7 @@ export default class SGD extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+    this.addInputInterface('Model');
     this.addOutputInterface('Output');
     this.addOption(SGDOptions.Lr, TypeOptions.SliderOption, 0);
     this.addOption(SGDOptions.Momentum, TypeOptions.SliderOption, 0);

@@ -20,7 +20,7 @@ export default class Rprop {
     );
   }
 
-  public initCode(): string {
-    return `Rprop(lr=${this.Lr}, etas=${this.Etas}, step_sizes=${this.StepSizes})`;
+  public initCode(params: string): string[] {
+    return [`optim.Rprop(${params[0]}.parameters(), lr=${this.Lr}, etas=${this.Etas}, step_sizes=${this.StepSizes})`];
   }
 }

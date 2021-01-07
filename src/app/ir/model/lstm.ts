@@ -29,6 +29,6 @@ export default class LSTM {
   }
 
   public initCode(): string {
-    return `LSTM(InputSize= ${this.InputSize}, HiddenSize= ${this.HiddenSize}, NumLayers= ${this.NumLayers}, Bias= ${this.Bias}, BatchFirst= ${this.BatchFirst}, Dropout= ${this.Dropout}, Bidirectional= ${this.Bidirectional})`;
+    return `LSTM(InputSize=${this.InputSize}, HiddenSize=${this.HiddenSize}, NumLayers= ${this.NumLayers}, Bias= ${this.Bias}, BatchFirst= ${this.BatchFirst}, Dropout= ${this.Dropout}, Bidirectional= ${this.Bidirectional})`;
   }
 }

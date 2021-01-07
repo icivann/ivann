@@ -17,7 +17,7 @@ export default class RMSprop extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+    this.addInputInterface('Model');
     this.addOutputInterface('Output');
     this.addOption(RMSpropOptions.Lr, TypeOptions.SliderOption, 0.01);
     this.addOption(RMSpropOptions.Alpha, TypeOptions.SliderOption, 0.99);

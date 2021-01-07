@@ -25,6 +25,6 @@ export default class TransformerDecoderLayer {
   }
 
   public initCode(): string {
-    return `TransformerDecoderLayer(DModel= ${this.DModel}, Nhead= ${this.Nhead}, DimFeedforward= ${this.DimFeedforward}, Dropout= ${this.Dropout}, Activation= ${this.Activation})`;
+    return `TransformerDecoderLayer(DModel=${this.DModel}, Nhead=${this.Nhead}, DimFeedforward=${this.DimFeedforward}, Dropout=${this.Dropout}, Activation=${this.Activation})`;
   }
 }

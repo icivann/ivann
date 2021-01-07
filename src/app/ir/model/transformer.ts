@@ -32,6 +32,6 @@ export default class Transformer {
   }
 
   public initCode(): string {
-    return `Transformer(d_model= ${this.d_model}, nhead= ${this.nhead}, num_encoder_layers= ${this.num_encoder_layers}, num_decoder_layers= ${this.num_decoder_layers}, dim_feedforward= ${this.dim_feedforward}, dropout= ${this.dropout}, activation= ${this.activation}, custom_encoder= ${this.custom_encoder}, custom_decoder= ${this.custom_decoder})`;
+    return `Transformer(d_model=${this.d_model}, nhead=${this.nhead}, num_encoder_layers=${this.num_encoder_layers}, num_decoder_layers=${this.num_decoder_layers}, dim_feedforward=${this.dim_feedforward}, dropout=${this.dropout}, activation=${this.activation}, custom_encoder=${this.custom_encoder}, custom_decoder=${this.custom_decoder})`;
   }
 }

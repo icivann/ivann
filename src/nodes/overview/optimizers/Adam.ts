@@ -16,7 +16,7 @@ export default class Adam extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+    this.addInputInterface('Model');
     this.addOutputInterface('Output');
     this.addOption(AdamOptions.Lr, TypeOptions.SliderOption, 0.001);
     this.addOption(AdamOptions.Betas, TypeOptions.VectorOption, [0.9, 0.999]);

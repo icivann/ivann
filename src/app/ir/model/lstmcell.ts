@@ -21,6 +21,6 @@ export default class LSTMCell {
   }
 
   public initCode(): string {
-    return `LSTMCell(InputSize= ${this.InputSize}, HiddenSize= ${this.HiddenSize}, Bias= ${this.Bias})`;
+    return `LSTMCell(InputSize=${this.InputSize}, HiddenSize=${this.HiddenSize}, Bias=${this.Bias})`;
   }
 }

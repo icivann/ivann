@@ -8,7 +8,7 @@ import Graph from '@/app/ir/Graph';
 import Concat from '@/app/ir/Concat';
 import Custom from '@/app/ir/Custom';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
-import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
+import Adadelta from '@/app/ir/overview/optimizers/adadelta';
 import Model from '@/app/ir/model/model';
 
 import { indent, getNodeType } from '@/app/codegen/common';

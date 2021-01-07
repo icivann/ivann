@@ -16,7 +16,7 @@ export default class Adagrad extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+    this.addInputInterface('Model');
     this.addOutputInterface('Output');
     this.addOption(AdagradOptions.Lr, TypeOptions.SliderOption, 0.001);
     this.addOption(AdagradOptions.LrDecay, TypeOptions.SliderOption, 0);

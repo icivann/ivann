@@ -26,7 +26,7 @@ export default class LBFGS {
     );
   }
 
-  public initCode(): string {
-    return `LBFGS(lr=${this.Lr}, max_iter=${this.MaxIter}, max_eval=${this.MaxEval}, tolerance_grad=${this.ToleranceGrad}, tolerance_change=${this.ToleranceChange}, history_size=${this.HistorySize})`;
+  public initCode(params: string): string[] {
+    return [`optim.LBFGS(${params[0]}.parameters(), lr=${this.Lr}, max_iter=${this.MaxIter}, max_eval=${this.MaxEval}, tolerance_grad=${this.ToleranceGrad}, tolerance_change=${this.ToleranceChange}, history_size=${this.HistorySize})`];
   }
 }

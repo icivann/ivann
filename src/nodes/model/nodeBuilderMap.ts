@@ -25,7 +25,7 @@ import Softmax from '@/app/ir/model/softmax';
 import ToTensor from '@/app/ir/data/ToTensor';
 import Grayscale from '@/app/ir/data/Grayscale';
 import OutData from '@/app/ir/data/OutData';
-import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
+import Adadelta from '@/app/ir/overview/optimizers/adadelta';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import Model from '@/app/ir/model/model';
 import Data from '@/app/ir/data/Data';

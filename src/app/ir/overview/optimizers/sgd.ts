@@ -24,7 +24,7 @@ export default class SGD {
     );
   }
 
-  public initCode(): string {
-    return `SGD(lr=${this.Lr}, momentum=${this.Momentum}, dampening=${this.Dampening}, weight_decay=${this.WeightDecay}, nesterov=${this.Nesterov})`;
+  public initCode(params: string): string[] {
+    return [`optim.SGD(${params[0]}.parameters(), lr=${this.Lr}, momentum=${this.Momentum}, dampening=${this.Dampening}, weight_decay=${this.WeightDecay}, nesterov=${this.Nesterov})`];
   }
 }

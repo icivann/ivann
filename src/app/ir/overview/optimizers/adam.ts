@@ -24,7 +24,7 @@ export default class Adam {
     );
   }
 
-  public initCode(): string {
-    return `Adam(lr=${this.Lr}, betas=${this.Betas}, eps=${this.Eps}, weight_decay=${this.WeightDecay}, amsgrad=${this.Amsgrad})`;
+  public initCode(params: string): string[] {
+    return [`optim.Adam(${params[0]}.parameters(), lr=${this.Lr}, betas=${this.Betas}, eps=${this.Eps}, weight_decay=${this.WeightDecay}, amsgrad=${this.Amsgrad})`];
   }
 }

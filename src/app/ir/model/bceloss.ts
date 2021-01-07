@@ -23,6 +23,6 @@ export default class BCELoss {
   }
 
   public initCode(): string {
-    return `BCELoss(Weight= ${this.Weight}, SizeAverage= ${this.SizeAverage}, Reduce= ${this.Reduce}, Reduction= ${this.Reduction})`;
+    return `BCELoss(weight= ${this.Weight}, size_average= ${this.SizeAverage}, reduce= ${this.Reduce}, reduction= ${this.Reduction})`;
   }
 }

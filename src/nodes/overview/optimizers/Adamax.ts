@@ -15,7 +15,7 @@ export default class Adamax extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+    this.addInputInterface('Model');
     this.addOutputInterface('Output');
     this.addOption(AdamaxOptions.Lr, TypeOptions.SliderOption, 0.002);
     this.addOption(AdamaxOptions.Betas, TypeOptions.VectorOption, [0.9, 0.999]);
