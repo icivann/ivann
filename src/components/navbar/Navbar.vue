@@ -22,7 +22,11 @@
       @mouseleave="hideNavbarContextualMenu()"
       data-v-step="welcome"
     >
-      <img class="navbar-logo tab-icon" src="@/assets/images/nn_logo.png" alt="IVANN"/>
+      <img
+        class="navbar-logo tab-icon"
+        src="@/assets/images/nn_logo.svg"
+        alt="IVANN"
+      />
       <NavbarContextualMenu
         class="navbar-contextual-menu"
         v-if="isModelContextualMenuOpen"
@@ -132,57 +136,57 @@ export default class Navbar extends Vue {
 </script>
 
 <style scoped>
-  .left {
-    background: var(--background);
-    color: var(--foreground);
-    border-right: 0.08rem solid var(--grey);
-  }
+.left {
+  background: var(--background);
+  color: var(--foreground);
+  border-right: 0.08rem solid var(--grey);
+}
 
-  .tab-button {
-    padding: 0.75rem 0;
-    transition-duration: 0.1s;
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-left-color: var(--background);
-  }
+.tab-button {
+  padding: 0.75rem 0;
+  transition-duration: 0.1s;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: var(--background);
+}
 
-  .tab-button:hover {
-    background: #1c1c1c;
-    transition-duration: 0.1s;
-    border-left-color: var(--blue);
-    cursor: pointer;
-  }
+.tab-button:hover {
+  background: #1c1c1c;
+  transition-duration: 0.1s;
+  border-left-color: var(--blue);
+  cursor: pointer;
+}
 
-  .tab-button.selected {
-    border-left-width: 4px;
-    border-left-color: var(--blue);
-    transition-duration: 0.1s;
-  }
+.tab-button.selected {
+  border-left-width: 4px;
+  border-left-color: var(--blue);
+  transition-duration: 0.1s;
+}
 
-  .tab-button.selected:hover {
-    border-left-color: #1B67E0;
-    transition-duration: 0.1s;
-  }
+.tab-button.selected:hover {
+  border-left-color: #1B67E0;
+  transition-duration: 0.1s;
+}
 
-  .tab-icon {
-    font-size: 1.5rem;
-    height: 1.5rem;
-  }
+.tab-icon {
+  font-size: 1.5rem;
+  height: 1.5rem;
+}
 
-  hr {
-    border-top: 0.1rem solid var(--dark-grey) !important;
-  }
+hr {
+  border-top: 0.1rem solid var(--dark-grey) !important;
+}
 
-  .build {
-    margin-top: 1rem;
-  }
+.build {
+  margin-top: 1rem;
+}
 
-  .navbar-contextual-menu {
-    position: absolute;
-    margin-top: -35px;
-    left: 59px;
-    background: var(--background);
-    color: var(--foreground);
-    z-index: 1;
-  }
+.navbar-contextual-menu {
+  position: absolute;
+  margin-top: -35px;
+  left: 59px;
+  background: var(--background);
+  color: var(--foreground);
+  z-index: 1;
+}
 </style>

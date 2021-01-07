@@ -1,7 +1,7 @@
 <template>
   <div class="titlebar">
     <div class="logo">
-      <img class="img-fluid titlebar-logo mr-2" src="@/assets/images/nn_logo.png" alt="IVANN"/>
+      <img class="img-fluid titlebar-logo mr-2" src="@/assets/images/nn_logo.svg" alt="IVANN"/>
       <span class="text">IVANN</span>
     </div>
     <div class="buttons">
@@ -201,10 +201,12 @@ export default class Titlebar extends Vue {
   }
 
   .titlebar-logo {
-    height: 1.2rem;
+    height: 1.6rem;
   }
 
   .text {
+    position: relative;
+    top: 0.15rem;
     color: var(--foreground);
   }
 
