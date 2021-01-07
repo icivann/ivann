@@ -27,7 +27,7 @@ export default class ConvTranspose3d extends Node {
     this.addOutputInterface('Output');
     this.addOption(ConvTranspose3dOptions.InChannels, TypeOptions.IntOption, 0);
     this.addOption(ConvTranspose3dOptions.OutChannels, TypeOptions.IntOption, 0);
-    this.addOption(ConvTranspose3dOptions.KernelSize, TypeOptions.VectorOption, [0, 0, 0]);
+    this.addOption(ConvTranspose3dOptions.KernelSize, TypeOptions.VectorOption, [3, 3, 3]);
     this.addOption(ConvTranspose3dOptions.Stride, TypeOptions.VectorOption, [1, 1, 1]);
     this.addOption(ConvTranspose3dOptions.Padding, TypeOptions.VectorOption, [0, 0, 0]);
     this.addOption(ConvTranspose3dOptions.OutputPadding, TypeOptions.VectorOption, [0, 0, 0]);

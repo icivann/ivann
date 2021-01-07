@@ -22,7 +22,7 @@ export default class Adamax {
     );
   }
 
-  public initCode(params: string): string[] {
+  public initCode(params: string[]): string[] {
     return [`optim.Adamax(${params[0]}.parameters(), lr=${this.Lr}, betas=${this.Betas}, eps=${this.Eps}, weight_decay=${this.WeightDecay})`];
   }
 }

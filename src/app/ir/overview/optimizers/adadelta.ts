@@ -21,7 +21,7 @@ export default class Adadelta {
     );
   }
 
-  public initCode(params: string): string[] {
+  public initCode(params: string[]): string[] {
     return [`optim.Adadelta(${params[0]}.parameters(), lr=${this.Lr}, rho=${this.Rho}, eps=${this.Eps}, weight_decay=${this.WeightDecay})`];
   }
 }

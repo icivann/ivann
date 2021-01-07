@@ -19,6 +19,7 @@ import Dropout3d from '@/nodes/model/Dropout3d';
 import Transformer from '@/nodes/model/Transformer';
 import Softmin from '@/nodes/model/Softmin';
 import Softmax from '@/nodes/model/Softmax';
+import Flatten from '@/nodes/model/Flatten';
 import Bilinear from '@/nodes/model/Bilinear';
 import Linear from '@/nodes/model/Linear';
 import { Editor } from '@baklavajs/core';
@@ -429,6 +430,10 @@ export default class ModelCanvas extends AbstractCanvas {
         {
           name: ModelNodes.Concat,
           node: Concat,
+        },
+        {
+          name: ModelNodes.Flatten,
+          node: Flatten,
         },
       ],
     },

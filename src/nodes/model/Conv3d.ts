@@ -26,7 +26,7 @@ export default class Conv3d extends Node {
     this.addOutputInterface('Output');
     this.addOption(Conv3dOptions.InChannels, TypeOptions.IntOption, 0);
     this.addOption(Conv3dOptions.OutChannels, TypeOptions.IntOption, 0);
-    this.addOption(Conv3dOptions.KernelSize, TypeOptions.VectorOption, [0, 0, 0]);
+    this.addOption(Conv3dOptions.KernelSize, TypeOptions.VectorOption, [3, 3, 3]);
     this.addOption(Conv3dOptions.Stride, TypeOptions.VectorOption, [1, 1, 1]);
     this.addOption(Conv3dOptions.Padding, TypeOptions.VectorOption, [0, 0, 0]);
     this.addOption(Conv3dOptions.Dilation, TypeOptions.VectorOption, [1, 1, 1]);

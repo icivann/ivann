@@ -7,6 +7,7 @@ import Adadelta from '@/nodes/overview/optimizers/Adadelta';
 import { Data } from '@/nodes/overview/Data';
 import { Editor } from '@baklavajs/core';
 import OverviewCustom from '@/nodes/overview/OverviewCustom';
+import { CommonNodes } from '@/nodes/common/Types';
 
 import TripletMarginLoss from '@/nodes/overview/loss/Tripletmarginloss';
 import MultiMarginLoss from '@/nodes/overview/loss/Multimarginloss';
@@ -200,6 +201,7 @@ export default class OverviewCanvas extends AbstractCanvas {
   ];
 
   customNodeType = OverviewCustom;
+  customNodeName = OverviewNodes.Custom;
 
   public registerNodes(editor: Editor) {
     super.registerNodes(editor);
