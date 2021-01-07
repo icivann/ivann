@@ -1,4 +1,4 @@
-import { KLDivLossOptions } from '@/nodes/model/Kldivloss';
+import { KLDivLossOptions } from '@/nodes/overview/loss/Kldivloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class KLDivLoss {

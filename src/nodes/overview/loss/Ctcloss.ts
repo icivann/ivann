@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { ModelNodes } from '@/nodes/model/Types';
+import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
@@ -9,8 +9,8 @@ export enum CTCLossOptions {
   ZeroInfinity = 'Zero infinity'
 }
 export default class CTCLoss extends Node {
-  type = ModelNodes.CTCLoss;
-  name = ModelNodes.CTCLoss;
+  type = OverviewNodes.CTCLoss;
+  name = OverviewNodes.CTCLoss;
 
   constructor() {
     super();

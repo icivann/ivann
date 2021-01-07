@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { ModelNodes } from '@/nodes/model/Types';
+import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
@@ -10,8 +10,8 @@ export enum KLDivLossOptions {
   LogTarget = 'Log target'
 }
 export default class KLDivLoss extends Node {
-  type = ModelNodes.KLDivLoss;
-  name = ModelNodes.KLDivLoss;
+  type = OverviewNodes.KLDivLoss;
+  name = OverviewNodes.KLDivLoss;
 
   constructor() {
     super();

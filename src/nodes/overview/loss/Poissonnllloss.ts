@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { ModelNodes } from '@/nodes/model/Types';
+import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
@@ -12,8 +12,8 @@ export enum PoissonNLLLossOptions {
   Reduction = 'Reduction'
 }
 export default class PoissonNLLLoss extends Node {
-  type = ModelNodes.PoissonNLLLoss;
-  name = ModelNodes.PoissonNLLLoss;
+  type = OverviewNodes.PoissonNLLLoss;
+  name = OverviewNodes.PoissonNLLLoss;
 
   constructor() {
     super();

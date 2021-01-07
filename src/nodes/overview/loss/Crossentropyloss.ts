@@ -1,5 +1,5 @@
 import { Node } from '@baklavajs/core';
-import { ModelNodes } from '@/nodes/model/Types';
+import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
 
@@ -11,8 +11,8 @@ export enum CrossEntropyLossOptions {
   Reduction = 'Reduction'
 }
 export default class CrossEntropyLoss extends Node {
-  type = ModelNodes.CrossEntropyLoss;
-  name = ModelNodes.CrossEntropyLoss;
+  type = OverviewNodes.CrossEntropyLoss;
+  name = OverviewNodes.CrossEntropyLoss;
 
   constructor() {
     super();

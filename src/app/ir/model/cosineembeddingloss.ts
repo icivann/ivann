@@ -1,4 +1,4 @@
-import { CosineEmbeddingLossOptions } from '@/nodes/model/Cosineembeddingloss';
+import { CosineEmbeddingLossOptions } from '@/nodes/overview/loss/Cosineembeddingloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class CosineEmbeddingLoss {

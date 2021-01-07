@@ -1,4 +1,4 @@
-import { MarginRankingLossOptions } from '@/nodes/model/Marginrankingloss';
+import { MarginRankingLossOptions } from '@/nodes/overview/loss/Marginrankingloss';
 import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class MarginRankingLoss {
