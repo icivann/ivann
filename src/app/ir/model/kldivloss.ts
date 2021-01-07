@@ -23,6 +23,6 @@ export default class KLDivLoss {
   }
 
   public initCode(): string {
-    return `KLDivLoss(SizeAverage=, ${this.SizeAverage}, Reduce=, ${this.Reduce}, Reduction=, ${this.Reduction}, LogTarget=, ${this.LogTarget})`;
+    return `KLDivLoss(SizeAverage= ${this.SizeAverage}, Reduce= ${this.Reduce}, Reduction= ${this.Reduction}, LogTarget= ${this.LogTarget})`;
   }
 }

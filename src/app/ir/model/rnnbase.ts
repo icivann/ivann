@@ -31,6 +31,6 @@ export default class RNNBase {
   }
 
   public initCode(): string {
-    return `RNNBase(Mode=, ${this.Mode}, InputSize=, ${this.InputSize}, HiddenSize=, ${this.HiddenSize}, NumLayers=, ${this.NumLayers}, Bias=, ${this.Bias}, BatchFirst=, ${this.BatchFirst}, Dropout=, ${this.Dropout}, Bidirectional=, ${this.Bidirectional})`;
+    return `RNNBase(Mode= ${this.Mode}, InputSize= ${this.InputSize}, HiddenSize= ${this.HiddenSize}, NumLayers= ${this.NumLayers}, Bias= ${this.Bias}, BatchFirst= ${this.BatchFirst}, Dropout= ${this.Dropout}, Bidirectional= ${this.Bidirectional})`;
   }
 }

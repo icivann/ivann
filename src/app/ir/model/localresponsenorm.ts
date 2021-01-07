@@ -23,6 +23,6 @@ export default class LocalResponseNorm {
   }
 
   public initCode(): string {
-    return `LocalResponseNorm(Size=, ${this.Size}, Alpha=, ${this.Alpha}, Beta=, ${this.Beta}, K=, ${this.K})`;
+    return `LocalResponseNorm(Size=${this.Size}, Alpha=${this.Alpha}, Beta=${this.Beta}, K=${this.K})`;
   }
 }

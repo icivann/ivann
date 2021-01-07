@@ -23,6 +23,6 @@ export default class MarginRankingLoss {
   }
 
   public initCode(): string {
-    return `MarginRankingLoss(Margin=, ${this.Margin}, SizeAverage=, ${this.SizeAverage}, Reduce=, ${this.Reduce}, Reduction=, ${this.Reduction})`;
+    return `MarginRankingLoss(Margin= ${this.Margin}, SizeAverage= ${this.SizeAverage}, Reduce= ${this.Reduce}, Reduction= ${this.Reduction})`;
   }
 }

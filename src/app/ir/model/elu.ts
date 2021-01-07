@@ -19,6 +19,6 @@ export default class ELU {
   }
 
   public initCode(): string {
-    return `ELU(Alpha=, ${this.Alpha}, Inplace=, ${this.Inplace})`;
+    return `ELU(Alpha=${this.Alpha}, Inplace=${this.Inplace})`;
   }
 }

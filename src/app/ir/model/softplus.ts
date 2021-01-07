@@ -19,6 +19,6 @@ export default class Softplus {
   }
 
   public initCode(): string {
-    return `Softplus(Beta=, ${this.Beta}, Threshold=, ${this.Threshold})`;
+    return `Softplus(Beta=${this.Beta}, Threshold=${this.Threshold})`;
   }
 }

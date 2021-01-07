@@ -25,6 +25,6 @@ export default class CrossEntropyLoss {
   }
 
   public initCode(): string {
-    return `CrossEntropyLoss(Weight=, ${this.Weight}, SizeAverage=, ${this.SizeAverage}, IgnoreIndex=, ${this.IgnoreIndex}, Reduce=, ${this.Reduce}, Reduction=, ${this.Reduction})`;
+    return `CrossEntropyLoss(Weight=${this.Weight}, SizeAverage=${this.SizeAverage}, IgnoreIndex=${this.IgnoreIndex}, Reduce=${this.Reduce}, Reduction=${this.Reduction})`;
   }
 }

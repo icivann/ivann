@@ -21,6 +21,6 @@ export default class PairwiseDistance {
   }
 
   public initCode(): string {
-    return `PairwiseDistance(P=, ${this.P}, Eps=, ${this.Eps}, Keepdim=, ${this.Keepdim})`;
+    return `PairwiseDistance(P= ${this.P}, Eps= ${this.Eps}, Keepdim= ${this.Keepdim})`;
   }
 }

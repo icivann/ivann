@@ -23,6 +23,6 @@ export default class FractionalMaxPool2d {
   }
 
   public initCode(): string {
-    return `FractionalMaxPool2d(KernelSize=, (${this.KernelSize}), OutputSize=, (${this.OutputSize}), OutputRatio=, (${this.OutputRatio}), ReturnIndices=, (${this.ReturnIndices}))`;
+    return `FractionalMaxPool2d(KernelSize=(${this.KernelSize}), OutputSize=(${this.OutputSize}), OutputRatio=(${this.OutputRatio}), ReturnIndices=(${this.ReturnIndices}))`;
   }
 }
