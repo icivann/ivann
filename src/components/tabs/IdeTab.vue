@@ -147,7 +147,8 @@ export default class IdeTab extends Vue {
 }
 
 #ace {
-  border-top: 1px solid var(--grey);
+  border: solid var(--grey);
+  border-width: 1px 0;
   height: calc(100%);
   font-size: 1em;
   font-family: monospace;
