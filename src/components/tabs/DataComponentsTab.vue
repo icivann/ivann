@@ -1,25 +1,27 @@
 <template>
-  <div>
-    <SearchBar @value-change="search"/>
-    <ExpandablePanel
-      :name="dataCategories.IO"
-      v-show="shouldRender('Input') || shouldRender('Output')"
-    >
-      <ButtonGrid>
-        <AddNodeButton :node="dataNodeTypes.OutData" name="Output"
-                       v-if="shouldRender('Output')"/>
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel v-for="(category) in renderedNodes" :key="category.category"
-                     :name="category.category" v-show="category.nodes.length > 0">
-      <ButtonGrid>
-        <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
-                       :node="node.name"
-                       :name="node.name"
-        />
-      </ButtonGrid>
-    </ExpandablePanel>
-  </div>
+  <Scrollable>
+    <Padded>
+      <SearchBar @value-change="search"/>
+      <ExpandablePanel
+        :name="dataCategories.IO"
+        v-show="shouldRender('Input') || shouldRender('Output')"
+      >
+        <ButtonGrid>
+          <AddNodeButton :node="dataNodeTypes.OutData" name="Output"
+                         v-if="shouldRender('Output')"/>
+        </ButtonGrid>
+      </ExpandablePanel>
+      <ExpandablePanel v-for="(category) in renderedNodes" :key="category.category"
+                       :name="category.category" v-show="category.nodes.length > 0">
+        <ButtonGrid>
+          <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
+                         :node="node.name"
+                         :name="node.name"
+          />
+        </ButtonGrid>
+      </ExpandablePanel>
+    </Padded>
+  </Scrollable>
 </template>
 
 <script lang="ts">
@@ -31,9 +33,13 @@ import { mapGetters } from 'vuex';
 import EditorManager from '@/EditorManager';
 import { DataCategories, DataNodes } from '@/nodes/data/Types';
 import SearchBar from '@/SearchBar.vue';
+import Padded from '@/components/wrappers/Padded.vue';
+import Scrollable from '@/components/wrappers/Scrollable.vue';
 
 @Component({
   components: {
+    Scrollable,
+    Padded,
     ExpandablePanel,
     AddNodeButton,
     ButtonGrid,
