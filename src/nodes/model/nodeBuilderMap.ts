@@ -124,6 +124,7 @@ import GRU from '@/app/ir/model/gru';
 import RNNCell from '@/app/ir/model/rnncell';
 import LSTMCell from '@/app/ir/model/lstmcell';
 import GRUCell from '@/app/ir/model/grucell';
+import DataCustom from '@/app/ir/data/DataCustom';
 
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
@@ -163,6 +164,7 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['DataNode', Data.build],
   ['LoadCsv', LoadCsv.build],
   ['LoadImages', LoadImages.build],
+  ['DataCustom', DataCustom.build as (r: Options) => MlNode],
   // OVERVIEW
   ['OverviewCustom', OverviewCustom.build as (r: Options) => MlNode],
   // Optimizers
