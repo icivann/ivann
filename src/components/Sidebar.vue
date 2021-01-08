@@ -21,7 +21,7 @@
         <DataComponentsTab/>
       </Tab>
       <Tab name="Custom">
-        <CustomTab/>
+        <CustomTab :custom-node="dataCustomNode" />
       </Tab>
     </Tabs>
   </div>
@@ -38,6 +38,7 @@ import ComponentsTab from '@/components/tabs/ComponentsTab.vue';
 import { mapGetters } from 'vuex';
 import DataComponentsTab from '@/components/tabs/DataComponentsTab.vue';
 import { OverviewNodes } from '@/nodes/overview/Types';
+import { DataNodes } from '@/nodes/data/Types';
 
 @Component({
   components: {
@@ -53,6 +54,7 @@ import { OverviewNodes } from '@/nodes/overview/Types';
 export default class Sidebar extends Vue {
   private editorType = EditorType;
   private overviewCustomNode = OverviewNodes.Custom;
+  private dataCustomNode = DataNodes.Custom;
 }
 </script>
 
