@@ -21,6 +21,6 @@ export default class CTCLoss {
   }
 
   public initCode(): string {
-    return `CTCLoss(blank= ${this.Blank}, reduction= ${this.Reduction}, zero_infinity= ${this.ZeroInfinity})`;
+    return `CTCLoss(blank=${this.Blank}, reduction='${this.Reduction}', zero_infinity=${this.ZeroInfinity})`;
   }
 }

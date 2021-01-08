@@ -19,6 +19,6 @@ export default class CELU {
   }
 
   public initCode(): string {
-    return `CELU(alpha= ${this.Alpha}, inplace= ${this.Inplace})`;
+    return `CELU(alpha=${this.Alpha}, inplace=${this.Inplace})`;
   }
 }

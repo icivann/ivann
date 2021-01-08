@@ -17,6 +17,6 @@ export default class Hardshrink {
   }
 
   public initCode(): string {
-    return `Hardshrink(lambd= ${this.Lambd})`;
+    return `Hardshrink(lambd=${this.Lambd})`;
   }
 }
