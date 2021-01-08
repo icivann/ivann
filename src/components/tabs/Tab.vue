@@ -1,16 +1,18 @@
 <template>
-  <div v-if="visible" class="tab" :class="padded && 'padded'">
+  <div v-if="visible" class="tab">
     <slot/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import Scrollable from '@/components/wrappers/Scrollable.vue';
 
-@Component
+@Component({
+  components: { Scrollable },
+})
 export default class Tab extends Vue {
   @Prop({ required: true }) readonly name!: string;
-  @Prop({ default: true }) readonly padded?: boolean;
   private visible = false;
 
   public setVisible(value: boolean) {
@@ -20,11 +22,8 @@ export default class Tab extends Vue {
 </script>
 
 <style scoped>
-  .padded {
-    margin: 1em;
-  }
-
   .tab {
     height: 100%;
+    overflow: hidden;
   }
 </style>

@@ -1,30 +1,32 @@
 <template>
-  <div>
-    <div
-      class="msg"
-      v-if="files.length === 0"
-      @click="enterCodeVault"
-    >
-      Click Here to Add Custom Functions
-    </div>
-    <SearchBar v-else @value-change="search"/>
-    <ExpandablePanel
-      v-for="(file) in renderedFiles"
-      :key="file.filename"
-      :name="file.filename"
-      v-show="searchString === '' || file.functions.length > 0"
-    >
-      <ButtonGrid>
-        <AddNodeButton
-          v-for="(func) in file.functions"
-          :key="func.name"
-          :node="customNode"
-          :name="func.name"
-          :options="func"
-        />
-      </ButtonGrid>
-    </ExpandablePanel>
-  </div>
+  <Scrollable>
+    <Padded>
+      <div
+        class="msg"
+        v-if="files.length === 0"
+        @click="enterCodeVault"
+      >
+        Click Here to Add Custom Functions
+      </div>
+      <SearchBar v-else @value-change="search"/>
+      <ExpandablePanel
+        v-for="(file) in renderedFiles"
+        :key="file.filename"
+        :name="file.filename"
+        v-show="searchString === '' || file.functions.length > 0"
+      >
+        <ButtonGrid>
+          <AddNodeButton
+            v-for="(func) in file.functions"
+            :key="func.name"
+            :node="customNode"
+            :name="func.name"
+            :options="func"
+          />
+        </ButtonGrid>
+      </ExpandablePanel>
+    </Padded>
+  </Scrollable>
 </template>
 
 <script lang="ts">
@@ -37,9 +39,13 @@ import { Getter, Mutation } from 'vuex-class';
 import SearchBar from '@/SearchBar.vue';
 import { ParsedFile } from '@/store/codeVault/types';
 import { OverviewNodes } from '@/nodes/overview/Types';
+import Scrollable from '@/components/wrappers/Scrollable.vue';
+import Padded from '@/components/wrappers/Padded.vue';
 
 @Component({
   components: {
+    Scrollable,
+    Padded,
     ExpandablePanel,
     AddNodeButton,
     ButtonGrid,

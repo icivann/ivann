@@ -1,7 +1,6 @@
 <template>
   <div class="vault">
     <Tabs
-      full-screen-tab="IDE"
       :selected-tab-index="tabIndex"
       @changeTab="switchTab"
     >
