@@ -163,9 +163,13 @@ export default class CustomNode extends Components.Node {
     }
     switch (severities[0]) {
       case Severity.Error:
-        return { 'box-shadow': '0 0 1px 2px var(--red)' };
-      case Severity.Warning: // WARN
-        return { 'box-shadow': '0 0 1px 2px var(--yellow)' };
+        return this.selected
+          ? { 'box-shadow': '0 0 1px 4px var(--red)' }
+          : { 'box-shadow': '0 0 1px 2px var(--red)' };
+      case Severity.Warning:
+        return this.selected
+          ? { 'box-shadow': '0 0 1px 3px var(--yellow)' }
+          : { 'box-shadow': '0 0 1px 1px var(--yellow)' };
       default:
         return {};
     }
@@ -218,7 +222,6 @@ export default class CustomNode extends Components.Node {
         return { background: 'var(--green)' };
       case ModelNodes.InModel:
       case ModelNodes.OutModel:
-      case DataNodes.InData:
       case DataNodes.OutData:
       case OverviewNodes.TrainClassifier:
         return { background: 'var(--purple)' };

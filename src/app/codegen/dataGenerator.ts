@@ -1,8 +1,9 @@
 import GraphNode from '@/app/ir/GraphNode';
 import Graph from '@/app/ir/Graph';
-import InData from '@/app/ir/data/InData';
 import ToTensor from '@/app/ir/data/ToTensor';
 import Grayscale from '@/app/ir/data/Grayscale';
+import LoadCsv from '@/app/ir/data/LoadCsv';
+import LoadImages from '@/app/ir/data/LoadImages';
 
 import { indent, getNodeType } from '@/app/codegen/common';
 
@@ -15,6 +16,7 @@ function getNodeName(node: GraphNode): string {
     // when I've already checked with nodeNames.has
     return nodeNames.get(node) ?? '';
   }
+
   const nodeType = getNodeType(node);
   const counter = (nodeTypeCounters.get(nodeType) ?? 0) + 1;
   nodeTypeCounters.set(nodeType, counter);
@@ -79,21 +81,41 @@ function generateDataTransformCode(
   return [[], branch];
 }
 
+function isDataLoadNode(node: GraphNode) {
+  return node.mlNode instanceof LoadCsv || node.mlNode instanceof LoadImages;
+}
+
+function generateInputCode(node: GraphNode): string[] {
+  if (node.mlNode instanceof LoadCsv || node.mlNode instanceof LoadImages) {
+    return node.mlNode.initCode(getNodeName(node)).map((line) => `${indent}${indent}${line}`);
+  }
+
+  return [];
+}
+
+function generateInputCallCode(node: GraphNode): string[] {
+  if (node.mlNode instanceof LoadCsv || node.mlNode instanceof LoadImages) {
+    return node.mlNode.callCode(getNodeName(node)).map((line) => `${indent}${indent}${line}`);
+  }
+
+  return [];
+}
+
 function generateData(graph: Graph, dataName: string): string {
   const header = `class ${dataName}(Dataset):`;
 
-  const inputs = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof InData);
+  const inputs = graph.nodesAsArray.filter((item: GraphNode) => isDataLoadNode(item));
   const inputNames = inputs.map((node) => getNodeName(node));
-  const init: string[] = [`${indent}def __init__(self, ${inputNames.join(', ')}):`];
+  let init: string[] = [`${indent}def __init__(self, ${inputNames.map((i) => `${i}_path`).join(', ')}):`];
 
-  inputNames.forEach((name) => {
-    init.push(`${indent}${indent}self.${name} = ${name}`);
+  inputs.forEach((node) => {
+    init = init.concat(generateInputCode(node));
   });
 
   const len: string[] = [`${indent}def __len__(self):`];
   len.push(`${indent}${indent}return len(self.${inputNames[0]})`);
 
-  const getitem: string[] = [`${indent}def __getitem__(self, idx):`];
+  let getitem: string[] = [`${indent}def __getitem__(self, idx):`];
 
   const transforms: string[][] = [];
 
@@ -117,14 +139,17 @@ function generateData(graph: Graph, dataName: string): string {
   const transformsInitCode: string[] = [];
   const transformsCallCode: string[] = [];
   for (let i = 0; i < inputs.length; i += 1) {
-    const input = inputNames[i];
+    const input = inputs[i];
+    const inputName = inputNames[i];
     const transform = transforms[i];
 
-    getitem.push(`${indent}${indent}${input} = self.${input}[idx]`);
+    getitem.push(`${indent}${indent}${inputName} = self.${inputName}[idx]`);
+
+    getitem = getitem.concat(generateInputCallCode(input));
 
     if (transform.length > 0) {
-      transformsInitCode.push(`${indent}${indent}self.transform_${input} = transforms.Compose([\n${indent}${indent}${indent}${transform.join(`,\n${indent}${indent}${indent}`)},\n${indent}${indent}])`);
-      transformsCallCode.push(`${indent}${indent}${input} = self.transform_${input}(${input})`);
+      transformsInitCode.push(`${indent}${indent}self.transform_${inputName} = transforms.Compose([\n${indent}${indent}${indent}${transform.join(`,\n${indent}${indent}${indent}`)},\n${indent}${indent}])`);
+      transformsCallCode.push(`${indent}${indent}${inputName} = self.transform_${inputName}(${inputName})`);
     }
   }
 
@@ -136,7 +161,7 @@ function generateData(graph: Graph, dataName: string): string {
     getitem.push(c);
   });
 
-  getitem.push(`${indent}${indent}return ${inputNames.join(', ')}`);
+  getitem.push(`${indent}${indent}return ${inputNames.reverse().join(', ')}`);
 
   return [
     header,

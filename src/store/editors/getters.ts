@@ -4,7 +4,6 @@ import { EditorModels, EditorsState } from '@/store/editors/types';
 import EditorType from '@/EditorType';
 import { ModelNodes } from '@/nodes/model/Types';
 import { SaveWithNames } from '@/file/EditorAsJson';
-import { DataNodes } from '@/nodes/data/Types';
 import { FuncDiff, usedNodes } from '@/store/ManageCodevault';
 
 const editorGetters: GetterTree<EditorsState, RootState> = {
@@ -50,8 +49,7 @@ const editorGetters: GetterTree<EditorsState, RootState> = {
     const names: Set<string> = new Set<string>();
     for (const node of getters.currEditorModel.editor.nodes) {
       if (node.type === ModelNodes.InModel
-        || node.type === ModelNodes.OutModel
-        || node.type === DataNodes.InData) {
+        || node.type === ModelNodes.OutModel) {
         names.add(node.name);
       }
     }

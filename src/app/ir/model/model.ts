@@ -11,6 +11,10 @@ class Model {
       options.get(nodeName),
     );
   }
+
+  public initCode(params: string[]): string[] {
+    return [`${this.name}()`];
+  }
 }
 
 export default Model;

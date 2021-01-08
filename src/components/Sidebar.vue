@@ -1,14 +1,14 @@
 <template>
   <div class="right">
-    <Tabs v-show="currEditorType === editorType.OVERVIEW">
+    <Tabs v-show="currEditorType === editorType.OVERVIEW" data-v-step="sidebar-overview">
       <Tab name="Components">
         <ComponentsTab/>
       </Tab>
       <Tab name="Custom">
-        <CustomTab/>
+        <CustomTab :custom-node="overviewCustomNode" />
       </Tab>
     </Tabs>
-    <Tabs v-show="currEditorType === editorType.MODEL">
+    <Tabs v-show="currEditorType === editorType.MODEL" data-v-step="sidebar-model">
       <Tab name="Layers">
         <LayersTab/>
       </Tab>
@@ -16,7 +16,7 @@
         <CustomTab/>
       </Tab>
     </Tabs>
-    <Tabs v-show="currEditorType === editorType.DATA">
+    <Tabs v-show="currEditorType === editorType.DATA" data-v-step="sidebar-data">
       <Tab name="Data Components">
         <DataComponentsTab/>
       </Tab>
@@ -37,6 +37,7 @@ import EditorType from '@/EditorType';
 import ComponentsTab from '@/components/tabs/ComponentsTab.vue';
 import { mapGetters } from 'vuex';
 import DataComponentsTab from '@/components/tabs/DataComponentsTab.vue';
+import { OverviewNodes } from '@/nodes/overview/Types';
 
 @Component({
   components: {
@@ -51,6 +52,7 @@ import DataComponentsTab from '@/components/tabs/DataComponentsTab.vue';
 })
 export default class Sidebar extends Vue {
   private editorType = EditorType;
+  private overviewCustomNode = OverviewNodes.Custom;
 }
 </script>
 

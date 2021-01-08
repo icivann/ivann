@@ -1,14 +1,17 @@
 <template>
   <div class="titlebar">
     <div class="logo">
-      <img class="img-fluid titlebar-logo mr-2" src="@/assets/images/nn_logo.png" alt="IVANN"/>
+      <img class="img-fluid titlebar-logo mr-2" src="@/assets/images/nn_logo.svg" alt="IVANN"/>
       <span class="text">IVANN</span>
     </div>
     <div class="buttons">
       <a class="icon-button" href="https://github.com/icivann/ivann" target="_blank" title="GitHub">
         <i class="titlebar-icon fab fa-github fa-lg mx-2"/>
       </a>
-      <span class="icon-button" @click="codegen" title="Generate Code">
+      <span class="icon-button" @click="startTour" title="Start Tour">
+        <i class="titlebar-icon fas fa-question-circle fa-lg mx-2"/>
+      </span>
+      <span class="icon-button" @click="codegen" title="Generate Code" data-v-step="export">
         <i class="titlebar-icon fas fa-code fa-lg mx-2"/>
       </span>
       <input
@@ -94,9 +97,11 @@ export default class Titlebar extends Vue {
       this.loadFiles(parsed.files);
 
       // Clear except `cookie:accepted`
-      const cookieAccepted = localStorage.get('cookie:accepted');
+      const cookieAccepted = localStorage.getItem('cookie:accepted');
       localStorage.clear();
-      localStorage.setItem('cookie:accepted', cookieAccepted);
+      if (cookieAccepted) {
+        localStorage.setItem('cookie:accepted', cookieAccepted);
+      }
 
       // Save new project to Local Storage
       const { saveWithNames } = this;
@@ -152,14 +157,24 @@ export default class Titlebar extends Vue {
     if (window.confirm('Are you sure you want to create a new project? '
       + 'All unsaved progress will be lost.')) {
       this.resetState();
-      // Clear except `cookie:accepted`
-      const cookieAccepted = localStorage.get('cookie:accepted');
+      // Clear except `cookie:accepted` and `tour-done`
+      const cookieAccepted = localStorage.getItem('cookie:accepted');
+      const tourDone = localStorage.getItem('tour-done');
       localStorage.clear();
-      localStorage.setItem('cookie:accepted', cookieAccepted);
+      if (cookieAccepted) {
+        localStorage.setItem('cookie:accepted', cookieAccepted);
+      }
+      if (tourDone) {
+        localStorage.setItem('tour-done', tourDone);
+      }
 
       localStorage.setItem('unsaved-project', JSON.stringify(this.saveWithNames));
       localStorage.setItem('unsaved-editor-Overview', JSON.stringify(saveEditor(this.editorModels.overviewEditor)));
     }
+  }
+
+  private startTour() {
+    this.$tours.tour.start();
   }
 }
 </script>
@@ -174,10 +189,12 @@ export default class Titlebar extends Vue {
   }
 
   .titlebar-logo {
-    height: 1.2rem;
+    height: 1.6rem;
   }
 
   .text {
+    position: relative;
+    top: 0.15rem;
     color: var(--foreground);
   }
 

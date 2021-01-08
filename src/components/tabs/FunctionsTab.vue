@@ -1,69 +1,72 @@
 <template>
   <div class="d-flex h-100">
-
-    <div id="left" class="panel">
-      <div class="d-flex">
-        <div>
-          <UIButton text="Upload File" @click="uploadFile"/>
-          <input
-            type="file"
-            id="upload-python-file"
-            style="display: none"
-            @change="load"
-          >
-        </div>
-        <div>
-          <UIButton text="Create File" @click="createFile"/>
-        </div>
-      </div>
-      <div class="button-list">
-        <FileFuncButton
-          v-for="(file) of files"
-          :header="`${file.filename} (${file.functions.length})`"
-          :key="file.filename"
-          :selected="selectedFile === file.filename"
-          @click="selectFile(file.filename)"
-        >
-          <div v-if="getFunctions(file.filename).length === 0">(empty)</div>
-          <div
-            v-else
-            v-for="(func, index) of getFunctions(file.filename)"
-            :key="index"
-          >
-            {{ func.signature() }}
+    <Scrollable id="left" class="panel">
+      <Padded>
+        <div class="d-flex">
+          <div>
+            <UIButton text="Upload File" @click="uploadFile"/>
+            <input
+              type="file"
+              id="upload-python-file"
+              style="display: none"
+              @change="load"
+            >
           </div>
-        </FileFuncButton>
-      </div>
-    </div>
-
-    <div id="right" class="panel">
-<!--      TODO: STYLE LIKE IDE-->
-      <div class="button-list">
-        <div v-if="selectedFile === null" class="text-center">
-          No File Selected
+          <div>
+            <UIButton text="Create File" @click="createFile"/>
+          </div>
         </div>
-        <div
-          v-else
-          class="pre-formatted"
-          v-for="(func) of getFunctions(this.selectedFile)"
-          :key="func.name"
-          v-text="`${func.toString()}\n`"
-        />
-      </div>
-      <div class="confirm-button">
-        <UIButton
-          text="Delete"
-          @click="deleteFile"
-          :disabled="selectedFile === null"
-        />
-        <UIButton
-          text="Edit"
-          :primary="true"
-          @click="editFile"
-          :disabled="selectedFile === null"
-        />
-      </div>
-    </div>
+        <div class="button-list">
+          <FileFuncButton
+            v-for="(file) of files"
+            :header="`${file.filename} (${file.functions.length})`"
+            :key="file.filename"
+            :selected="selectedFile === file.filename"
+            @click="selectFile(file.filename)"
+          >
+            <div v-if="getFunctions(file.filename).length === 0">(empty)</div>
+            <div
+              v-else
+              v-for="(func, index) of getFunctions(file.filename)"
+              :key="index"
+            >
+              {{ func.signature() }}
+            </div>
+          </FileFuncButton>
+        </div>
+      </Padded>
+    </Scrollable>
+
+    <Scrollable id="right" class="panel">
+      <Padded>
+        <div class="h-100">
+          <div v-if="selectedFile === null" class="text-center">
+            No File Selected
+          </div>
+          <div class="code-preview" v-else>
+            <div
+              class="function-preview"
+              v-for="(func) of getFunctions(this.selectedFile)"
+              :key="func.name"
+              v-text="`${func.toString()}\n`"
+            />
+          </div>
+        </div>
+        <div class="confirm-button">
+          <UIButton
+            text="Delete"
+            @click="deleteFile"
+            :disabled="selectedFile === null"
+          />
+          <UIButton
+            text="Edit"
+            :primary="true"
+            @click="editFile"
+            :disabled="selectedFile === null"
+          />
+        </div>
+      </Padded>
+    </Scrollable>
 
   </div>
 </template>
@@ -82,9 +85,13 @@ import { uniqueTextInput } from '@/inputs/prompt';
 import FileFuncButton from '@/components/buttons/FileFuncButton.vue';
 import { mapGetters } from 'vuex';
 import { FuncDiff } from '@/store/ManageCodevault';
+import Scrollable from '@/components/wrappers/Scrollable.vue';
+import Padded from '@/components/wrappers/Padded.vue';
 
 @Component({
   components: {
+    Padded,
+    Scrollable,
     FileFuncButton,
     Tab,
     Tabs,
@@ -219,7 +226,6 @@ export default class FunctionsTab extends Vue {
 
   .panel {
     user-select: none;
-    padding: 1em;
     border-top: var(--grey) 1px solid;
   }
 
@@ -240,7 +246,15 @@ export default class FunctionsTab extends Vue {
     margin-right: 1em;
   }
 
-  .pre-formatted {
+  .code-preview {
     white-space: pre;
+    font-size: smaller;
+    font-family: monospace;
+    font-weight: lighter;
+    background-color: var(--editor-grey);
+    padding-left: 1rem;
+    padding-top: 1rem;
+    border: 1px var(--grey) solid;
+    border-radius: 6px;
   }
 </style>

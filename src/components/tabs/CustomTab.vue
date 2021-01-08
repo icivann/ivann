@@ -1,34 +1,36 @@
 <template>
-  <div>
-    <div
-      class="msg"
-      v-if="files.length === 0"
-      @click="enterCodeVault"
-    >
-      Click Here to Add Custom Functions
-    </div>
-    <SearchBar v-else @value-change="search"/>
-    <ExpandablePanel
-      v-for="(file) in renderedFiles"
-      :key="file.filename"
-      :name="file.filename"
-      v-show="searchString === '' || file.functions.length > 0"
-    >
-      <ButtonGrid>
-        <AddNodeButton
-          v-for="(func) in file.functions"
-          :key="func.name"
-          :node="customNode"
-          :name="func.name"
-          :options="func"
-        />
-      </ButtonGrid>
-    </ExpandablePanel>
-  </div>
+  <Scrollable>
+    <Padded>
+      <div
+        class="msg"
+        v-if="files.length === 0"
+        @click="enterCodeVault"
+      >
+        Click Here to Add Custom Functions
+      </div>
+      <SearchBar v-else @value-change="search"/>
+      <ExpandablePanel
+        v-for="(file) in renderedFiles"
+        :key="file.filename"
+        :name="file.filename"
+        v-show="searchString === '' || file.functions.length > 0"
+      >
+        <ButtonGrid>
+          <AddNodeButton
+            v-for="(func) in file.functions"
+            :key="func.name"
+            :node="customNode"
+            :name="func.name"
+            :options="func"
+          />
+        </ButtonGrid>
+      </ExpandablePanel>
+    </Padded>
+  </Scrollable>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import ExpandablePanel from '@/components/ExpandablePanel.vue';
 import AddNodeButton from '@/components/buttons/AddNodeButton.vue';
 import ButtonGrid from '@/components/buttons/ButtonGrid.vue';
@@ -36,9 +38,14 @@ import { CommonNodes } from '@/nodes/common/Types';
 import { Getter, Mutation } from 'vuex-class';
 import SearchBar from '@/SearchBar.vue';
 import { ParsedFile } from '@/store/codeVault/types';
+import { OverviewNodes } from '@/nodes/overview/Types';
+import Scrollable from '@/components/wrappers/Scrollable.vue';
+import Padded from '@/components/wrappers/Padded.vue';
 
 @Component({
   components: {
+    Scrollable,
+    Padded,
     ExpandablePanel,
     AddNodeButton,
     ButtonGrid,
@@ -46,7 +53,7 @@ import { ParsedFile } from '@/store/codeVault/types';
   },
 })
 export default class CustomTab extends Vue {
-  private customNode: string = CommonNodes.Custom;
+  @Prop({ default: CommonNodes.Custom }) customNode: string = OverviewNodes.Custom;
   private searchString = '';
 
   @Mutation('enterCodeVault') enterCodeVault!: () => void;

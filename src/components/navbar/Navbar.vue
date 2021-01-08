@@ -5,6 +5,7 @@
       class="build tab-button"
       :class="isSelected(editorType.OVERVIEW)"
       @click="switchOverviewEditor"
+      data-v-step="overview"
     >
       <i class="fas fa-hammer tab-icon"/>
     </div>
@@ -19,8 +20,13 @@
       :class="isSelected(editorType.MODEL)"
       @mouseover="displayNavbarContextualMenu(editorType.MODEL)"
       @mouseleave="hideNavbarContextualMenu()"
+      data-v-step="welcome"
     >
-      <img class="navbar-logo tab-icon" src="@/assets/images/nn_logo.png" alt="IVANN"/>
+      <img
+        class="navbar-logo tab-icon"
+        src="@/assets/images/nn_logo.svg"
+        alt="IVANN"
+      />
       <NavbarContextualMenu
         class="navbar-contextual-menu"
         v-if="isModelContextualMenuOpen"
@@ -39,6 +45,7 @@
       :class="isSelected(editorType.DATA)"
       @mouseover="displayNavbarContextualMenu(editorType.DATA)"
       @mouseleave="hideNavbarContextualMenu()"
+      data-v-step="data"
     >
       <i class="fas fa-database tab-icon"/>
       <NavbarContextualMenu
@@ -153,6 +160,12 @@ export default class Navbar extends Vue {
   .tab-button.selected {
     border-left-width: 4px;
     border-left-color: var(--blue);
+    transition-duration: 0.1s;
+  }
+
+  .tab-button.selected:hover {
+    border-left-color: #1B67E0;
+    transition-duration: 0.1s;
   }
 
   .tab-icon {
