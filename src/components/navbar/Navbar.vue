@@ -22,7 +22,11 @@
       @mouseleave="hideNavbarContextualMenu()"
       data-v-step="welcome"
     >
-      <img class="navbar-logo tab-icon" src="@/assets/images/nn_logo.png" alt="IVANN"/>
+      <img
+        class="navbar-logo tab-icon"
+        src="@/assets/images/nn_logo.svg"
+        alt="IVANN"
+      />
       <NavbarContextualMenu
         class="navbar-contextual-menu"
         v-if="isModelContextualMenuOpen"
@@ -156,6 +160,12 @@ export default class Navbar extends Vue {
   .tab-button.selected {
     border-left-width: 4px;
     border-left-color: var(--blue);
+    transition-duration: 0.1s;
+  }
+
+  .tab-button.selected:hover {
+    border-left-color: #1B67E0;
+    transition-duration: 0.1s;
   }
 
   .tab-icon {

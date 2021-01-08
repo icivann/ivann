@@ -27,7 +27,7 @@ export default class Conv1d extends Node {
     this.addOutputInterface('Output');
     this.addOption(Conv1dOptions.InChannels, TypeOptions.IntOption, 0);
     this.addOption(Conv1dOptions.OutChannels, TypeOptions.IntOption, 0);
-    this.addOption(Conv1dOptions.KernelSize, TypeOptions.VectorOption, [0]);
+    this.addOption(Conv1dOptions.KernelSize, TypeOptions.VectorOption, [3]);
     this.addOption(Conv1dOptions.Stride, TypeOptions.VectorOption, [1]);
     this.addOption(Conv1dOptions.Padding, TypeOptions.VectorOption, [0]);
     this.addOption(Conv1dOptions.Dilation, TypeOptions.VectorOption, [1]);

@@ -1,20 +1,18 @@
 import { nodeName } from '@/app/ir/irCommon';
 
-class Model {
+export default class NLLLoss {
   constructor(
     public readonly name: string,
   ) {
   }
 
-  static build(options: Map<string, any>): Model {
-    return new Model(
+  static build(options: Map<string, any>): NLLLoss {
+    return new NLLLoss(
       options.get(nodeName),
     );
   }
 
   public initCode(params: string[]): string[] {
-    return [`${this.name}()`];
+    return ['nn.NLLLoss()'];
   }
 }
-
-export default Model;

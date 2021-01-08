@@ -161,7 +161,7 @@ function generateData(graph: Graph, dataName: string): string {
     getitem.push(c);
   });
 
-  getitem.push(`${indent}${indent}return ${inputNames.join(', ')}`);
+  getitem.push(`${indent}${indent}return ${inputNames.reverse().join(', ')}`);
 
   return [
     header,

@@ -1,5 +1,4 @@
 import { nodeName } from '@/app/ir/irCommon';
-import { DataOptions } from '@/nodes/overview/Data';
 
 class Data {
   constructor(
@@ -25,8 +24,14 @@ class Data {
     return new Data(
       options.get(nodeName),
       paths,
-      options.get(DataOptions.BatchSize),
+      options.get('BatchSize'),
     );
+  }
+
+  public initCode(params: string[]): string[] {
+    return [
+      `DataLoader(${this.name}(${this.paths.map((p) => `'${p}'`).join(', ')}), batch_size=${this.batchSize}, shuffle=True)`,
+    ];
   }
 }
 

@@ -22,7 +22,11 @@ export default class Adadelta extends Node {
     this.addOption(AdadeltaOptions.eps, TypeOptions.SliderOption, 1e-06);
     this.addOption(AdadeltaOptions.weightDecay, TypeOptions.SliderOption, 0);
 
-    // this.addInputInterface(AdadeltaOptions.Params);
+    this.addInputInterface('model');
     this.addOutputInterface('output');
+  }
+
+  public initCode(params: string[]): string {
+    return `torch.optim.Adadelta(${params[0]}.parameters(), lr=1, rho=0.9, eps=0.000001, weight_decay=0)`;
   }
 }

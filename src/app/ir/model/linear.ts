@@ -3,10 +3,10 @@ import { nodeName } from '@/app/ir/irCommon';
 
 export default class Linear {
   constructor(
-  public readonly name: string,
-  public readonly in_features: bigint,
-  public readonly out_features: bigint,
-  public readonly bias: boolean,
+    public readonly name: string,
+    public readonly in_features: bigint,
+    public readonly out_features: bigint,
+    public readonly bias: boolean,
   ) {
   }
 
@@ -20,6 +20,6 @@ export default class Linear {
   }
 
   public initCode(): string {
-    return `Linear(in_features= ${this.in_features}, out_features= ${this.out_features}, bias= ${this.bias})`;
+    return `Linear(in_features=${this.in_features}, out_features=${this.out_features}, bias=${this.bias})`;
   }
 }
