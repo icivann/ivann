@@ -31,6 +31,6 @@ export default class RNN {
   }
 
   public initCode(): string {
-    return `RNN(InputSize=${this.InputSize}, HiddenSize=${this.HiddenSize}, NumLayers=${this.NumLayers}, Nonlinearity=${this.Nonlinearity}, Bias=${this.Bias}, BatchFirst=${this.BatchFirst}, Dropout=${this.Dropout}, Bidirectional=${this.Bidirectional})`;
+    return `RNN(input_size=${this.InputSize}, hidden_size=${this.HiddenSize}, num_layers=${this.NumLayers}, nonlinearity=${this.Nonlinearity}, bias=${this.Bias}, batch_first=${this.BatchFirst}, dropout=${this.Dropout}, bidirectional=${this.Bidirectional})`;
   }
 }

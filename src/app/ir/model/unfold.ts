@@ -23,6 +23,6 @@ export default class Unfold {
   }
 
   public initCode(): string {
-    return `Unfold(KernelSize=${this.KernelSize}, Dilation=${this.Dilation}, Padding=${this.Padding}, Stride=${this.Stride})`;
+    return `Unfold(kernel_size=${this.KernelSize}, dilation=${this.Dilation}, padding=${this.Padding}, stride=${this.Stride})`;
   }
 }

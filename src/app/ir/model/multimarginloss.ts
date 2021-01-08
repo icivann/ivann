@@ -27,6 +27,6 @@ export default class MultiMarginLoss {
   }
 
   public initCode(): string {
-    return `MultiMarginLoss(P=${this.P}, margin=${this.Margin}, weight=${this.Weight}, size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction=${this.Reduction})`;
+    return `MultiMarginLoss(p=${this.P}, margin=${this.Margin}, weight=${this.Weight}, size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction=${this.Reduction})`;
   }
 }

@@ -33,6 +33,6 @@ export default class EmbeddingBag {
   }
 
   public initCode(): string {
-    return `EmbeddingBag(NumEmbeddings= ${this.NumEmbeddings}, EmbeddingDim= ${this.EmbeddingDim}, MaxNorm= ${this.MaxNorm}, NormType= ${this.NormType}, ScaleGradByFreq= ${this.ScaleGradByFreq}, Mode= ${this.Mode}, Sparse= ${this.Sparse}, weight= ${this.Weight}, IncludeLastOffset= ${this.IncludeLastOffset})`;
+    return `EmbeddingBag(num_embedding= ${this.NumEmbeddings}, embedding_dim= ${this.EmbeddingDim}, max_norm= ${this.MaxNorm}, norm_type= ${this.NormType}, scale_grad_by_freq= ${this.ScaleGradByFreq}, mode= ${this.Mode}, sparse= ${this.Sparse}, weight= ${this.Weight}, include_last_offset= ${this.IncludeLastOffset})`;
   }
 }

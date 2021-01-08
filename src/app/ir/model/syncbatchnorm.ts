@@ -27,6 +27,6 @@ export default class SyncBatchNorm {
   }
 
   public initCode(): string {
-    return `SyncBatchNorm(NumFeatures=${this.NumFeatures}, Eps=${this.Eps}, Momentum=${this.Momentum}, Affine=${this.Affine}, TrackRunningStats=${this.TrackRunningStats}, ProcessGroup=${this.ProcessGroup})`;
+    return `SyncBatchNorm(num_features=${this.NumFeatures}, eps=${this.Eps}, momentum=${this.Momentum}, affine=${this.Affine}, trace_running_stats=${this.TrackRunningStats}, process_group=${this.ProcessGroup})`;
   }
 }

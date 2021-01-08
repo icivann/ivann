@@ -19,6 +19,6 @@ export default class AdaptiveMaxPool1d {
   }
 
   public initCode(): string {
-    return `AdaptiveMaxPool1d(OutputSize=${this.OutputSize}, ReturnIndices=${this.ReturnIndices})`;
+    return `AdaptiveMaxPool1d(output_size=${this.OutputSize}, return_indices=${this.ReturnIndices})`;
   }
 }
