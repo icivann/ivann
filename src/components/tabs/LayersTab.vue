@@ -1,34 +1,36 @@
 <template>
-  <div>
-    <SearchBar @value-change="search"/>
-    <p class="information-text" v-if="searchString === ''">
-      We support all of the torch.nn layers from the PyTorch library.
-      For more information, check out the
-      <a href="https://pytorch.org/docs/stable/nn.html#" target="_blank">
-        official PyTorch documentation
-      </a>.
-    </p>
-    <ExpandablePanel
-      :name="modelCategories.IO"
-      v-show="shouldRender('Input') || shouldRender('Output')"
-    >
-      <ButtonGrid>
-        <AddNodeButton :node="modelNodeTypes.InModel" name="Input" :names="editorIONames"
-                       v-if="shouldRender('Input')"/>
-        <AddNodeButton :node="modelNodeTypes.OutModel" name="Output" :names="editorIONames"
-                       v-if="shouldRender('Output')"/>
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel v-for="(category) in renderedNodes" :key="category.category"
-                     :name="category.category" v-show="category.nodes.length > 0">
-      <ButtonGrid>
-        <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
-                       :node="node.name"
-                       :name="node.name"
-        />
-      </ButtonGrid>
-    </ExpandablePanel>
-  </div>
+  <Scrollable>
+    <Padded>
+      <SearchBar @value-change="search"/>
+      <p class="information-text" v-if="searchString === ''">
+        We support all of the torch.nn layers from the PyTorch library.
+        For more information, check out the
+        <a href="https://pytorch.org/docs/stable/nn.html#" target="_blank">
+          official PyTorch documentation
+        </a>.
+      </p>
+      <ExpandablePanel
+        :name="modelCategories.IO"
+        v-show="shouldRender('Input') || shouldRender('Output')"
+      >
+        <ButtonGrid>
+          <AddNodeButton :node="modelNodeTypes.InModel" name="Input" :names="editorIONames"
+                         v-if="shouldRender('Input')"/>
+          <AddNodeButton :node="modelNodeTypes.OutModel" name="Output" :names="editorIONames"
+                         v-if="shouldRender('Output')"/>
+        </ButtonGrid>
+      </ExpandablePanel>
+      <ExpandablePanel v-for="(category) in renderedNodes" :key="category.category"
+                       :name="category.category" v-show="category.nodes.length > 0">
+        <ButtonGrid>
+          <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
+                         :node="node.name"
+                         :name="node.name"
+          />
+        </ButtonGrid>
+      </ExpandablePanel>
+    </Padded>
+  </Scrollable>
 </template>
 
 <script lang="ts">
@@ -40,9 +42,13 @@ import { mapGetters } from 'vuex';
 import EditorManager from '@/EditorManager';
 import { ModelCategories, ModelNodes } from '@/nodes/model/Types';
 import SearchBar from '@/SearchBar.vue';
+import Padded from '@/components/wrappers/Padded.vue';
+import Scrollable from '@/components/wrappers/Scrollable.vue';
 
 @Component({
   components: {
+    Scrollable,
+    Padded,
     ExpandablePanel,
     AddNodeButton,
     ButtonGrid,
