@@ -25,6 +25,6 @@ export default class NLLLoss {
   }
 
   public initCode(): string {
-    return `NLLLoss(weight=${this.Weight}, size_average=${this.SizeAverage}, ignore_index=${this.IgnoreIndex}, reduce=${this.Reduce}, reduction=${this.Reduction})`;
+    return `NLLLoss(weight=${this.Weight}, size_average=${this.SizeAverage}, ignore_index=${this.IgnoreIndex}, reduce=${this.Reduce}, reduction='${this.Reduction}')`;
   }
 }

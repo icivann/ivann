@@ -23,6 +23,6 @@ export default class SmoothL1Loss {
   }
 
   public initCode(): string {
-    return `SmoothL1Loss(size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction=${this.Reduction}, beta=${this.Beta})`;
+    return `SmoothL1Loss(size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction='${this.Reduction}', beta=${this.Beta})`;
   }
 }

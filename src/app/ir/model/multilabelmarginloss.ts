@@ -21,6 +21,6 @@ export default class MultiLabelMarginLoss {
   }
 
   public initCode(): string {
-    return `MultiLabelMarginLoss(size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction=${this.Reduction})`;
+    return `MultiLabelMarginLoss(size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction='${this.Reduction}')`;
   }
 }

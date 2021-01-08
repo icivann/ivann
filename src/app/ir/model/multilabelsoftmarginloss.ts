@@ -23,6 +23,6 @@ export default class MultiLabelSoftMarginLoss {
   }
 
   public initCode(): string {
-    return `MultiLabelSoftMarginLoss(weight=${this.Weight}, size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction=${this.Reduction})`;
+    return `MultiLabelSoftMarginLoss(weight=${this.Weight}, size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction='${this.Reduction}')`;
   }
 }
