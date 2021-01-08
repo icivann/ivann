@@ -1,13 +1,18 @@
 <template>
-  <div v-if="visible" class="tab" :class="padded && 'padded'">
-    <slot/>
-  </div>
+  <Scrollable v-if="visible" class="tab">
+    <div :class="padded && 'padded'">
+      <slot/>
+    </div>
+  </Scrollable>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import Scrollable from '@/components/wrappers/Scrollable.vue';
 
-@Component
+@Component({
+  components: { Scrollable },
+})
 export default class Tab extends Vue {
   @Prop({ required: true }) readonly name!: string;
   @Prop({ default: true }) readonly padded?: boolean;
