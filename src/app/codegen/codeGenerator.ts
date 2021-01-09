@@ -16,19 +16,7 @@ import { indent, getNodeType } from '@/app/codegen/common';
 
 import generateData from '@/app/codegen/dataGenerator';
 import OverviewCustom from '@/app/ir/overview/OverviewCustom';
-
-const imports = [
-  'import torch',
-  'import torch.nn as nn',
-  'import torch.nn.functional as F',
-  'import torch.optim as optim',
-  'from torch.utils.data import Dataset, DataLoader',
-  'from torchvision import transforms',
-  'import pandas as pd',
-  'import numpy as np',
-  'import os',
-  'from PIL import Image',
-].join('\n');
+import { edit } from 'brace';
 
 function getNodeName(
   node: GraphNode,
@@ -198,7 +186,7 @@ function generateFunctions(graph: Graph): string {
   const funcs: string[] = [];
   customNodes.forEach((node) => {
     if (node.mlNode instanceof Custom) {
-      funcs.push(node.mlNode.code);
+      funcs.push(node.mlNode.name);
     }
   });
 
@@ -206,10 +194,16 @@ function generateFunctions(graph: Graph): string {
 }
 
 export function generateModelCode(graph: Graph, name: string): string {
+  const imports = [
+    'import torch',
+    'import torch.nn as nn',
+    'import torch.nn.functional as F',
+  ].join('\n');
+
   const funcs = generateFunctions(graph);
   const model = generateModel(graph, name);
 
-  const result = [];
+  const result = [imports];
 
   if (funcs.length > 0) {
     result.push(funcs);
@@ -295,23 +289,24 @@ export function generateOverviewCode(
   dataEditors: [Graph, string][],
 ): string {
   // TODO: beware of duplicate custom functions
+  const imports = [
+    'import torch',
+    'import torch.nn as nn',
+    'import torch.optim as optim',
+    'from torch.utils.data import DataLoader',
+  ];
+
+  modelEditors.forEach((editor) => imports.push(`from models.${editor[1]} import ${editor[1]}`));
+  dataEditors.forEach((editor) => imports.push(`from data.${editor[1]} import ${editor[1]}`));
+
   const funcs = generateFunctions(graph);
 
-  const models = modelEditors.map((editor) => generateModelCode(editor[0], editor[1])).join('\n\n');
-
-  const overview = generateOverview(graph);
-
-  const datasets = dataEditors.map((editor) => generateData(editor[0], editor[1])).join('\n\n');
-
-  const result = [imports];
-
+  const result = [imports.join('\n')];
   if (funcs.length > 0) {
     result.push(funcs);
   }
 
-  result.push(datasets);
-  result.push(models);
-
+  const overview = generateOverview(graph);
   result.push(overview);
 
   return result.join('\n\n');
