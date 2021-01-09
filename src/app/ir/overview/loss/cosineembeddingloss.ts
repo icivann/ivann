@@ -23,6 +23,6 @@ export default class CosineEmbeddingLoss {
   }
 
   public initCode(): string {
-    return `CosineEmbeddingLoss(margin=${this.Margin}, size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction='${this.Reduction}')`;
+    return `nn.CosineEmbeddingLoss(margin=${this.Margin}, size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction='${this.Reduction}')`;
   }
 }

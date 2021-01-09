@@ -1,18 +1,30 @@
-import { nodeName } from '@/app/ir/irCommon';
+import { NLLLossOptions } from '@/nodes/overview/loss/Nllloss';
+import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 
 export default class NLLLoss {
   constructor(
-    public readonly name: string,
+  public readonly name: string,
+  public readonly Weight: [number],
+  public readonly SizeAverage: bigint,
+  public readonly IgnoreIndex: bigint,
+  public readonly Reduce: bigint,
+  public readonly Reduction: Reduction,
   ) {
   }
 
   static build(options: Map<string, any>): NLLLoss {
     return new NLLLoss(
+
       options.get(nodeName),
+      [options.get(NLLLossOptions.Weight)[0]],
+      options.get(NLLLossOptions.SizeAverage),
+      options.get(NLLLossOptions.IgnoreIndex),
+      options.get(NLLLossOptions.Reduce),
+      getReduction(options.get(NLLLossOptions.Reduction)),
     );
   }
 
-  public initCode(params: string[]): string[] {
-    return ['nn.NLLLoss()'];
+  public initCode(): string {
+    return `nn.NLLLoss(weight=${this.Weight[0] === 0 ? 'None' : this.Weight}, size_average=${this.SizeAverage}, ignore_index=${this.IgnoreIndex}, reduce=${this.Reduce}, reduction='${this.Reduction}')`;
   }
 }

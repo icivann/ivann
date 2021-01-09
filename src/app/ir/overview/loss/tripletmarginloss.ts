@@ -29,6 +29,6 @@ export default class TripletMarginLoss {
   }
 
   public initCode(): string {
-    return `TripletMarginLoss(margin=${this.Margin}, p=${this.P}, eps=${this.Eps}, swap=${this.Swap}, size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction='${this.Reduction}')`;
+    return `nn.TripletMarginLoss(margin=${this.Margin}, p=${this.P}, eps=${this.Eps}, swap=${this.Swap}, size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction='${this.Reduction}')`;
   }
 }

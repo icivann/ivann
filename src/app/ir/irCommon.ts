@@ -25,8 +25,6 @@ export enum Reduction{
   None = 'none', mean = 'mean', sum = 'sum'
 }
 export function getReduction(str: string): Reduction {
-  console.log(str);
-  console.log(Reduction[str as keyof typeof Reduction]);
   return Reduction[str as keyof typeof Reduction];
 }
 export enum Mode{

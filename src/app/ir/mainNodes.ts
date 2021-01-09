@@ -2,7 +2,7 @@ import Custom from '@/app/ir/Custom';
 
 import Adadelta from '@/app/ir/overview/optimizers/adadelta';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
-import NLLLoss from '@/app/ir/overview/loss/nllloss';
+import NLLLoss from '@/app/ir/overview/loss/nllloss_simplified';
 import Model from '@/app/ir/model/model';
 import OverviewCustom from '@/app/ir/overview/OverviewCustom';
 import InModel from './InModel';

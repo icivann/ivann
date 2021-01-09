@@ -186,14 +186,13 @@ def create_ir_node(class_name, option_map: dict, dimensions):
 
     fields.append(f"public readonly {field_name}: {option_type},")
     build.append(buildLine)
-    pythonCode.append(f"{k}=")
 
     if len(dimensions) > 0 and dimensions[0] > 1:
-      pythonCode.append(f"(${{this.{field_name}}})")
+      pythonCode.append(f"{k}=(${{this.{field_name}}})")
     elif option_type == "str":
-      pythonCode.append(f"'${{this.{field_name}}}'")
+      pythonCode.append(f"{k}='${{this.{field_name}}}'")
     else:
-      pythonCode.append(f"${{this.{field_name}}}")
+      pythonCode.append(f"{k}=${{this.{field_name}}}")
 
   fields = "\n  ".join(fields)
   build = "\n  ".join(build)
