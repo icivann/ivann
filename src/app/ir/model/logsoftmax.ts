@@ -17,6 +17,6 @@ export default class LogSoftmax {
   }
 
   public initCode(): string {
-    return `LogSoftmax(Dim=${this.Dim})`;
+    return `LogSoftmax(dim=${this.Dim})`;
   }
 }

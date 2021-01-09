@@ -4,7 +4,7 @@ import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 export default class BCELoss {
   constructor(
   public readonly name: string,
-  public readonly Weight: [bigint],
+  public readonly Weight: [number],
   public readonly SizeAverage: bigint,
   public readonly Reduce: bigint,
   public readonly Reduction: Reduction,
@@ -23,6 +23,6 @@ export default class BCELoss {
   }
 
   public initCode(): string {
-    return `BCELoss(Weight= ${this.Weight}, SizeAverage= ${this.SizeAverage}, Reduce= ${this.Reduce}, Reduction= ${this.Reduction})`;
+    return `nn.BCELoss(weight=${this.Weight[0] === 0 ? 'None' : this.Weight}, size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction='${this.Reduction}')`;
   }
 }

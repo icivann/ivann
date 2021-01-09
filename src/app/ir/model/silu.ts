@@ -17,6 +17,6 @@ export default class SiLU {
   }
 
   public initCode(): string {
-    return `SiLU(Inplace= ${this.Inplace})`;
+    return `SiLU(inplace=${this.Inplace})`;
   }
 }

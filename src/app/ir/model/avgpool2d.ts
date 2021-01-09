@@ -27,6 +27,6 @@ export default class AvgPool2d {
   }
 
   public initCode(): string {
-    return `AvgPool2d(KernelSize=(${this.KernelSize}), Stride=(${this.Stride}), Padding=(${this.Padding}), CeilMode=(${this.CeilMode}), CountIncludePad=(${this.CountIncludePad}), DivisorOverride=(${this.DivisorOverride}))`;
+    return `AvgPool2d(kernel_size=(${this.KernelSize}), stride=(${this.Stride}), padding=(${this.Padding}), ceil_mode=(${this.CeilMode}), count_include_pad=(${this.CountIncludePad}), divisor_override=(${this.DivisorOverride}))`;
   }
 }

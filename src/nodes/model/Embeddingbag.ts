@@ -2,6 +2,7 @@ import { Node } from '@baklavajs/core';
 import { ModelNodes } from '@/nodes/model/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
+import { Mode } from '@/app/ir/irCommon';
 
 export enum EmbeddingBagOptions {
   NumEmbeddings = 'Num embeddings',
@@ -27,7 +28,7 @@ export default class EmbeddingBag extends Node {
     this.addOption(EmbeddingBagOptions.MaxNorm, TypeOptions.VectorOption, [0]);
     this.addOption(EmbeddingBagOptions.NormType, TypeOptions.SliderOption, 0.0);
     this.addOption(EmbeddingBagOptions.ScaleGradByFreq, TypeOptions.TickBoxOption, CheckboxValue.UNCHECKED);
-    this.addOption(EmbeddingBagOptions.Mode, TypeOptions.DropdownOption, 'mean');
+    this.addOption(EmbeddingBagOptions.Mode, TypeOptions.DropdownOption, 'mean', undefined, { items: { Mode } });
     this.addOption(EmbeddingBagOptions.Sparse, TypeOptions.TickBoxOption, CheckboxValue.UNCHECKED);
     this.addOption(EmbeddingBagOptions.Weight, TypeOptions.VectorOption, [0]);
     this.addOption(EmbeddingBagOptions.IncludeLastOffset, TypeOptions.TickBoxOption, CheckboxValue.UNCHECKED);

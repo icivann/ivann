@@ -6,7 +6,7 @@ export default class MultiMarginLoss {
   public readonly name: string,
   public readonly P: bigint,
   public readonly Margin: number,
-  public readonly Weight: [bigint],
+  public readonly Weight: [number],
   public readonly SizeAverage: bigint,
   public readonly Reduce: bigint,
   public readonly Reduction: Reduction,
@@ -27,6 +27,6 @@ export default class MultiMarginLoss {
   }
 
   public initCode(): string {
-    return `MultiMarginLoss(P=${this.P}, Margin=${this.Margin}, Weight= ${this.Weight}, SizeAverage= ${this.SizeAverage}, Reduce= ${this.Reduce}, Reduction= ${this.Reduction})`;
+    return `nn.MultiMarginLoss(p=${this.P}, margin=${this.Margin}, weight=${this.Weight[0] === 0 ? 'None' : this.Weight}, size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction='${this.Reduction}')`;
   }
 }

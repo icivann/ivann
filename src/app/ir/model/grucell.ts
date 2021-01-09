@@ -21,6 +21,6 @@ export default class GRUCell {
   }
 
   public initCode(): string {
-    return `GRUCell(InputSize=${this.InputSize}, HiddenSize=${this.HiddenSize}, Bias=${this.Bias})`;
+    return `GRUCell(input_size=${this.InputSize}, hidden_size=${this.HiddenSize}, bias=${this.Bias})`;
   }
 }
