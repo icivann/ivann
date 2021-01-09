@@ -21,7 +21,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import UIButton from '@/components/buttons/UIButton.vue';
 import CheckboxList from '@/components/CheckboxList.vue';
 import { mapGetters } from 'vuex';
-import { downloadPython } from '@/file/Utils';
+import { downloadZip } from '@/file/Utils';
 import { saveEditor } from '@/file/EditorAsJson';
 import istateToGraph from '@/app/ir/istateToGraph';
 import EditorType from '@/EditorType';
@@ -32,6 +32,9 @@ import { Getter } from 'vuex-class';
 import { EditorModel, EditorModels } from '@/store/editors/types';
 import CheckboxValue from '@/baklava/CheckboxValue';
 import CheckboxField from '@/components/CheckboxField.vue';
+import JSZip from 'jszip';
+import generateData from '@/app/codegen/dataGenerator';
+import { ParsedFile } from '@/store/codeVault/types';
 
 @Component({
   components: {
@@ -62,11 +65,16 @@ export default class ExportModal extends Vue {
     console.log(`Files to be exported: ${this.selectedFiles}`);
     console.log(`Should export Overview?: ${this.overviewSelected === CheckboxValue.CHECKED}`);
 
-    // TODO: Should actually use selected stuff
-    let generatedCode = '';
-    const { name, state } = saveEditor(this.currEditor);
-    const graph = istateToGraph(state);
-    if (this.currEditorType === EditorType.OVERVIEW) {
+    const zip = new JSZip();
+
+    const modelsFolder = zip.folder('models');
+    const dataFolder = zip.folder('data');
+    const codevaultFolder = zip.folder('codevault');
+
+    // generate overview
+    if (this.overviewSelected) {
+      const { name, state } = saveEditor(this.currEditor);
+      const graph = istateToGraph(state);
       console.log('generating overview');
       const models = this.editorModels.modelEditors.map((editor) => {
         const { name, state } = saveEditor(editor);
@@ -78,11 +86,47 @@ export default class ExportModal extends Vue {
         const graph = istateToGraph(state);
         return [graph, name] as [Graph, string];
       });
-      generatedCode = generateOverviewCode(graph, models, data);
-    } else if (this.currEditorType === EditorType.MODEL) {
-      generatedCode = generateModelCode(graph, name);
+      const contents = generateOverviewCode(graph, models, data);
+      zip.file(`${name}.py`, contents);
     }
-    downloadPython('main', generatedCode);
+    // generate model files
+    if (modelsFolder !== null) {
+      this.editorModels.modelEditors.filter((editor) => this.selectedModels.includes(editor.name))
+        .forEach(
+          (editor) => {
+            const { name, state } = saveEditor(editor);
+            const graph = istateToGraph(state);
+            const contents = generateModelCode(graph, name);
+            modelsFolder.file(`${name}.py`, contents);
+          },
+        );
+    }
+    // generate data files
+    if (dataFolder !== null) {
+      this.editorModels.dataEditors
+        .filter((editor) => this.selectedData.includes(editor.name))
+        .forEach(
+          (editor) => {
+            const { name, state } = saveEditor(editor);
+            const graph = istateToGraph(state);
+            const contents = generateData(graph, name);
+            dataFolder.file(`${name}.py`, contents);
+          },
+        );
+    }
+    // generate codevault files
+    if (codevaultFolder !== null) {
+      (this.$store.state.codeVault.files as ParsedFile[])
+        .filter((file) => this.selectedFiles.includes(file.filename))
+        .forEach(
+          (file) => {
+            codevaultFolder.file(file.filename, file.functions.join('\n'));
+          },
+        );
+    }
+
+    console.log('invoking download python');
+    downloadZip('ivann', zip);
 
     this.closeModal();
   }
