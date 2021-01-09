@@ -30,6 +30,10 @@
         <i class="titlebar-icon fas fa-file fa-lg mx-2"/>
       </span>
     </div>
+<!--  Modals  -->
+    <Modal v-model="modalOpen" header="Export">
+      <ExportModal/>
+    </Modal>
   </div>
 </template>
 
@@ -37,7 +41,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Getter, Mutation } from 'vuex-class';
 import { EditorModel, EditorModels } from '@/store/editors/types';
-import { download, downloadPython } from '@/file/Utils';
+import { download } from '@/file/Utils';
 import {
   FILENAME,
   Save,
@@ -45,13 +49,14 @@ import {
   saveEditors,
   SaveWithNames,
 } from '@/file/EditorAsJson';
-import istateToGraph from '@/app/ir/istateToGraph';
 import { FilenamesList, ParsedFile } from '@/store/codeVault/types';
 import EditorType from '@/EditorType';
-import { generateModelCode, generateOverviewCode } from '@/app/codegen/codeGenerator';
-import Graph from '@/app/ir/Graph';
+import Modal from '@/components/modals/Modal.vue';
+import ExportModal from '@/components/modals/ExportModal.vue';
 
-@Component
+@Component({
+  components: { ExportModal, Modal },
+})
 export default class Titlebar extends Vue {
   @Getter('currEditorType') currEditorType!: EditorType;
   @Getter('allEditorModels') editorModels!: EditorModels;
@@ -65,27 +70,10 @@ export default class Titlebar extends Vue {
   @Getter('filenamesList') filenamesList!: FilenamesList;
   @Getter('file') file!: (filename: string) => ParsedFile;
 
+  private modalOpen = false;
+
   private codegen() {
-    let generatedCode = '';
-    const { name, state } = saveEditor(this.currEditor);
-    const graph = istateToGraph(state);
-    if (this.currEditorType === EditorType.OVERVIEW) {
-      console.log('generating overview');
-      const models = this.editorModels.modelEditors.map((editor) => {
-        const { name, state } = saveEditor(editor);
-        const graph = istateToGraph(state);
-        return [graph, name] as [Graph, string];
-      });
-      const data = this.editorModels.dataEditors.map((editor) => {
-        const { name, state } = saveEditor(editor);
-        const graph = istateToGraph(state);
-        return [graph, name] as [Graph, string];
-      });
-      generatedCode = generateOverviewCode(graph, models, data);
-    } else if (this.currEditorType === EditorType.MODEL) {
-      generatedCode = generateModelCode(graph, name);
-    }
-    downloadPython('main', generatedCode);
+    this.modalOpen = true;
   }
 
   // Trigger click of input tag for uploading file

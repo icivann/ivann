@@ -35,7 +35,6 @@ export default class CheckboxInput extends Vue {
     height: 1rem;
     border-radius: 2px;
     position: relative;
-    margin-left: 0.25rem;
     background: var(--foreground);
     transition-duration: 0.1s;
   }
