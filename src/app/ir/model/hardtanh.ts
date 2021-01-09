@@ -25,6 +25,6 @@ export default class Hardtanh {
   }
 
   public initCode(): string {
-    return `Hardtanh(MinVal= ${this.MinVal}, MaxVal= ${this.MaxVal}, Inplace= ${this.Inplace}, MinValue= ${this.MinValue}, MaxValue= ${this.MaxValue})`;
+    return `Hardtanh(min_val=${this.MinVal}, max_val=${this.MaxVal}, inplace=${this.Inplace}, min_value=${this.MinValue}, max_value=${this.MaxValue})`;
   }
 }

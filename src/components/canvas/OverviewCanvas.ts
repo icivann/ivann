@@ -9,7 +9,6 @@ import { Editor } from '@baklavajs/core';
 import OverviewCustom from '@/nodes/overview/OverviewCustom';
 import { CommonNodes } from '@/nodes/common/Types';
 
-import Embedding from '@/nodes/model/Embedding';
 import TripletMarginLoss from '@/nodes/overview/loss/Tripletmarginloss';
 import MultiMarginLoss from '@/nodes/overview/loss/Multimarginloss';
 import CosineEmbeddingLoss from '@/nodes/overview/loss/Cosineembeddingloss';
@@ -27,6 +26,16 @@ import CTCLoss from '@/nodes/overview/loss/Ctcloss';
 import CrossEntropyLoss from '@/nodes/overview/loss/Crossentropyloss';
 import L1Loss from '@/nodes/overview/loss/L1loss';
 import MSELoss from '@/nodes/overview/loss/Mseloss';
+import Adamax from '@/nodes/overview/optimizers/Adamax';
+import SparseAdam from '@/nodes/overview/optimizers/Sparseadam';
+import AdamW from '@/nodes/overview/optimizers/Adamw';
+import Adagrad from '@/nodes/overview/optimizers/Adagrad';
+import ASGD from '@/nodes/overview/optimizers/Asgd';
+import LBFGS from '@/nodes/overview/optimizers/Lbfgs';
+import RMSprop from '@/nodes/overview/optimizers/Rmsprop';
+import Rprop from '@/nodes/overview/optimizers/Rprop';
+import SGD from '@/nodes/overview/optimizers/Sgd';
+import Adam from '@/nodes/overview/optimizers/Adam';
 
 export default class OverviewCanvas extends AbstractCanvas {
   nodeList = [
@@ -136,6 +145,57 @@ export default class OverviewCanvas extends AbstractCanvas {
           name: OverviewNodes.Adadelta,
           node: Adadelta,
         },
+
+        {
+          name: OverviewNodes.Adamax,
+          node: Adamax,
+        },
+
+        {
+          name: OverviewNodes.SparseAdam,
+          node: SparseAdam,
+        },
+
+        {
+          name: OverviewNodes.AdamW,
+          node: AdamW,
+        },
+
+        {
+          name: OverviewNodes.Adam,
+          node: Adam,
+        },
+
+        {
+          name: OverviewNodes.Adagrad,
+          node: Adagrad,
+        },
+
+        {
+          name: OverviewNodes.ASGD,
+          node: ASGD,
+        },
+
+        {
+          name: OverviewNodes.LBFGS,
+          node: LBFGS,
+        },
+
+        {
+          name: OverviewNodes.RMSprop,
+          node: RMSprop,
+        },
+
+        {
+          name: OverviewNodes.Rprop,
+          node: Rprop,
+        },
+
+        {
+          name: OverviewNodes.SGD,
+          node: SGD,
+        },
+
       ],
     },
   ];

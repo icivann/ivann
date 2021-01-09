@@ -4,11 +4,11 @@ import { nodeName, Reduction, getReduction } from '@/app/ir/irCommon';
 export default class BCEWithLogitsLoss {
   constructor(
   public readonly name: string,
-  public readonly Weight: [bigint],
+  public readonly Weight: [number],
   public readonly SizeAverage: bigint,
   public readonly Reduce: bigint,
   public readonly Reduction: Reduction,
-  public readonly PosWeight: [bigint],
+  public readonly PosWeight: [number],
   ) {
   }
 
@@ -25,6 +25,6 @@ export default class BCEWithLogitsLoss {
   }
 
   public initCode(): string {
-    return `BCEWithLogitsLoss(Weight=${this.Weight}, SizeAverage=${this.SizeAverage}, Reduce=${this.Reduce}, Reduction=${this.Reduction}, PosWeight=${this.PosWeight})`;
+    return `nn.BCEWithLogitsLoss(weight=${this.Weight[0] === 0 ? 'None' : this.Weight}, size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction='${this.Reduction}', pos_weight=${this.PosWeight[0] === 0 ? 'None' : this.PosWeight})`;
   }
 }

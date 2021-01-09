@@ -31,6 +31,6 @@ export default class MultiheadAttention {
   }
 
   public initCode(): string {
-    return `MultiheadAttention(EmbedDim=${this.EmbedDim}, NumHeads=${this.NumHeads}, Dropout=${this.Dropout}, Bias=${this.Bias}, AddBiasKv=${this.AddBiasKv}, AddZeroAttn=${this.AddZeroAttn}, Kdim=${this.Kdim}, Vdim=${this.Vdim})`;
+    return `MultiheadAttention(embed_dim=${this.EmbedDim}, num_heads=${this.NumHeads}, dropout=${this.Dropout}, bias=${this.Bias}, add_bias_k_v=${this.AddBiasKv}, add_zero_attn=${this.AddZeroAttn}, k_dim=${this.Kdim}, v_dim=${this.Vdim})`;
   }
 }

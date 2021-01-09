@@ -21,6 +21,6 @@ export default class L1Loss {
   }
 
   public initCode(): string {
-    return `L1Loss(SizeAverage=${this.SizeAverage}, Reduce=${this.Reduce}, Reduction=${this.Reduction})`;
+    return `nn.L1Loss(size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction='${this.Reduction}')`;
   }
 }

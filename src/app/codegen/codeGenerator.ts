@@ -9,7 +9,7 @@ import Concat from '@/app/ir/Concat';
 import Flatten from '@/app/ir/model/flatten';
 import Custom from '@/app/ir/Custom';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
-import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
+import Adadelta from '@/app/ir/overview/optimizers/adadelta';
 import Model from '@/app/ir/model/model';
 
 import { indent, getNodeType } from '@/app/codegen/common';
@@ -21,6 +21,7 @@ const imports = [
   'import torch',
   'import torch.nn as nn',
   'import torch.nn.functional as F',
+  'import torch.optim as optim',
   'from torch.utils.data import Dataset, DataLoader',
   'from torchvision import transforms',
   'import pandas as pd',

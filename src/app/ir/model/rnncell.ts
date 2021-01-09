@@ -23,6 +23,6 @@ export default class RNNCell {
   }
 
   public initCode(): string {
-    return `RNNCell(InputSize=${this.InputSize}, HiddenSize=${this.HiddenSize}, Bias=${this.Bias}, Nonlinearity=${this.Nonlinearity})`;
+    return `RNNCell(input_size=${this.InputSize}, hidden_size=${this.HiddenSize}, bias=${this.Bias}, nonlinearity=${this.Nonlinearity})`;
   }
 }

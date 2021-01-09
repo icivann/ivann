@@ -17,6 +17,6 @@ export default class ReLU6 {
   }
 
   public initCode(): string {
-    return `ReLU6(Inplace=(${this.Inplace}))`;
+    return `ReLU6(inplace=(${this.Inplace}))`;
   }
 }
