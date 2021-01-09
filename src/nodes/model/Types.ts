@@ -15,8 +15,7 @@ export enum ModelCategories {
   IO = 'I/O',
   Transformer = 'Transformer',
   NonLinearActivation = 'Non-Linear Activation',
-  Padding = 'Padding'
-
+  Padding = 'Padding',
 }
 
 export enum ModelNodes {
@@ -120,4 +119,6 @@ export enum ModelNodes {
   RNNCell = 'RNNCell',
   LSTMCell = 'LSTMCell',
   GRUCell = 'GRUCell',
+
+  ModelCustom = 'ModelCustom',
 }

@@ -1,8 +1,6 @@
 import { OptionPlugin } from '@baklavajs/plugin-options-vue';
 import { Editor } from '@baklavajs/core';
 import { NodeConstructor } from '@baklavajs/core/dist/baklavajs-core/types/index.d';
-import { CommonNodes } from '@/nodes/common/Types';
-import Custom from '@/nodes/common/Custom';
 
 export default abstract class AbstractCanvas {
   public abstract nodeList: {
@@ -13,9 +11,9 @@ export default abstract class AbstractCanvas {
     }[];
   }[];
 
-  public customNodeType = Custom;
+  public abstract customNodeType: NodeConstructor;
 
-  public customNodeName: string = CommonNodes.Custom;
+  public abstract customNodeName: string;
 
   protected option: OptionPlugin = new OptionPlugin();
 

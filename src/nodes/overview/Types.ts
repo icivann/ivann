@@ -12,7 +12,7 @@ export enum OverviewNodes {
   DataNode = 'DataNode',
   TrainClassifier = 'TrainClassifier',
   Adadelta = 'Adadelta',
-  Custom = 'Custom',
+  OverviewCustom = 'OverviewCustom',
   // loss functions
   NLLLoss= 'NLLLoss',
   MultiMarginLoss = 'MultiMarginLoss',

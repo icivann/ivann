@@ -98,6 +98,7 @@ import LSTMCell from '@/nodes/model/Lstmcell';
 import GRUCell from '@/nodes/model/Grucell';
 import EmbeddingBag from '@/nodes/model/Embeddingbag';
 import Embedding from '@/nodes/model/Embedding';
+import ModelCustom from '@/nodes/model/ModelCustom';
 
 export default class ModelCanvas extends AbstractCanvas {
   public nodeList = [
@@ -620,6 +621,9 @@ export default class ModelCanvas extends AbstractCanvas {
       ],
     },
   ];
+
+  customNodeType = ModelCustom;
+  customNodeName = ModelNodes.ModelCustom;
 
   public registerNodes(editor: Editor) {
     super.registerNodes(editor);

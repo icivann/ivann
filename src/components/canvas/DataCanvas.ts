@@ -40,7 +40,7 @@ export default class DataCanvas extends AbstractCanvas {
   ];
 
   customNodeType = DataCustom;
-  customNodeName = DataNodes.Custom;
+  customNodeName = DataNodes.DataCustom;
 
   public registerNodes(editor: Editor) {
     super.registerNodes(editor);

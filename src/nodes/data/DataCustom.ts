@@ -8,7 +8,7 @@ export enum DataCustomOptions {
   DATA_LOADING = 'Data Loading',
 }
 export default class DataCustom extends Custom {
-  type = DataNodes.Custom;
+  type = DataNodes.DataCustom;
 
   constructor(parsedFunction?: ParsedFunction) {
     super(parsedFunction);

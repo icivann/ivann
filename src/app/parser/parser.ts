@@ -54,6 +54,7 @@ function parseFunctionSignature(line: string): FunctionSignature | null {
 }
 
 function parse(str: string, filename?: string): Result<ParsedFunction[]> {
+  console.log(str);
   const indentation = getIndentation(str);
 
   // If we failed to get the indentation level

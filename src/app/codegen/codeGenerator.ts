@@ -244,9 +244,10 @@ function generateOverviewGraphCode(
   const isNewNode = !nodeNames.has(node);
   const name = getNodeName(node, nodeNames, nodeTypeCounters);
   if (isNodeTrainer(node)) {
+    console.log('heyyo there');
     code = code.concat(`${(node.mlNode as OverviewCallableNode).callCode(params)}`);
   } else if (isNewNode && (node.mlNode as OverviewNode).initCode !== undefined) {
-    code = code.concat(`${name} = ${(node.mlNode as OverviewNode).initCode(params)}`);
+    code = code.concat(`${name} = ${(node.mlNode as OverviewNode).initCode(params)[0]}`);
   }
   return [code, name];
 }

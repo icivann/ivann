@@ -141,7 +141,7 @@ export default class OverviewCanvas extends AbstractCanvas {
   ];
 
   customNodeType = OverviewCustom;
-  customNodeName = OverviewNodes.Custom;
+  customNodeName = OverviewNodes.OverviewCustom;
 
   public registerNodes(editor: Editor) {
     super.registerNodes(editor);

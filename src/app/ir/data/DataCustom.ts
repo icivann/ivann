@@ -1,14 +1,15 @@
-import parse from '@/app/parser/parser';
 import { CustomOptions } from '@/nodes/common/Custom';
 import { nodeName } from '@/app/ir/irCommon';
 import { DataCustomOptions } from '@/nodes/data/DataCustom';
+import Custom from '@/app/ir/Custom';
+import parse from '@/app/parser/parser';
 
-class DataCustom {
-  constructor(
-    public readonly name: string,
-    public readonly code: string,
-    public readonly dataLoading: boolean,
-  ) {
+class DataCustom extends Custom {
+  public readonly dataLoading: boolean;
+
+  constructor(name: string, code: string, dataLoading: boolean) {
+    super(name, code);
+    this.dataLoading = dataLoading;
   }
 
   static build(options: Map<string, any>): DataCustom {
