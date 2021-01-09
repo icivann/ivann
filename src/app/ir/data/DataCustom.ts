@@ -19,12 +19,14 @@ class DataCustom {
     );
   }
 
-  public initCode(): string {
-    return this.code;
-  }
+  public initCode(): string[] {
+    const func = parse(this.code);
 
-  public callCode(params: string[]): string[] {
-    const parsedFuncs = parse(this.code);
+    if (func instanceof Error) {
+      return ['CUSTOM_NODE_PARSE_ERROR'];
+    }
+
+    const parsedFuncs = parse(func[0].body);
 
     if (parsedFuncs instanceof Error) {
       console.error(parsedFuncs);
@@ -32,7 +34,27 @@ class DataCustom {
     }
     if (parsedFuncs.length > 0) {
       const parsedFunc = parsedFuncs[0];
-      return [`${parsedFunc.name}(${params})`];
+      return parsedFunc.body.split('\n');
+    }
+    return ['CUSTOM_NODE_NO_FUNCTION_ERROR'];
+  }
+
+  public callCode(): string[] {
+    const func = parse(this.code);
+
+    if (func instanceof Error) {
+      return ['CUSTOM_NODE_PARSE_ERROR'];
+    }
+
+    const parsedFuncs = parse(func[0].body);
+
+    if (parsedFuncs instanceof Error) {
+      console.error(parsedFuncs);
+      return ['CUSTOM_NODE_PARSE_ERROR'];
+    }
+    if (parsedFuncs.length > 1) {
+      const parsedFunc = parsedFuncs[1];
+      return parsedFunc.body.split('\n');
     }
     return ['CUSTOM_NODE_NO_FUNCTION_ERROR'];
   }
