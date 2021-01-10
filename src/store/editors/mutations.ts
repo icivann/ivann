@@ -6,9 +6,7 @@ import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
 import { loadEditors, Save } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
-import Model from '@/nodes/overview/Model';
-import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
-import { getEditorIOs } from '@/store/editors/utils';
+import { getEditorIOs, updateNodeConnections } from '@/store/editors/utils';
 import ParsedFunction from '@/app/parser/ParsedFunction';
 import { editNodes, FuncDiff } from '@/store/ManageCodevault';
 
@@ -153,19 +151,12 @@ const editorMutations: MutationTree<EditorsState> = {
     switch (state.currEditorType) {
       case EditorType.MODEL: {
         const { inputs, outputs } = getEditorIOs(currEditor);
-
-        // Loop through nodes in overview editor
-        // find corresponding node for currEditor and update
-        const { nodes } = state.overviewEditor.editor;
-        const overviewNodes = nodes.filter((node) => node.name === currEditor.name) as Model[];
-        if (overviewNodes.length > 0) {
-          const { inputs: oldInputs, outputs: oldOutputs } = overviewNodes[0].getCurrentIO();
-          const inputChange: NodeIOChange = editorIOPartition(inputs, oldInputs);
-          const outputChange: NodeIOChange = editorIOPartition(outputs, oldOutputs);
-          for (const overviewNode of overviewNodes) {
-            overviewNode.updateIO(inputChange, outputChange);
+        updateNodeConnections(state.overviewEditor, inputs, outputs, currEditor.name);
+        state.modelEditors.forEach((editor) => {
+          if (editor.name !== currEditor.name) {
+            updateNodeConnections(editor, inputs, outputs, currEditor.name);
           }
-        }
+        });
         break;
       }
       default:
