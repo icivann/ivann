@@ -201,6 +201,8 @@ export function generateModelCode(graph: Graph, name: string): string {
     'import torch.nn as nn',
     'import torch.nn.functional as F',
     '# enabling relative imports',
+    'import os',
+    'import sys',
     'sys.path.insert(0, os.path.join((os.path.abspath(os.path.dirname(sys.argv[0]))), ".."))',
   ].join('\n');
 

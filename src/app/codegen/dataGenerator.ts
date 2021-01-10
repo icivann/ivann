@@ -108,9 +108,10 @@ function generateData(graph: Graph, dataName: string): string {
     'from torchvision import transforms',
     'import pandas as pd',
     'import numpy as np',
-    'import os',
     'from PIL import Image',
     '# enabling relative imports',
+    'import os',
+    'import sys',
     'sys.path.insert(0, os.path.join((os.path.abspath(os.path.dirname(sys.argv[0]))), ".."))',
   ].join('\n');
   const header = `class ${dataName}(Dataset):`;
