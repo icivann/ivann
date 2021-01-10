@@ -87,7 +87,7 @@ export default class ExportModal extends Vue {
         return [graph, name] as [Graph, string];
       });
       const contents = generateOverviewCode(graph, models, data);
-      zip.file(`${name}.py`, contents);
+      zip.file('main.py', contents);
     }
     // generate model files
     if (modelsFolder !== null) {
