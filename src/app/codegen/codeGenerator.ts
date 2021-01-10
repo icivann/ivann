@@ -285,12 +285,17 @@ export function generateOverviewCode(
     'from torch.utils.data import DataLoader',
   ];
 
-  modelEditors.forEach((editor) => imports.push(`from models.${editor[1]} import ${editor[1]}`));
+  imports.push('# Importing Datasets');
   dataEditors.forEach((editor) => imports.push(`from data.${editor[1]} import ${editor[1]}`));
 
-  const customFunctionImports = importCustomFunctions(graph);
+  imports.push('# Importing Models');
+  modelEditors.forEach((editor) => imports.push(`from models.${editor[1]} import ${editor[1]}`));
 
-  const result = [imports.join('\n'), '#Custom functions', customFunctionImports.join('\n')];
+  const customFunctionImports = importCustomFunctions(graph);
+  imports.push('# Importing Custom functions');
+  customFunctionImports.forEach((x) => imports.push(x));
+
+  const result = [imports.join('\n')];
 
   const overview = generateOverview(graph);
   result.push(overview);
