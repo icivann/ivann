@@ -29,6 +29,7 @@ function toGraphNode(inode: INodeState): ModelNode {
     const { parsedFunction } = inode.state;
     options.set(CustomOptions.Code, new ParsedFunction(parsedFunction.name,
       parsedFunction.body, parsedFunction.args, parsedFunction.filename).toString());
+    options.set(CustomOptions.File, parsedFunction.filename);
   }
 
   options.set('name', inode.name);
