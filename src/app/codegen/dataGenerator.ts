@@ -6,6 +6,7 @@ import LoadCsv from '@/app/ir/data/LoadCsv';
 import LoadImages from '@/app/ir/data/LoadImages';
 
 import { indent, getNodeType } from '@/app/codegen/common';
+import DataCustom from '@/app/ir/data/DataCustom';
 
 const nodeNames = new Map<GraphNode, string>();
 const nodeTypeCounters = new Map<string, number>();
@@ -85,8 +86,12 @@ function isDataLoadNode(node: GraphNode) {
   return node.mlNode instanceof LoadCsv || node.mlNode instanceof LoadImages;
 }
 
+function isCustomDataLoadNode(node: GraphNode) {
+  return node.mlNode instanceof DataCustom && node.mlNode.dataLoading;
+}
+
 function generateInputCode(node: GraphNode): string[] {
-  if (node.mlNode instanceof LoadCsv || node.mlNode instanceof LoadImages) {
+  if (node.mlNode instanceof LoadCsv || node.mlNode instanceof LoadImages || node.mlNode instanceof DataCustom) {
     return node.mlNode.initCode(getNodeName(node)).map((line) => `${indent}${indent}${line}`);
   }
 
@@ -94,7 +99,7 @@ function generateInputCode(node: GraphNode): string[] {
 }
 
 function generateInputCallCode(node: GraphNode): string[] {
-  if (node.mlNode instanceof LoadCsv || node.mlNode instanceof LoadImages) {
+  if (node.mlNode instanceof LoadCsv || node.mlNode instanceof LoadImages || node.mlNode instanceof DataCustom) {
     return node.mlNode.callCode(getNodeName(node)).map((line) => `${indent}${indent}${line}`);
   }
 
@@ -104,13 +109,20 @@ function generateInputCallCode(node: GraphNode): string[] {
 function generateData(graph: Graph, dataName: string): string {
   const header = `class ${dataName}(Dataset):`;
 
-  const inputs = graph.nodesAsArray.filter((item: GraphNode) => isDataLoadNode(item));
+  console.log(graph.nodesAsArray);
+
+  const inputs = graph.nodesAsArray.filter((item: GraphNode) => isDataLoadNode(item) || isCustomDataLoadNode(item));
+
+  console.log(inputs);
+
   const inputNames = inputs.map((node) => getNodeName(node));
   let init: string[] = [`${indent}def __init__(self, ${inputNames.map((i) => `${i}_path`).join(', ')}):`];
 
   inputs.forEach((node) => {
     init = init.concat(generateInputCode(node));
   });
+
+  console.log(init);
 
   const len: string[] = [`${indent}def __len__(self):`];
   len.push(`${indent}${indent}return len(self.${inputNames[0]})`);

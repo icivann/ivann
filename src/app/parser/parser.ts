@@ -6,7 +6,7 @@ import { Result } from '@/app/util';
  * Given a Python file, returns the indentation character sequence
  * @param file file to get the indentation for
  */
-function getIndentation(file: string): string | null {
+export function getIndentation(file: string): string | null {
   const lines = file.split('\n');
 
   for (let i = 0; i < lines.length; i += 1) {

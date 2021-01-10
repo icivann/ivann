@@ -7,6 +7,7 @@ import Grayscale from '@/nodes/data/Grayscale';
 import LoadCsv from '@/nodes/data/LoadCsv';
 import LoadImages from '@/nodes/data/LoadImages';
 import { Editor } from '@baklavajs/core';
+import DataCustom from '@/nodes/data/DataCustom';
 
 export default class DataCanvas extends AbstractCanvas {
   public nodeList = [
@@ -37,6 +38,9 @@ export default class DataCanvas extends AbstractCanvas {
       ],
     },
   ];
+
+  customNodeType = DataCustom;
+  customNodeName = DataNodes.DataCustom;
 
   public registerNodes(editor: Editor) {
     super.registerNodes(editor);

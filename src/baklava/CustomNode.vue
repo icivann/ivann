@@ -21,7 +21,7 @@
            :initialUp="false"
            v-on:arrow-button-clicked="toggleShouldShowOptions"
            v-show="data.options.size > 0"
-           :blackStroke="data.type === customNode"
+           :blackStroke="isCustomNode(data.type)"
          />
       </span>
       <input
@@ -116,7 +116,6 @@ import IrError from '@/app/ir/checking/irError';
 import { Getter } from 'vuex-class';
 import { Severity } from '@/app/ir/checking/severity';
 import { OverviewNodes } from '@/nodes/overview/Types';
-import { CommonNodes } from '@/nodes/common/Types';
 import { DataNodes } from '@/nodes/data/Types';
 
 @Component({
@@ -134,8 +133,6 @@ export default class CustomNode extends Components.Node {
   };
 
   private currentErrors: IrError[] = [];
-
-  private customNode = CommonNodes.Custom;
 
   get messages(): string | undefined {
     return this.currentErrors.length !== 0
@@ -184,7 +181,7 @@ export default class CustomNode extends Components.Node {
     const items = [{ value: 'delete', label: 'Delete' }];
     if (this.data.type !== OverviewNodes.ModelNode
       && this.data.type !== OverviewNodes.DataNode
-      && this.data.type !== CommonNodes.Custom) {
+      && !this.isCustomNode(this.data.type)) {
       items.unshift({ value: 'rename', label: 'Rename' });
     }
     return items;
@@ -230,11 +227,20 @@ export default class CustomNode extends Components.Node {
         return { background: 'var(--mustard)' };
       case ModelNodes.Transformer:
         return { background: 'var(--seafoam)' };
-      case CommonNodes.Custom:
+      case ModelNodes.ModelCustom:
+        return { background: 'var(--foreground)', color: 'var(--dark-grey)' };
+      case DataNodes.DataCustom:
+        return { background: 'var(--foreground)', color: 'var(--dark-grey)' };
+      case OverviewNodes.OverviewCustom:
         return { background: 'var(--foreground)', color: 'var(--dark-grey)' };
       default:
         return { background: 'var(--black)' };
     }
+  }
+
+  private isCustomNode(type: string) {
+    return type === ModelNodes.ModelCustom || type === DataNodes.DataCustom
+      || type === OverviewNodes.OverviewCustom;
   }
 }
 </script>

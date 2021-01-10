@@ -1,6 +1,10 @@
 <template>
   <div class="editor">
     <div id="ace"/>
+    <select name="templates" id="template-select" @change="templateChanged">
+      <option value="">Select a template</option>
+      <option value="dataLoading">Data Loading</option>
+    </select>
     <div class="confirm-button">
       <UIButton text="Close" @click="close"/>
       <UIButton text="Save Changes" :primary="true" @click="save"/>
@@ -133,6 +137,24 @@ export default class IdeTab extends Vue {
       }]);
     }
   }
+
+  private templateChanged(event: Event) {
+    const template = (event.target as HTMLInputElement).value;
+    if (template === 'dataLoading' && this.editor) {
+      if (window.confirm('Changing template will erase this code. Are you sure you want to continue?')) {
+        this.editor.setValue(`def dataLoading():
+  def __init__(self, path):
+    # Your code here
+    pass
+  
+  def __getitem__(self, index):
+    # Your code here
+    pass
+  
+  return`, -1);
+      }
+    }
+  }
 }
 </script>
 
@@ -153,6 +175,13 @@ export default class IdeTab extends Vue {
   font-size: 1em;
   font-family: monospace;
   font-weight: lighter;
+}
+
+#template-select {
+  display: flex;
+  float: left;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 }
 
 .confirm-button {

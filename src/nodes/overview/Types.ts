@@ -13,6 +13,7 @@ export enum OverviewNodes {
   TrainClassifier = 'TrainClassifier',
   // optimizers
   Adadelta = 'Adadelta',
+  OverviewCustom = 'OverviewCustom',
   Adamax = 'Adamax',
   SparseAdam = 'SparseAdam',
   Adam = 'Adam',

@@ -6,6 +6,7 @@ export enum DataCategories {
 }
 
 export enum DataNodes {
+  DataCustom = 'DataCustom',
   OutData = 'OutData',
   ToTensor = 'ToTensor',
   Grayscale = 'Grayscale',

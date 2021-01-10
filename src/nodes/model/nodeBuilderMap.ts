@@ -1,5 +1,4 @@
 import { MlNode } from '@/app/ir/mainNodes';
-import Custom from '@/app/ir/Custom';
 import InModel from '@/app/ir/InModel';
 import OutModel from '@/app/ir/OutModel';
 import Concat from '@/app/ir/Concat';
@@ -124,6 +123,8 @@ import GRU from '@/app/ir/model/gru';
 import RNNCell from '@/app/ir/model/rnncell';
 import LSTMCell from '@/app/ir/model/lstmcell';
 import GRUCell from '@/app/ir/model/grucell';
+import DataCustom from '@/app/ir/data/DataCustom';
+import ModelCustom from '@/app/ir/model/ModelCustom';
 import Adamax from '@/app/ir/overview/optimizers/adamax';
 import SparseAdam from '@/app/ir/overview/optimizers/sparseadam';
 import AdamW from '@/app/ir/overview/optimizers/adamw';
@@ -152,7 +153,6 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['Dropout2d', Dropout2d.build],
   ['Dropout3d', Dropout3d.build],
   ['Relu', ReLU.build],
-  ['Custom', Custom.build as (r: Options) => MlNode],
   ['Concat', Concat.build],
   ['InModel', InModel.build],
   ['OutModel', OutModel.build],
@@ -165,6 +165,7 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['Softmin', Softmin.build],
   ['Softmax', Softmax.build],
   ['Flatten', Flatten.build],
+  ['ModelCustom', ModelCustom.build as (r: Options) => MlNode],
   // Data
   ['OutData', OutData.build],
   ['ToTensor', ToTensor.build],
@@ -173,6 +174,7 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['DataNode', Data.build],
   ['LoadCsv', LoadCsv.build],
   ['LoadImages', LoadImages.build],
+  ['DataCustom', DataCustom.build as (r: Options) => MlNode],
   // OVERVIEW
   ['OverviewCustom', OverviewCustom.build as (r: Options) => MlNode],
   // Optimizers

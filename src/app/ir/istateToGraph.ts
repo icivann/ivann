@@ -4,10 +4,11 @@ import { ModelNode } from '@/app/ir/mainNodes';
 import { nodeBuilder } from '@/nodes/model/nodeBuilderMap';
 import GraphNode from '@/app/ir/GraphNode';
 import { UUID } from '@/app/util';
-import { CommonNodes } from '@/nodes/common/Types';
 import { CustomOptions } from '@/nodes/common/Custom';
 import { OverviewNodes } from '@/nodes/overview/Types';
 import ParsedFunction from '@/app/parser/ParsedFunction';
+import { DataNodes } from '@/nodes/data/Types';
+import { ModelNodes } from '@/nodes/model/Types';
 
 function traverseOptions(options: Array<[string, any]>): Map<string, any> {
   const constrMap: Map<string, any> = new Map<string, any>();
@@ -25,7 +26,8 @@ function toGraphNode(inode: INodeState): ModelNode {
   }
 
   const options = traverseOptions(inode.options);
-  if (inode.type === CommonNodes.Custom || inode.type === OverviewNodes.Custom) {
+  if (inode.type === ModelNodes.ModelCustom || inode.type === OverviewNodes.OverviewCustom
+    || inode.type === DataNodes.DataCustom) {
     const { parsedFunction } = inode.state;
     options.set(CustomOptions.Code, new ParsedFunction(parsedFunction.name,
       parsedFunction.body, parsedFunction.args, parsedFunction.filename).toString());
