@@ -175,22 +175,24 @@ function generateModel(graph: Graph, name: string): string {
   return [header, initMethod, forwardMethod].join('\n\n');
 }
 
-function generateFunctions(graph: Graph): string {
-  const customNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Custom);
+function importCustomFunctions(graph: Graph): string[] {
+  const customNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Custom || item.mlNode instanceof OverviewCustom);
   // TODO: expand to other training nodes (and custom train)
 
   if (customNodes.length === 0) {
-    return '';
+    return [];
   }
 
   const funcs: string[] = [];
   customNodes.forEach((node) => {
-    if (node.mlNode instanceof Custom) {
-      funcs.push(node.mlNode.name);
+    // redundant check as we filter above but typescript is weird like this
+    if (node.mlNode instanceof Custom || node.mlNode instanceof OverviewCustom) {
+      const filename = node.mlNode.file.split('.')[0];
+      funcs.push(`from codevault.${filename} import ${node.mlNode.name}`);
     }
   });
 
-  return funcs.join('\n\n');
+  return funcs;
 }
 
 export function generateModelCode(graph: Graph, name: string): string {
@@ -200,14 +202,10 @@ export function generateModelCode(graph: Graph, name: string): string {
     'import torch.nn.functional as F',
   ].join('\n');
 
-  const funcs = generateFunctions(graph);
+  const customFunctionImports = importCustomFunctions(graph).join('\n');
   const model = generateModel(graph, name);
 
-  const result = [imports];
-
-  if (funcs.length > 0) {
-    result.push(funcs);
-  }
+  const result = [imports, customFunctionImports];
 
   result.push(model);
 
@@ -215,6 +213,10 @@ export function generateModelCode(graph: Graph, name: string): string {
 }
 
 function isNodeTrainer(node: GraphNode): boolean {
+  console.log('----------------------------');
+  console.log(node.mlNode instanceof OverviewCustom);
+  // console.log(node.mlNode.trainer);
+  console.log(node.mlNode instanceof Custom);
   return node.mlNode instanceof TrainClassifier
     || (node.mlNode instanceof OverviewCustom && node.mlNode.trainer);
 }
@@ -261,17 +263,6 @@ function generateOverview(graph: Graph): string {
 
   const trainNodes = graph.nodesAsArray.filter(isNodeTrainer);
 
-  let funcs: string[] = [];
-
-  trainNodes.forEach((node) => {
-    funcs = funcs.concat((node.mlNode as OverviewCallableNode).initCode());
-  });
-
-  // Create functions for training
-
-  // const main = [header, body.join(`\n${indent}`)];
-  const entry = `if __name__ == '__main__':\n${indent}main()`;
-
   if (trainNodes.length === 0) {
     main.push(`${indent}${indent}pass`);
   } else {
@@ -280,7 +271,9 @@ function generateOverview(graph: Graph): string {
     });
   }
 
-  return [funcs, main.join(`\n${indent}`), entry].join('\n\n');
+  const entry = `if __name__ == '__main__':\n${indent}main()`;
+
+  return [main.join(`\n${indent}`), entry].join('\n\n');
 }
 
 export function generateOverviewCode(
@@ -299,17 +292,20 @@ export function generateOverviewCode(
   modelEditors.forEach((editor) => imports.push(`from models.${editor[1]} import ${editor[1]}`));
   dataEditors.forEach((editor) => imports.push(`from data.${editor[1]} import ${editor[1]}`));
 
-  const funcs = generateFunctions(graph);
+  const customFunctionImports = importCustomFunctions(graph);
+  console.log('cust import', customFunctionImports);
 
-  const result = [imports.join('\n')];
-  if (funcs.length > 0) {
-    result.push(funcs);
-  }
+  const result = [imports.join('\n'), '#Custom functions', customFunctionImports.join('\n')];
 
   const overview = generateOverview(graph);
+  console.log('OVERVIEW');
+  console.log(overview);
   result.push(overview);
 
-  return result.join('\n\n');
+  const res = result.join('\n\n');
+  console.log('\n\n\n\n');
+  console.log(res);
+  return res;
 }
 
 export default generateOverviewCode;
