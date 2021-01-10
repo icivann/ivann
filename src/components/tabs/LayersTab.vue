@@ -13,7 +13,7 @@
         :name="overviewCategories.Model"
         v-show="searchString === '' || renderedModelEditors.length > 0"
       >
-        <div class="msg" v-show="modelEditors.length <= 1">No Models Created</div>
+        <div class="msg" v-show="modelEditors.length <= 1">No Models Available</div>
         <ButtonGrid v-show="modelEditors.length > 1">
           <AddNodeButton
             v-for="editor in renderedModelEditors"

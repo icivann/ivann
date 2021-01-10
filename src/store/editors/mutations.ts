@@ -6,7 +6,12 @@ import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
 import { loadEditors, Save } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
-import { getEditorIOs, updateNodeConnections } from '@/store/editors/utils';
+import {
+  deleteNodeEditor,
+  getEditorIOs,
+  renameNodeEditor,
+  updateNodeConnections,
+} from '@/store/editors/utils';
 import ParsedFunction from '@/app/parser/ParsedFunction';
 import { editNodes, FuncDiff } from '@/store/ManageCodevault';
 
@@ -68,11 +73,11 @@ const editorMutations: MutationTree<EditorsState> = {
     if (oldName !== null) {
       state.editorNames.delete(oldName);
 
-      // Loop through nodes in overview editor, find corresponding nodes and rename them
-      const { nodes } = state.overviewEditor.editor;
-      for (const node of nodes) {
-        if (node.name === oldName) node.name = name;
-      }
+      // Rename all nodes for renamed editor
+      renameNodeEditor(state.overviewEditor, oldName, name);
+      state.modelEditors.forEach((editor) => {
+        if (editor.name !== oldName) renameNodeEditor(editor, oldName!, name);
+      });
     }
   },
   deleteEditor(state, { editorType, index }) {
@@ -111,11 +116,11 @@ const editorMutations: MutationTree<EditorsState> = {
     if (name !== null) {
       state.editorNames.delete(name);
 
-      // Loop through nodes in overview editor, find corresponding nodes and delete them
-      const { nodes } = state.overviewEditor.editor;
-      for (const node of nodes) {
-        if (node.name === name) state.overviewEditor.editor.removeNode(node);
-      }
+      // Delete all nodes for deleted editor
+      deleteNodeEditor(state.overviewEditor, name);
+      state.modelEditors.forEach((editor) => {
+        if (editor.name !== name) deleteNodeEditor(editor, name!);
+      });
     }
   },
   loadEditors(state, file: Save) {

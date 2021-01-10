@@ -32,8 +32,7 @@ export function updateNodeConnections(
   currEditorName: string,
 ): void {
   const { nodes } = editorModel.editor;
-  // Loop through nodes in editor
-  // find corresponding node for currEditor and update
+  // Loop through nodes in editor, find corresponding node for currEditor and update them
   const modelNodes = nodes.filter((node) => node.name === currEditorName) as any[];
   if (modelNodes.length > 0) {
     const { inputs: oldInputs, outputs: oldOutputs } = modelNodes[0].getCurrentIO();
@@ -42,5 +41,21 @@ export function updateNodeConnections(
     for (const modelNode of modelNodes) {
       modelNode.updateIO(inputChange, outputChange);
     }
+  }
+}
+
+export function renameNodeEditor(editorModel: EditorModel, oldName: string, name: string): void {
+  const { nodes } = editorModel.editor;
+  // Loop through nodes in editor, find corresponding node for currEditor and rename them
+  for (const node of nodes) {
+    if (node.name === oldName) node.name = name;
+  }
+}
+
+export function deleteNodeEditor(editorModel: EditorModel, editorName: string): void {
+  const { nodes } = editorModel.editor;
+  // Loop through nodes in editor, find corresponding node for currEditor and delete them
+  for (const node of nodes) {
+    if (node.name === editorName) editorModel.editor.removeNode(node);
   }
 }
