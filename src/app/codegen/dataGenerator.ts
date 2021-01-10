@@ -110,6 +110,8 @@ function generateData(graph: Graph, dataName: string): string {
     'import numpy as np',
     'import os',
     'from PIL import Image',
+    '# enabling relative imports',
+    'sys.path.insert(0, os.path.join((os.path.abspath(os.path.dirname(sys.argv[0]))), ".."))',
   ].join('\n');
   const header = `class ${dataName}(Dataset):`;
 
