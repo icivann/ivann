@@ -34,7 +34,7 @@ class OverviewCustom {
     }
     if (parsedFuncs.length > 0) {
       const parsedFunc = parsedFuncs[0];
-      return [`${parsedFunc.name}(${params})`];
+      return [`${parsedFunc.name}(${params.join(', ')})`];
     }
     return ['CUSTOM_NODE_NO_FUNCTION_ERROR'];
   }
