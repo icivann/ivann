@@ -213,10 +213,6 @@ export function generateModelCode(graph: Graph, name: string): string {
 }
 
 function isNodeTrainer(node: GraphNode): boolean {
-  console.log('----------------------------');
-  console.log(node.mlNode instanceof OverviewCustom);
-  // console.log(node.mlNode.trainer);
-  console.log(node.mlNode instanceof Custom);
   return node.mlNode instanceof TrainClassifier
     || (node.mlNode instanceof OverviewCustom && node.mlNode.trainer);
 }
@@ -293,18 +289,13 @@ export function generateOverviewCode(
   dataEditors.forEach((editor) => imports.push(`from data.${editor[1]} import ${editor[1]}`));
 
   const customFunctionImports = importCustomFunctions(graph);
-  console.log('cust import', customFunctionImports);
 
   const result = [imports.join('\n'), '#Custom functions', customFunctionImports.join('\n')];
 
   const overview = generateOverview(graph);
-  console.log('OVERVIEW');
-  console.log(overview);
   result.push(overview);
 
   const res = result.join('\n\n');
-  console.log('\n\n\n\n');
-  console.log(res);
   return res;
 }
 
