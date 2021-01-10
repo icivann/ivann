@@ -5,6 +5,7 @@ import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import NLLLoss from '@/app/ir/overview/loss/nllloss_simplified';
 import Model from '@/app/ir/model/model';
 import OverviewCustom from '@/app/ir/overview/OverviewCustom';
+import TrainGAN from '@/app/ir/overview/train/TrainGAN';
 import InModel from './InModel';
 import OutModel from './OutModel';
 import Concat from './Concat';
@@ -55,4 +56,4 @@ export type OptimizerNode = Adadelta
 
 export type LossNode = NLLLoss
 
-export type TrainNode = TrainClassifier
+export type TrainNode = TrainClassifier | TrainGAN

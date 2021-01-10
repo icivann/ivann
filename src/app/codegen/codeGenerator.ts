@@ -16,6 +16,7 @@ import { indent, getNodeType } from '@/app/codegen/common';
 
 import generateData from '@/app/codegen/dataGenerator';
 import OverviewCustom from '@/app/ir/overview/OverviewCustom';
+import TrainGAN from '@/app/ir/overview/train/TrainGAN';
 
 const imports = [
   'import torch',
@@ -221,7 +222,7 @@ export function generateModelCode(graph: Graph, name: string): string {
 }
 
 function isNodeTrainer(node: GraphNode): boolean {
-  return node.mlNode instanceof TrainClassifier
+  return node.mlNode instanceof TrainClassifier || node.mlNode instanceof TrainGAN
     || (node.mlNode instanceof OverviewCustom && node.mlNode.trainer);
 }
 
@@ -244,6 +245,7 @@ function generateOverviewGraphCode(
 
   const isNewNode = !nodeNames.has(node);
   const name = getNodeName(node, nodeNames, nodeTypeCounters);
+  console.log(isNodeTrainer(node), node);
   if (isNodeTrainer(node)) {
     code = code.concat(`${(node.mlNode as OverviewCallableNode).callCode(params)}`);
   } else if (isNewNode && (node.mlNode as OverviewNode).initCode !== undefined) {
