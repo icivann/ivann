@@ -21,6 +21,6 @@ export default class MSELoss {
   }
 
   public initCode(): string {
-    return `MSELoss(SizeAverage= ${this.SizeAverage}, Reduce= ${this.Reduce}, Reduction= ${this.Reduction})`;
+    return `nn.MSELoss(size_average=${this.SizeAverage}, reduce=${this.Reduce}, reduction='${this.Reduction}')`;
   }
 }

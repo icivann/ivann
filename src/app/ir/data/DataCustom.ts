@@ -2,7 +2,7 @@ import { CustomOptions } from '@/nodes/common/Custom';
 import { nodeName } from '@/app/ir/irCommon';
 import { DataCustomOptions } from '@/nodes/data/DataCustom';
 import Custom from '@/app/ir/Custom';
-import parse from '@/app/parser/parser';
+import parse, { getIndentation } from '@/app/parser/parser';
 
 class DataCustom extends Custom {
   public readonly dataLoading: boolean;
@@ -27,7 +27,14 @@ class DataCustom extends Custom {
       return ['CUSTOM_NODE_PARSE_ERROR'];
     }
 
-    const parsedFuncs = parse(func[0].body);
+    let body = func[0].body.split('\n').splice(0).join('\n');
+    const indent = getIndentation(body) as string;
+    body = body.split('\n').map((line) => line.substring(indent.length)).join('\n');
+
+    console.log('lol');
+    console.log(body);
+
+    const parsedFuncs = parse(body);
 
     if (parsedFuncs instanceof Error) {
       console.error(parsedFuncs);
@@ -47,7 +54,10 @@ class DataCustom extends Custom {
       return ['CUSTOM_NODE_PARSE_ERROR'];
     }
 
-    const parsedFuncs = parse(func[0].body);
+    let body = func[0].body.split('\n').splice(0).join('\n');
+    const indent = getIndentation(body) as string;
+    body = body.split('\n').map((line) => line.substring(indent.length)).join('\n');
+    const parsedFuncs = parse(body);
 
     if (parsedFuncs instanceof Error) {
       console.error(parsedFuncs);

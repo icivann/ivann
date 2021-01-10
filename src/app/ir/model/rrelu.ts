@@ -21,6 +21,6 @@ export default class RReLU {
   }
 
   public initCode(): string {
-    return `RReLU(Lower= ${this.Lower}, Upper= ${this.Upper}, Inplace= ${this.Inplace})`;
+    return `RReLU(lower=${this.Lower}, upper=${this.Upper}, inplace=${this.Inplace})`;
   }
 }

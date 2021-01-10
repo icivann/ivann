@@ -1,0 +1,13 @@
+
+        Adamax = 'Adamax',
+        SparseAdam = 'SparseAdam',
+        AdamW = 'AdamW',
+        Adagrad = 'Adagrad',
+        ASGD = 'ASGD',
+        LBFGS = 'LBFGS',
+        RMSprop = 'RMSprop',
+        Rprop = 'Rprop',
+        SGD = 'SGD',
+        Rprop = 'Rprop',
+        .Adadelta = '.Adadelta',
+        Adadelta = 'Adadelta',

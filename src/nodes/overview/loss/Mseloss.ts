@@ -2,6 +2,8 @@ import { Node } from '@baklavajs/core';
 import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
 import CheckboxValue from '@/baklava/CheckboxValue';
+import { valuesOf } from '@/app/util';
+import { Reduction } from '@/app/ir/irCommon';
 
 export enum MSELossOptions {
   SizeAverage = 'Size average',
@@ -14,10 +16,10 @@ export default class MSELoss extends Node {
 
   constructor() {
     super();
-    this.addInputInterface('Input');
+
     this.addOutputInterface('Output');
     this.addOption(MSELossOptions.SizeAverage, TypeOptions.IntOption, 0);
     this.addOption(MSELossOptions.Reduce, TypeOptions.IntOption, 0);
-    this.addOption(MSELossOptions.Reduction, TypeOptions.DropdownOption, 'mean');
+    this.addOption(MSELossOptions.Reduction, TypeOptions.DropdownOption, 'mean', undefined, { items: valuesOf(Reduction) });
   }
 }

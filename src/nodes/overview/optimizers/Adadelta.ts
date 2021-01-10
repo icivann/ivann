@@ -1,32 +1,25 @@
 import { Node } from '@baklavajs/core';
-import { OverviewNodes } from '@/nodes/overview/Types';
 import { TypeOptions } from '@/nodes/model/BaklavaDisplayTypeOptions';
+import CheckboxValue from '@/baklava/CheckboxValue';
+import { OverviewNodes } from '@/nodes/overview/Types';
 
 export enum AdadeltaOptions {
-  Params = 'params',
-  lr = 'lr',
-  rho = 'rho',
-  eps = 'eps',
-  weightDecay = 'weightDecay',
+  Lr = 'Lr',
+  Rho = 'Rho',
+  Eps = 'Eps',
+  WeightDecay = 'Weight decay'
 }
-
 export default class Adadelta extends Node {
   type = OverviewNodes.Adadelta;
   name = OverviewNodes.Adadelta;
 
   constructor() {
     super();
-
-    this.addOption(AdadeltaOptions.lr, TypeOptions.SliderOption, 1);
-    this.addOption(AdadeltaOptions.rho, TypeOptions.SliderOption, 0.9);
-    this.addOption(AdadeltaOptions.eps, TypeOptions.SliderOption, 1e-06);
-    this.addOption(AdadeltaOptions.weightDecay, TypeOptions.SliderOption, 0);
-
-    this.addInputInterface('model');
-    this.addOutputInterface('output');
-  }
-
-  public initCode(params: string[]): string {
-    return `torch.optim.Adadelta(${params[0]}.parameters(), lr=1, rho=0.9, eps=0.000001, weight_decay=0)`;
+    this.addInputInterface('Model');
+    this.addOutputInterface('Output');
+    this.addOption(AdadeltaOptions.Lr, TypeOptions.SliderOption, 1.0);
+    this.addOption(AdadeltaOptions.Rho, TypeOptions.SliderOption, 0.9);
+    this.addOption(AdadeltaOptions.Eps, TypeOptions.SliderOption, 1e-06);
+    this.addOption(AdadeltaOptions.WeightDecay, TypeOptions.SliderOption, 0);
   }
 }

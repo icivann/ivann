@@ -20,6 +20,6 @@ export default class ConstantPad1d {
   }
 
   public initCode(): string {
-    return `ConstantPad1d(Padding= ${this.Padding}, Value= ${this.Value})`;
+    return `ConstantPad1d(padding=${this.Padding}, value=${this.Value})`;
   }
 }
