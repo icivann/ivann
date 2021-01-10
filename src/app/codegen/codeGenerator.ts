@@ -213,7 +213,7 @@ export function generateModelCode(graph: Graph, name: string): string {
 
   result.push(model);
 
-  return result.join('\n\n');
+  return result.join('\n');
 }
 
 function isNodeTrainer(node: GraphNode): boolean {
