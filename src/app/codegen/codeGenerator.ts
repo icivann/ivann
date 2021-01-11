@@ -9,14 +9,10 @@ import Concat from '@/app/ir/Concat';
 import Flatten from '@/app/ir/model/flatten';
 import Custom from '@/app/ir/Custom';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
-import Adadelta from '@/app/ir/overview/optimizers/adadelta';
 import Model from '@/app/ir/model/model';
 
-import { indent, getNodeType } from '@/app/codegen/common';
-
-import generateData from '@/app/codegen/dataGenerator';
+import { getNodeType, indent } from '@/app/codegen/common';
 import OverviewCustom from '@/app/ir/overview/OverviewCustom';
-import { edit } from 'brace';
 
 function getNodeName(
   node: GraphNode,
@@ -65,7 +61,8 @@ function generateModelGraphCode(
     outputs.add(getBranchVar(incomingBranch));
   } else if (node.mlNode instanceof Concat
     || node.mlNode instanceof Flatten
-    || node.mlNode instanceof Custom) {
+    || node.mlNode instanceof Custom
+    || node.mlNode instanceof Model) {
     // TODO: test this
     const readyConnections: number[] = branchesMap.get(node) ?? [];
     if (readyConnections.length !== node.inputInterfaces.size - 1) {
@@ -163,7 +160,8 @@ function generateModel(graph: Graph, name: string): string {
   const nodeDefinitions: string[] = [];
   // TODO: sort layer definitions
   graph.nodesAsArray.forEach((n) => {
-    if ((n.mlNode as ModelLayerNode).initCode !== undefined) {
+    // TODO: cast to ModelLayerNode may be unecessary
+    if ((n.mlNode as ModelLayerNode).initCode !== undefined && !(n.mlNode instanceof Model)) {
       nodeDefinitions.push(`self.${getNodeName(n, nodeNames, nodeTypeCounters)} = nn.${(n.mlNode as ModelLayerNode).initCode()}`);
     }
   });
@@ -195,6 +193,28 @@ function importCustomFunctions(graph: Graph): string[] {
   return funcs;
 }
 
+function importNestedModels(graph: Graph): string[] {
+  console.log(graph.nodesAsArray);
+  const modelNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Model);
+  console.log('model nodes:\n');
+  console.log(modelNodes);
+  // TODO: expand to other training nodes (and custom train)
+
+  if (modelNodes.length === 0) {
+    return [];
+  }
+
+  // const imports: string[] = [];
+  // modelNodes.forEach((node) => {
+  //   // redundant check as we filter above but typescript is weird like this
+  //   if (node.mlNode instanceof Model) {
+  //     imports.push(`from models.${node.mlNode.name} import ${node.mlNode.name}`);
+  //   }
+  // });
+
+  return modelNodes.map((node) => `from models.${node.mlNode.name} import ${node.mlNode.name}`);
+}
+
 export function generateModelCode(graph: Graph, name: string): string {
   const imports = [
     'import torch',
@@ -207,9 +227,10 @@ export function generateModelCode(graph: Graph, name: string): string {
   ].join('\n');
 
   const customFunctionImports = importCustomFunctions(graph).join('\n');
+  const nestedModels = importNestedModels(graph).join('\n');
   const model = generateModel(graph, name);
 
-  const result = [imports, customFunctionImports];
+  const result = [imports, nestedModels, customFunctionImports];
 
   result.push(model);
 
