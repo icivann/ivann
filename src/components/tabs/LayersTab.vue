@@ -15,9 +15,13 @@
       >
         <ButtonGrid>
           <AddNodeButton :node="modelNodeTypes.InModel" name="Input" :names="editorIONames"
-                         v-if="shouldRender('Input')"/>
+                         v-if="shouldRender('Input')">
+            <img src="@/assets/images/input-icon.svg" alt="Input"/>
+          </AddNodeButton>
           <AddNodeButton :node="modelNodeTypes.OutModel" name="Output" :names="editorIONames"
-                         v-if="shouldRender('Output')"/>
+                         v-if="shouldRender('Output')">
+            <img src="@/assets/images/output-icon.svg" alt="Output"/>
+          </AddNodeButton>
         </ButtonGrid>
       </ExpandablePanel>
       <ExpandablePanel v-for="(category) in renderedNodes" :key="category.category"
@@ -25,8 +29,9 @@
         <ButtonGrid>
           <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
                          :node="node.name"
-                         :name="node.name"
-          />
+                         :name="node.name">
+            <img src="@/assets/images/layer-icon.svg" :alt="node.name"/>
+          </AddNodeButton>
         </ButtonGrid>
       </ExpandablePanel>
     </Padded>

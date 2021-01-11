@@ -10,6 +10,7 @@ export default abstract class AbstractCanvas {
     nodes: {
       name: string;
       node: NodeConstructor;
+      icon?: string;
     }[];
   }[];
 

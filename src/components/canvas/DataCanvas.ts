@@ -16,10 +16,12 @@ export default class DataCanvas extends AbstractCanvas {
         {
           name: DataNodes.ToTensor,
           node: ToTensor,
+          img: 'transform-icon.svg',
         },
         {
           name: DataNodes.Grayscale,
           node: Grayscale,
+          img: 'transform-icon.svg',
         },
       ],
     },
@@ -29,10 +31,12 @@ export default class DataCanvas extends AbstractCanvas {
         {
           name: DataNodes.LoadCsv,
           node: LoadCsv,
+          img: 'input-icon.svg',
         },
         {
           name: DataNodes.LoadImages,
           node: LoadImages,
+          img: 'input-icon.svg',
         },
       ],
     },

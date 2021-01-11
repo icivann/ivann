@@ -21,8 +21,9 @@
             :key="func.name"
             :node="customNode"
             :name="func.name"
-            :options="func"
-          />
+            :options="func">
+            <img src="@/assets/images/python-icon.svg" alt="Custom Node"/>
+          </AddNodeButton>
         </ButtonGrid>
       </ExpandablePanel>
     </Padded>

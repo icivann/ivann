@@ -3,7 +3,9 @@
     <div class="header" @click="toggleOpen">
       {{name}}
     </div>
-    <slot class="panel-content" v-if="open"/>
+    <div class="panel-content" v-show="open">
+      <slot/>
+    </div>
   </div>
 </template>
 
