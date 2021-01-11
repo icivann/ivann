@@ -36,6 +36,7 @@ import RMSprop from '@/nodes/overview/optimizers/Rmsprop';
 import Rprop from '@/nodes/overview/optimizers/Rprop';
 import SGD from '@/nodes/overview/optimizers/Sgd';
 import Adam from '@/nodes/overview/optimizers/Adam';
+import TrainGAN from '@/nodes/overview/train/TrainGAN';
 
 export default class OverviewCanvas extends AbstractCanvas {
   nodeList = [
@@ -46,6 +47,11 @@ export default class OverviewCanvas extends AbstractCanvas {
           name: OverviewNodes.TrainClassifier,
           node: TrainClassifier,
           img: 'train-icon.svg',
+        },
+
+        {
+          name: OverviewNodes.TrainGAN,
+          node: TrainGAN,
         },
       ],
     },

@@ -11,6 +11,7 @@ export enum OverviewNodes {
   ModelNode = 'ModelNode',
   DataNode = 'DataNode',
   TrainClassifier = 'TrainClassifier',
+  TrainGAN = 'TrainGAN',
   // optimizers
   Adadelta = 'Adadelta',
   Adamax = 'Adamax',
