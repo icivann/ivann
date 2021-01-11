@@ -18,7 +18,6 @@ import generateData from '@/app/codegen/dataGenerator';
 import OverviewCustom from '@/app/ir/overview/OverviewCustom';
 import TrainGAN from '@/app/ir/overview/train/TrainGAN';
 
-
 function getNodeName(
   node: GraphNode,
   nodeNames: Map<GraphNode, string>,
