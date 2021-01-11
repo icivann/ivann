@@ -9,11 +9,14 @@ export default class Model extends Node {
   name = '';
   type = OverviewNodes.ModelNode;
 
-  constructor(model?: EditorModel) {
+  constructor(model?: EditorModel, overviewFlag?: boolean) {
     super();
     if (model) {
       this.name = model.name;
-      const { inputs, outputs } = getEditorIOs(model);
+      // eslint-disable-next-line
+      let { inputs, outputs } = getEditorIOs(model);
+      // TODO: Clean up hack
+      if (overviewFlag) inputs = [];
       this.updateIO({ added: inputs, removed: [] }, { added: outputs, removed: [] });
     }
   }
