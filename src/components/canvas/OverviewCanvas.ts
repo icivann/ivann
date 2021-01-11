@@ -36,6 +36,7 @@ import RMSprop from '@/nodes/overview/optimizers/Rmsprop';
 import Rprop from '@/nodes/overview/optimizers/Rprop';
 import SGD from '@/nodes/overview/optimizers/Sgd';
 import Adam from '@/nodes/overview/optimizers/Adam';
+import TrainGAN from '@/nodes/overview/train/TrainGAN';
 
 export default class OverviewCanvas extends AbstractCanvas {
   nodeList = [
@@ -45,6 +46,12 @@ export default class OverviewCanvas extends AbstractCanvas {
         {
           name: OverviewNodes.TrainClassifier,
           node: TrainClassifier,
+          img: 'train-icon.svg',
+        },
+
+        {
+          name: OverviewNodes.TrainGAN,
+          node: TrainGAN,
         },
       ],
     },
@@ -55,86 +62,103 @@ export default class OverviewCanvas extends AbstractCanvas {
         {
           name: OverviewNodes.L1Loss,
           node: L1Loss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.MSELoss,
           node: MSELoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.CrossEntropyLoss,
           node: CrossEntropyLoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.CTCLoss,
           node: CTCLoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.NLLLoss,
           node: NLLLoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.PoissonNLLLoss,
           node: PoissonNLLLoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.KLDivLoss,
           node: KLDivLoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.BCELoss,
           node: BCELoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.BCEWithLogitsLoss,
           node: BCEWithLogitsLoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.MarginRankingLoss,
           node: MarginRankingLoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.HingeEmbeddingLoss,
           node: HingeEmbeddingLoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.MultiLabelMarginLoss,
           node: MultiLabelMarginLoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.SmoothL1Loss,
           node: SmoothL1Loss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.MultiLabelSoftMarginLoss,
           node: MultiLabelSoftMarginLoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.CosineEmbeddingLoss,
           node: CosineEmbeddingLoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.MultiMarginLoss,
           node: MultiMarginLoss,
+          img: 'loss-icon.svg',
         },
 
         {
           name: OverviewNodes.TripletMarginLoss,
           node: TripletMarginLoss,
+          img: 'loss-icon.svg',
         },
       ],
     },
@@ -144,56 +168,67 @@ export default class OverviewCanvas extends AbstractCanvas {
         {
           name: OverviewNodes.Adadelta,
           node: Adadelta,
+          img: 'optimiser-icon.svg',
         },
 
         {
           name: OverviewNodes.Adamax,
           node: Adamax,
+          img: 'optimiser-icon.svg',
         },
 
         {
           name: OverviewNodes.SparseAdam,
           node: SparseAdam,
+          img: 'optimiser-icon.svg',
         },
 
         {
           name: OverviewNodes.AdamW,
           node: AdamW,
+          img: 'optimiser-icon.svg',
         },
 
         {
           name: OverviewNodes.Adam,
           node: Adam,
+          img: 'optimiser-icon.svg',
         },
 
         {
           name: OverviewNodes.Adagrad,
           node: Adagrad,
+          img: 'optimiser-icon.svg',
         },
 
         {
           name: OverviewNodes.ASGD,
           node: ASGD,
+          img: 'optimiser-icon.svg',
         },
 
         {
           name: OverviewNodes.LBFGS,
           node: LBFGS,
+          img: 'optimiser-icon.svg',
         },
 
         {
           name: OverviewNodes.RMSprop,
           node: RMSprop,
+          img: 'optimiser-icon.svg',
         },
 
         {
           name: OverviewNodes.Rprop,
           node: Rprop,
+          img: 'optimiser-icon.svg',
         },
 
         {
           name: OverviewNodes.SGD,
           node: SGD,
+          img: 'optimiser-icon.svg',
         },
 
       ],

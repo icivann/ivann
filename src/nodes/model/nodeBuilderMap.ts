@@ -134,6 +134,7 @@ import Rprop from '@/app/ir/overview/optimizers/rprop';
 import SGD from '@/app/ir/overview/optimizers/sgd';
 import Adagrad from '@/app/ir/overview/optimizers/adagrad';
 import Adam from '@/app/ir/overview/optimizers/adam';
+import TrainGAN from '@/app/ir/overview/train/TrainGAN';
 
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
@@ -181,6 +182,7 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['NLLLoss', NLLLoss.build],
   // Training
   ['TrainClassifier', TrainClassifier.build],
+  ['TrainGAN', TrainGAN.build],
   ['Unfold', Unfold.build],
   ['Fold', Fold.build],
   ['MaxUnpool1d', MaxUnpool1d.build],

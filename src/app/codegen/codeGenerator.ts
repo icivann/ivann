@@ -16,7 +16,7 @@ import { indent, getNodeType } from '@/app/codegen/common';
 
 import generateData from '@/app/codegen/dataGenerator';
 import OverviewCustom from '@/app/ir/overview/OverviewCustom';
-import { edit } from 'brace';
+import TrainGAN from '@/app/ir/overview/train/TrainGAN';
 
 function getNodeName(
   node: GraphNode,
@@ -217,7 +217,7 @@ export function generateModelCode(graph: Graph, name: string): string {
 }
 
 function isNodeTrainer(node: GraphNode): boolean {
-  return node.mlNode instanceof TrainClassifier
+  return node.mlNode instanceof TrainClassifier || node.mlNode instanceof TrainGAN
     || (node.mlNode instanceof OverviewCustom && node.mlNode.trainer);
 }
 
