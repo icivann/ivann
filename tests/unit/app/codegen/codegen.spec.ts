@@ -21,6 +21,14 @@ describe('model codegen', () => {
     actual = removeBlankLines(actual);
 
     let expected = `
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+# enabling relative imports
+import os
+import sys
+sys.path.insert(0, os.path.join((os.path.abspath(os.path.dirname(sys.argv[0]))), ".."))
+
 class Model(nn.Module):
 
   def __init__(self):
@@ -46,6 +54,14 @@ class Model(nn.Module):
     actual = removeBlankLines(actual);
 
     let expected = `
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+# enabling relative imports
+import os
+import sys
+sys.path.insert(0, os.path.join((os.path.abspath(os.path.dirname(sys.argv[0]))), ".."))
+
 class Model(nn.Module):
 
   def __init__(self):
@@ -71,6 +87,14 @@ class Model(nn.Module):
     actual = removeBlankLines(actual);
 
     let expected = `
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+# enabling relative imports
+import os
+import sys
+sys.path.insert(0, os.path.join((os.path.abspath(os.path.dirname(sys.argv[0]))), ".."))
+
 class Model(nn.Module):
 
   def __init__(self):
@@ -97,6 +121,14 @@ class Model(nn.Module):
     actual = removeBlankLines(actual);
 
     let expected = `
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+# enabling relative imports
+import os
+import sys
+sys.path.insert(0, os.path.join((os.path.abspath(os.path.dirname(sys.argv[0]))), ".."))
+
 class Model(nn.Module):
 
   def __init__(self):
@@ -126,6 +158,14 @@ class Model(nn.Module):
     actual = removeBlankLines(actual);
 
     let expected = `
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+# enabling relative imports
+import os
+import sys
+sys.path.insert(0, os.path.join((os.path.abspath(os.path.dirname(sys.argv[0]))), ".."))
+
 class Model(nn.Module):
 
   def __init__(self):
@@ -161,6 +201,14 @@ class Model(nn.Module):
     actual = removeBlankLines(actual);
 
     let expected = `
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+# enabling relative imports
+import os
+import sys
+sys.path.insert(0, os.path.join((os.path.abspath(os.path.dirname(sys.argv[0]))), ".."))
+
 class Model(nn.Module):
 
   def __init__(self):
