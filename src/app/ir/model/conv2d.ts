@@ -21,7 +21,6 @@ export default class Conv2d {
   }
 
   static build(options: Map<string, any>): Conv2d {
-    console.log(options);
     return new Conv2d(
       options.get(nodeName),
       options.get(Conv2dOptions.InChannels),
