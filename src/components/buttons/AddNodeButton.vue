@@ -89,16 +89,20 @@ export default class AddNodeButton extends Vue {
     transition-duration: 0.1s;
   }
 
-  /*.icon {*/
-  /*  height: 4em;*/
-  /*  width: 4em;*/
-  /*  margin: 1em auto;*/
-  /*}*/
+  .icon {
+    margin: 15% 15% calc(1em + 15%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 
-  /*.icon * {*/
-  /*  max-height: 100%;*/
-  /*  max-width: 100%;*/
-  /*}*/
+  .icon * {
+    max-height: 100%;
+    max-width: 100%;
+    pointer-events: none;
+  }
 
   .name {
     bottom: 0.3em;
