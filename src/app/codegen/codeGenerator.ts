@@ -16,19 +16,7 @@ import { indent, getNodeType } from '@/app/codegen/common';
 
 import generateData from '@/app/codegen/dataGenerator';
 import OverviewCustom from '@/app/ir/overview/OverviewCustom';
-
-const imports = [
-  'import torch',
-  'import torch.nn as nn',
-  'import torch.nn.functional as F',
-  'import torch.optim as optim',
-  'from torch.utils.data import Dataset, DataLoader',
-  'from torchvision import transforms',
-  'import pandas as pd',
-  'import numpy as np',
-  'import os',
-  'from PIL import Image',
-].join('\n');
+import { edit } from 'brace';
 
 function getNodeName(
   node: GraphNode,
@@ -187,37 +175,45 @@ function generateModel(graph: Graph, name: string): string {
   return [header, initMethod, forwardMethod].join('\n\n');
 }
 
-function generateFunctions(graph: Graph): string {
-  const customNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Custom);
+function importCustomFunctions(graph: Graph): string[] {
+  const customNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Custom || item.mlNode instanceof OverviewCustom);
   // TODO: expand to other training nodes (and custom train)
 
   if (customNodes.length === 0) {
-    return '';
+    return [];
   }
 
   const funcs: string[] = [];
   customNodes.forEach((node) => {
-    if (node.mlNode instanceof Custom) {
-      funcs.push(node.mlNode.code);
+    // redundant check as we filter above but typescript is weird like this
+    if (node.mlNode instanceof Custom || node.mlNode instanceof OverviewCustom) {
+      const filename = node.mlNode.file.split('.')[0];
+      funcs.push(`from codevault.${filename} import ${node.mlNode.name}`);
     }
   });
 
-  return funcs.join('\n\n');
+  return funcs;
 }
 
 export function generateModelCode(graph: Graph, name: string): string {
-  const funcs = generateFunctions(graph);
+  const imports = [
+    'import torch',
+    'import torch.nn as nn',
+    'import torch.nn.functional as F',
+    '# enabling relative imports',
+    'import os',
+    'import sys',
+    'sys.path.insert(0, os.path.join((os.path.abspath(os.path.dirname(sys.argv[0]))), ".."))',
+  ].join('\n');
+
+  const customFunctionImports = importCustomFunctions(graph).join('\n');
   const model = generateModel(graph, name);
 
-  const result = [];
-
-  if (funcs.length > 0) {
-    result.push(funcs);
-  }
+  const result = [imports, customFunctionImports];
 
   result.push(model);
 
-  return result.join('\n\n');
+  return result.join('\n');
 }
 
 function isNodeTrainer(node: GraphNode): boolean {
@@ -267,17 +263,6 @@ function generateOverview(graph: Graph): string {
 
   const trainNodes = graph.nodesAsArray.filter(isNodeTrainer);
 
-  let funcs: string[] = [];
-
-  trainNodes.forEach((node) => {
-    funcs = funcs.concat((node.mlNode as OverviewCallableNode).initCode());
-  });
-
-  // Create functions for training
-
-  // const main = [header, body.join(`\n${indent}`)];
-  const entry = `if __name__ == '__main__':\n${indent}main()`;
-
   if (trainNodes.length === 0) {
     main.push(`${indent}${indent}pass`);
   } else {
@@ -286,7 +271,9 @@ function generateOverview(graph: Graph): string {
     });
   }
 
-  return [funcs, main.join(`\n${indent}`), entry].join('\n\n');
+  const entry = `if __name__ == '__main__':\n${indent}main()`;
+
+  return [main.join(`\n${indent}`), entry].join('\n\n');
 }
 
 export function generateOverviewCode(
@@ -295,26 +282,30 @@ export function generateOverviewCode(
   dataEditors: [Graph, string][],
 ): string {
   // TODO: beware of duplicate custom functions
-  const funcs = generateFunctions(graph);
+  const imports = [
+    'import torch',
+    'import torch.nn as nn',
+    'import torch.optim as optim',
+    'from torch.utils.data import DataLoader',
+  ];
 
-  const models = modelEditors.map((editor) => generateModelCode(editor[0], editor[1])).join('\n\n');
+  imports.push('# Importing Datasets');
+  dataEditors.forEach((editor) => imports.push(`from data.${editor[1]} import ${editor[1]}`));
+
+  imports.push('# Importing Models');
+  modelEditors.forEach((editor) => imports.push(`from models.${editor[1]} import ${editor[1]}`));
+
+  const customFunctionImports = importCustomFunctions(graph);
+  imports.push('# Importing Custom functions');
+  customFunctionImports.forEach((x) => imports.push(x));
+
+  const result = [imports.join('\n')];
 
   const overview = generateOverview(graph);
-
-  const datasets = dataEditors.map((editor) => generateData(editor[0], editor[1])).join('\n\n');
-
-  const result = [imports];
-
-  if (funcs.length > 0) {
-    result.push(funcs);
-  }
-
-  result.push(datasets);
-  result.push(models);
-
   result.push(overview);
 
-  return result.join('\n\n');
+  const res = result.join('\n\n');
+  return res;
 }
 
 export default generateOverviewCode;

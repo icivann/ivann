@@ -23,7 +23,7 @@ export enum OverviewNodes {
   RMSprop = 'RMSprop',
   Rprop = 'Rprop',
   SGD = 'SGD',
-  Custom = 'Custom',
+  Custom = 'OverviewCustom',
   // loss functions
   NLLLoss= 'NLLLoss',
   MultiMarginLoss = 'MultiMarginLoss',

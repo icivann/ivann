@@ -7,6 +7,7 @@ class OverviewCustom {
   constructor(
     public readonly name: string,
     public readonly code: string,
+    public readonly file: string,
     public readonly trainer: boolean,
   ) {
   }
@@ -15,6 +16,7 @@ class OverviewCustom {
     return new OverviewCustom(
       options.get(nodeName),
       options.get(CustomOptions.Code),
+      options.get(CustomOptions.File),
       options.get(OverviewCustomOptions.TRAINER),
     );
   }
@@ -32,7 +34,7 @@ class OverviewCustom {
     }
     if (parsedFuncs.length > 0) {
       const parsedFunc = parsedFuncs[0];
-      return [`${parsedFunc.name}(${params})`];
+      return [`${parsedFunc.name}(${params.join(', ')})`];
     }
     return ['CUSTOM_NODE_NO_FUNCTION_ERROR'];
   }
