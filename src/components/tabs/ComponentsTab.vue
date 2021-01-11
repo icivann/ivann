@@ -41,7 +41,8 @@
                          :node="node.name"
                          :name="node.name"
           >
-            <img src="@/assets/images/loss-icon.svg" :alt="node.name"/>
+            <img v-if="node.img !== undefined" :alt="node.name"
+                 :src="require(`@/assets/images/${node.img}`)"/>
           </AddNodeButton>
         </ButtonGrid>
       </ExpandablePanel>
