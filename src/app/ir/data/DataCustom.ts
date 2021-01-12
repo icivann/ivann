@@ -42,7 +42,7 @@ class DataCustom extends Custom {
     }
     if (parsedFuncs.length > 0) {
       const parsedFunc = parsedFuncs[0];
-      return parsedFunc.body.split('\n');
+      return parsedFunc.body.split('\n').map((line) => line.substring(indent.length));
     }
     return ['CUSTOM_NODE_NO_FUNCTION_ERROR'];
   }
@@ -65,7 +65,7 @@ class DataCustom extends Custom {
     }
     if (parsedFuncs.length > 1) {
       const parsedFunc = parsedFuncs[1];
-      return parsedFunc.body.split('\n');
+      return parsedFunc.body.split('\n').map((line) => line.substring(indent.length));
     }
     return ['CUSTOM_NODE_NO_FUNCTION_ERROR'];
   }
