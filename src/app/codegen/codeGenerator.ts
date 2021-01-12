@@ -195,10 +195,7 @@ function importCustomFunctions(graph: Graph): string[] {
 }
 
 function importNestedModels(graph: Graph): string[] {
-  console.log(graph.nodesAsArray);
   const modelNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Model);
-  console.log('model nodes:\n');
-  console.log(modelNodes);
   if (modelNodes.length === 0) {
     return [];
   }
@@ -274,6 +271,12 @@ function generateOverview(graph: Graph): string {
 
   const trainNodes = graph.nodesAsArray.filter(isNodeTrainer);
 
+  // defining all pre-made training nodes
+  let funcs: string[] = [];
+  trainNodes.filter((n) => !(n.mlNode instanceof OverviewCustom)).forEach((node) => {
+    funcs = funcs.concat((node.mlNode as OverviewCallableNode).initCode());
+  });
+
   if (trainNodes.length === 0) {
     main.push(`${indent}${indent}pass`);
   } else {
@@ -284,7 +287,7 @@ function generateOverview(graph: Graph): string {
 
   const entry = `if __name__ == '__main__':\n${indent}main()`;
 
-  return [main.join(`\n${indent}`), entry].join('\n\n');
+  return [funcs, main.join(`\n${indent}`), entry].join('\n\n');
 }
 
 export function generateOverviewCode(
