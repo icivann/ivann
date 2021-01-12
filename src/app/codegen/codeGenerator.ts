@@ -13,6 +13,7 @@ import Model from '@/app/ir/model/model';
 
 import { getNodeType, indent } from '@/app/codegen/common';
 import OverviewCustom from '@/app/ir/overview/OverviewCustom';
+import TrainGAN from '@/app/ir/overview/train/TrainGAN';
 
 function getNodeName(
   node: GraphNode,
@@ -198,20 +199,9 @@ function importNestedModels(graph: Graph): string[] {
   const modelNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Model);
   console.log('model nodes:\n');
   console.log(modelNodes);
-  // TODO: expand to other training nodes (and custom train)
-
   if (modelNodes.length === 0) {
     return [];
   }
-
-  // const imports: string[] = [];
-  // modelNodes.forEach((node) => {
-  //   // redundant check as we filter above but typescript is weird like this
-  //   if (node.mlNode instanceof Model) {
-  //     imports.push(`from models.${node.mlNode.name} import ${node.mlNode.name}`);
-  //   }
-  // });
-
   return modelNodes.map((node) => `from models.${node.mlNode.name} import ${node.mlNode.name}`);
 }
 
@@ -238,7 +228,7 @@ export function generateModelCode(graph: Graph, name: string): string {
 }
 
 function isNodeTrainer(node: GraphNode): boolean {
-  return node.mlNode instanceof TrainClassifier
+  return node.mlNode instanceof TrainClassifier || node.mlNode instanceof TrainGAN
     || (node.mlNode instanceof OverviewCustom && node.mlNode.trainer);
 }
 

@@ -156,7 +156,7 @@ const editorMutations: MutationTree<EditorsState> = {
     switch (state.currEditorType) {
       case EditorType.MODEL: {
         const { inputs, outputs } = getEditorIOs(currEditor);
-        updateNodeConnections(state.overviewEditor, inputs, outputs, currEditor.name);
+        updateNodeConnections(state.overviewEditor, [], outputs, currEditor.name);
         state.modelEditors.forEach((editor) => {
           if (editor.name !== currEditor.name) {
             updateNodeConnections(editor, inputs, outputs, currEditor.name);

@@ -4,11 +4,13 @@
       <SearchBar @value-change="search"/>
       <ExpandablePanel
         :name="dataCategories.IO"
-        v-show="shouldRender('Input') || shouldRender('Output')"
+        v-show="shouldRender('Output')"
       >
         <ButtonGrid>
           <AddNodeButton :node="dataNodeTypes.OutData" name="Output"
-                         v-if="shouldRender('Output')"/>
+                         v-if="shouldRender('Output')">
+            <img src="@/assets/images/output-icon.svg" alt="Output"/>
+          </AddNodeButton>
         </ButtonGrid>
       </ExpandablePanel>
       <ExpandablePanel v-for="(category) in renderedNodes" :key="category.category"
@@ -17,7 +19,10 @@
           <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
                          :node="node.name"
                          :name="node.name"
-          />
+          >
+            <img v-if="node.img !== undefined" :alt="node.name"
+                 :src="require(`@/assets/images/${node.img}`)"/>
+          </AddNodeButton>
         </ButtonGrid>
       </ExpandablePanel>
     </Padded>
