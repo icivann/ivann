@@ -10,6 +10,21 @@
         </a>.
       </p>
       <ExpandablePanel
+        :name="overviewCategories.Model"
+        v-show="searchString === '' || renderedModelEditors.length > 0"
+      >
+        <div class="msg" v-show="modelEditors.length <= 1">No Models Available</div>
+        <ButtonGrid v-show="modelEditors.length > 1">
+          <AddNodeButton
+            v-for="editor in renderedModelEditors"
+            :node="overviewNodes.ModelNode"
+            :options="editor"
+            :key="editor.name"
+            :name="editor.name"
+          />
+        </ButtonGrid>
+      </ExpandablePanel>
+      <ExpandablePanel
         :name="modelCategories.IO"
         v-show="shouldRender('Input') || shouldRender('Output')"
       >
@@ -49,6 +64,9 @@ import { ModelCategories, ModelNodes } from '@/nodes/model/Types';
 import SearchBar from '@/SearchBar.vue';
 import Padded from '@/components/wrappers/Padded.vue';
 import Scrollable from '@/components/wrappers/Scrollable.vue';
+import { OverviewCategories, OverviewNodes } from '@/nodes/overview/Types';
+import { Getter } from 'vuex-class';
+import { EditorModel } from '@/store/editors/types';
 
 @Component({
   components: {
@@ -66,12 +84,23 @@ export default class LayersTab extends Vue {
   private modelCategories = ModelCategories;
   private modelNodeTypes = ModelNodes;
   private searchString = '';
+  private readonly overviewNodes = OverviewNodes;
+  private readonly overviewCategories = OverviewCategories;
+  @Getter('modelEditors') modelEditors!: EditorModel[];
+  @Getter('dataEditors') dataEditors!: EditorModel[];
+  @Getter('currEditorModel') currEditorModel!: EditorModel;
 
   private get renderedNodes() {
     return this.nodeList.map((section) => ({
       category: section.category,
       nodes: section.nodes.filter((node) => this.shouldRender(node.name)),
     }));
+  }
+
+  private get renderedModelEditors() {
+    const { name } = this.currEditorModel;
+    return this.modelEditors
+      .filter((editor) => this.shouldRender(editor.name) && name !== editor.name);
   }
 
   private search(search: string) {
@@ -88,5 +117,16 @@ export default class LayersTab extends Vue {
 .information-text {
   font-weight: 200;
   font-size: 0.8rem;
+}
+
+.msg {
+  text-align: center;
+  background: var(--background);
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  margin-top: 5px;
+  border-color: var(--grey);
+  font-size: smaller;
 }
 </style>

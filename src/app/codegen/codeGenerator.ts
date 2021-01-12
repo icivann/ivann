@@ -9,12 +9,9 @@ import Concat from '@/app/ir/Concat';
 import Flatten from '@/app/ir/model/flatten';
 import Custom from '@/app/ir/Custom';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
-import Adadelta from '@/app/ir/overview/optimizers/adadelta';
 import Model from '@/app/ir/model/model';
 
-import { indent, getNodeType } from '@/app/codegen/common';
-
-import generateData from '@/app/codegen/dataGenerator';
+import { getNodeType, indent } from '@/app/codegen/common';
 import OverviewCustom from '@/app/ir/overview/OverviewCustom';
 import TrainGAN from '@/app/ir/overview/train/TrainGAN';
 
@@ -65,7 +62,8 @@ function generateModelGraphCode(
     outputs.add(getBranchVar(incomingBranch));
   } else if (node.mlNode instanceof Concat
     || node.mlNode instanceof Flatten
-    || node.mlNode instanceof Custom) {
+    || node.mlNode instanceof Custom
+    || node.mlNode instanceof Model) {
     // TODO: test this
     const readyConnections: number[] = branchesMap.get(node) ?? [];
     if (readyConnections.length !== node.inputInterfaces.size - 1) {
@@ -163,7 +161,8 @@ function generateModel(graph: Graph, name: string): string {
   const nodeDefinitions: string[] = [];
   // TODO: sort layer definitions
   graph.nodesAsArray.forEach((n) => {
-    if ((n.mlNode as ModelLayerNode).initCode !== undefined) {
+    // TODO: cast to ModelLayerNode may be unecessary
+    if ((n.mlNode as ModelLayerNode).initCode !== undefined && !(n.mlNode instanceof Model)) {
       nodeDefinitions.push(`self.${getNodeName(n, nodeNames, nodeTypeCounters)} = nn.${(n.mlNode as ModelLayerNode).initCode()}`);
     }
   });
@@ -195,6 +194,14 @@ function importCustomFunctions(graph: Graph): string[] {
   return funcs;
 }
 
+function importNestedModels(graph: Graph): string[] {
+  const modelNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Model);
+  if (modelNodes.length === 0) {
+    return [];
+  }
+  return modelNodes.map((node) => `from models.${node.mlNode.name} import ${node.mlNode.name}`);
+}
+
 export function generateModelCode(graph: Graph, name: string): string {
   const imports = [
     'import torch',
@@ -207,9 +214,10 @@ export function generateModelCode(graph: Graph, name: string): string {
   ].join('\n');
 
   const customFunctionImports = importCustomFunctions(graph).join('\n');
+  const nestedModels = importNestedModels(graph).join('\n');
   const model = generateModel(graph, name);
 
-  const result = [imports, customFunctionImports];
+  const result = [imports, nestedModels, customFunctionImports];
 
   result.push(model);
 
@@ -263,6 +271,12 @@ function generateOverview(graph: Graph): string {
 
   const trainNodes = graph.nodesAsArray.filter(isNodeTrainer);
 
+  // defining all pre-made training nodes
+  let funcs: string[] = [];
+  trainNodes.filter((n) => !(n.mlNode instanceof OverviewCustom)).forEach((node) => {
+    funcs = funcs.concat((node.mlNode as OverviewCallableNode).initCode());
+  });
+
   if (trainNodes.length === 0) {
     main.push(`${indent}${indent}pass`);
   } else {
@@ -273,7 +287,7 @@ function generateOverview(graph: Graph): string {
 
   const entry = `if __name__ == '__main__':\n${indent}main()`;
 
-  return [main.join(`\n${indent}`), entry].join('\n\n');
+  return [funcs, main.join(`\n${indent}`), entry].join('\n\n');
 }
 
 export function generateOverviewCode(

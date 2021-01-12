@@ -6,9 +6,12 @@ import EditorType from '@/EditorType';
 import EditorManager from '@/EditorManager';
 import { loadEditors, Save } from '@/file/EditorAsJson';
 import { randomUuid, UUID } from '@/app/util';
-import Model from '@/nodes/overview/Model';
-import editorIOPartition, { NodeIOChange } from '@/nodes/overview/EditorIOUtils';
-import { getEditorIOs } from '@/store/editors/utils';
+import {
+  deleteNodeEditor,
+  getEditorIOs,
+  renameNodeEditor,
+  updateNodeConnections,
+} from '@/store/editors/utils';
 import ParsedFunction from '@/app/parser/ParsedFunction';
 import { editNodes, FuncDiff } from '@/store/ManageCodevault';
 
@@ -70,11 +73,11 @@ const editorMutations: MutationTree<EditorsState> = {
     if (oldName !== null) {
       state.editorNames.delete(oldName);
 
-      // Loop through nodes in overview editor, find corresponding nodes and rename them
-      const { nodes } = state.overviewEditor.editor;
-      for (const node of nodes) {
-        if (node.name === oldName) node.name = name;
-      }
+      // Rename all nodes for renamed editor
+      renameNodeEditor(state.overviewEditor, oldName, name);
+      state.modelEditors.forEach((editor) => {
+        if (editor.name !== oldName) renameNodeEditor(editor, oldName!, name);
+      });
     }
   },
   deleteEditor(state, { editorType, index }) {
@@ -113,11 +116,11 @@ const editorMutations: MutationTree<EditorsState> = {
     if (name !== null) {
       state.editorNames.delete(name);
 
-      // Loop through nodes in overview editor, find corresponding nodes and delete them
-      const { nodes } = state.overviewEditor.editor;
-      for (const node of nodes) {
-        if (node.name === name) state.overviewEditor.editor.removeNode(node);
-      }
+      // Delete all nodes for deleted editor
+      deleteNodeEditor(state.overviewEditor, name);
+      state.modelEditors.forEach((editor) => {
+        if (editor.name !== name) deleteNodeEditor(editor, name!);
+      });
     }
   },
   loadEditors(state, file: Save) {
@@ -153,19 +156,12 @@ const editorMutations: MutationTree<EditorsState> = {
     switch (state.currEditorType) {
       case EditorType.MODEL: {
         const { inputs, outputs } = getEditorIOs(currEditor);
-
-        // Loop through nodes in overview editor
-        // find corresponding node for currEditor and update
-        const { nodes } = state.overviewEditor.editor;
-        const overviewNodes = nodes.filter((node) => node.name === currEditor.name) as Model[];
-        if (overviewNodes.length > 0) {
-          const { inputs: oldInputs, outputs: oldOutputs } = overviewNodes[0].getCurrentIO();
-          const inputChange: NodeIOChange = editorIOPartition(inputs, oldInputs);
-          const outputChange: NodeIOChange = editorIOPartition(outputs, oldOutputs);
-          for (const overviewNode of overviewNodes) {
-            overviewNode.updateIO(inputChange, outputChange);
+        updateNodeConnections(state.overviewEditor, [], outputs, currEditor.name);
+        state.modelEditors.forEach((editor) => {
+          if (editor.name !== currEditor.name) {
+            updateNodeConnections(editor, inputs, outputs, currEditor.name);
           }
-        }
+        });
         break;
       }
       default:

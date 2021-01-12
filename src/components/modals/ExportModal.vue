@@ -75,7 +75,6 @@ export default class ExportModal extends Vue {
     if (this.overviewSelected) {
       const { name, state } = saveEditor(this.currEditor);
       const graph = istateToGraph(state);
-      console.log('generating overview');
       const models = this.editorModels.modelEditors.map((editor) => {
         const { name, state } = saveEditor(editor);
         const graph = istateToGraph(state);

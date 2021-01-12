@@ -12,6 +12,7 @@
             v-for="editor in renderedModelEditors"
             :node="overviewNodes.ModelNode"
             :options="editor"
+            :overviewFlag="true"
             :key="editor.name"
             :name="editor.name">
             <img src="@/assets/images/nn_logo.svg" :alt="editor.name"/>

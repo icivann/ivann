@@ -17,6 +17,7 @@ export default class AddNodeButton extends Vue {
   @Prop({ required: true }) readonly node!: string;
   @Prop() readonly name!: string;
   @Prop() readonly options?: unknown;
+  @Prop() readonly overviewFlag?: boolean;
   @Prop() readonly names?: Set<string>;
 
   private editorManager = EditorManager.getInstance();
@@ -55,7 +56,7 @@ export default class AddNodeButton extends Vue {
     if (NodeType === undefined) {
       console.error(`Undefined Node Type: ${this.node}`);
     } else {
-      const node = editor.addNode(new NodeType(this.options));
+      const node = editor.addNode(new NodeType(this.options, this.overviewFlag));
 
       // Set position (and name) of newly created node
       const { scaling, panning } = EditorManager.getInstance().viewPlugin;

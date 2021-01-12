@@ -98,6 +98,8 @@ import LSTMCell from '@/nodes/model/Lstmcell';
 import GRUCell from '@/nodes/model/Grucell';
 import EmbeddingBag from '@/nodes/model/Embeddingbag';
 import Embedding from '@/nodes/model/Embedding';
+import { OverviewNodes } from '@/nodes/overview/Types';
+import Model from '@/nodes/overview/Model';
 
 export default class ModelCanvas extends AbstractCanvas {
   public nodeList = [
@@ -623,6 +625,7 @@ export default class ModelCanvas extends AbstractCanvas {
 
   public registerNodes(editor: Editor) {
     super.registerNodes(editor);
+    editor.registerNodeType(OverviewNodes.ModelNode, Model);
     editor.registerNodeType(ModelNodes.InModel, InModel);
     editor.registerNodeType(ModelNodes.OutModel, OutModel);
   }
