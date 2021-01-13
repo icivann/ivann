@@ -29,6 +29,7 @@ def train_classifier(model, train_loader, test_loader, optimizer, loss_f, device
       data, target = data.to(device), target.to(device)
       optimizer.zero_grad()
       output = model(data)
+      target = target.reshape(output.shape).to(torch.float32)
       loss = loss_f(output, target)
       loss.backward()
       optimizer.step()
@@ -45,6 +46,7 @@ def train_classifier(model, train_loader, test_loader, optimizer, loss_f, device
       for data, target in test_loader:
         data, target = data.to(device), target.to(device)
         output = model(data)
+        target = target.reshape(output.shape).to(torch.float32)
         test_loss += loss_f(output, target, reduction='sum').item()  # sum up batch loss
         pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
         correct += pred.eq(target.view_as(pred)).sum().item()
