@@ -17,6 +17,6 @@ export default class SELU {
   }
 
   public initCode(): string {
-    return `SELU(Inplace=, ${this.Inplace})`;
+    return `SELU(inplace=${this.Inplace})`;
   }
 }

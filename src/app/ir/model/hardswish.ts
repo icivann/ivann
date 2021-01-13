@@ -17,6 +17,6 @@ export default class Hardswish {
   }
 
   public initCode(): string {
-    return `Hardswish(Inplace=, ${this.Inplace})`;
+    return `Hardswish(inplace=${this.Inplace})`;
   }
 }

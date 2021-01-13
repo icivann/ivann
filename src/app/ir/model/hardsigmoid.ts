@@ -17,6 +17,6 @@ export default class Hardsigmoid {
   }
 
   public initCode(): string {
-    return `Hardsigmoid(Inplace=, ${this.Inplace})`;
+    return `Hardsigmoid(inplace=${this.Inplace})`;
   }
 }

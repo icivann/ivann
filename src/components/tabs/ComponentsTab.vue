@@ -1,46 +1,54 @@
 <template>
-  <div>
-    <SearchBar @value-change="search"/>
-    <ExpandablePanel
-      :name="overviewCategories.Model"
-      v-show="searchString === '' || renderedModelEditors.length > 0"
-    >
-      <div class="msg" v-show="modelEditors.length === 0">No Models Created</div>
-      <ButtonGrid v-show="modelEditors.length > 0">
-        <AddNodeButton
-          v-for="editor in renderedModelEditors"
-          :node="overviewNodes.ModelNode"
-          :options="editor"
-          :key="editor.name"
-          :name="editor.name"
-        />
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel
-      :name="overviewCategories.Data"
-      v-show="searchString === '' || renderedDataEditors.length > 0"
-    >
-      <div class="msg" v-show="dataEditors.length === 0">No Datasets Created</div>
-      <ButtonGrid v-show="dataEditors.length > 0">
-        <AddNodeButton
-          v-for="editor in renderedDataEditors"
-          :node="overviewNodes.DataNode"
-          :options="editor"
-          :key="editor.name"
-          :name="editor.name"
-        />
-      </ButtonGrid>
-    </ExpandablePanel>
-    <ExpandablePanel v-for="(category) in renderedNodes" :key="category.category"
-                     :name="category.category" v-show="category.nodes.length > 0">
-      <ButtonGrid>
-        <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
-                       :node="node.name"
-                       :name="node.name"
-        />
-      </ButtonGrid>
-    </ExpandablePanel>
-  </div>
+  <Scrollable>
+    <Padded>
+      <SearchBar @value-change="search"/>
+      <ExpandablePanel
+        :name="overviewCategories.Model"
+        v-show="searchString === '' || renderedModelEditors.length > 0"
+      >
+        <div class="msg" v-show="modelEditors.length === 0">No Models Created</div>
+        <ButtonGrid v-show="modelEditors.length > 0">
+          <AddNodeButton
+            v-for="editor in renderedModelEditors"
+            :node="overviewNodes.ModelNode"
+            :options="editor"
+            :overviewFlag="true"
+            :key="editor.name"
+            :name="editor.name">
+            <img src="@/assets/images/nn_logo.svg" :alt="editor.name"/>
+          </AddNodeButton>
+        </ButtonGrid>
+      </ExpandablePanel>
+      <ExpandablePanel
+        :name="overviewCategories.Data"
+        v-show="searchString === '' || renderedDataEditors.length > 0"
+      >
+        <div class="msg" v-show="dataEditors.length === 0">No Datasets Created</div>
+        <ButtonGrid v-show="dataEditors.length > 0">
+          <AddNodeButton
+            v-for="editor in renderedDataEditors"
+            :node="overviewNodes.DataNode"
+            :options="editor"
+            :key="editor.name"
+            :name="editor.name">
+            <img src="@/assets/images/data-icon.svg" :alt="editor.name"/>
+          </AddNodeButton>
+        </ButtonGrid>
+      </ExpandablePanel>
+      <ExpandablePanel v-for="(category) in renderedNodes" :key="category.category"
+                       :name="category.category" v-show="category.nodes.length > 0">
+        <ButtonGrid>
+          <AddNodeButton v-for="(node) in category.nodes" :key="node.name"
+                         :node="node.name"
+                         :name="node.name"
+          >
+            <img v-if="node.img !== undefined" :alt="node.name"
+                 :src="require(`@/assets/images/${node.img}`)"/>
+          </AddNodeButton>
+        </ButtonGrid>
+      </ExpandablePanel>
+    </Padded>
+  </Scrollable>
 </template>
 
 <script lang="ts">
@@ -53,9 +61,13 @@ import SearchBar from '@/SearchBar.vue';
 import { Getter } from 'vuex-class';
 import { EditorModel } from '@/store/editors/types';
 import EditorManager from '@/EditorManager';
+import Scrollable from '@/components/wrappers/Scrollable.vue';
+import Padded from '@/components/wrappers/Padded.vue';
 
 @Component({
   components: {
+    Padded,
+    Scrollable,
     SearchBar,
     ExpandablePanel,
     AddNodeButton,

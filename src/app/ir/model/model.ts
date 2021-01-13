@@ -11,6 +11,14 @@ class Model {
       options.get(nodeName),
     );
   }
+
+  public initCode(params: string[]): string[] {
+    return [`${this.name}()`];
+  }
+
+  public callCode(params: string[], name: string): string {
+    return `${this.name}(${params.join(', ')})`;
+  }
 }
 
 export default Model;

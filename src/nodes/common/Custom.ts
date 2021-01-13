@@ -5,10 +5,12 @@ import { CommonNodes } from '@/nodes/common/Types';
 
 // TODO CORE-58 Change InlineCode Option to use state.parsedFunction
 export enum CustomOptions {
-  Code = 'Code'
+  Code = 'Code',
+  File = 'File'
 }
+
 export default class Custom extends Node {
-  type = CommonNodes.Custom;
+  type: string = CommonNodes.Custom;
   name: string = CommonNodes.Custom;
 
   private inputNames: string[] = [];

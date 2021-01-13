@@ -21,7 +21,7 @@ class LoadImages {
 
   public callCode(name: string): string[] {
     return [
-      `${name} = Image(${name})`,
+      `${name} = Image.open(${name})`,
     ];
   }
 }

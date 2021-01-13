@@ -2,7 +2,10 @@ import re
 import os
 
 ir_folder = os.path.join("..", "src", "app", "ir", "model")
+ir_optimiser_folder = os.path.join("..", "src", "app", "ir", "overview", "optimizers")
+
 baklava_folder = os.path.join("..", "src", "nodes", "model")
+baklava_optimiser_folder = os.path.join("..", "src", "nodes", "overview", "optimizers")
 
 type_map = {
   "int": "IntOption",
@@ -79,7 +82,7 @@ def parse(x):
 
 
 def create_baklava(class_name, option_map: dict, dim):
-  f_path = os.path.join(baklava_folder, f"{class_name.capitalize()}.ts")
+  f_path = os.path.join(baklava_optimiser_folder, f"{class_name.capitalize()}.ts")
   baklava_file = open(f_path, "w")
 
   option_enums_header = f"export enum {class_name}Options {{"
@@ -146,7 +149,7 @@ super();
 
 
 def create_ir_node(class_name, option_map: dict, dimensions):
-  f_path = os.path.join(ir_folder, f"{class_name.lower()}.ts")
+  f_path = os.path.join(ir_optimiser_folder, f"{class_name.lower()}.ts")
   ir_file = open(f_path, "w")
 
   fields = []
@@ -183,20 +186,19 @@ def create_ir_node(class_name, option_map: dict, dimensions):
 
     fields.append(f"public readonly {field_name}: {option_type},")
     build.append(buildLine)
-    pythonCode.append(f"{field_name}=")
 
     if len(dimensions) > 0 and dimensions[0] > 1:
-      pythonCode.append(f"(${{this.{field_name}}})")
+      pythonCode.append(f"{k}=(${{this.{field_name}}})")
     elif option_type == "str":
-      pythonCode.append(f"'${{this.{field_name}}}'")
+      pythonCode.append(f"{k}='${{this.{field_name}}}'")
     else:
-      pythonCode.append(f"${{this.{field_name}}}")
+      pythonCode.append(f"{k}=${{this.{field_name}}}")
 
   fields = "\n  ".join(fields)
   build = "\n  ".join(build)
   pythonCode = ", ".join(pythonCode)
 
-  contents = f"""import {{ {class_name}Options }} from '@/nodes/model/{class_name.capitalize()}';
+  contents = f"""import {{ {class_name}Options }} from '@/nodes/overview/optimizers/{class_name.capitalize()}';
 import {{ {enum_import} }} from '@/app/ir/irCommon';
 
 export default class {class_name} {{
@@ -225,7 +227,7 @@ def create_node_reg(class_name):
 
   content = f"""
       {{ 
-        name: ModelNodes.{class_name},
+        name: OverviewNodes.{class_name},
         node: {class_name},
       }},
   """

@@ -18,6 +18,6 @@ export default class ReplicationPad2d {
   }
 
   public initCode(): string {
-    return `ReplicationPad2d(Padding=, (${this.Padding}))`;
+    return `ReplicationPad2d(padding=(${this.Padding}))`;
   }
 }

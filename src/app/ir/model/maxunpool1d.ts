@@ -21,6 +21,6 @@ export default class MaxUnpool1d {
   }
 
   public initCode(): string {
-    return `MaxUnpool1d(KernelSize=, ${this.KernelSize}, Stride=, ${this.Stride}, Padding=, ${this.Padding})`;
+    return `MaxUnpool1d(kernel_size=${this.KernelSize}, stride=${this.Stride}, padding=${this.Padding})`;
   }
 }

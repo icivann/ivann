@@ -1,31 +1,19 @@
 /* eslint-disable no-param-reassign */
 import GraphNode from '@/app/ir/GraphNode';
-import { ModelLayerNode } from '@/app/ir/mainNodes';
+import { ModelLayerNode, OverviewCallableNode, OverviewNode } from '@/app/ir/mainNodes';
 import InModel from '@/app/ir/InModel';
 
 import OutModel from '@/app/ir/OutModel';
 import Graph from '@/app/ir/Graph';
 import Concat from '@/app/ir/Concat';
+import Flatten from '@/app/ir/model/flatten';
 import Custom from '@/app/ir/Custom';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
-import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
 import Model from '@/app/ir/model/model';
 
-import { indent, getNodeType } from '@/app/codegen/common';
-
-import generateData from '@/app/codegen/dataGenerator';
-
-const imports = [
-  'import torch',
-  'import torch.nn as nn',
-  'import torch.nn.functional as F',
-  'from torch.utils.data import Dataset, DataLoader',
-  'from torchvision import transforms',
-  'import pandas as pd',
-  'import numpy as np',
-  'import os',
-  'from PIL import Image',
-].join('\n');
+import { getNodeType, indent } from '@/app/codegen/common';
+import OverviewCustom from '@/app/ir/overview/OverviewCustom';
+import TrainGAN from '@/app/ir/overview/train/TrainGAN';
 
 function getNodeName(
   node: GraphNode,
@@ -72,7 +60,10 @@ function generateModelGraphCode(
     code.push(`${getBranchVar(incomingBranch)} = ${nodeName}`);
   } else if (node.mlNode instanceof OutModel) {
     outputs.add(getBranchVar(incomingBranch));
-  } else if (node.mlNode instanceof Concat || node.mlNode instanceof Custom) {
+  } else if (node.mlNode instanceof Concat
+    || node.mlNode instanceof Flatten
+    || node.mlNode instanceof Custom
+    || node.mlNode instanceof Model) {
     // TODO: test this
     const readyConnections: number[] = branchesMap.get(node) ?? [];
     if (readyConnections.length !== node.inputInterfaces.size - 1) {
@@ -170,7 +161,8 @@ function generateModel(graph: Graph, name: string): string {
   const nodeDefinitions: string[] = [];
   // TODO: sort layer definitions
   graph.nodesAsArray.forEach((n) => {
-    if ((n.mlNode as ModelLayerNode).initCode !== undefined) {
+    // TODO: cast to ModelLayerNode may be unecessary
+    if ((n.mlNode as ModelLayerNode).initCode !== undefined && !(n.mlNode instanceof Model)) {
       nodeDefinitions.push(`self.${getNodeName(n, nodeNames, nodeTypeCounters)} = nn.${(n.mlNode as ModelLayerNode).initCode()}`);
     }
   });
@@ -182,83 +174,108 @@ function generateModel(graph: Graph, name: string): string {
   return [header, initMethod, forwardMethod].join('\n\n');
 }
 
-function generateFunctions(graph: Graph): string {
-  const customNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Custom);
+function importCustomFunctions(graph: Graph): string[] {
+  const customNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Custom || item.mlNode instanceof OverviewCustom);
   // TODO: expand to other training nodes (and custom train)
 
   if (customNodes.length === 0) {
-    return '';
+    return [];
   }
 
   const funcs: string[] = [];
   customNodes.forEach((node) => {
-    if (node.mlNode instanceof Custom) {
-      funcs.push(node.mlNode.code);
+    // redundant check as we filter above but typescript is weird like this
+    if (node.mlNode instanceof Custom || node.mlNode instanceof OverviewCustom) {
+      const filename = node.mlNode.file.split('.')[0];
+      funcs.push(`from codevault.${filename} import ${node.mlNode.name}`);
     }
   });
 
-  return funcs.join('\n\n');
+  return funcs;
+}
+
+function importNestedModels(graph: Graph): string[] {
+  const modelNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode instanceof Model);
+  if (modelNodes.length === 0) {
+    return [];
+  }
+  return modelNodes.map((node) => `from models.${node.mlNode.name} import ${node.mlNode.name}`);
 }
 
 export function generateModelCode(graph: Graph, name: string): string {
-  const funcs = generateFunctions(graph);
+  const imports = [
+    'import torch',
+    'import torch.nn as nn',
+    'import torch.nn.functional as F',
+    '# enabling relative imports',
+    'import os',
+    'import sys',
+    'sys.path.insert(0, os.path.join((os.path.abspath(os.path.dirname(sys.argv[0]))), ".."))',
+  ].join('\n');
+
+  const customFunctionImports = importCustomFunctions(graph).join('\n');
+  const nestedModels = importNestedModels(graph).join('\n');
   const model = generateModel(graph, name);
 
-  const result = [];
-
-  if (funcs.length > 0) {
-    result.push(funcs);
-  }
+  const result = [imports, nestedModels, customFunctionImports];
 
   result.push(model);
 
-  return result.join('\n\n');
+  return result.join('\n');
+}
+
+function isNodeTrainer(node: GraphNode): boolean {
+  return node.mlNode instanceof TrainClassifier || node.mlNode instanceof TrainGAN
+    || (node.mlNode instanceof OverviewCustom && node.mlNode.trainer);
+}
+
+function generateOverviewGraphCode(
+  node: GraphNode,
+  graph: Graph,
+  nodeNames: Map<GraphNode, string>,
+  nodeTypeCounters: Map<string, number>,
+): [string[], string] {
+  const prevNodes = graph.prevNodesFrom(node);
+  let code: string[] = [];
+  const params: string[] = [];
+
+  prevNodes.forEach((prevNode) => {
+    const [prevCode, prevName] = generateOverviewGraphCode(prevNode, graph, nodeNames,
+      nodeTypeCounters);
+    params.push(prevName);
+    code = code.concat(prevCode);
+  });
+
+  const isNewNode = !nodeNames.has(node);
+  const name = getNodeName(node, nodeNames, nodeTypeCounters);
+  if (isNodeTrainer(node)) {
+    code = code.concat(`${(node.mlNode as OverviewCallableNode).callCode(params)}`);
+  } else if (isNewNode && (node.mlNode as OverviewNode).initCode !== undefined) {
+    code = code.concat(`${name} = ${(node.mlNode as OverviewNode).initCode(params)}`);
+  }
+  return [code, name];
 }
 
 function generateTrainingPipeline(node: GraphNode, graph: Graph): string[] {
   // traverse each incoming connection backwards and link up
-
-  const trainNode = node.mlNode as TrainClassifier;
-
-  // const incomingNodes = graph.prevNodesFrom(node);
-  const optimizer = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-  instanceof Adadelta)[0].mlNode as Adadelta;
-
-  const model = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-  instanceof Model)[0].mlNode as Model;
-
-  const body = [];
-
-  const device = `"${trainNode.Device}"`;
-  body.push(`device = ${device}`);
-  const modelName = `${model.name}_model`;
-  body.push(`${modelName} = ${model.name}().to(device)`);
-  body.push(`optimizer = ${optimizer.initCode(`${modelName}.parameters()`)}`);
-  // (model, train_loader, test_loader, optimizer, device, epoch
-  body.push(trainNode.callCode([modelName, 'None', 'None', 'optimizer', device,
-    trainNode.Epochs.toString()]));
-
+  let body: string[] = [];
+  const nodeNames = new Map<GraphNode, string>();
+  const nodeTypeCounters = new Map<string, number>();
+  const [nodeCode, nodeName] = generateOverviewGraphCode(node, graph, nodeNames, nodeTypeCounters);
+  body = body.concat(nodeCode);
   return body;
 }
 
 function generateOverview(graph: Graph): string {
   let main = ['def main():'];
 
-  const trainNodes = graph.nodesAsArray.filter((item: GraphNode) => item.mlNode
-  instanceof TrainClassifier);
+  const trainNodes = graph.nodesAsArray.filter(isNodeTrainer);
 
-  const funcs: string[] = [];
-
-  trainNodes.forEach((node) => {
-    if (node.mlNode instanceof TrainClassifier) {
-      funcs.push(node.mlNode.initCode());
-    }
+  // defining all pre-made training nodes
+  let funcs: string[] = [];
+  trainNodes.filter((n) => !(n.mlNode instanceof OverviewCustom)).forEach((node) => {
+    funcs = funcs.concat((node.mlNode as OverviewCallableNode).initCode());
   });
-
-  // Create functions for training
-
-  // const main = [header, body.join(`\n${indent}`)];
-  const entry = `if __name__ == '__main__':\n${indent}main()`;
 
   if (trainNodes.length === 0) {
     main.push(`${indent}${indent}pass`);
@@ -267,6 +284,8 @@ function generateOverview(graph: Graph): string {
       main = main.concat(generateTrainingPipeline(node, graph));
     });
   }
+
+  const entry = `if __name__ == '__main__':\n${indent}main()`;
 
   return [funcs, main.join(`\n${indent}`), entry].join('\n\n');
 }
@@ -277,27 +296,30 @@ export function generateOverviewCode(
   dataEditors: [Graph, string][],
 ): string {
   // TODO: beware of duplicate custom functions
-  const funcs = generateFunctions(graph);
+  const imports = [
+    'import torch',
+    'import torch.nn as nn',
+    'import torch.optim as optim',
+    'from torch.utils.data import DataLoader',
+  ];
 
-  const models = modelEditors.map((editor) => generateModelCode(editor[0], editor[1])).join('\n\n');
+  imports.push('# Importing Datasets');
+  dataEditors.forEach((editor) => imports.push(`from data.${editor[1]} import ${editor[1]}`));
+
+  imports.push('# Importing Models');
+  modelEditors.forEach((editor) => imports.push(`from models.${editor[1]} import ${editor[1]}`));
+
+  const customFunctionImports = importCustomFunctions(graph);
+  imports.push('# Importing Custom functions');
+  customFunctionImports.forEach((x) => imports.push(x));
+
+  const result = [imports.join('\n')];
 
   const overview = generateOverview(graph);
-
-  const datasets = dataEditors.map((editor) => generateData(editor[0], editor[1])).join('\n\n');
-  // console.log(overview);
-
-  const result = [imports];
-
-  if (funcs.length > 0) {
-    result.push(funcs);
-  }
-
-  result.push(datasets);
-  result.push(models);
-
   result.push(overview);
 
-  return result.join('\n\n');
+  const res = result.join('\n\n');
+  return res;
 }
 
 export default generateOverviewCode;

@@ -21,14 +21,16 @@ import Linear from '@/app/ir/model/linear';
 import Bilinear from '@/app/ir/model/bilinear';
 import Softmin from '@/app/ir/model/softmin';
 import Softmax from '@/app/ir/model/softmax';
+import Flatten from '@/app/ir/model/flatten';
 
 import ToTensor from '@/app/ir/data/ToTensor';
 import Grayscale from '@/app/ir/data/Grayscale';
 import OutData from '@/app/ir/data/OutData';
-import Adadelta from '@/app/ir/overview/optimizers/Adadelta';
+import Adadelta from '@/app/ir/overview/optimizers/adadelta';
 import TrainClassifier from '@/app/ir/overview/train/TrainClassifier';
 import Model from '@/app/ir/model/model';
-import Data from '@/app/ir/data/Data';
+import Data from '@/app/ir/overview/data/Data';
+import OverviewCustom from '@/app/ir/overview/OverviewCustom';
 
 import Unfold from '@/app/ir/model/unfold';
 import Fold from '@/app/ir/model/fold';
@@ -82,23 +84,23 @@ import Tanh from '@/app/ir/model/tanh';
 import LogSigmoid from '@/app/ir/model/logsigmoid';
 import Tanhshrink from '@/app/ir/model/tanhshrink';
 import Threshold from '@/app/ir/model/threshold';
-import L1Loss from '@/app/ir/model/l1loss';
-import MSELoss from '@/app/ir/model/mseloss';
-import CrossEntropyLoss from '@/app/ir/model/crossentropyloss';
-import CTCLoss from '@/app/ir/model/ctcloss';
-import NLLLoss from '@/app/ir/model/nllloss';
-import PoissonNLLLoss from '@/app/ir/model/poissonnllloss';
-import KLDivLoss from '@/app/ir/model/kldivloss';
-import BCELoss from '@/app/ir/model/bceloss';
-import BCEWithLogitsLoss from '@/app/ir/model/bcewithlogitsloss';
-import MarginRankingLoss from '@/app/ir/model/marginrankingloss';
-import HingeEmbeddingLoss from '@/app/ir/model/hingeembeddingloss';
-import MultiLabelMarginLoss from '@/app/ir/model/multilabelmarginloss';
-import SmoothL1Loss from '@/app/ir/model/smoothl1loss';
-import MultiLabelSoftMarginLoss from '@/app/ir/model/multilabelsoftmarginloss';
-import CosineEmbeddingLoss from '@/app/ir/model/cosineembeddingloss';
-import MultiMarginLoss from '@/app/ir/model/multimarginloss';
-import TripletMarginLoss from '@/app/ir/model/tripletmarginloss';
+import L1Loss from '@/app/ir/overview/loss/l1loss';
+import MSELoss from '@/app/ir/overview/loss/mseloss';
+import CrossEntropyLoss from '@/app/ir/overview/loss/crossentropyloss';
+import CTCLoss from '@/app/ir/overview/loss/ctcloss';
+import NLLLoss from '@/app/ir/overview/loss/nllloss';
+import PoissonNLLLoss from '@/app/ir/overview/loss/poissonnllloss';
+import KLDivLoss from '@/app/ir/overview/loss/kldivloss';
+import BCELoss from '@/app/ir/overview/loss/bceloss';
+import BCEWithLogitsLoss from '@/app/ir/overview/loss/bcewithlogitsloss';
+import MarginRankingLoss from '@/app/ir/overview/loss/marginrankingloss';
+import HingeEmbeddingLoss from '@/app/ir/overview/loss/hingeembeddingloss';
+import MultiLabelMarginLoss from '@/app/ir/overview/loss/multilabelmarginloss';
+import SmoothL1Loss from '@/app/ir/overview/loss/smoothl1loss';
+import MultiLabelSoftMarginLoss from '@/app/ir/overview/loss/multilabelsoftmarginloss';
+import CosineEmbeddingLoss from '@/app/ir/overview/loss/cosineembeddingloss';
+import MultiMarginLoss from '@/app/ir/overview/loss/multimarginloss';
+import TripletMarginLoss from '@/app/ir/overview/loss/tripletmarginloss';
 import LogSoftmax from '@/app/ir/model/logsoftmax';
 import Softmax2d from '@/app/ir/model/softmax2d';
 import AdaptiveLogSoftmaxWithLoss from '@/app/ir/model/adaptivelogsoftmaxwithloss';
@@ -122,6 +124,17 @@ import GRU from '@/app/ir/model/gru';
 import RNNCell from '@/app/ir/model/rnncell';
 import LSTMCell from '@/app/ir/model/lstmcell';
 import GRUCell from '@/app/ir/model/grucell';
+import Adamax from '@/app/ir/overview/optimizers/adamax';
+import SparseAdam from '@/app/ir/overview/optimizers/sparseadam';
+import AdamW from '@/app/ir/overview/optimizers/adamw';
+import LBFGS from '@/app/ir/overview/optimizers/lbfgs';
+import ASGD from '@/app/ir/overview/optimizers/asgd';
+import RMSprop from '@/app/ir/overview/optimizers/rmsprop';
+import Rprop from '@/app/ir/overview/optimizers/rprop';
+import SGD from '@/app/ir/overview/optimizers/sgd';
+import Adagrad from '@/app/ir/overview/optimizers/adagrad';
+import Adam from '@/app/ir/overview/optimizers/adam';
+import TrainGAN from '@/app/ir/overview/train/TrainGAN';
 
 type Options = Map<string, any>
 // eslint-disable-next-line import/prefer-default-export
@@ -152,6 +165,7 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['Bilinear', Bilinear.build],
   ['Softmin', Softmin.build],
   ['Softmax', Softmax.build],
+  ['Flatten', Flatten.build],
   // Data
   ['OutData', OutData.build],
   ['ToTensor', ToTensor.build],
@@ -160,10 +174,15 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['DataNode', Data.build],
   ['LoadCsv', LoadCsv.build],
   ['LoadImages', LoadImages.build],
+  // OVERVIEW
+  ['OverviewCustom', OverviewCustom.build as (r: Options) => MlNode],
   // Optimizers
   ['Adadelta', Adadelta.build],
+  // Loss
+  ['NLLLoss', NLLLoss.build],
   // Training
   ['TrainClassifier', TrainClassifier.build],
+  ['TrainGAN', TrainGAN.build],
   ['Unfold', Unfold.build],
   ['Fold', Fold.build],
   ['MaxUnpool1d', MaxUnpool1d.build],
@@ -257,5 +276,16 @@ export const nodeBuilder: Map<string, (r: Options) => MlNode> = new Map([
   ['RNNCell', RNNCell.build],
   ['LSTMCell', LSTMCell.build],
   ['GRUCell', GRUCell.build],
+
+  ['Adamax', Adamax.build],
+  ['SparseAdam', SparseAdam.build],
+  ['AdamW', AdamW.build],
+  ['Adam', Adam.build],
+  ['Adagrad', Adagrad.build],
+  ['ASGD', ASGD.build],
+  ['LBFGS', LBFGS.build],
+  ['RMSprop', RMSprop.build],
+  ['Rprop', Rprop.build],
+  ['SGD', SGD.build],
 
 ]);

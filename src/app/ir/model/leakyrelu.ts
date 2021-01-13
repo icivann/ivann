@@ -19,6 +19,6 @@ export default class LeakyReLU {
   }
 
   public initCode(): string {
-    return `LeakyReLU(NegativeSlope=, ${this.NegativeSlope}, Inplace=, ${this.Inplace})`;
+    return `LeakyReLU(negative_slope=${this.NegativeSlope}, inplace=${this.Inplace})`;
   }
 }

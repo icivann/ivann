@@ -23,6 +23,6 @@ export default class GroupNorm {
   }
 
   public initCode(): string {
-    return `GroupNorm(NumGroups=, ${this.NumGroups}, NumChannels=, ${this.NumChannels}, Eps=, ${this.Eps}, Affine=, ${this.Affine})`;
+    return `GroupNorm(num_groups=${this.NumGroups}, num_channels=${this.NumChannels}, eps=${this.Eps}, affine=${this.Affine})`;
   }
 }

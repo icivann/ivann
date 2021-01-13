@@ -1,7 +1,7 @@
 <template>
   <div class="d-sm-flex">
     <div class="ml-1">{{ name }}</div>
-    <CheckboxInput :checked="value" @value-change="changeValue"/>
+    <CheckboxInput class="ml-1" :checked="value" @value-change="changeValue"/>
   </div>
 </template>
 

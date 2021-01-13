@@ -6,6 +6,7 @@ class Custom {
   constructor(
     public readonly name: string,
     public readonly code: string,
+    public readonly file: string,
   ) {
   }
 
@@ -13,6 +14,7 @@ class Custom {
     return new Custom(
       options.get(nodeName),
       options.get(CustomOptions.Code),
+      options.get(CustomOptions.File),
     );
   }
 
@@ -22,7 +24,8 @@ class Custom {
     if (parsedFuncs instanceof Error) {
       console.error(parsedFuncs);
       return 'CUSTOM_NODE_PARSE_ERROR';
-    } if (parsedFuncs.length > 0) {
+    }
+    if (parsedFuncs.length > 0) {
       const parsedFunc = parsedFuncs[0];
       return `${parsedFunc.name}(${params})`;
     }

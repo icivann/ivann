@@ -102,6 +102,18 @@ function generateInputCallCode(node: GraphNode): string[] {
 }
 
 function generateData(graph: Graph, dataName: string): string {
+  const imports = [
+    'import torch',
+    'from torch.utils.data import Dataset, DataLoader',
+    'from torchvision import transforms',
+    'import pandas as pd',
+    'import numpy as np',
+    'from PIL import Image',
+    '# enabling relative imports',
+    'import os',
+    'import sys',
+    'sys.path.insert(0, os.path.join((os.path.abspath(os.path.dirname(sys.argv[0]))), ".."))',
+  ].join('\n');
   const header = `class ${dataName}(Dataset):`;
 
   const inputs = graph.nodesAsArray.filter((item: GraphNode) => isDataLoadNode(item));
@@ -161,9 +173,10 @@ function generateData(graph: Graph, dataName: string): string {
     getitem.push(c);
   });
 
-  getitem.push(`${indent}${indent}return ${inputNames.join(', ')}`);
+  getitem.push(`${indent}${indent}return ${inputNames.reverse().join(', ')}`);
 
   return [
+    imports,
     header,
     init.join('\n'),
     len.join('\n'),

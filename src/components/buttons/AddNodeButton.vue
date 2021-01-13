@@ -17,6 +17,7 @@ export default class AddNodeButton extends Vue {
   @Prop({ required: true }) readonly node!: string;
   @Prop() readonly name!: string;
   @Prop() readonly options?: unknown;
+  @Prop() readonly overviewFlag?: boolean;
   @Prop() readonly names?: Set<string>;
 
   private editorManager = EditorManager.getInstance();
@@ -55,7 +56,7 @@ export default class AddNodeButton extends Vue {
     if (NodeType === undefined) {
       console.error(`Undefined Node Type: ${this.node}`);
     } else {
-      const node = editor.addNode(new NodeType(this.options));
+      const node = editor.addNode(new NodeType(this.options, this.overviewFlag));
 
       // Set position (and name) of newly created node
       const { scaling, panning } = EditorManager.getInstance().viewPlugin;
@@ -89,16 +90,20 @@ export default class AddNodeButton extends Vue {
     transition-duration: 0.1s;
   }
 
-  /*.icon {*/
-  /*  height: 4em;*/
-  /*  width: 4em;*/
-  /*  margin: 1em auto;*/
-  /*}*/
+  .icon {
+    margin: 15% 15% calc(1em + 15%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 
-  /*.icon * {*/
-  /*  max-height: 100%;*/
-  /*  max-width: 100%;*/
-  /*}*/
+  .icon * {
+    max-height: 100%;
+    max-width: 100%;
+    pointer-events: none;
+  }
 
   .name {
     bottom: 0.3em;

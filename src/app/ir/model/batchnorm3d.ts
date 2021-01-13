@@ -25,6 +25,6 @@ export default class BatchNorm3d {
   }
 
   public initCode(): string {
-    return `BatchNorm3d(NumFeatures=, (${this.NumFeatures}), Eps=, (${this.Eps}), Momentum=, (${this.Momentum}), Affine=, (${this.Affine}), TrackRunningStats=, (${this.TrackRunningStats}))`;
+    return `BatchNorm3d(num_features=(${this.NumFeatures}), eps=(${this.Eps}), momentum=(${this.Momentum}), affine=(${this.Affine}), trace_running_stats=(${this.TrackRunningStats}))`;
   }
 }

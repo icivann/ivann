@@ -23,6 +23,6 @@ export default class LPPool2d {
   }
 
   public initCode(): string {
-    return `LPPool2d(NormType=, (${this.NormType}), KernelSize=, (${this.KernelSize}), Stride=, (${this.Stride}), CeilMode=, (${this.CeilMode}))`;
+    return `LPPool2d(norm_type=(${this.NormType}), kernel_size=(${this.KernelSize}), stride=(${this.Stride}), ceil_mode=(${this.CeilMode}))`;
   }
 }
