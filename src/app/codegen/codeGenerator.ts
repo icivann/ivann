@@ -81,8 +81,11 @@ function generateModelGraphCode(
     const params = readyConnections.map((branch) => getBranchVar(branch));
     branch += 1;
 
-    console.log(node.mlNode.name, nodeName);
-    code.push(`${getBranchVar(branch)} = ${node.mlNode.callCode(params, nodeName)}`);
+    if (node.mlNode instanceof Model) {
+      code.push(`${getBranchVar(branch)} = self.${node.mlNode.callCode(params, nodeName)}`);
+    } else {
+      code.push(`${getBranchVar(branch)} = ${node.mlNode.callCode(params, nodeName)}`);
+    }
   } else {
     code.push(`${getBranchVar(branch)} = self.${nodeName}(${getBranchVar(incomingBranch)})`);
   }
