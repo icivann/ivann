@@ -81,7 +81,8 @@ function generateModelGraphCode(
     const params = readyConnections.map((branch) => getBranchVar(branch));
     branch += 1;
 
-    code.push(`${getBranchVar(branch)} = ${node.mlNode.callCode(params, '')}`);
+    console.log(node.mlNode.name, nodeName);
+    code.push(`${getBranchVar(branch)} = ${node.mlNode.callCode(params, nodeName)}`);
   } else {
     code.push(`${getBranchVar(branch)} = self.${nodeName}(${getBranchVar(incomingBranch)})`);
   }
@@ -162,8 +163,12 @@ function generateModel(graph: Graph, name: string): string {
   // TODO: sort layer definitions
   graph.nodesAsArray.forEach((n) => {
     // TODO: cast to ModelLayerNode may be unecessary
-    if ((n.mlNode as ModelLayerNode).initCode !== undefined && !(n.mlNode instanceof Model)) {
-      nodeDefinitions.push(`self.${getNodeName(n, nodeNames, nodeTypeCounters)} = nn.${(n.mlNode as ModelLayerNode).initCode()}`);
+    if ((n.mlNode as ModelLayerNode).initCode !== undefined) {
+      if (n.mlNode instanceof Model) {
+        nodeDefinitions.push(`self.${getNodeName(n, nodeNames, nodeTypeCounters)} = ${(n.mlNode as Model).initCode()}`);
+      } else {
+        nodeDefinitions.push(`self.${getNodeName(n, nodeNames, nodeTypeCounters)} = nn.${(n.mlNode as ModelLayerNode).initCode()}`);
+      }
     }
   });
   const init = [`${indent}def __init__(self):`, `super(${name}, self).__init__()`].concat(nodeDefinitions);

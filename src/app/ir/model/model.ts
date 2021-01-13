@@ -12,12 +12,12 @@ class Model {
     );
   }
 
-  public initCode(params: string[]): string[] {
+  public initCode(): string[] {
     return [`${this.name}()`];
   }
 
   public callCode(params: string[], name: string): string {
-    return `${this.name}(${params.join(', ')})`;
+    return `${name}.forward(${params.join(', ')})`;
   }
 }
 
